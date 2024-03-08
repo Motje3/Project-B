@@ -11,8 +11,7 @@ public class Ticket
 
     private string GenerateRandomCode()
     {
-        // This method generates a random string that could serve as the ticket code.
-        // Implement this method based on your specific requirements for the code format.
-        return Guid.NewGuid().ToString().Substring(0, 8); // Example implementation
+        // Example: Generate a simple random code, in real scenarios, ensure this meets your requirements
+        return Guid.NewGuid().ToString().Substring(0, 8);
     }
 }
