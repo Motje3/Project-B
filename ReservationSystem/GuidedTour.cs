@@ -44,7 +44,18 @@ public class GuidedTour
     {
         if (TryReserveSpot(visitor))
         {
-            Console.WriteLine($"Reservation confirmed for {visitor.Name} with {visitor.TicketCount} tickets.");
+            for (int i = 0; i < visitor.TicketCount; i++)
+            {
+                // Generate a new ticket for each count and add it to the visitor
+                Ticket newTicket = new Ticket(visitor.VisitorId);
+                visitor.AddTicket(newTicket);
+            }
+            Console.WriteLine($"Reservation confirmed for {visitor.Name} with {visitor.TicketCount} tickets. Ticket codes are:");
+            // Print each ticket code
+            foreach (var ticket in visitor.Tickets)
+            {
+                Console.WriteLine(ticket.TicketCode);
+            }
         }
         else
         {
