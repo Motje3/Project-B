@@ -16,16 +16,22 @@ public class ReservationManager
         bool isValidCode = false;
         while (!isValidCode)
         {
-            Console.WriteLine("Enter your unique code:");
+            Console.WriteLine("Enter your unique ticket code:");
             string userCode = Console.ReadLine();
 
             if (validator.IsCodeValid(userCode))
             {
-                Console.WriteLine("Welcome, your reservation is confirmed!");
+                Console.WriteLine("Welcome, your ticket is confirmed!");
                 isValidCode = true;
 
-                Console.WriteLine("Would you like to make a reservation for a rondleiding? (yes/no)");
-                string response = Console.ReadLine();
+                Console.WriteLine("Would you like to make a reservation for a guided tour? (yes/no)");
+                string? response = null;
+                do
+                {
+                    if (response != null)
+                        Console.WriteLine("Wrong input try again");
+                    response = Console.ReadLine();
+                } while (!new List<string>() { "yes", "no" }.Contains(response));
 
                 if (response.Equals("yes", StringComparison.OrdinalIgnoreCase))
                 {
@@ -34,7 +40,7 @@ public class ReservationManager
             }
             else
             {
-                Console.WriteLine("Sorry, you do not have a reservation. Please try again.");
+                Console.WriteLine("Sorry, your ticket is not valid. Please try again.");
             }
         }
     }
