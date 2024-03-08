@@ -1,10 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "FYHjcc7to/LNP+qFGryIv77iCUTg/FPZHXHst0mf997NRf8cnQ5zaSsYnDnZULlHhT2ZVcJdmvNw6xza3Y7/mA==",
+  "dgSpecHash": "l7w8AtdKE+lbGh8hSN6mChOK84Nj6i8VgyuFUKCJYPqVXOtkKjbkHzoK0xgsRpOQNk++YkT0F3W+TgBGyMgxKw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\moham\\Desktop\\School\\Project-B\\ReservationSystem\\ReservationSystem.csproj",
+  "projectFilePath": "C:\\Users\\moham\\Desktop\\School\\Project-B\\New folder\\Project-B\\ReservationSystem\\ReservationSystem.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\moham\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+    "C:\\Users\\moham\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\moham\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.15\\microsoft.netcore.app.ref.7.0.15.nupkg.sha512",
+    "C:\\Users\\moham\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.15\\microsoft.windowsdesktop.app.ref.7.0.15.nupkg.sha512",
+    "C:\\Users\\moham\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.15\\microsoft.aspnetcore.app.ref.7.0.15.nupkg.sha512",
+    "C:\\Users\\moham\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.15\\microsoft.netcore.app.host.win-x64.7.0.15.nupkg.sha512"
   ],
   "logs": []
 }
