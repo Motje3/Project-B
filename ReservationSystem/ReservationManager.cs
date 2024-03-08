@@ -5,9 +5,9 @@ public class ReservationManager
     private EntreeCodeValidator validator;
     private RondleidingReservation rondleiding;
 
-    public ReservationManager(string jsonFilePath)
+    public ReservationManager()
     {
-        validator = new EntreeCodeValidator(jsonFilePath);
+        validator = new EntreeCodeValidator();
         rondleiding = new RondleidingReservation();
     }
 
