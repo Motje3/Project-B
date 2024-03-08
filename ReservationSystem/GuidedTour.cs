@@ -1,10 +1,10 @@
-public class RondleidingReservation
+public class GuidedTour
 {
     private const int MaxCapacity = 13;
     private int currentCapacity;
     private List<Visitor> reservations;
 
-    public RondleidingReservation()
+    public GuidedTour()
     {
         currentCapacity = 0;
         reservations = new List<Visitor>();

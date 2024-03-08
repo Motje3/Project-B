@@ -3,12 +3,12 @@ using System;
 public class ReservationManager
 {
     private EntreeCodeValidator validator;
-    private RondleidingReservation rondleiding;
+    private GuidedTour guidedTour;
 
     public ReservationManager()
     {
         validator = new EntreeCodeValidator();
-        rondleiding = new RondleidingReservation();
+        guidedTour = new GuidedTour();
     }
 
     public void ValidateCodeAndProcessReservations()
@@ -35,7 +35,7 @@ public class ReservationManager
 
                 if (response.Equals("yes", StringComparison.OrdinalIgnoreCase))
                 {
-                    rondleiding.PromptForReservation();
+                    guidedTour.PromptForReservation();
                 }
             }
             else
