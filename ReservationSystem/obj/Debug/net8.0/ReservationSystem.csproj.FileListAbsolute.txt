@@ -1,0 +1,17 @@
+C:\Users\moham\Desktop\School\Project-B\ReservationSystem\obj\Debug\net8.0\ReservationSystem.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\moham\Desktop\School\Project-B\ReservationSystem\obj\Debug\net8.0\ReservationSystem.AssemblyInfoInputs.cache
+C:\Users\moham\Desktop\School\Project-B\ReservationSystem\obj\Debug\net8.0\ReservationSystem.AssemblyInfo.cs
+C:\Users\moham\Desktop\School\Project-B\ReservationSystem\obj\Debug\net8.0\ReservationSystem.csproj.CoreCompileInputs.cache
+C:\Users\moham\Desktop\School\Project-B\ReservationSystem\bin\Debug\net8.0\ReservationSystem.exe
+C:\Users\moham\Desktop\School\Project-B\ReservationSystem\bin\Debug\net8.0\ReservationSystem.deps.json
+C:\Users\moham\Desktop\School\Project-B\ReservationSystem\bin\Debug\net8.0\ReservationSystem.runtimeconfig.json
+C:\Users\moham\Desktop\School\Project-B\ReservationSystem\bin\Debug\net8.0\ReservationSystem.dll
+C:\Users\moham\Desktop\School\Project-B\ReservationSystem\bin\Debug\net8.0\ReservationSystem.pdb
+C:\Users\moham\Desktop\School\Project-B\ReservationSystem\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\moham\Desktop\School\Project-B\ReservationSystem\obj\Debug\net8.0\ReservationSystem.csproj.AssemblyReference.cache
+C:\Users\moham\Desktop\School\Project-B\ReservationSystem\obj\Debug\net8.0\ReservationSystem.csproj.CopyComplete
+C:\Users\moham\Desktop\School\Project-B\ReservationSystem\obj\Debug\net8.0\ReservationSystem.dll
+C:\Users\moham\Desktop\School\Project-B\ReservationSystem\obj\Debug\net8.0\refint\ReservationSystem.dll
+C:\Users\moham\Desktop\School\Project-B\ReservationSystem\obj\Debug\net8.0\ReservationSystem.pdb
+C:\Users\moham\Desktop\School\Project-B\ReservationSystem\obj\Debug\net8.0\ReservationSystem.genruntimeconfig.cache
+C:\Users\moham\Desktop\School\Project-B\ReservationSystem\obj\Debug\net8.0\ref\ReservationSystem.dll
