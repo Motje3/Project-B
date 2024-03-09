@@ -42,7 +42,7 @@ public class ReservationManager
                     if (visitorWithReservation != null && visitorWithReservation.Tickets.Any())
                     {
                         ticketStorageManager.SaveTicketInfo(visitorWithReservation);
-                        Console.WriteLine("Your reservation and tickets have been successfully saved.");
+                        //Tickets saved to json bestand
                     }
                     else
                     {

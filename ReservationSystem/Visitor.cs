@@ -1,6 +1,7 @@
 public class Visitor
 {
     public string Name { get; set; }
+    public int Age { get; set; }
     public int TicketCount { get; set; }
     public Guid VisitorId { get; private set; }
     public List<Ticket> Tickets { get; set; } // Add this line

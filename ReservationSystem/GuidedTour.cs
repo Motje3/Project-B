@@ -29,15 +29,20 @@ public class GuidedTour
         Console.WriteLine("Enter your name:");
         string name = Console.ReadLine();
 
-        Console.WriteLine("Enter the number of tickets:");
+        Console.WriteLine("Enter the number of tickets: (For people over 18 year old)");
         int ticketCount;
         while (!int.TryParse(Console.ReadLine(), out ticketCount) || ticketCount <= 0)
         {
             Console.WriteLine("Invalid input. Please enter a valid number of tickets:");
         }
 
+        decimal pricePerTicket = 18; // $20 for adults, $10 for children
+        decimal totalPrice = ticketCount * pricePerTicket;
+
+
         Visitor visitor = new Visitor(name, ticketCount);
         ReserveSpot(visitor);
+        Console.WriteLine($"Total price for {ticketCount} ticket(s): ${totalPrice}");
         return visitor; // This will now compile successfully with the method return type changed.
     }
 
