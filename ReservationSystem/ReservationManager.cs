@@ -26,7 +26,7 @@ public class ReservationManager
                 Console.WriteLine("Welcome, your ticket is confirmed!");
                 isValidCode = true;
 
-                Console.WriteLine("Would you like to make a reservation for a guided tour? (yes/no)");
+                Console.WriteLine("Would you like to make a reservation for a guided tour? (Yes/No)");
                 string response = "";
                 do
                 {
