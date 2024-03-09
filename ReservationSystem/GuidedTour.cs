@@ -39,22 +39,32 @@ public class GuidedTour
         decimal pricePerTicket = 18; // $20 for adults, $10 for children
         decimal totalPrice = ticketCount * pricePerTicket;
 
+        Console.WriteLine("Enter the time you would like to visit (between 9 AM and 5 PM):");
+        string time = Console.ReadLine();
+        bool isValidTime = false;
+        do
+        {
+  
+            // Validate the time format and range. Simplified for illustration. Consider using DateTime.TryParse for real scenarios.
+            isValidTime = time.CompareTo("09:00") >= 0 && time.CompareTo("17:00") <= 0;
+            if (!isValidTime) Console.WriteLine("Invalid time. Please enter a time between 9 AM and 5 PM:");
+        } while (!isValidTime);
 
         Visitor visitor = new Visitor(name, ticketCount);
-        ReserveSpot(visitor);
+        ReserveSpot(visitor, time);
         Console.WriteLine($"Total price for {ticketCount} ticket(s): ${totalPrice}");
         return visitor; // This will now compile successfully with the method return type changed.
     }
 
 
-    private void ReserveSpot(Visitor visitor)
+    private void ReserveSpot(Visitor visitor, string time)
     {
         if (TryReserveSpot(visitor))
         {
             for (int i = 0; i < visitor.TicketCount; i++)
             {
                 // Generate a new ticket for each count and add it to the visitor
-                Ticket newTicket = new Ticket(visitor.VisitorId);
+                Ticket newTicket = new Ticket(visitor.VisitorId, time);
                 visitor.AddTicket(newTicket);
             }
             Console.WriteLine($"Reservation confirmed for {visitor.Name} with {visitor.TicketCount} tickets. Ticket codes are:");
