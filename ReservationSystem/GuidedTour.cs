@@ -24,7 +24,7 @@ public class GuidedTour
         }
     }
 
-    public void PromptForReservation()
+    public Visitor PromptForReservation()
     {
         Console.WriteLine("Enter your name:");
         string name = Console.ReadLine();
@@ -38,7 +38,9 @@ public class GuidedTour
 
         Visitor visitor = new Visitor(name, ticketCount);
         ReserveSpot(visitor);
+        return visitor; // This will now compile successfully with the method return type changed.
     }
+
 
     private void ReserveSpot(Visitor visitor)
     {

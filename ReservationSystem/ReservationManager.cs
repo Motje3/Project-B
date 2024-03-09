@@ -4,11 +4,13 @@ public class ReservationManager
 {
     private EntreeCodeValidator validator;
     private GuidedTour guidedTour;
+    private TicketStorageManager ticketStorageManager;
 
     public ReservationManager()
     {
         validator = new EntreeCodeValidator();
         guidedTour = new GuidedTour();
+        ticketStorageManager = new TicketStorageManager("ticketsmanager.json");
     }
 
     public void ValidateCodeAndProcessReservations()
@@ -25,17 +27,27 @@ public class ReservationManager
                 isValidCode = true;
 
                 Console.WriteLine("Would you like to make a reservation for a guided tour? (yes/no)");
-                string? response = null;
+                string response = "";
                 do
                 {
-                    if (response != null)
-                        Console.WriteLine("Wrong input try again");
-                    response = Console.ReadLine();
-                } while (!new List<string>() { "yes", "no" }.Contains(response));
+                    if (!string.IsNullOrEmpty(response))
+                        Console.WriteLine("Wrong input, try again.");
 
-                if (response.Equals("yes", StringComparison.OrdinalIgnoreCase))
+                    response = Console.ReadLine()?.Trim().ToLower(); // Safely trim and lowercase the response
+                } while (response != "yes" && response != "no"); // Simplified condition
+
+                if (response.Equals("yes"))
                 {
-                    guidedTour.PromptForReservation();
+                    Visitor visitorWithReservation = guidedTour.PromptForReservation();
+                    if (visitorWithReservation != null && visitorWithReservation.Tickets.Any())
+                    {
+                        ticketStorageManager.SaveTicketInfo(visitorWithReservation);
+                        Console.WriteLine("Your reservation and tickets have been successfully saved.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Unfortunately, we could not process your reservation at this time.");
+                    }
                 }
             }
             else
@@ -44,4 +56,5 @@ public class ReservationManager
             }
         }
     }
+
 }
