@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 public class GuidedTour
 {
     private const int MaxCapacity = 13;
@@ -29,26 +30,29 @@ public class GuidedTour
         Console.WriteLine("Enter your name:");
         string name = Console.ReadLine();
 
-        Console.WriteLine("Enter the number of tickets: (For people over 18 year old)");
+        Console.WriteLine("Enter the number of tickets you would like to purchase: (For people over 18 year old)");
         int ticketCount;
         while (!int.TryParse(Console.ReadLine(), out ticketCount) || ticketCount <= 0)
         {
-            Console.WriteLine("Invalid input. Please enter a valid number of tickets:");
+            Console.WriteLine("Invalid input. Please enter a valid number of tickets: ");
         }
 
         decimal pricePerTicket = 18; // $20 for adults, $10 for children
         decimal totalPrice = ticketCount * pricePerTicket;
 
-        Console.WriteLine("Enter the time you would like to visit (between 9 AM and 5 PM):");
+        Console.WriteLine("Enter the time you would like to visit (between 09:00 AM and 17:00):");
         string time = Console.ReadLine();
         bool isValidTime = false;
-        do
+
+        while (!isValidTime)
         {
-  
-            // Validate the time format and range. Simplified for illustration. Consider using DateTime.TryParse for real scenarios.
-            isValidTime = time.CompareTo("09:00") >= 0 && time.CompareTo("17:00") <= 0;
-            if (!isValidTime) Console.WriteLine("Invalid time. Please enter a time between 9 AM and 5 PM:");
-        } while (!isValidTime);
+            isValidTime = ValidateTimeFormat(time) && IsTimeInRange(time);
+
+            if (!isValidTime)
+            {
+                Console.WriteLine("Invalid time. Please enter a time in HH:MM format, between 09:00 and 17:00:");
+            }
+        }
 
         Visitor visitor = new Visitor(name, ticketCount);
         ReserveSpot(visitor, time);
@@ -78,5 +82,24 @@ public class GuidedTour
         {
             Console.WriteLine("Sorry, there are not enough spots available for your reservation.");
         }
+    }
+    private bool ValidateTimeFormat(string time)
+    {
+        // Validate that time is in the correct HH:MM format
+        return Regex.IsMatch(time, @"^(?:[01]\d|2[0-3]):[0-5]\d$");
+    }
+
+    private bool IsTimeInRange(string time)
+    {
+        // Validate that time is within the range 09:00 to 17:00
+        TimeSpan startTime = TimeSpan.FromHours(9); // 09:00
+        TimeSpan endTime = TimeSpan.FromHours(17); // 17:00
+        TimeSpan inputTime;
+
+        if (TimeSpan.TryParse(time, out inputTime))
+        {
+            return inputTime >= startTime && inputTime <= endTime;
+        }
+        return false;
     }
 }
