@@ -83,13 +83,13 @@ public class GuidedTour
             Console.WriteLine("Sorry, there are not enough spots available for your reservation.");
         }
     }
-    private bool ValidateTimeFormat(string time)
+    public bool ValidateTimeFormat(string time)
     {
         // Validate that time is in the correct HH:MM format
         return Regex.IsMatch(time, @"^(?:[01]\d|2[0-3]):[0-5]\d$");
     }
 
-    private bool IsTimeInRange(string time)
+    public bool IsTimeInRange(string time)
     {
         // Validate that time is within the range 09:00 to 17:00
         TimeSpan startTime = TimeSpan.FromHours(9); // 09:00

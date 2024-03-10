@@ -26,29 +26,39 @@ public class ReservationManager
                 Console.WriteLine("Welcome, your ticket is confirmed!");
                 isValidCode = true;
 
-                Console.WriteLine("Would you like to make a reservation for a guided tour? (Yes/No)");
                 string response = "";
                 do
                 {
-                    if (!string.IsNullOrEmpty(response))
-                        Console.WriteLine("Wrong input, try again.");
+                    Console.WriteLine("Please choose an option: \n1. Make a reservation for a guided tour \n2. Edit an existing reservation \n3. Cancel a reservation");
+                    response = Console.ReadLine()?.Trim(); // Safely trim the response
 
-                    response = Console.ReadLine()?.Trim().ToLower(); // Safely trim and lowercase the response
-                } while (response != "yes" && response != "no"); // Simplified condition
-
-                if (response.Equals("yes"))
-                {
-                    Visitor visitorWithReservation = guidedTour.PromptForReservation();
-                    if (visitorWithReservation != null && visitorWithReservation.Tickets.Any())
+                    switch (response)
                     {
-                        ticketStorageManager.SaveTicketInfo(visitorWithReservation);
-                        //Tickets saved to json bestand
+                        case "1":
+                            Visitor visitorWithReservation = guidedTour.PromptForReservation();
+                            if (visitorWithReservation != null && visitorWithReservation.Tickets.Any())
+                            {
+                                ticketStorageManager.SaveTicketInfo(visitorWithReservation);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Unfortunately, we could not process your reservation at this time.");
+                            }
+                            break;
+                        case "2":
+                            // Implement the logic to edit a reservation
+                            EditReservation();
+                            break;
+                        case "3":
+                            // Implement the logic to cancel a reservation
+                            CancelReservation();
+                            break;
+                        default:
+                            Console.WriteLine("Invalid selection. Please try again.");
+                            response = ""; // Ensure the loop continues on invalid input
+                            break;
                     }
-                    else
-                    {
-                        Console.WriteLine("Unfortunately, we could not process your reservation at this time.");
-                    }
-                }
+                } while (response != "1" && response != "2" && response != "3");
             }
             else
             {
@@ -56,5 +66,46 @@ public class ReservationManager
             }
         }
     }
+
+    public void EditReservation()
+    {
+        Console.WriteLine("Enter your ticket code:");
+        string ticketCode = Console.ReadLine();
+
+        List<object> ticketInfoList = ticketStorageManager.LoadTicketInfo();
+        var ticketToEdit = ticketInfoList.FirstOrDefault(ticket => ((dynamic)ticket).TicketCode == ticketCode);
+
+        if (ticketToEdit != null)
+        {
+            Console.WriteLine("Current reservation time: " + ((dynamic)ticketToEdit).Time);
+            Console.WriteLine("Enter the new time you would like to reserve (between 09:00 and 17:00):");
+            string newTime = Console.ReadLine();
+
+            // Validate the new time format and range
+            if (guidedTour.ValidateTimeFormat(newTime) && guidedTour.IsTimeInRange(newTime))
+            {
+                // Update the ticket time
+                ((dynamic)ticketToEdit).Time = newTime;
+                // Save the updated ticket info back to the JSON file
+                ticketStorageManager.SaveTicketInfoList(ticketInfoList);
+                Console.WriteLine("Your reservation has been updated to the new time: " + newTime);
+            }
+            else
+            {
+                Console.WriteLine("Invalid time. The time should be in HH:MM format and between 09:00 and 17:00.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Ticket code not found. Please enter a valid ticket code.");
+        }
+    }
+
+
+    private void CancelReservation()
+    {
+        // Logic to cancel a reservation goes here
+    }
+
 
 }

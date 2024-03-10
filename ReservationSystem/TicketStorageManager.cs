@@ -46,4 +46,10 @@ public class TicketStorageManager
         string jsonData = File.ReadAllText(filePath);
         return JsonConvert.DeserializeObject<List<object>>(jsonData) ?? new List<object>();
     }
+
+    public void SaveTicketInfoList(List<object> ticketInfoList)
+{
+    // Serialize the list of tickets with updated information to JSON and save it to the file
+    File.WriteAllText(filePath, JsonConvert.SerializeObject(ticketInfoList, Formatting.Indented));
+}
 }
