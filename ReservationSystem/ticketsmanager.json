@@ -1,211 +1,32 @@
 [
   {
-    "VisitorName": "Mo",
-    "TicketCode": "d3d5af26",
-    "VisitorId": "cf74bfcc-961e-486a-9009-33ee72e7ae84",
-    "Time": "09:00"
+    "TicketCode": "8cba2e59",
+    "Time": "11:00",
+    "VisitorId": "1c7b32e4-ae2f-4cab-998d-45a4e5e7cb35",
+    "IsActive": false
   },
   {
-    "VisitorName": "Mo",
-    "TicketCode": "7a8defa5",
-    "VisitorId": "cf74bfcc-961e-486a-9009-33ee72e7ae84"
+    "TicketCode": "ad5e59fa",
+    "Time": "09:00",
+    "VisitorId": "1c7b32e4-ae2f-4cab-998d-45a4e5e7cb35",
+    "IsActive": true
   },
   {
-    "VisitorName": "Mo",
-    "TicketCode": "50546c77",
-    "VisitorId": "cf74bfcc-961e-486a-9009-33ee72e7ae84"
+    "TicketCode": "529d8274",
+    "Time": "09:00",
+    "VisitorId": "1c7b32e4-ae2f-4cab-998d-45a4e5e7cb35",
+    "IsActive": true
   },
   {
-    "VisitorName": "mo",
-    "TicketCode": "3dc9b3a3",
-    "VisitorId": "07bd7737-5245-4c38-8cbb-a233df493428"
+    "TicketCode": "01a362df",
+    "Time": "09:00",
+    "VisitorId": "1c7b32e4-ae2f-4cab-998d-45a4e5e7cb35",
+    "IsActive": true
   },
   {
-    "VisitorName": "mo",
-    "TicketCode": "987801da",
-    "VisitorId": "07bd7737-5245-4c38-8cbb-a233df493428"
-  },
-  {
-    "VisitorName": "mo",
-    "TicketCode": "dadb4a47",
-    "VisitorId": "07bd7737-5245-4c38-8cbb-a233df493428"
-  },
-  {
-    "VisitorName": "mo",
-    "TicketCode": "955f22a7",
-    "VisitorId": "07bd7737-5245-4c38-8cbb-a233df493428"
-  },
-  {
-    "VisitorName": "mo",
-    "TicketCode": "79cd394f",
-    "VisitorId": "07bd7737-5245-4c38-8cbb-a233df493428"
-  },
-  {
-    "VisitorName": "Motjeeee",
-    "TicketCode": "52c344ff",
-    "VisitorId": "c5ce5784-42cd-4697-a471-3dac0ee534fa",
-    "Time": "11"
-  },
-  {
-    "VisitorName": "Motjeeee",
-    "TicketCode": "62840fa9",
-    "VisitorId": "c5ce5784-42cd-4697-a471-3dac0ee534fa",
-    "Time": "11"
-  },
-  {
-    "VisitorName": "Motjeeee",
-    "TicketCode": "001979dc",
-    "VisitorId": "c5ce5784-42cd-4697-a471-3dac0ee534fa",
-    "Time": "11"
-  },
-  {
-    "VisitorName": "Motjeeee",
-    "TicketCode": "9c3a8589",
-    "VisitorId": "c5ce5784-42cd-4697-a471-3dac0ee534fa",
-    "Time": "11"
-  },
-  {
-    "VisitorName": "qwe",
-    "TicketCode": "e4b8ff3e",
-    "VisitorId": "afe4b954-4261-4dbd-ba91-dd9805b6c4a9",
-    "Time": "15"
-  },
-  {
-    "VisitorName": "qwe",
-    "TicketCode": "80ea3b89",
-    "VisitorId": "afe4b954-4261-4dbd-ba91-dd9805b6c4a9",
-    "Time": "15"
-  },
-  {
-    "VisitorName": "qwe",
-    "TicketCode": "3a98e2b2",
-    "VisitorId": "afe4b954-4261-4dbd-ba91-dd9805b6c4a9",
-    "Time": "15"
-  },
-  {
-    "VisitorName": "motjeee",
-    "TicketCode": "4933f618",
-    "VisitorId": "852a3322-80a4-45b6-83b7-70fa53901c03",
-    "Time": "09:00"
-  },
-  {
-    "VisitorName": "motjeee",
-    "TicketCode": "6c1b0e98",
-    "VisitorId": "852a3322-80a4-45b6-83b7-70fa53901c03",
-    "Time": "09:00"
-  },
-  {
-    "VisitorName": "motjeee",
-    "TicketCode": "fb882b54",
-    "VisitorId": "852a3322-80a4-45b6-83b7-70fa53901c03",
-    "Time": "09:00"
-  },
-  {
-    "VisitorName": "motjeee",
-    "TicketCode": "1dffd916",
-    "VisitorId": "852a3322-80a4-45b6-83b7-70fa53901c03",
-    "Time": "09:00"
-  },
-  {
-    "VisitorName": "motjeee",
-    "TicketCode": "5cf291aa",
-    "VisitorId": "852a3322-80a4-45b6-83b7-70fa53901c03",
-    "Time": "09:00"
-  },
-  {
-    "VisitorName": "motjeee",
-    "TicketCode": "776d43e2",
-    "VisitorId": "852a3322-80a4-45b6-83b7-70fa53901c03",
-    "Time": "09:00"
-  },
-  {
-    "VisitorName": "motjeee",
-    "TicketCode": "281025b1",
-    "VisitorId": "852a3322-80a4-45b6-83b7-70fa53901c03",
-    "Time": "09:00"
-  },
-  {
-    "VisitorName": "mooo",
-    "TicketCode": "0ad93739",
-    "VisitorId": "6f0a778a-2452-4751-89f9-6e0d5619cde4",
-    "Time": "10:00"
-  },
-  {
-    "VisitorName": "mooo",
-    "TicketCode": "792c3d42",
-    "VisitorId": "6f0a778a-2452-4751-89f9-6e0d5619cde4",
-    "Time": "10:00"
-  },
-  {
-    "VisitorName": "mooo",
-    "TicketCode": "835776d5",
-    "VisitorId": "6f0a778a-2452-4751-89f9-6e0d5619cde4",
-    "Time": "10:00"
-  },
-  {
-    "VisitorName": "mooo",
-    "TicketCode": "cb209820",
-    "VisitorId": "6f0a778a-2452-4751-89f9-6e0d5619cde4",
-    "Time": "10:00"
-  },
-  {
-    "VisitorName": "motje",
-    "TicketCode": "58ef594d",
-    "VisitorId": "5c83543c-8a04-4619-9041-ac62ba2a4c05",
-    "Time": "10:00"
-  },
-  {
-    "VisitorName": "motje",
-    "TicketCode": "e24751fc",
-    "VisitorId": "5c83543c-8a04-4619-9041-ac62ba2a4c05",
-    "Time": "10:00"
-  },
-  {
-    "VisitorName": "motje",
-    "TicketCode": "1a43ba5a",
-    "VisitorId": "5c83543c-8a04-4619-9041-ac62ba2a4c05",
-    "Time": "10:00"
-  },
-  {
-    "VisitorName": "Motjeeeee",
-    "TicketCode": "ca206300",
-    "VisitorId": "fe517a5e-7120-48b4-be69-a62905602349",
-    "Time": "11:00"
-  },
-  {
-    "VisitorName": "Motjeeeee",
-    "TicketCode": "937b6f15",
-    "VisitorId": "fe517a5e-7120-48b4-be69-a62905602349",
-    "Time": "11:00"
-  },
-  {
-    "VisitorName": "Motjeeeee",
-    "TicketCode": "72e35e3c",
-    "VisitorId": "fe517a5e-7120-48b4-be69-a62905602349",
-    "Time": "11:00"
-  },
-  {
-    "VisitorName": "moooo",
-    "TicketCode": "7baace2d",
-    "VisitorId": "969d2c2c-aad0-4fef-b537-66c775927858",
-    "Time": "10:00"
-  },
-  {
-    "VisitorName": "moooo",
-    "TicketCode": "d128e3d9",
-    "VisitorId": "969d2c2c-aad0-4fef-b537-66c775927858",
-    "Time": "10:00"
-  },
-  {
-    "VisitorName": "moooo",
-    "TicketCode": "c1edf600",
-    "VisitorId": "969d2c2c-aad0-4fef-b537-66c775927858",
-    "Time": "10:00"
-  },
-  {
-    "VisitorName": "moooo",
-    "TicketCode": "b8cb4122",
-    "VisitorId": "969d2c2c-aad0-4fef-b537-66c775927858",
-    "Time": "10:00"
+    "TicketCode": "b2f1ef05",
+    "Time": "09:00",
+    "VisitorId": "1c7b32e4-ae2f-4cab-998d-45a4e5e7cb35",
+    "IsActive": true
   }
 ]

@@ -29,7 +29,9 @@ public class TicketStorageManager
                 VisitorName = visitor.Name,
                 TicketCode = ticket.TicketCode,
                 VisitorId = visitor.VisitorId,
-                Time = ticket.Time // Include the ticket time here
+                Time = ticket.Time,
+                IsActive = ticket.IsActive
+
             });
         }
 
@@ -39,17 +41,21 @@ public class TicketStorageManager
 
 
     // Optionally, create a method to read the ticket information back into the application
-    public List<object> LoadTicketInfo()
+    public List<Ticket> LoadTicketInfo()
     {
-        if (!File.Exists(filePath)) return new List<object>();
-
+        if (!File.Exists(filePath))
+        {
+            Console.WriteLine("File does not exist.");
+            return new List<Ticket>();
+        }
         string jsonData = File.ReadAllText(filePath);
-        return JsonConvert.DeserializeObject<List<object>>(jsonData) ?? new List<object>();
+        List<Ticket> ticketInfoList = JsonConvert.DeserializeObject<List<Ticket>>(jsonData) ?? new List<Ticket>();
+        return ticketInfoList;
     }
 
-    public void SaveTicketInfoList(List<object> ticketInfoList)
-{
-    // Serialize the list of tickets with updated information to JSON and save it to the file
-    File.WriteAllText(filePath, JsonConvert.SerializeObject(ticketInfoList, Formatting.Indented));
-}
+    public void SaveTicketInfoList(List<Ticket> ticketInfoList)
+    {
+        string jsonData = JsonConvert.SerializeObject(ticketInfoList, Formatting.Indented);
+        File.WriteAllText(filePath, jsonData);
+    }
 }

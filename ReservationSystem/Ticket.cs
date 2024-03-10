@@ -1,14 +1,16 @@
 public class Ticket
 {
-    public string TicketCode { get; private set; }
-    public string Time { get; private set; }
-    public Guid VisitorId { get; private set; }
+    public string TicketCode { get; set; }
+    public string Time { get; set; }
+    public Guid VisitorId { get; set; }
+    public bool IsActive { get; set; }
 
     public Ticket(Guid visitorId, string time)
     {
         VisitorId = visitorId;
         TicketCode = GenerateRandomCode();
         Time = time;
+        IsActive = true;
     }
 
     private string GenerateRandomCode()
