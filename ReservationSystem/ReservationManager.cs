@@ -69,59 +69,86 @@ public class ReservationManager
 
     public void EditReservation()
     {
-        Console.WriteLine("\nEnter your ticket code:");
-        string ticketCode = Console.ReadLine().Trim();
+        bool validTicketCode = false;
 
-        List<Ticket> ticketInfoList = ticketStorageManager.LoadTicketInfo();
-        var ticketToEdit = ticketInfoList.FirstOrDefault(ticket => ((dynamic)ticket).TicketCode == ticketCode);
-
-        if (ticketToEdit != null)
+        while (!validTicketCode)
         {
-            Console.WriteLine("\nCurrent reservation time: " + ((dynamic)ticketToEdit).Time);
-            Console.WriteLine("Enter the new time you would like to reserve (between 09:00 and 17:00):");
-            string newTime = Console.ReadLine();
+            Console.WriteLine("\nEnter your ticket code:");
+            string ticketCode = Console.ReadLine().Trim();
 
-            // Validate the new time format and range
-            if (guidedTour.ValidateTimeFormat(newTime) && guidedTour.IsTimeInRange(newTime))
+            List<Ticket> ticketInfoList = ticketStorageManager.LoadTicketInfo();
+            var ticketToEdit = ticketInfoList.FirstOrDefault(ticket => ((dynamic)ticket).TicketCode == ticketCode);
+
+            if (ticketToEdit != null)
             {
-                // Update the ticket time
-                ((dynamic)ticketToEdit).Time = newTime;
-                // Save the updated ticket info back to the JSON file
-                ticketStorageManager.SaveTicketInfoList(ticketInfoList);
-                Console.WriteLine("\nYour reservation has been updated to the new time: " + newTime);
+                validTicketCode = true; // Valid ticket code found
+
+                bool validTime = false;
+                while (!validTime)
+                {
+                    Console.WriteLine("\nCurrent reservation time: " + ((dynamic)ticketToEdit).Time);
+                    Console.WriteLine("Enter the new time you would like to reserve (between 09:00 and 17:00):");
+                    string newTime = Console.ReadLine();
+
+                    if (guidedTour.ValidateTimeFormat(newTime) && guidedTour.IsTimeInRange(newTime))
+                    {
+                        validTime = true; // Valid time found
+
+                        // Update the ticket time
+                        ((dynamic)ticketToEdit).Time = newTime;
+                        // Save the updated ticket info back to the JSON file
+                        ticketStorageManager.SaveTicketInfoList(ticketInfoList);
+                        Console.WriteLine("\nYour reservation has been updated to the new time: " + newTime);
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nInvalid time. The time should be in HH:MM format and between 09:00 and 17:00.");
+                    }
+                }
             }
             else
             {
-                Console.WriteLine("\nInvalid time. The time should be in HH:MM format and between 09:00 and 17:00.");
+                Console.WriteLine("\nTicket code not found. Please enter a valid ticket code.");
             }
-        }
-        else
-        {
-            Console.WriteLine("\nTicket code not found. Please enter a valid ticket code.");
         }
     }
 
 
     private void CancelReservation()
     {
-        Console.WriteLine("\nEnter the ticket code of the reservation you wish to cancel:");
+        bool validTicketCode = false;
 
-        string ticketCode = Console.ReadLine().Trim();
-
-        List<Ticket> ticketInfoList = ticketStorageManager.LoadTicketInfo();
-
-        var ticketToCancel = ticketInfoList.FirstOrDefault(ticket =>
-            string.Equals(ticket.TicketCode, ticketCode, StringComparison.OrdinalIgnoreCase));
-
-        if (ticketToCancel != null && ticketToCancel.IsActive)
+        while (!validTicketCode)
         {
-            ticketToCancel.IsActive = false;
-            ticketStorageManager.SaveTicketInfoList(ticketInfoList); // Make sure this method saves the list with IsActive info
-            Console.WriteLine("\nYour reservation has been canceled.");
-        }
-        else
-        {
-            Console.WriteLine("\nTicket code not found or reservation already canceled.");
+            Console.WriteLine("\nEnter the ticket code of the reservation you wish to cancel:");
+            string ticketCode = Console.ReadLine().Trim();
+
+            List<Ticket> ticketInfoList = ticketStorageManager.LoadTicketInfo();
+            var ticketToCancel = ticketInfoList.FirstOrDefault(ticket =>
+                string.Equals(ticket.TicketCode, ticketCode, StringComparison.OrdinalIgnoreCase));
+
+            if (ticketToCancel != null && ticketToCancel.IsActive)
+            {
+                validTicketCode = true; // Valid ticket code found, exit the while loop
+
+                ticketToCancel.IsActive = false;
+                ticketStorageManager.SaveTicketInfoList(ticketInfoList); // Save updated list to the file
+                Console.WriteLine("\nYour reservation has been canceled.");
+            }
+            else
+            {
+                // Check if the ticket code was valid but the ticket was already inactive
+                if (ticketToCancel != null && !ticketToCancel.IsActive)
+                {
+                    validTicketCode = true; // Exit the loop, as the ticket code is valid but already canceled
+                    Console.WriteLine("\nThis reservation is already canceled.");
+                }
+                else
+                {
+                    Console.WriteLine("\nTicket code not found or reservation already canceled. Please enter a valid ticket code.");
+                }
+            }
         }
     }
+
 }
