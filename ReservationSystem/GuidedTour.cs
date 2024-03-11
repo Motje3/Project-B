@@ -51,6 +51,7 @@ public class GuidedTour
             if (!isValidTime)
             {
                 Console.WriteLine("Invalid time. Please enter a time in HH:MM format, between 09:00 and 17:00:");
+                time = Console.ReadLine(); // Update the time variable with new user input
             }
         }
 
