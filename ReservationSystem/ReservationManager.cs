@@ -79,14 +79,14 @@ public class ReservationManager
             List<Ticket> ticketInfoList = ticketStorageManager.LoadTicketInfo();
             var ticketToEdit = ticketInfoList.FirstOrDefault(ticket => ((dynamic)ticket).TicketCode == ticketCode);
 
-            if (ticketToEdit != null)
+            if (ticketToEdit != null && ticketToEdit.IsActive)
             {
-                validTicketCode = true; // Valid ticket code found
+                validTicketCode = true; // Valid and active ticket code found
 
                 bool validTime = false;
                 while (!validTime)
                 {
-                    Console.WriteLine("\nCurrent reservation time: " + ((dynamic)ticketToEdit).Time);
+                    Console.WriteLine("\nCurrent reservation time: " + ticketToEdit.Time);
                     Console.WriteLine("Enter the new time you would like to reserve (between 09:00 and 17:00):");
                     string newTime = Console.ReadLine();
 
@@ -94,10 +94,8 @@ public class ReservationManager
                     {
                         validTime = true; // Valid time found
 
-                        // Update the ticket time
-                        ((dynamic)ticketToEdit).Time = newTime;
-                        // Save the updated ticket info back to the JSON file
-                        ticketStorageManager.SaveTicketInfoList(ticketInfoList);
+                        ticketToEdit.Time = newTime;
+                        ticketStorageManager.SaveTicketInfoList(ticketInfoList); // Save updated list to the file
                         Console.WriteLine("\nYour reservation has been updated to the new time: " + newTime);
                     }
                     else
@@ -105,6 +103,11 @@ public class ReservationManager
                         Console.WriteLine("\nInvalid time. The time should be in HH:MM format and between 09:00 and 17:00.");
                     }
                 }
+            }
+            else if (ticketToEdit != null && !ticketToEdit.IsActive)
+            {
+                Console.WriteLine("\nThis reservation is canceled and cannot be edited.");
+                validTicketCode = true; // Found the ticket, but it's not active, exit the while loop
             }
             else
             {
