@@ -21,7 +21,14 @@ public class ReservationManager
             Console.WriteLine("Enter your unique ticket code:");
             string userCode = Console.ReadLine();
 
-            if (validator.IsCodeValid(userCode))
+            if (userCode == "123")
+            {
+                AdminManager adminManager = new AdminManager();
+                adminManager.ProcessLoginForm();
+                return; // Exit the method after login form is processed
+            }
+
+            else if (validator.IsCodeValid(userCode))
             {
                 Console.WriteLine("\nWelcome, your ticket is confirmed!\n");
                 isValidCode = true;
