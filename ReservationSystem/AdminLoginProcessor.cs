@@ -1,12 +1,7 @@
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
-public class AdminManager
+public class AdminLoginProcessor
 {
-
     public class Credential
     {
         public string Username { get; set; }
@@ -53,5 +48,4 @@ public class AdminManager
             return new List<Credential>();
         }
     }
-
 }

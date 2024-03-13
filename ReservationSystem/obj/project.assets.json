@@ -60,11 +60,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\moham\\OneDrive\\Desktop\\School\\Project-B\\Project-B\\ReservationSystem\\ReservationSystem.csproj",
+      "projectUniqueName": "C:\\Users\\moham\\Desktop\\School\\Project-B\\Project-B\\ReservationSystem\\ReservationSystem.csproj",
       "projectName": "ReservationSystem",
-      "projectPath": "C:\\Users\\moham\\OneDrive\\Desktop\\School\\Project-B\\Project-B\\ReservationSystem\\ReservationSystem.csproj",
+      "projectPath": "C:\\Users\\moham\\Desktop\\School\\Project-B\\Project-B\\ReservationSystem\\ReservationSystem.csproj",
       "packagesPath": "C:\\Users\\moham\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\moham\\OneDrive\\Desktop\\School\\Project-B\\Project-B\\ReservationSystem\\obj\\",
+      "outputPath": "C:\\Users\\moham\\Desktop\\School\\Project-B\\Project-B\\ReservationSystem\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\moham\\AppData\\Roaming\\NuGet\\NuGet.Config",

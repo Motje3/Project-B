@@ -8,14 +8,7 @@ public class Ticket
     public Ticket(Guid visitorId, string time)
     {
         VisitorId = visitorId;
-        TicketCode = GenerateRandomCode();
         Time = time;
         IsActive = true;
-    }
-
-    private string GenerateRandomCode()
-    {
-        // Example: Generate a simple random code, in real scenarios, ensure this meets your requirements
-        return Guid.NewGuid().ToString().Substring(0, 8);
     }
 }

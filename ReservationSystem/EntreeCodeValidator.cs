@@ -1,6 +1,4 @@
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.IO;
 
 public class EntreeCodeValidator
 {
@@ -14,9 +12,7 @@ public class EntreeCodeValidator
             //string jsonData = File.ReadAllText(jsonFilePath);
             string jsonData = reader.ReadToEnd();
             validCodes = JsonConvert.DeserializeObject<List<string>>(jsonData);
-        }
-        
-        
+        }   
     }
 
     public bool IsCodeValid(string code)

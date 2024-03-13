@@ -2,16 +2,16 @@ public class Visitor
 {
     public string Name { get; set; }
     public int Age { get; set; }
-    public int TicketCount { get; set; }
     public Guid VisitorId { get; private set; }
     public List<Ticket> Tickets { get; set; } // Add this line
+    public int RondleidingChoice { get; set; }
 
-    public Visitor(string name, int ticketCount)
+    public Visitor(string name, int rondleidingChoice)
     {
         Name = name;
-        TicketCount = ticketCount;
         VisitorId = Guid.NewGuid();
         Tickets = new List<Ticket>(); // Initialize the list
+        RondleidingChoice = rondleidingChoice;
     }
 
     // Method to add tickets to the visitor
