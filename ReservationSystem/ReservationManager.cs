@@ -30,81 +30,13 @@ public class ReservationManager
                 Console.WriteLine("\nWelcome, your ticket is confirmed!\n");
                 isValidCode = true; // Update the flag since the code is valid
 
-                bool choosingOption = true;
-                while (choosingOption)
+                if (VisitorAlreadyHasReservation(userCode))
                 {
-                    Console.WriteLine("\nPlease choose an option:");
-                    Console.WriteLine("1. Join a tour");
-                    Console.WriteLine("2. Edit my reservation");
-                    Console.WriteLine("3. Cancel my reservation");
-                    Console.WriteLine("4. Exit");
-                    Console.Write("\nEnter your choice: ");
-
-                    string choice = Console.ReadLine();
-                    switch (choice)
-                    {
-                        case "1":
-
-                            guidedTour.ListAvailableTours();
-                            Console.WriteLine("Please enter the hour of the tour you wish to join (9 to 17):");
-                            int chosenHour;
-
-                            if (int.TryParse(Console.ReadLine(), out chosenHour))
-                            {
-                                // Here we create the Visitor instance with the chosen hour and the ticket code
-                                Visitor visitor = new Visitor("Name", chosenHour, userCode);
-
-                                if (VisitorAlreadyHasReservation(visitor.TicketCode))
-                                {
-                                    Console.WriteLine("You have already joined a tour. To join a different tour, please first cancel your existing reservation.");
-                                    break; 
-                                } 
-                                
-                                else if (guidedTour.JoinTour(chosenHour, visitor))
-                                {
-                                    Console.WriteLine($"You've successfully joined the {chosenHour}:00 tour.");
-                                    SaveReservation(visitor);
-                                    break;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Failed to join the tour. It might be full or the selection was invalid.");
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine("Invalid input. Please enter a valid tour hour.");
-                            }
-                            break;
-
-                        case "2":
-                            Console.Write("Enter your ticket code: ");
-                            string ticketCodeForEdit = Console.ReadLine();
-                            Console.Write("Enter the new tour hour (9 to 17): ");
-                            int newTourHour;
-                            if (int.TryParse(Console.ReadLine(), out newTourHour))
-                            {
-                                EditReservation(ticketCodeForEdit, newTourHour);
-                            }
-                            else
-                            {
-                                Console.WriteLine("Invalid input. Please enter a valid hour.");
-                            }
-                            break;
-
-                        case "3":
-                            Console.Write("Enter your ticket code to cancel: ");
-                            string ticketCodeForCancel = Console.ReadLine();
-                            CancelReservation(ticketCodeForCancel);
-                            break;
-
-                        case "4":
-                            choosingOption = false;
-                            break;
-                        default:
-                            Console.WriteLine("Invalid choice. Please try again.");
-                            break;
-                    }
+                    ShowFullMenu(userCode);
+                }
+                else
+                {
+                    ShowRestrictedMenu(userCode);
                 }
             }
             else
@@ -191,4 +123,129 @@ public class ReservationManager
         return false;
     }
 
+    private void ShowFullMenu(string ticketCode)
+    {
+        bool choosingOption = true;
+        while (choosingOption)
+        {
+            Console.WriteLine("\nPlease choose an option:");
+            Console.WriteLine("1. Join a tour");
+            Console.WriteLine("2. Edit my reservation");
+            Console.WriteLine("3. Cancel my reservation");
+            Console.WriteLine("4. Exit");
+            Console.Write("\nEnter your choice: ");
+
+            string choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    guidedTour.ListAvailableTours();
+                    Console.WriteLine("Please enter the hour of the tour you wish to join (9 to 17):");
+                    int chosenHour;
+
+                    if (int.TryParse(Console.ReadLine(), out chosenHour))
+                    {
+                        // Here we create the Visitor instance with the chosen hour and the ticket code
+                        Visitor visitor = new Visitor("Name", chosenHour, ticketCode);
+
+                        if (VisitorAlreadyHasReservation(visitor.TicketCode))
+                        {
+                            Console.WriteLine("You have already joined a tour. To join a different tour, please first cancel your existing reservation.");
+                            break;
+                        }
+
+                        else if (guidedTour.JoinTour(chosenHour, visitor))
+                        {
+                            Console.WriteLine($"You've successfully joined the {chosenHour}:00 tour.");
+                            SaveReservation(visitor);
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Failed to join the tour. It might be full or the selection was invalid.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input. Please enter a valid tour hour.");
+                    }
+                    break;
+                case "2":
+                    Console.Write("Enter the new tour hour (9 to 17): ");
+                    int newTourHour;
+                    if (int.TryParse(Console.ReadLine(), out newTourHour))
+                    {
+                        EditReservation(ticketCode, newTourHour);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input. Please enter a valid hour.");
+                    }
+                    break;
+                case "3":
+                    CancelReservation(ticketCode);
+                    Environment.Exit(0);
+                    break;
+                case "4":
+                    choosingOption = false;
+                    break;
+                default:
+                    Console.WriteLine("Invalid choice. Please try again.");
+                    break;
+            }
+        }
+    }
+
+
+    private void ShowRestrictedMenu(string ticketCode)
+    {
+        Console.WriteLine("\nPlease choose an option:");
+        Console.WriteLine("1. Join a tour");
+        Console.WriteLine("2. Exit");
+        Console.Write("\nEnter your choice: ");
+
+        string choice = Console.ReadLine();
+        switch (choice)
+        {
+            case "1":
+                guidedTour.ListAvailableTours();
+                Console.WriteLine("Please enter the hour of the tour you wish to join (9 to 17):");
+                int chosenHour;
+
+                if (int.TryParse(Console.ReadLine(), out chosenHour))
+                {
+                    // Here we create the Visitor instance with the chosen hour and the ticket code
+                    Visitor visitor = new Visitor("Name", chosenHour, ticketCode);
+
+                    if (VisitorAlreadyHasReservation(visitor.TicketCode))
+                    {
+                        Console.WriteLine("You have already joined a tour. To join a different tour, please first cancel your existing reservation.");
+                        break;
+                    }
+
+                    else if (guidedTour.JoinTour(chosenHour, visitor))
+                    {
+                        Console.WriteLine($"You've successfully joined the {chosenHour}:00 tour.");
+                        SaveReservation(visitor);
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to join the tour. It might be full or the selection was invalid.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter a valid tour hour.");
+                }
+                break;
+            case "2":
+                Environment.Exit(0);
+                break;
+            default:
+                Console.WriteLine("Invalid choice. Please try again.");
+                ShowRestrictedMenu(ticketCode); // Recursively call the menu again for a valid choice
+                break;
+        }
+    }
 }
