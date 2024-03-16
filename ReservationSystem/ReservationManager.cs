@@ -150,7 +150,7 @@ public class ReservationManager
 
                         if (VisitorAlreadyHasReservation(visitor.TicketCode))
                         {
-                            Console.WriteLine("You have already joined a tour. To join a different tour, please first cancel your existing reservation.");
+                            Console.WriteLine("You have already joined a tour. To join a different tour, please first cancel your existing reservation or edit it's time.");
                             break;
                         }
 
