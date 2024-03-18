@@ -47,16 +47,16 @@ public class Screen
 
     public void GoNext(int positionInNextList)
     {
-        NextScreen[positionInNextList].show();
+        NextScreen[positionInNextList].Show();
     }
 
     public void GoBackwards()
     {
-        LastScreen.show();
+        LastScreen.Show();
     }
 
     // Main loop function of a Screen object
-    public virtual void show()
+    public virtual void Show()
     {
         // Use this method at the start of every overwritten show() method
         _showSetup();
@@ -148,7 +148,7 @@ public class Screen
         _alphaKeyboardPressed = key.ToString().Length == 1;
         _numericalKeyboardPressed = _isNumercialKeyboard(key);
     }
-    // Method which is supposed to be used as first in the show() method
+    // Method which is supposed to be used as first in the Show() method
     private void _showSetup()
     {
         Console.Clear();
