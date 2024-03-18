@@ -25,6 +25,12 @@ public class ReservationManager
                 adminManager.ProcessLoginForm();
                 return; // Exit the method after admin login form is processed
             }
+            else if (userCode == "456")
+            {
+                GidsLoginProcessor gidsManager = new GidsLoginProcessor();
+                gidsManager.ProcessLoginForm();
+                return; //Exit the method after guide login form is processed
+            }
             else if (validator.IsCodeValid(userCode))
             {
                 Console.WriteLine("\nWelcome, your ticket is confirmed!\n");
