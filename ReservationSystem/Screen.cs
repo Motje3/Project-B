@@ -58,16 +58,13 @@ public class Screen
     // Main loop function of a Screen object
     public virtual void show()
     {
-        // call this method at the start of every overwritten show() method
+        // Use this method at the start of every overwritten show() method
         _showSetup();
 
         while (true)
         {
-            //
-            Key = Console.ReadKey(true).Key;
-            _updateAll(Key);
-            _keyboardSelected = _checkIfKeyboard(_currentlySelectedObject);
-            // 
+            // Use the following line at the begin of every overwritten while(true) loop
+            Key = _userInput();
 
             if (_ESCpressed)
                 break;
@@ -128,6 +125,14 @@ public class Screen
             }
             DisplayAll();
         }
+    }
+
+    private ConsoleKey _userInput()
+    {
+        ConsoleKey key = Console.ReadKey(true).Key;
+        _updateAll(key);
+        _keyboardSelected = _checkIfKeyboard(_currentlySelectedObject);
+        return key;
     }
 
     // Method which updates which buttons are currently pressed
