@@ -4,19 +4,19 @@ using System.Runtime.InteropServices;
 public class Screen
 {
     public ConsoleKey Key;
-    private List<List<KeyboardConsoleObject>> _keyboardObjects;
-    private List<List<SelectionConsoleObject>> _selectionObjectsGrid;
+    public List<List<KeyboardConsoleObject>> _keyboardObjects {get; private set;}
+    public List<List<SelectionConsoleObject>> _selectionObjectsGrid {get; private set;}
     private List<StaticConsoleObject> _staticObjects;
     public List<Screen> NextScreen;
     public Screen LastScreen;
     public (int, int) CurrentSelection;
-    private int _currXpos;
-    private int _currYpos;
-    private SelectionConsoleObject _currentlySelectedObject;
-    public bool canGoLeft;
-    public bool canGoRight;
-    public bool canGoUp;
-    public bool canGoDown;
+    public int _currXpos {get; private set;}
+    public int _currYpos {get; private set;}
+    public SelectionConsoleObject _currentlySelectedObject {get; private set;}
+    public bool canGoLeft {get; private set;}
+    public bool canGoRight {get; private set;}
+    public bool canGoUp {get; private set;}
+    public bool canGoDown {get; private set;}
     public bool _leftPressed {get; private set;}
     public bool _rightPressed {get; private set;}
     public bool _downPressed {get; private set;}
