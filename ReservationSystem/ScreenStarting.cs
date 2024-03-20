@@ -38,6 +38,7 @@ public class ScreenStarting : Screen
             bool validCodeScanned = validator.IsCodeValid(currentKeyboard.text);
             bool maxLenCodeReached = currentKeyboard.text.Length == currentKeyboard.MaxLenKeyboard;
 
+            // Trying to go to the next screen
             if (_enterPressed)
             {
                 WrongCodeMessage.Reset();
@@ -47,19 +48,22 @@ public class ScreenStarting : Screen
                 {
                     if (validCodeScanned)
                     {
-
+                        break;
                     }
+                    // Scanned code is not valid
                     else
                     {
                         WrongCodeMessage.Display();
                     }
                 }
+                // Scanned code not long enough
                 else
                 {
                     CodeNotLongEnoughMessage.Display();
                 }
             }
 
+            // Removing text from the currently selected keyboard
             if (_backspacePressed)
             {
                 if (canDeleteText)
@@ -67,6 +71,8 @@ public class ScreenStarting : Screen
                     currentKeyboard.text = currentKeyboard.text.Remove(currentKeyboard.text.Length - 1);
                 }
             }
+
+            // Adding text to the currently selected keyboard
             if ((_alphaKeyboardPressed || _numericalKeyboardPressed) && currentKeyboard.text.Length != currentKeyboard.MaxLenKeyboard)
             {
                 if (_alphaKeyboardPressed)
