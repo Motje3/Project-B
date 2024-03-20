@@ -66,7 +66,7 @@ public class Screen
         while (true)
         {
             // Use the following line at the begin of every overwritten while(true) loop
-            Key = _userInput();
+            _UpdateAllAndReadUserInput();
 
             if (_ESCpressed)
                 break;
@@ -129,12 +129,11 @@ public class Screen
         }
     }
 
-    public ConsoleKey _userInput()
+    public void _UpdateAllAndReadUserInput()
     {
-        ConsoleKey key = Console.ReadKey(true).Key;
-        _updateAll(key);
+        Key = Console.ReadKey(true).Key;
+        _updateAll(Key);
         _keyboardSelected = _checkIfKeyboard(_currentlySelectedObject);
-        return key;
     }
 
     // Method which updates which buttons are currently pressed
