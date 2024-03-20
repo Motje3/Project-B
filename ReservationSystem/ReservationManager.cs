@@ -55,7 +55,7 @@ public class ReservationManager
 
     public void EditReservation(string ticketCode, int newTourHour)
     {
-        string filePath = "reservations.json";
+        string filePath = "./JSON-Files/reservations.json";
         var reservations = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(filePath)) ?? new List<dynamic>();
 
         var reservation = reservations.FirstOrDefault(r => r.TicketCode == ticketCode);
@@ -76,7 +76,7 @@ public class ReservationManager
 
     public void CancelReservation(string ticketCode)
     {
-        string filePath = "reservations.json";
+        string filePath = "./JSON-Files/reservations.json";
         var reservations = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(filePath)) ?? new List<dynamic>();
 
         var reservationToRemove = reservations.FirstOrDefault(r => r.TicketCode == ticketCode);
@@ -105,7 +105,7 @@ public class ReservationManager
         };
 
         List<object> reservations = new List<object>();
-        string filePath = "reservations.json";
+        string filePath = "./JSON-Files/reservations.json";
         if (File.Exists(filePath))
         {
             // Load existing reservations
@@ -120,7 +120,7 @@ public class ReservationManager
 
     private bool VisitorAlreadyHasReservation(string ticketCode)
     {
-        string filePath = "reservations.json";
+        string filePath = "./JSON-Files/reservations.json";
         if (File.Exists(filePath))
         {
             var reservations = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(filePath)) ?? new List<dynamic>();

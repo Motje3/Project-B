@@ -36,7 +36,7 @@ public class GidsLoginProcessor
 
     private List<Credential> LoadUserCredentials()
     {
-        string filePath = "GidsCredentials.json";
+        string filePath = "./JSON-Files/GidsCredentials.json";
         if (File.Exists(filePath))
         {
             string jsonData = File.ReadAllText(filePath);

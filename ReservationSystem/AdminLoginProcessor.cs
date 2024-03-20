@@ -36,7 +36,7 @@ public class AdminLoginProcessor
 
     private List<Credential> LoadUserCredentials()
     {
-        string filePath = "AdminCredentials.json";
+        string filePath = "./JSON-Files/AdminCredentials.json";
         if (File.Exists(filePath))
         {
             string jsonData = File.ReadAllText(filePath);
