@@ -1,0 +1,71 @@
+Reservation class 
+
+public void ValidateCodeAndProcessReservations()
+    {
+        bool isValidCode = false;
+        while (!isValidCode)
+        {
+            Console.WriteLine("Enter your unique ticket code:");
+            string userCode = Console.ReadLine();
+
+            if (userCode == "123")
+            {
+                AdminManager adminManager = new AdminManager();
+                adminManager.ProcessLoginForm();
+                return; // Exit the method after login form is processed
+            }
+
+            else if (validator.IsCodeValid(userCode))
+            {
+                Console.WriteLine("\nWelcome, your ticket is confirmed!\n");
+                Population pop = new Population();  // initilaze overwrite\create JSON with new totalvisitor count
+                pop.AddVistors(1); // int is optinal deffault = 1, amount of new visitors will be added to the count of that day.
+                isValidCode = true;
+
+                string response = "";
+                do
+                {
+                    Console.WriteLine("Please choose an option:\n\n1. Make a reservation for a guided tour \n2. Edit an existing reservation \n3. Cancel a reservation");
+                    response = Console.ReadLine()?.Trim(); // Safely trim the response
+
+                    switch (response)
+                    {
+                        case "1":
+                            Visitor visitorWithReservation = guidedTour.PromptForReservation();
+                            if (visitorWithReservation != null && visitorWithReservation.Tickets.Any())
+                            {
+                                ticketStorageManager.SaveTicketInfo(visitorWithReservation);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Unfortunately, we could not process your reservation at this time.");
+                            }
+                            break;
+                        case "2":
+                            // Implement the logic to edit a reservation
+                            EditReservation();
+                            break;
+                        case "3":
+                            // Implement the logic to cancel a reservation
+                            CancelReservation();
+                            break;
+                        default:
+                            Console.WriteLine("Invalid selection. Please try again.");
+                            response = ""; // Ensure the loop continues on invalid input
+                            break;
+                    }
+                } while (response != "1" && response != "2" && response != "3");
+            }
+            else
+            {
+                Console.WriteLine("Sorry, your ticket is not valid. Please try again.");
+            }
+        }
+    }
+
+//* 
+LN = line in textfile
+changes:
+LN 21# Population pop = new Population();  // initilaze overwrite\create JSON with new totalvisitor count
+LN 22# pop.AddVistors(1); // int is optinal deffault = 1, amount of new visitors will be 
+*//
