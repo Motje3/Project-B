@@ -2,7 +2,7 @@
 public class ScreenStarting : Screen
 {
     EntreeCodeValidator validator;
-    public ScreenStarting(List<StaticConsoleObject> boxs, List<List<SelectionConsoleObject>> selectionGrid, int startingXposition, int startingYposition, List<Screen> nextScreens, Screen lastScreen) : base(boxs, selectionGrid, startingXposition, startingYposition, nextScreens, lastScreen)
+    public ScreenStarting(List<StaticConsoleObject> boxs, List<List<SelectionConsoleObject>> selectionGrid, int startingXposition, int startingYposition) : base(boxs, selectionGrid, startingXposition, startingYposition)
     {
         validator = new();
     }

@@ -4,29 +4,29 @@ using System.Runtime.InteropServices;
 public class Screen
 {
     public ConsoleKey Key;
-    public List<List<KeyboardConsoleObject>> _keyboardObjects {get; private set;}
-    public List<List<SelectionConsoleObject>> _selectionObjectsGrid {get; private set;}
+    public List<List<KeyboardConsoleObject>> _keyboardObjects { get; private set; }
+    public List<List<SelectionConsoleObject>> _selectionObjectsGrid { get; private set; }
     private List<StaticConsoleObject> _staticObjects;
     public List<Screen> NextScreen;
     public Screen LastScreen;
     public (int, int) CurrentSelection;
-    public int _currXpos {get; private set;}
-    public int _currYpos {get; private set;}
-    public SelectionConsoleObject _currentlySelectedObject {get; private set;}
-    public bool canGoLeft {get; private set;}
-    public bool canGoRight {get; private set;}
-    public bool canGoUp {get; private set;}
-    public bool canGoDown {get; private set;}
-    public bool _leftPressed {get; private set;}
-    public bool _rightPressed {get; private set;}
-    public bool _downPressed {get; private set;}
-    public bool _upPressed {get; private set;}
-    public bool _ESCpressed {get; private set;}
-    public bool _enterPressed {get; private set;}
-    public bool _backspacePressed {get; private set;}
-    public bool _alphaKeyboardPressed {get; private set;}
-    public bool _numericalKeyboardPressed {get; private set;}
-    public bool _keyboardSelected {get; private set;}
+    public int _currXpos { get; private set; }
+    public int _currYpos { get; private set; }
+    public SelectionConsoleObject _currentlySelectedObject { get; private set; }
+    public bool canGoLeft { get; private set; }
+    public bool canGoRight { get; private set; }
+    public bool canGoUp { get; private set; }
+    public bool canGoDown { get; private set; }
+    public bool _leftPressed { get; private set; }
+    public bool _rightPressed { get; private set; }
+    public bool _downPressed { get; private set; }
+    public bool _upPressed { get; private set; }
+    public bool _ESCpressed { get; private set; }
+    public bool _enterPressed { get; private set; }
+    public bool _backspacePressed { get; private set; }
+    public bool _alphaKeyboardPressed { get; private set; }
+    public bool _numericalKeyboardPressed { get; private set; }
+    public bool _keyboardSelected { get; private set; }
 
     // Each screen gets : 
     //   a list of static boxs (text that isn't going to change or move)
@@ -34,15 +34,13 @@ public class Screen
     //   an int horizontale(x) position where selection begins
     //   an int vertical(y)  position where selection begins
     //   a list of Screen object nextScreen which is all screens to which you can go from this scren
-    public Screen(List<StaticConsoleObject> boxs, List<List<SelectionConsoleObject>> selectionGrid, int startingXposition, int startingYposition, List<Screen> nextScreens, Screen lastScreen)
+    public Screen(List<StaticConsoleObject> boxs, List<List<SelectionConsoleObject>> selectionGrid, int startingXposition, int startingYposition)
     {
         _staticObjects = boxs;
         _selectionObjectsGrid = selectionGrid;
         CurrentSelection = (startingXposition, startingYposition);
         _keyboardObjects = new();
         _addKeyboards();
-        NextScreen = nextScreens;
-        LastScreen = lastScreen;
     }
 
     public void GoNext(int positionInNextList)

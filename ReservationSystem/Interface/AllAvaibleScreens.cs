@@ -30,6 +30,6 @@ public static class AllAvaibleScreens
         List<SelectionConsoleObject> Row2 = new() { null, null, null };
 
         List<List<SelectionConsoleObject>> SelectionGrid = new() { Row0, Row1, Row2 };
-        return new(StaticObjects,SelectionGrid,1,1,null,null);
+        return new(StaticObjects, SelectionGrid, 1, 1);
     }
 }
