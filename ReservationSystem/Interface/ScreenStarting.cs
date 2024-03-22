@@ -48,7 +48,17 @@ public class ScreenStarting : Screen
                 {
                     if (validCodeScanned)
                     {
-                        break;
+                        bool adminCodeScanned = currentKeyboard.text == "IKHOUVANART";
+                        if (adminCodeScanned)
+                        {
+                            // To be implemented
+                            break;
+                        }
+                        // Visitor code scanned
+                        else
+                        {
+                            NextScreen[0].Show();
+                        }
                     }
                     // Scanned code is not valid
                     else

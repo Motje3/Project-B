@@ -1,6 +1,6 @@
 public static class AllAvaibleScreens
 {
-    public static Screen StartingScreen;
+    public static ScreenStarting StartingScreen;
     static AllAvaibleScreens()
     {
         StartingScreen = _makeStartingScreen();
@@ -8,7 +8,7 @@ public static class AllAvaibleScreens
 
     private static ScreenStarting _makeStartingScreen()
     {
-        List<string> WelcomeString = new()
+        List<string> WelcomeText = new()
         {
             "+---------------------------------+",
             "|                                 |",
@@ -20,7 +20,7 @@ public static class AllAvaibleScreens
             "|                                 |",
             "+---------------------------------+"
         };
-        StaticConsoleObject welcomeBox = new(2, 0, WelcomeString);
+        StaticConsoleObject welcomeBox = new(2, 0, WelcomeText);
         List<StaticConsoleObject> StaticObjects = new() { welcomeBox };
 
         List<string> entryTicketField = new() { "keyboard", "1", "1", "11" };
