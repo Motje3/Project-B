@@ -20,7 +20,7 @@ public static class AllAvaibleScreens
             "|                                 |",
             "+---------------------------------+"
         };
-        StaticConsoleObject welcomeBox = new(0, 0, WelcomeString);
+        StaticConsoleObject welcomeBox = new(2, 0, WelcomeString);
         List<StaticConsoleObject> StaticObjects = new() { welcomeBox };
 
         List<string> entryTicketField = new() { "keyboard", "1", "1", "11" };
