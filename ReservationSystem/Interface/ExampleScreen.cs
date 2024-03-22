@@ -36,6 +36,7 @@ public static class ExampleScreen
         List<StaticConsoleObject> TextBoxs = new() { new(20, 1, TextBox1Text) };
 
         Screen currentScreen = new(TextBoxs, SelectionBoxs, 1, 2);
+
         currentScreen.Show();
     }
 }
