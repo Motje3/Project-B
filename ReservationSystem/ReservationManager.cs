@@ -8,6 +8,7 @@ public class ReservationManager
     {
         validator = new EntreeCodeValidator();
         guidedTour = new GuidedTour();
+        guidedTour.LoadToursFromFile("./JSON-Files/guidedTours.json");
     }
 
     public void ValidateCodeAndProcessReservations()
@@ -33,7 +34,7 @@ public class ReservationManager
             else if (validator.IsCodeValid(userCode))
             {
                 Console.WriteLine("\nWelcome, your ticket is confirmed!\n");
-                isValidCode = true; // Update the flag since the code is valid
+                isValidCode = true;
 
                 if (VisitorAlreadyHasReservation(userCode))
                 {
@@ -54,17 +55,35 @@ public class ReservationManager
 
     public void EditReservation(string ticketCode, int newTourHour)
     {
-        string filePath = "./JSON-Files/reservations.json";
-        var reservations = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(filePath)) ?? new List<dynamic>();
+        string reservationsFilePath = "./JSON-Files/reservations.json";
+        var reservations = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(reservationsFilePath)) ?? new List<dynamic>();
 
         var reservation = reservations.FirstOrDefault(r => r.TicketCode == ticketCode);
         if (reservation != null)
         {
-            reservation.RondleidingChoice = newTourHour;
-            reservation.TourHour = newTourHour; // Assuming RondleidingChoice represents the hour.
+            int oldHour = reservation.RondleidingChoice;
+            Guid visitorId = reservation.VisitorId;
 
-            File.WriteAllText(filePath, JsonConvert.SerializeObject(reservations, Formatting.Indented));
-            Console.WriteLine("Reservation updated successfully.");
+            // Attempt to update the tour hour for the visitor.
+            bool updateSuccess = guidedTour.UpdateVisitorTour(ticketCode, newTourHour);
+            if (updateSuccess)
+            {
+                // Update the reservation details.
+                reservation.RondleidingChoice = newTourHour;
+                reservation.TourHour = newTourHour;
+
+                // Write the changes back to the reservations file.
+                File.WriteAllText(reservationsFilePath, JsonConvert.SerializeObject(reservations, Formatting.Indented));
+
+                // Now, also update the guided tours file to reflect the change.
+                guidedTour.SaveGuidedToursToFile(); // Assuming this method saves the entire state of `TourSlots` to a file.
+
+                Console.WriteLine("Reservation updated successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Failed to update the guided tour.");
+            }
         }
         else
         {
@@ -72,18 +91,32 @@ public class ReservationManager
         }
     }
 
-
     public void CancelReservation(string ticketCode)
     {
-        string filePath = "./JSON-Files/reservations.json";
-        var reservations = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(filePath)) ?? new List<dynamic>();
+        string reservationsFilePath = "./JSON-Files/reservations.json";
+        var reservations = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(reservationsFilePath)) ?? new List<dynamic>();
 
         var reservationToRemove = reservations.FirstOrDefault(r => r.TicketCode == ticketCode);
         if (reservationToRemove != null)
         {
+            int tourHour = reservationToRemove.RondleidingChoice;
+
+            // Remove the reservation from the list
             reservations.Remove(reservationToRemove);
-            File.WriteAllText(filePath, JsonConvert.SerializeObject(reservations, Formatting.Indented));
-            Console.WriteLine("Reservation cancelled successfully.");
+
+            // Save the updated reservations list to the file
+            File.WriteAllText(reservationsFilePath, JsonConvert.SerializeObject(reservations, Formatting.Indented));
+
+            // Remove the visitor from the guided tour
+            if (guidedTour.RemoveVisitorFromTour(tourHour, ticketCode)) // Update this method to use ticketCode
+            {
+                Console.WriteLine("Reservation cancelled successfully.");
+                guidedTour.SaveGuidedToursToFile(); // Save the tours after updating
+            }
+            else
+            {
+                Console.WriteLine("Failed to remove the visitor from the guided tour.");
+            }
         }
         else
         {
@@ -163,6 +196,7 @@ public class ReservationManager
                         {
                             Console.WriteLine($"You've successfully joined the {chosenHour}:00 tour.");
                             SaveReservation(visitor);
+                            guidedTour.SaveGuidedToursToFile();
                             break;
                         }
                         else
@@ -232,6 +266,7 @@ public class ReservationManager
                     {
                         Console.WriteLine($"You've successfully joined the {chosenHour}:00 tour.");
                         SaveReservation(visitor);
+                        guidedTour.SaveGuidedToursToFile();
                         break;
                     }
                     else

@@ -1,23 +1,24 @@
+using Newtonsoft.Json;
+
 public class GuidedTour
 {
     private const int MaxCapacity = 13;
-    private Dictionary<int, List<Visitor>> tourSlots;
+    public Dictionary<int, List<Visitor>> TourSlots { get; private set; }
 
     public GuidedTour()
     {
-        tourSlots = new Dictionary<int, List<Visitor>>();
-
+        TourSlots = new Dictionary<int, List<Visitor>>();
         // Initialize the dictionary with slots for each hour from 9 to 17 (inclusive)
         for (int hour = 9; hour <= 17; hour++)
         {
-            tourSlots.Add(hour, new List<Visitor>());
+            TourSlots.Add(hour, new List<Visitor>());
         }
     }
 
     public void ListAvailableTours()
     {
         Console.WriteLine("Available tour times:");
-        foreach (var slot in tourSlots)
+        foreach (var slot in TourSlots)
         {
             Console.WriteLine($"{slot.Key}:00 - {slot.Value.Count} participants (Max {MaxCapacity})");
         }
@@ -26,14 +27,84 @@ public class GuidedTour
     public bool JoinTour(int hour, Visitor visitor)
     {
         // Check if the slot exists and is not full
-        if (tourSlots.ContainsKey(hour) && tourSlots[hour].Count < MaxCapacity)
+        if (TourSlots.ContainsKey(hour) && TourSlots[hour].Count < MaxCapacity)
         {
-            tourSlots[hour].Add(visitor);
+            TourSlots[hour].Add(visitor);
             return true;
         }
         return false;
     }
 
-    // Methods for editing or cancelling tours can work on the tourSlots dictionary directly
+    public bool RemoveVisitorFromTour(int tourHour, string ticketCode)
+    {
+        if (TourSlots.TryGetValue(tourHour, out List<Visitor> visitors))
+        {
+            var visitorToRemove = visitors.FirstOrDefault(v => v.TicketCode == ticketCode);
+            if (visitorToRemove != null)
+            {
+                visitors.Remove(visitorToRemove);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public bool UpdateVisitorTour(string ticketCode, int newTourHour)
+    {
+        foreach (var slot in TourSlots)
+        {
+            var visitor = slot.Value.FirstOrDefault(v => v.TicketCode == ticketCode);
+            if (visitor != null)
+            {
+                // Remove visitor from the current slot
+                slot.Value.Remove(visitor);
+
+                // Add visitor to the new slot
+                if (TourSlots.TryGetValue(newTourHour, out List<Visitor> newSlot))
+                {
+                    newSlot.Add(visitor);
+                    return true; // Successful update
+                }
+                break;
+            }
+        }
+
+        return false; // No update was made
+    }
+
+
+    public void SaveGuidedToursToFile()
+    {
+        var tourData = TourSlots.ToDictionary(
+            entry => entry.Key,
+            entry => entry.Value.Select(visitor => new { visitor.VisitorId, visitor.TicketCode }).ToList()
+        );
+
+        string filePath = "./JSON-Files/guidedTours.json"; // Specify the path to your JSON file
+        string json = JsonConvert.SerializeObject(tourData, Formatting.Indented);
+        File.WriteAllText(filePath, json);
+    }
+
+    public void LoadToursFromFile(string filePath)
+    {
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            var loadedTourSlots = JsonConvert.DeserializeObject<Dictionary<int, List<Visitor>>>(json);
+
+            if (loadedTourSlots != null)
+            {
+                foreach (var slot in loadedTourSlots)
+                {
+                    if (TourSlots.ContainsKey(slot.Key))
+                    {
+                        TourSlots[slot.Key] = slot.Value; // Update existing tours with loaded data
+                    }
+                }
+            }
+        }
+    }
+
+
 }
- 
