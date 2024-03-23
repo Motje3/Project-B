@@ -36,3 +36,4 @@ public class GuidedTour
 
     // Methods for editing or cancelling tours can work on the tourSlots dictionary directly
 }
+ 
