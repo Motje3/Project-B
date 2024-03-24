@@ -20,7 +20,6 @@ public class AdminLoginProcessor
         if (AuthenticateUser(username, password))
         {
             Console.WriteLine("\nAccess Granted!\n");
-            // Here you can add more admin-specific functionalities
         }
         else
         {

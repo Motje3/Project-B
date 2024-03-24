@@ -1,16 +1,8 @@
 [
   {
-    "TicketCode": "1",
-    "VisitorId": "8a8f1abf-9e99-41cd-88fe-fffde94aff2c",
-    "Name": "Name",
-    "RondleidingChoice": 10,
-    "TourHour": 10
-  },
-  {
     "TicketCode": "2",
-    "VisitorId": "adda76c6-a9ea-480a-8b28-400d479f8c28",
-    "Name": "Name",
-    "RondleidingChoice": 10,
-    "TourHour": 10
+    "VisitorId": "dbf168ab-efa1-402d-9a37-5529c3c9404c",
+    "Name": "name",
+    "TourHour": 13
   }
 ]
