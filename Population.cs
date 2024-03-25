@@ -45,8 +45,6 @@ public class Population
             Console.WriteLine("DATA will not be saved");
         }
         Console.WriteLine();
-        
-
     }
     public void JSONWriter(int amount, string filePath, DateTime currentDate)
     {
