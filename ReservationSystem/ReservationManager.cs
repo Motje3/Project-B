@@ -24,7 +24,7 @@ public class ReservationManager
             if (userCode == "123")
             {
                 AdminLoginProcessor adminManager = new AdminLoginProcessor();
-                adminManager.ProcessLoginForm();
+                adminManager.ProcessLoginForm(guidedTour); // Pass the instance of GuidedTour here
                 return; // Exit the method after admin login form is processed
             }
             else if (userCode == "456")

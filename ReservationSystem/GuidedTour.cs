@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 public class GuidedTour
 {
-    private const int MaxCapacity = 13;
+    public int MaxCapacity { get; private set; } = 13;
     public Dictionary<int, List<Visitor>> TourSlots { get; private set; }
 
     public GuidedTour()
@@ -123,5 +123,18 @@ public class GuidedTour
         }
     }
 
+    public bool UpdateMaxCapacity(int newCapacity)
+    {
+        if (newCapacity <= 0)
+        {
+            Console.WriteLine("Capacity must be greater than 0.");
+            return false;
+        }
+
+        // Update the MaxCapacity.
+        MaxCapacity = newCapacity;
+        Console.WriteLine($"Max capacity updated to {newCapacity}.");
+        return true;
+    }
 
 }

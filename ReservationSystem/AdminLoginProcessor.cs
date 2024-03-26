@@ -8,7 +8,7 @@ public class AdminLoginProcessor
         public string Password { get; set; }
     }
 
-    public void ProcessLoginForm()
+    public void ProcessLoginForm(GuidedTour guidedTour)
     {
         Console.WriteLine("\nAdmin login\n");
 
@@ -20,6 +20,7 @@ public class AdminLoginProcessor
         if (AuthenticateUser(username, password))
         {
             Console.WriteLine("\nAccess Granted!\n");
+            ShowAdminMenu(guidedTour);
         }
         else
         {
@@ -45,6 +46,65 @@ public class AdminLoginProcessor
         {
             Console.WriteLine("Credential file not found.");
             return new List<Credential>();
+        }
+    }
+
+    public void ShowAdminMenu(GuidedTour guidedTour)
+    {
+        bool continueRunning = true;
+        while (continueRunning)
+        {
+            Console.WriteLine("\nAdmin Menu:");
+            Console.WriteLine("1. Change Capacity");
+            Console.WriteLine("2. View Tours");
+            Console.WriteLine("3. Cancel a Tour (Visitors tickets will be deleted)");
+            Console.WriteLine("4. Merge Tours together (Only possible where outcome is less then 13 participants)");
+            Console.WriteLine("5. Exit");
+
+            Console.Write("\nEnter your choice: ");
+            string choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1":
+                    ChangeCapacity(guidedTour);
+                    break;
+                case "2":
+                    guidedTour.ListAvailableTours();
+                    break;
+                case "3":
+                    //logic to cancel a tour
+                    break;
+                case "4":
+                    //logic to merge tours
+                    break;
+                case "5":
+                    continueRunning = false;
+                    break;
+                default:
+                    Console.WriteLine("Invalid choice. Please try again.");
+                    break;
+            }
+        }
+    }
+
+    private void ChangeCapacity(GuidedTour guidedTour)
+    {
+        Console.Write("Enter new capacity: ");
+        if (int.TryParse(Console.ReadLine(), out int newCapacity))
+        {
+            if (guidedTour.UpdateMaxCapacity(newCapacity))
+            {
+                Console.WriteLine($"Capacity updated to {newCapacity}.");
+            }
+            else
+            {
+                Console.WriteLine("Failed to update capacity. Make sure the new capacity is valid and does not conflict with existing tours.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Invalid input. Please enter a valid number.");
         }
     }
 }
