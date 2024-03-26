@@ -127,7 +127,6 @@ public class ReservationManager
     }
 
 
-
     public void SaveReservation(Visitor visitor)
     {
         var reservation = new
