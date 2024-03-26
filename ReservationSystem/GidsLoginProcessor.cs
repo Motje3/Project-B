@@ -46,8 +46,8 @@ public class GidsLoginProcessor
     {
         Console.WriteLine("\nWhat would you like to do?\n");
         Console.WriteLine("1. See personal tours");
-        Console.WriteLine("2. Add last minute participants");
-        Console.WriteLine("3. Note participants");
+        Console.WriteLine("2. Check attending participants");
+        Console.WriteLine("3. Add last minute participants");
         Console.WriteLine("4. Logout");
 
         int guideChoice;
@@ -59,10 +59,10 @@ public class GidsLoginProcessor
                     DisplayTimetable();
                     break;
                 case 2:
-                    AddLastMinuteParticipants();
+                    NoteParticipants();
                     break;
                 case 3:
-                    NoteParticipants();
+                    AddLastMinuteParticipants();
                     break;
                 case 4:
                     Console.WriteLine("Logging out...");
@@ -118,21 +118,81 @@ public class GidsLoginProcessor
         }
     }
 
-    private void NoteParticipants()
+        private void NoteParticipants()
     {
-        bool backToMenu = false;
-
-        while (!backToMenu)
+        int hour;
+        Console.WriteLine("Which hour's tour would you like to check participants for? (9-17)");
+        while (true)
         {
-            Console.WriteLine("Please note down the participant names:");
-            // Here you could add functionality for noting down participant names
-            Console.WriteLine("M: Go back to main menu");
-
-            if (Console.ReadLine().ToUpper() == "M")
+            if (int.TryParse(Console.ReadLine(), out hour) && hour >= 9 && hour <= 17)
             {
-                backToMenu = true;
+                break; // hour is valid, exit the loop
+            }
+            else
+            {
+                Console.WriteLine("Invalid hour. Please enter a number between 9 and 17.");
             }
         }
+
+        string filePath = "./JSON-Files/guidedTours.json";
+        var tours = LoadToursFromFile(filePath);
+
+        if (tours.ContainsKey(hour))
+        {
+            List<Visitor> presentVisitors = new List<Visitor>();
+            foreach (var visitor in tours[hour])
+            {
+                Console.Write($"Is visitor {visitor.Name} present? (Y/N): ");
+                string response = Console.ReadLine().Trim().ToUpper();
+                if (response == "Y")
+                {
+                    presentVisitors.Add(visitor);
+                }
+            }
+
+            SaveAttendingVisitorsToFile(hour, presentVisitors);
+        }
+        else
+        {
+            Console.WriteLine("No visitors are scheduled for this hour.");
+        }
+
+        Console.WriteLine("M: Go back to main menu");
+        while (Console.ReadLine().ToUpper() != "M")
+        {
+            Console.WriteLine("Invalid input. Please press M/m to go back to the main menu");
+        }
+    }
+
+    private Dictionary<int, List<Visitor>> LoadToursFromFile(string filePath)
+    {
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            return JsonConvert.DeserializeObject<Dictionary<int, List<Visitor>>>(json);
+        }
+        return new Dictionary<int, List<Visitor>>();
+    }
+
+    private void SaveAttendingVisitorsToFile(int hour, List<Visitor> presentVisitors)
+    {
+        // Check if there are no present visitors.
+        if (presentVisitors.Count == 0)
+        {
+            Console.WriteLine($"No visitors attending the {hour}:00 tour. No checklist was saved.");
+            return; // Exit the method early.
+        }
+
+        var checklist = new Dictionary<int, List<Visitor>>
+        {
+            { hour, presentVisitors }
+        };
+
+        string filePath = "./JSON-Files/ChecklistGuide.json";
+        string json = JsonConvert.SerializeObject(checklist, Formatting.Indented);
+        File.WriteAllText(filePath, json);
+
+        Console.WriteLine("Checklist for attending visitors saved successfully.");
     }
 
     private bool AuthenticateUser(string username, string password)

@@ -95,7 +95,7 @@ public class GuidedTour
     {
         var tourData = TourSlots.ToDictionary(
             entry => entry.Key,
-            entry => entry.Value.Select(visitor => new { visitor.VisitorId, visitor.TicketCode }).ToList()
+            entry => entry.Value.Select(visitor => new { visitor.Name, visitor.TicketCode }).ToList()
         );
 
         string filePath = "./JSON-Files/guidedTours.json"; // Specify the path to your JSON file
