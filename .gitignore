@@ -221,6 +221,9 @@ project.lock.json
 # UWP Projects
 AppPackages/
 
+# Ignore obj folder
+obj/
+
 #####
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)
 #####
