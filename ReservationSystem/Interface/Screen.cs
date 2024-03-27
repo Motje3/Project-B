@@ -3,30 +3,30 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 public class Screen
 {
-    private ConsoleKey Key;
-    private List<List<KeyboardConsoleObject>> _keyboardObjects;
-    private List<List<SelectionConsoleObject>> _selectionObjectsGrid;
+    public ConsoleKey Key;
+    public List<List<KeyboardConsoleObject>> _keyboardObjects { get; private set; }
+    public List<List<SelectionConsoleObject>> _selectionObjectsGrid { get; private set; }
     private List<StaticConsoleObject> _staticObjects;
-    private List<Screen> NextScreen;
-    private Screen LastScreen;
+    public List<Screen> NextScreen;
+    public Screen LastScreen;
     public (int, int) CurrentSelection;
-    private int _currXpos;
-    private int _currYpos;
-    private SelectionConsoleObject _currentlySelectedObject;
-    public bool canGoLeft;
-    public bool canGoRight;
-    public bool canGoUp;
-    public bool canGoDown;
-    private bool _leftPressed;
-    private bool _rightPressed;
-    private bool _downPressed;
-    private bool _upPressed;
-    private bool _ESCpressed;
-    private bool _enterPressed;
-    private bool _backspacePressed;
-    private bool _alphaKeyboardPressed;
-    private bool _numericalKeyboardPressed;
-    private bool _keyboardSelected;
+    public int _currXpos { get; private set; }
+    public int _currYpos { get; private set; }
+    public SelectionConsoleObject _currentlySelectedObject { get; private set; }
+    public bool canGoLeft { get; private set; }
+    public bool canGoRight { get; private set; }
+    public bool canGoUp { get; private set; }
+    public bool canGoDown { get; private set; }
+    public bool _leftPressed { get; private set; }
+    public bool _rightPressed { get; private set; }
+    public bool _downPressed { get; private set; }
+    public bool _upPressed { get; private set; }
+    public bool _ESCpressed { get; private set; }
+    public bool _enterPressed { get; private set; }
+    public bool _backspacePressed { get; private set; }
+    public bool _alphaKeyboardPressed { get; private set; }
+    public bool _numericalKeyboardPressed { get; private set; }
+    public bool _keyboardSelected { get; private set; }
 
     // Each screen gets : 
     //   a list of static boxs (text that isn't going to change or move)
@@ -34,15 +34,13 @@ public class Screen
     //   an int horizontale(x) position where selection begins
     //   an int vertical(y)  position where selection begins
     //   a list of Screen object nextScreen which is all screens to which you can go from this scren
-    public Screen(List<StaticConsoleObject> boxs, List<List<SelectionConsoleObject>> selectionGrid, int startingXposition, int startingYposition, List<Screen> nextScreens, Screen lastScreen)
+    public Screen(List<StaticConsoleObject> boxs, List<List<SelectionConsoleObject>> selectionGrid, int startingXposition, int startingYposition)
     {
         _staticObjects = boxs;
         _selectionObjectsGrid = selectionGrid;
         CurrentSelection = (startingXposition, startingYposition);
         _keyboardObjects = new();
         _addKeyboards();
-        NextScreen = nextScreens;
-        LastScreen = lastScreen;
     }
 
     public void GoNext(int positionInNextList)
@@ -56,6 +54,8 @@ public class Screen
     }
 
     // Main loop function of a Screen object
+    // This filled in for the ExampleScreen
+    // When making a new screen overwrite this method
     public virtual void Show()
     {
         // Use this method at the start of every overwritten show() method
@@ -65,7 +65,6 @@ public class Screen
         {
             // Use the following line at the begin of every overwritten while(true) loop
             _UpdateAllAndReadUserInput();
-        
 
             if (_ESCpressed)
                 break;
@@ -128,7 +127,7 @@ public class Screen
         }
     }
 
-    private void _UpdateAllAndReadUserInput()
+    public void _UpdateAllAndReadUserInput()
     {
         Key = Console.ReadKey(true).Key;
         _updateAll(Key);
@@ -149,7 +148,7 @@ public class Screen
         _numericalKeyboardPressed = _isNumercialKeyboard(key);
     }
     // Method which is supposed to be used as first in the Show() method
-    private void _showSetup()
+    public void _showSetup()
     {
         Console.Clear();
         _maximizeWindow();
@@ -315,7 +314,7 @@ public class Screen
     }
 
     // Method which automatically maximizes window and prevents it from resizing
-    private void _maximizeWindow()
+    public void _maximizeWindow()
     {
         [DllImport("user32.dll")]
         static extern bool ShowWindow(System.IntPtr hWnd, int cmdShow);
