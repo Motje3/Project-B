@@ -59,8 +59,7 @@ public class AdminLoginProcessor
             Console.WriteLine("1. Change Capacity");
             Console.WriteLine("2. View Tours");
             Console.WriteLine("3. Cancel a Tour (Visitors tickets will be deleted)");
-            Console.WriteLine("4. Merge Tours together (Only possible where outcome is less then 13 participants)");
-            Console.WriteLine("5. Exit");
+            Console.WriteLine("4. Exit");
 
             Console.Write("\nEnter your choice: ");
             string choice = Console.ReadLine();
@@ -74,12 +73,9 @@ public class AdminLoginProcessor
                     guidedTour.ListAvailableTours();
                     break;
                 case "3":
-                    //logic to cancel a tour
+                    ChangeTourTime(guidedTour);
                     break;
                 case "4":
-                    //logic to merge tours
-                    break;
-                case "5":
                     continueRunning = false;
                     break;
                 default:
@@ -106,6 +102,22 @@ public class AdminLoginProcessor
         else
         {
             Console.WriteLine("Invalid input. Please enter a valid number.");
+        }
+    }
+
+    private void ChangeTourTime(GuidedTour guidedTour)
+    {
+        Console.Write("Enter the tour hour you would like to cancel: ");
+        int oldTourHour = int.Parse(Console.ReadLine());
+
+
+        if (guidedTour.ChangeTourTime(oldTourHour))
+        {
+            Console.WriteLine($"Tour at {oldTourHour} ockock has been cancelled");
+        }
+        else
+        {
+            Console.WriteLine("Failed to change tour time.");
         }
     }
 }

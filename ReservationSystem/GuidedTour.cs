@@ -137,4 +137,15 @@ public class GuidedTour
         return true;
     }
 
+    public bool ChangeTourTime(int oldTourHour)
+    {
+        // Check if the old tour exists and the new tour hour is valid
+
+        // Move visitors from the old tour to the new tour hour
+        TourSlots.Remove(oldTourHour);  // Remove the old tour slot
+
+        // Optionally, save changes to file
+        SaveGuidedToursToFile();
+        return true;
+    }
 }
