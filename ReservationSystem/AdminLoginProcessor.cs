@@ -73,7 +73,7 @@ public class AdminLoginProcessor
                     guidedTour.ListAvailableTours();
                     break;
                 case "3":
-                    ChangeTourTime(guidedTour);
+                    CancelTour(guidedTour);
                     break;
                 case "4":
                     continueRunning = false;
@@ -105,7 +105,7 @@ public class AdminLoginProcessor
         }
     }
 
-    private void ChangeTourTime(GuidedTour guidedTour)
+    private void CancelTour(GuidedTour guidedTour)
     {
         Console.Write("Enter the tour hour you would like to cancel: ");
         int oldTourHour = int.Parse(Console.ReadLine());
@@ -117,7 +117,7 @@ public class AdminLoginProcessor
         }
         else
         {
-            Console.WriteLine("Failed to change tour time.");
+            Console.WriteLine("Failed to cancel tour.");
         }
     }
 }
