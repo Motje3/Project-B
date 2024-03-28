@@ -2,14 +2,44 @@ using Newtonsoft.Json;
 
 public class GuidedTour
 {
-    public int MaxCapacity { get; private set; } = 13;
+    public int StartTime { get; private set; }
+    public int EndTime { get; private set; }
+    public int MaxCapacity { get; private set; }
     public Dictionary<int, List<Visitor>> TourSlots { get; private set; }
 
     public GuidedTour()
     {
+        LoadTourSettings();
+        InitializeTourSlots();
+    }
+
+    private void LoadTourSettings()
+    {
+        string filePath = "./JSON-Files/TourSettings.json";
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            dynamic settings = JsonConvert.DeserializeObject(json);
+
+            StartTime = settings?.StartTime ?? 9; // Provide a default value of 9 if null
+            EndTime = settings?.EndTime ?? 17;    // Provide a default value of 17 if null
+            MaxCapacity = settings?.MaxCapacity ?? 13; // Provide a default value of 13 if null
+        }
+        else
+        {
+            Console.WriteLine("Tour settings file not found. Using default settings.");
+            // Set default values
+            StartTime = 9;
+            EndTime = 17;
+            MaxCapacity = 13;
+        }
+    }
+
+
+    private void InitializeTourSlots()
+    {
         TourSlots = new Dictionary<int, List<Visitor>>();
-        // Initialize the dictionary with slots for each hour from 9 to 17 (inclusive)
-        for (int hour = 9; hour <= 17; hour++)
+        for (int hour = StartTime; hour <= EndTime; hour++)
         {
             TourSlots.Add(hour, new List<Visitor>());
         }
@@ -26,14 +56,33 @@ public class GuidedTour
 
     public bool JoinTour(int hour, Visitor visitor)
     {
-        // Check if the slot exists and is not full
+        // Ensure the hour is within the start and end times.
+        if (hour < StartTime || hour > EndTime)
+        {
+            Console.WriteLine("The chosen hour is outside the tour operation hours.");
+            return false;
+        }
+
+        // Check if the slot exists and is not full.
         if (TourSlots.ContainsKey(hour) && TourSlots[hour].Count < MaxCapacity)
         {
             TourSlots[hour].Add(visitor);
             return true;
         }
+
+        // If we get here, the tour is either full or the hour doesn't have a slot.
+        if (!TourSlots.ContainsKey(hour))
+        {
+            Console.WriteLine("There is no tour at the chosen hour.");
+        }
+        else
+        {
+            Console.WriteLine("The tour at the chosen hour is full.");
+        }
+
         return false;
     }
+
 
     public bool UpdateVisitorTour(string ticketCode, int newTourHour)
     {

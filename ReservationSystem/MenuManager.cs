@@ -27,7 +27,7 @@ public class MenuManager
                     while (selectingTour)
                     {
                         _guidedTour.ListAvailableTours();
-                        Console.WriteLine("Please enter the hour of the tour you wish to join (9 to 17):");
+                        Console.WriteLine($"\nPlease enter the hour of the tour you wish to join ({_guidedTour.StartTime} to {_guidedTour.EndTime}):");
 
                         if (int.TryParse(Console.ReadLine(), out int chosenHour))
                         {
@@ -83,7 +83,7 @@ public class MenuManager
                     while (selectingTour)
                     {
                         _guidedTour.ListAvailableTours();
-                        Console.Write("Enter the new tour hour (9 to 17): ");
+                        Console.WriteLine($"\nPlease enter the hour of the tour you wish to join ({_guidedTour.StartTime} to {_guidedTour.EndTime}):");
                         if (int.TryParse(Console.ReadLine(), out int newTourHour))
                         {
                             if (_reservationManager.EditReservation(ticketCode, newTourHour))

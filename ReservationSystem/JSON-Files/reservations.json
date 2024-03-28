@@ -1,17 +1,5 @@
 [
   {
-    "TicketCode": "2",
-    "VisitorId": "dbf168ab-efa1-402d-9a37-5529c3c9404c",
-    "Name": "Motje",
-    "TourHour": 13
-  },
-  {
-    "TicketCode": "1",
-    "VisitorId": "e3e1babe-ce18-4b51-83b4-e0dcc6dfaf59",
-    "Name": "Halit",
-    "TourHour": 9
-  },
-  {
     "TicketCode": "12345678901",
     "VisitorId": "96e40284-879e-4301-af21-6d1124c3dae9",
     "Name": "name",
