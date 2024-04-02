@@ -50,7 +50,7 @@ public class GuidedTour
         Console.WriteLine("Available tour times:");
         foreach (var slot in TourSlots)
         {
-            Console.WriteLine($"{slot.Key}:00 - {slot.Value.Count} participants (Max {MaxCapacity})");
+            Console.WriteLine($"{slot.Key}:00 - {slot.Value.Count} participants");
         }
     }
 
