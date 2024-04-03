@@ -19,10 +19,22 @@ public class EntryCodeTest
     }
 
     [DataTestMethod]
+    // Correct code numbers
     [DataRow("123456", "123456", true)]
+    // Wrong code numbers
     [DataRow("123456", "000000", false)]
+    // Correct code letters
     [DataRow("ABCDEF", "ABCDEF", true)]
+    // Wrong code letters
     [DataRow("ABCDEF", "XXXXXX", false)]
+    // Wrong code check for case sensivity
+    [DataRow("ABCDEF", "abcdef", false)]
+    // Correct code mixed
+    [DataRow("abc456!@#", "abc456!@#", true)]
+    // Wrong code mixed
+    [DataRow("abc456!@#", "xxx000???", false)]
+
+    // Takes a string code to test, a code which will be added to json to test against and expected bool
     public void TestCode(string testCode, string codeToAdd, bool expected)
     {
         // Arrange
