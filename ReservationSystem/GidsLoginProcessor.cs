@@ -4,7 +4,6 @@ public class GidsLoginProcessor
 {
     public class Credential
     {
-        public string Username { get; set; }
         public string Password { get; set; }
     }
 
@@ -16,13 +15,10 @@ public class GidsLoginProcessor
         while (!isAuthenticated)
         {
             Console.WriteLine("\nGuide login\n");
-
-            Console.Write("Enter username: ");
-            string username = Console.ReadLine();
             Console.Write("Enter password: ");
             string password = Console.ReadLine();
 
-            isAuthenticated = AuthenticateUser(username, password);
+            isAuthenticated = AuthenticateUser(password);
 
             if (isAuthenticated)
             {
@@ -47,8 +43,7 @@ public class GidsLoginProcessor
         Console.WriteLine("\nWhat would you like to do?\n");
         Console.WriteLine("1. See personal tours");
         Console.WriteLine("2. Check attending participants");
-        Console.WriteLine("3. Add last minute participants");
-        Console.WriteLine("4. Logout");
+        Console.WriteLine("3. Logout");
 
         int guideChoice;
         if (int.TryParse(Console.ReadLine(), out guideChoice))
@@ -62,9 +57,6 @@ public class GidsLoginProcessor
                     NoteParticipants();
                     break;
                 case 3:
-                    AddLastMinuteParticipants();
-                    break;
-                case 4:
                     Console.WriteLine("Logging out...");
                     return false; // Stops the main menu loop and logs out
                 default:
@@ -84,9 +76,12 @@ public class GidsLoginProcessor
     {
         bool backToMenu = false;
 
+        GuidedTour guidedTour = new GuidedTour();
+
         while (!backToMenu)
         {
-            Console.WriteLine("TIMETABLE HAS TO BE SHOWN TO THE GUIDE");
+            guidedTour.ListAvailableTours();
+
             Console.WriteLine("M: Go back to main menu");
 
             string input = Console.ReadLine();
@@ -101,24 +96,7 @@ public class GidsLoginProcessor
         }
     }
 
-    private void AddLastMinuteParticipants()
-    {
-        bool backToMenu = false;
-
-        while (!backToMenu)
-        {
-            Console.WriteLine("Adding last minute participants");
-            // Here you could add functionality to add participants
-            Console.WriteLine("M: Go back to main menu");
-
-            if (Console.ReadLine().ToUpper() == "M")
-            {
-                backToMenu = true;
-            }
-        }
-    }
-
-        private void NoteParticipants()
+    private void NoteParticipants()
     {
         int hour;
         Console.WriteLine("Which hour's tour would you like to check participants for? (9-17)");
@@ -134,13 +112,16 @@ public class GidsLoginProcessor
             }
         }
 
-        string filePath = "./JSON-Files/guidedTours.json";
-        var tours = LoadToursFromFile(filePath);
+        string guidedToursFilePath = "./JSON-Files/guidedTours.json";
+        string checklistFilePath = "./JSON-Files/ChecklistGuide.json";
 
-        if (tours.ContainsKey(hour))
+        var guidedTours = LoadToursFromFile(guidedToursFilePath);
+        var checklist = LoadToursFromFile(checklistFilePath);
+
+        if (guidedTours.ContainsKey(hour))
         {
             List<Visitor> presentVisitors = new List<Visitor>();
-            foreach (var visitor in tours[hour])
+            foreach (var visitor in guidedTours[hour])
             {
                 Console.Write($"Is visitor {visitor.Name} present? (Y/N): ");
                 string response = Console.ReadLine().Trim().ToUpper();
@@ -148,9 +129,18 @@ public class GidsLoginProcessor
                 {
                     presentVisitors.Add(visitor);
                 }
+                else
+                {
+                    // Visitor is absent, add to absent visitors list in checklist
+                    if (!checklist.ContainsKey(hour))
+                    {
+                        checklist[hour] = new List<Visitor>();
+                    }
+                    checklist[hour].Add(visitor);
+                }
             }
 
-            SaveAttendingVisitorsToFile(hour, presentVisitors);
+            SaveAttendingVisitorsToFile(checklistFilePath, checklist);
         }
         else
         {
@@ -162,6 +152,14 @@ public class GidsLoginProcessor
         {
             Console.WriteLine("Invalid input. Please press M/m to go back to the main menu");
         }
+    }
+
+    private void SaveAttendingVisitorsToFile(string filePath, Dictionary<int, List<Visitor>> checklist)
+    {
+        string json = JsonConvert.SerializeObject(checklist, Formatting.Indented);
+        File.WriteAllText(filePath, json);
+
+        Console.WriteLine("Checklist for attending visitors saved successfully.");
     }
 
     private Dictionary<int, List<Visitor>> LoadToursFromFile(string filePath)
@@ -195,10 +193,10 @@ public class GidsLoginProcessor
         Console.WriteLine("Checklist for attending visitors saved successfully.");
     }
 
-    private bool AuthenticateUser(string username, string password)
+    private bool AuthenticateUser(string password)
     {
         List<Credential> credentials = LoadUserCredentials();
-        return credentials.Any(cred => cred.Username == username && cred.Password == password);
+        return credentials.Any(cred => cred.Password == password);
     }
 
     private List<Credential> LoadUserCredentials()
