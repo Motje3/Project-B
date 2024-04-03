@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 public class EntryCodeTest
 {
     private List<string> _EntryCodesAtTheStart = new() { };
-    private const string JSONPath = "../ReservationSystem/JSON-Files/sample_codes.json";
+    private const string JSONPath = "./JSON-Files/sample_codes.json";
 
     [TestInitialize]
     public void Setup()
@@ -18,15 +18,20 @@ public class EntryCodeTest
         _forgetJSON();
     }
 
-    [TestMethod]
-    public void X()
+    [DataTestMethod]
+    [DataRow("123456", "123456", true)]
+    [DataRow("123456", "000000", false)]
+    [DataRow("ABCDEF", "ABCDEF", true)]
+    [DataRow("ABCDEF", "XXXXXX", false)]
+    public void TestCode(string testCode, string codeToAdd, bool expected)
     {
         // Arrange
-
+        _addNewCode(codeToAdd);
+        EntreeCodeValidator validator = new();
         // Act
-
+        bool actual = validator.IsCodeValid(testCode);
         // Assert
-
+        Assert.AreEqual(expected, actual);
     }
 
 
@@ -52,13 +57,12 @@ public class EntryCodeTest
     }
 
     // To be used for testing purposes, adds an int code to sample_codes.json
-    private void _addNewCode(int code)
+    private void _addNewCode(string code)
     {
-        _rememberJSON();
         using (StreamWriter writer = new StreamWriter(JSONPath))
         {
             List<string> toWrite = new(_EntryCodesAtTheStart);
-            toWrite.Add(code.ToString());
+            toWrite.Add(code);
 
             string List2Json = JsonConvert.SerializeObject(toWrite);
             writer.Write(List2Json);
