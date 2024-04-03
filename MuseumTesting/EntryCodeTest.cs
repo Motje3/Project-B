@@ -34,7 +34,7 @@ public class EntryCodeTest
     // Wrong code mixed
     [DataRow("abc456!@#", "xxx000???", false)]
 
-    // Takes a string code to test, a code which will be added to json to test against and expected bool
+    // Takes a code in form of a string to test, a code which will be added to json to test against and expected bool
     public void TestCode(string testCode, string codeToAdd, bool expected)
     {
         // Arrange
