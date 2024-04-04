@@ -129,17 +129,25 @@ public class GuidedTour
 
     public bool RemoveVisitorFromTour(int tourHour, string ticketCode)
     {
+        bool removedAnyVisitor = false;
+
         if (TourSlots.TryGetValue(tourHour, out List<Visitor> visitors))
         {
+            // Use a loop to continuously find and remove visitors with the matching ticketCode
             var visitorToRemove = visitors.FirstOrDefault(v => v.TicketCode == ticketCode);
-            if (visitorToRemove != null)
+            while (visitorToRemove != null)
             {
                 visitors.Remove(visitorToRemove);
-                return true;
+                removedAnyVisitor = true;
+
+                // Look for the next visitor with the same ticketCode, if any
+                visitorToRemove = visitors.FirstOrDefault(v => v.TicketCode == ticketCode);
             }
         }
-        return false;
+
+        return removedAnyVisitor;
     }
+
 
     public void SaveGuidedToursToFile()
     {
