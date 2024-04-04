@@ -87,37 +87,49 @@ public class GuidedTour
 
     public bool UpdateVisitorTour(string ticketCode, int newTourHour)
     {
+        bool anyUpdates = false; // Flag to track if any updates were made
+
         try
         {
+            // Collect all visitors across all slots with the given ticketCode
+            var visitorsToUpdate = new List<Visitor>();
             foreach (var slot in TourSlots)
             {
-                var visitor = slot.Value.FirstOrDefault(v => v.TicketCode == ticketCode);
-                if (visitor != null)
-                {
-                    // Remove visitor from the current slot
-                    slot.Value.Remove(visitor);
-
-                    // Add visitor to the new slot
-                    if (TourSlots.TryGetValue(newTourHour, out List<Visitor> newSlot))
-                    {
-                        if (newSlot.Count < MaxCapacity)
-                        {
-                            newSlot.Add(visitor);
-                            return true; // Successful update
-                        }
-                        else
-                        {
-                            Console.WriteLine("The tour at the new hour is full.");
-                            slot.Value.Add(visitor); // Revert the visitor back to the original slot
-                            return false; // Indicate failure due to full capacity
-                        }
-                    }
-                    break;
-                }
+                visitorsToUpdate.AddRange(slot.Value.Where(v => v.TicketCode == ticketCode).ToList());
             }
 
-            Console.WriteLine("Visitor not found in any tour.");
-            return false; // No update was made because visitor wasn't found
+            // Check if the new slot has enough capacity for all visitors
+            if (TourSlots.TryGetValue(newTourHour, out List<Visitor> newSlot) && newSlot.Count + visitorsToUpdate.Count <= MaxCapacity)
+            {
+                foreach (var visitor in visitorsToUpdate)
+                {
+                    // Remove visitor from their current slot
+                    foreach (var slot in TourSlots.Values)
+                    {
+                        slot.Remove(visitor);
+                    }
+
+                    // Add visitor to the new slot
+                    newSlot.Add(visitor);
+                    anyUpdates = true; // Mark that at least one update was made
+                }
+            }
+            else
+            {
+                Console.WriteLine("The tour at the new hour is full or does not exist.");
+                return false; // Indicate failure due to full capacity or non-existent slot
+            }
+
+            if (anyUpdates)
+            {
+                Console.WriteLine("All visitors updated successfully.");
+                return true; // Successful update for all visitors
+            }
+            else
+            {
+                Console.WriteLine("No visitors found with the given ticket code.");
+                return false; // No visitors were found and updated
+            }
         }
         catch (Exception ex)
         {
@@ -125,7 +137,6 @@ public class GuidedTour
             return false; // Indicate failure due to an exception
         }
     }
-
 
     public bool RemoveVisitorFromTour(int tourHour, string ticketCode)
     {
