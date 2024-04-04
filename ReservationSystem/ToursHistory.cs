@@ -9,21 +9,32 @@ public class SavedToursHistory
     {
         Day = null;
     }
-    public void LogCancelation()
+    public void LogCancelation(string name, string ticketcode)
     {
-        string textpath;
+        // need cancelation data
+        DateTime currentDate = DateTime.Today;
+        string textPath = $"./Logs/TourData_{currentDate:dd-MM-yyyy}.txt";
+        
     }
-    public void LogRegestration()
+    public void LogRegestration(string name, string ticketcode)
+    { 
+        // need registration data
+        DateTime currentDate = DateTime.Today;
+        string textPath = $"./Logs/TourData_{currentDate:dd-MM-yyyy}.txt";
+
+    }
+    public void LogTourchange(string name, string ticketcode)
     {
-        string textpath;
+        this.LogCancelation(name, ticketcode);
+        this.LogRegestration(name, ticketcode);
     }
-    public void CreateTourHistory() // default = 1
+    public void CreateTourHistory()
     {
         DateTime currentDate = DateTime.Today;
         // Specify the path for the new and existing JSON files
         
         string filePathRead = $"./JSON-Files/guidedTours.json"; // read guided tour data and than store it in other folder // assuming it resets evry day
-        string filePathSave = $"./JSON-Files/TourData_{currentDate:dd-MM-yyyy}.json"; // copy guidedTours data to this file each day // deffault location = bin\debug\net7.0
+        string filePathSave = $"./JSON-Files/TourData_{currentDate:dd-MM-yyyy}.txt"; // copy guidedTours datato this file each day // deffault location = bin\debug\net7.0
         try
         {
             StreamReader reader = new StreamReader(filePathRead);
