@@ -69,7 +69,7 @@ public class AdminLoginProcessor
                     ChangeCapacity(guidedTour);
                     break;
                 case "2":
-                    guidedTour.ListAvailableTours();
+                    guidedTour.ListAvailableTours(0);
                     break;
                 case "3":
                     CancelTour(guidedTour);

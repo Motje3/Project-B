@@ -1,3 +1,11 @@
 [
-
+  {
+    "TicketCode": "111",
+    "TourHour": 9,
+    "Visitors": [
+      "Alice",
+      "Bob",
+      "Charlie"
+    ]
+  }
 ]

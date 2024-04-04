@@ -80,7 +80,7 @@ public class GidsLoginProcessor
 
         while (!backToMenu)
         {
-            guidedTour.ListAvailableTours();
+            guidedTour.ListAvailableTours(0);
 
             Console.WriteLine("M: Go back to main menu");
 

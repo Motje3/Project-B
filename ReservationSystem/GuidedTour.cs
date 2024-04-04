@@ -45,14 +45,19 @@ public class GuidedTour
         }
     }
 
-    public void ListAvailableTours()
+    public void ListAvailableTours(int numberOfPeopleAttemptingToJoin)
     {
         Console.WriteLine("Available tour times:");
         foreach (var slot in TourSlots)
         {
-            Console.WriteLine($"{slot.Key}:00 - {slot.Value.Count} participants");
+            // Check if the tour slot plus the new participants does not exceed MaxCapacity
+            if ((slot.Value.Count + numberOfPeopleAttemptingToJoin) <= MaxCapacity)
+            {
+                Console.WriteLine($"{slot.Key}:00 - {slot.Value.Count} participants");
+            }
         }
     }
+
 
     public bool JoinTour(int hour, Visitor visitor)
     {

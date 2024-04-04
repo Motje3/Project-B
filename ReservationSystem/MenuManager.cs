@@ -23,12 +23,15 @@ public class MenuManager
             switch (choice)
             {
                 case "1":
-                    _guidedTour.ListAvailableTours();
+
+                    var ticket = _reservationManager.Tickets.FirstOrDefault(t => t.TicketCode == ticketCode);
+                    int numberOfPeople = ticket.NumberOfPeople;
+
+                    _guidedTour.ListAvailableTours(numberOfPeople);
                     Console.WriteLine($"\nPlease enter the hour of the tour you wish to join ({_guidedTour.StartTime} to {_guidedTour.EndTime}):");
 
                     if (int.TryParse(Console.ReadLine(), out int chosenHour))
                     {
-                        var ticket = _reservationManager.Tickets.FirstOrDefault(t => t.TicketCode == ticketCode);
                         if (ticket == null)
                         {
                             Console.WriteLine("Ticket code is not valid.");
@@ -90,7 +93,10 @@ public class MenuManager
                     bool selectingTour = true;
                     while (selectingTour)
                     {
-                        _guidedTour.ListAvailableTours();
+                        var ticket = _reservationManager.Tickets.FirstOrDefault(t => t.TicketCode == ticketCode);
+                        int numberOfPeople = ticket.NumberOfPeople;
+
+                        _guidedTour.ListAvailableTours(numberOfPeople);
                         Console.WriteLine($"\nPlease enter the hour of the tour you wish to join ({_guidedTour.StartTime} to {_guidedTour.EndTime}):");
                         if (int.TryParse(Console.ReadLine(), out int newTourHour))
                         {
