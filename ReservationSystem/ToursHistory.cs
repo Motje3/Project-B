@@ -9,24 +9,44 @@ public class SavedToursHistory
     {
         Day = null;
     }
-    public void LogCancelation(string name, string ticketcode)
+    
+    public void LogCancelation(string name, string ticketcode, DateTime TourTime) // TourTime can be string depending on impletation
     {
         // need cancelation data
         DateTime currentDate = DateTime.Today;
+        DateTime logtime = DateTime.Now;
         string textPath = $"./Logs/TourData_{currentDate:dd-MM-yyyy}.txt";
-        
+        string Log = $"{logtime}: {ticketcode} {name} canceled his/her tour on {TourTime}";
+        WriteLog(textPath, Log);
     }
-    public void LogRegestration(string name, string ticketcode)
+    public void LogRegestration(string name, string ticketcode, DateTime TourTime) // TourTime can be string depending on impletation
     { 
         // need registration data
         DateTime currentDate = DateTime.Today;
+        DateTime logtime = DateTime.Now;
         string textPath = $"./Logs/TourData_{currentDate:dd-MM-yyyy}.txt";
-
+        string Log = $"{logtime}: {ticketcode} {name} registerd for tour on {TourTime}";
+        WriteLog(textPath, Log);
     }
-    public void LogTourchange(string name, string ticketcode)
+    public void LogTourchange(string name, string ticketcode, DateTime OldTourTime, DateTime NewTourTime) // old for cancelation, new for Regestration
     {
-        this.LogCancelation(name, ticketcode);
-        this.LogRegestration(name, ticketcode);
+        // logic here is that it will cancel, and register with same ticket code.
+        this.LogCancelation(name, ticketcode, OldTourTime);
+        this.LogRegestration(name, ticketcode, NewTourTime);
+    }
+    private void WriteLog(string filePath, string log)
+    {
+        try
+        {
+            using (StreamWriter writer = new StreamWriter(filePath, true))
+            {
+                writer.WriteLine(log);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred while writing to the log file: {ex.Message}");
+        }
     }
     public void CreateTourHistory()
     {
@@ -34,7 +54,7 @@ public class SavedToursHistory
         // Specify the path for the new and existing JSON files
         
         string filePathRead = $"./JSON-Files/guidedTours.json"; // read guided tour data and than store it in other folder // assuming it resets evry day
-        string filePathSave = $"./JSON-Files/TourData_{currentDate:dd-MM-yyyy}.txt"; // copy guidedTours datato this file each day // deffault location = bin\debug\net7.0
+        string filePathSave = $"./JSON-Files/TourData_{currentDate:dd-MM-yyyy}.json"; // copy guidedTours datato this file each day // deffault location = bin\debug\net7.0
         try
         {
             StreamReader reader = new StreamReader(filePathRead);
