@@ -1,5 +1,5 @@
 using Newtonsoft.Json;
-// namespace Population;  // uncomment this namespace to perform TestPopulation dont foget uncomment aftherwards 
+// namespace SavedToursHistory;  // uncomment this namespace to perform TestPopulation dont foget uncomment aftherwards 
 
 public class SavedToursHistory
 {
@@ -17,32 +17,34 @@ public class SavedToursHistory
     {
         string textpath;
     }
-    public void CreateTourHistory(string TourData) // default = 1
+    public void CreateTourHistory() // default = 1
     {
         DateTime currentDate = DateTime.Today;
         // Specify the path for the new and existing JSON files
-        // deffault location = bin\debug\net7.0
-        string filePathRead = $"./JSON-Files/guidedTours.json"; // file to receive the guided tour data // assuming it resets evry day
-        string filePathSave = $"./JSON-Files/TourData_{currentDate:dd-MM-yyyy}.json";
+        
+        string filePathRead = $"./JSON-Files/guidedTours.json"; // read guided tour data and than store it in other folder // assuming it resets evry day
+        string filePathSave = $"./JSON-Files/TourData_{currentDate:dd-MM-yyyy}.json"; // copy guidedTours data to this file each day // deffault location = bin\debug\net7.0
         try
         {
             StreamReader reader = new StreamReader(filePathRead);
-            string people = reader.ReadToEnd();  // JSON will always return a string.  
+            string TourData = reader.ReadToEnd();  // JSON will always return a string.  
             reader.Close();
             JSONWriter(TourData, filePathSave, currentDate);
         }
         catch(FileNotFoundException ex)
-        { 
-            Console.WriteLine($"File not found, tour history can't be saved: {ex}");
+        {
+            Console.WriteLine($"guidedTours.json file not found");
+            Console.WriteLine($"DATA will not be saved \n{ex}");
         }
         catch(FormatException ex)
         {
-            Console.WriteLine($"File curroption cant format string: {ex}");
+            Console.WriteLine("File curroption can't format string");
+            Console.WriteLine($"DATA will not be saved \n{ex}");
         }
-        catch(DirectoryNotFoundException)
+        catch(DirectoryNotFoundException ex)
         {
             Console.WriteLine("WARNING! no directory to store total visitor DATA,");
-            Console.WriteLine("DATA will not be saved");
+            Console.WriteLine($"DATA will not be saved \n{ex}");
         }
         Console.WriteLine();
     }
@@ -50,7 +52,7 @@ public class SavedToursHistory
     {
         StreamWriter writer = new StreamWriter(filePath);
         string jsonData = TourData;
-        writer.Write(JsonConvert.SerializeObject(jsonData, Formatting.Indented));
+        writer.Write(JsonConvert.SerializeObject(jsonData));
         writer.Close();
     }
 }
