@@ -23,33 +23,40 @@ public class MenuManager
             switch (choice)
             {
                 case "1":
-                    bool selectingTour = true;
-                    while (selectingTour)
+                    _guidedTour.ListAvailableTours();
+                    Console.WriteLine($"\nPlease enter the hour of the tour you wish to join ({_guidedTour.StartTime} to {_guidedTour.EndTime}):");
+
+                    if (int.TryParse(Console.ReadLine(), out int chosenHour))
                     {
-                        _guidedTour.ListAvailableTours();
-                        Console.WriteLine($"\nPlease enter the hour of the tour you wish to join ({_guidedTour.StartTime} to {_guidedTour.EndTime}):");
-
-                        if (int.TryParse(Console.ReadLine(), out int chosenHour))
+                        var ticket = _reservationManager.Tickets.FirstOrDefault(t => t.TicketCode == ticketCode);
+                        if (ticket == null)
                         {
-                            Visitor visitor = new Visitor("name", chosenHour, ticketCode);  // Assuming you'll replace "name" with actual visitor name.
+                            Console.WriteLine("Ticket code is not valid.");
+                            break; // Exit the switch case
+                        }
 
-                            if (_guidedTour.JoinTour(chosenHour, visitor))
+                        foreach (var visitorInfo in ticket.Visitors)
+                        {
+                            Visitor visitor = new Visitor(visitorInfo.Name, chosenHour, ticketCode); // Create a Visitor object for each person in the ticket.
+
+                            if (!_guidedTour.JoinTour(chosenHour, visitor))
                             {
-                                Console.WriteLine($"You've successfully joined the {chosenHour}:00 tour.");
-                                _reservationManager.SaveReservation(visitor);
-                                _guidedTour.SaveGuidedToursToFile();
-                                selectingTour = false;  // Exit the tour selection loop on successful join.
-                                loopOption = false;  // Exit the main menu loop.
+                                Console.WriteLine($"Failed to join {visitor.Name} to the tour. Please try again later.");
+                                break; // If one fails, we exit the loop (consider how you want to handle partial success)
                             }
                             else
                             {
-                                Console.WriteLine("Failed to join the tour. It might be full or the selection was invalid. Please try again.");
+                                Console.WriteLine($"{visitor.Name} has successfully joined the {chosenHour}:00 tour.");
+                                _reservationManager.SaveReservation(visitor);
                             }
                         }
-                        else
-                        {
-                            Console.WriteLine("Invalid input. Please enter a valid tour hour.");
-                        }
+
+                        _guidedTour.SaveGuidedToursToFile();
+                        loopOption = false;  // Exit the main menu loop after successful operation.
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input. Please enter a valid tour hour.");
                     }
                     break;
                 case "2":
@@ -61,6 +68,7 @@ public class MenuManager
             }
         }
     }
+
 
 
     public void ShowFullMenu(string ticketCode)

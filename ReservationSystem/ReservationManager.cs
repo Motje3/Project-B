@@ -4,6 +4,12 @@ public class ReservationManager
     private EntreeCodeValidator validator;
     private GuidedTour guidedTour;
     private MenuManager menumanager;
+    private List<Ticket> _tickets;
+
+    public List<Ticket> Tickets
+    {
+        get { return _tickets; }
+    }
 
     public ReservationManager()
     {
@@ -11,6 +17,7 @@ public class ReservationManager
         guidedTour = new GuidedTour();
         menumanager = new MenuManager(this, guidedTour); // Pass the same GuidedTour instance
         guidedTour.LoadToursFromFile("./JSON-Files/guidedTours.json");
+        _tickets = Ticket.LoadTicketsFromFile("./JSON-Files/OnlineTickets.json");
     }
 
     public void ValidateCodeAndProcessReservations()
@@ -44,7 +51,18 @@ public class ReservationManager
                 }
                 else
                 {
-                    menumanager.ShowRestrictedMenu(userCode);
+                    // Retrieve the ticket associated with the code
+                    var ticket = validator.GetTicketByCode(userCode);
+                    if (ticket != null)
+                    {
+                        // Assuming the ShowRestrictedMenu method will handle the logic for
+                        // allowing all visitors in the ticket to join a tour.
+                        menumanager.ShowRestrictedMenu(userCode);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Sorry, your ticket is not valid. Please try again.");
+                    }
                 }
             }
             else
@@ -53,6 +71,7 @@ public class ReservationManager
             }
         }
     }
+
 
 
     public bool EditReservation(string ticketCode, int newTourHour)
@@ -129,26 +148,44 @@ public class ReservationManager
 
     public void SaveReservation(Visitor visitor)
     {
-        var reservation = new
-        {
-            visitor.TicketCode,
-            visitor.VisitorId,
-            visitor.Name,
-            TourHour = visitor.RondleidingChoice
-        };
-
-        List<object> reservations = new List<object>();
+        // Define the path to the reservations file.
         string filePath = "./JSON-Files/reservations.json";
-        if (File.Exists(filePath))
+
+        // Read the existing reservations and deserialize them into a list of dynamic objects.
+        List<dynamic> reservations = File.Exists(filePath)
+            ? JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(filePath)) ?? new List<dynamic>()
+            : new List<dynamic>();
+
+        // Look for an existing reservation with the same TicketCode and TourHour.
+        var existingReservation = reservations
+            .FirstOrDefault(r => r.TicketCode == visitor.TicketCode && r.TourHour == visitor.RondleidingChoice);
+
+        if (existingReservation != null)
         {
-            string existingReservationsJson = File.ReadAllText(filePath);
-            reservations = JsonConvert.DeserializeObject<List<object>>(existingReservationsJson) ?? new List<object>();
+            // If found, add the new visitor's name to the existing reservation's Visitors list.
+            existingReservation.Visitors.Add(visitor.Name);
+        }
+        else
+        {
+            // If not found, create a new reservation object with the TicketCode, TourHour, and the visitor's name.
+            var newReservation = new
+            {
+                TicketCode = visitor.TicketCode,
+                TourHour = visitor.RondleidingChoice,
+                Visitors = new List<string> { visitor.Name }
+            };
+
+            // Add the new reservation object to the list of reservations.
+            reservations.Add(newReservation);
         }
 
-        reservations.Add(reservation);
+        // Serialize the list of reservations back to JSON.
         string updatedReservationsJson = JsonConvert.SerializeObject(reservations, Formatting.Indented);
+
+        // Write the updated JSON to the reservations file.
         File.WriteAllText(filePath, updatedReservationsJson);
     }
+
 
     private bool VisitorAlreadyHasReservation(string ticketCode)
     {

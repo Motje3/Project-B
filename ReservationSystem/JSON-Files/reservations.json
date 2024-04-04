@@ -1,14 +1,3 @@
 [
-  {
-    "TicketCode": "12345678901",
-    "VisitorId": "96e40284-879e-4301-af21-6d1124c3dae9",
-    "Name": "name",
-    "TourHour": 9
-  },
-  {
-    "TicketCode": "1",
-    "VisitorId": "3634164e-9490-4f37-a725-490408e73107",
-    "Name": "name",
-    "TourHour": 10
-  }
+
 ]

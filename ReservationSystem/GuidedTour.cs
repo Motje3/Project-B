@@ -63,21 +63,17 @@ public class GuidedTour
             return false;
         }
 
-        // Check if the slot exists and is not full.
-        if (TourSlots.ContainsKey(hour) && TourSlots[hour].Count < MaxCapacity)
-        {
-            TourSlots[hour].Add(visitor);
-            return true;
-        }
-
         // If we get here, the tour is either full or the hour doesn't have a slot.
         if (!TourSlots.ContainsKey(hour))
         {
             Console.WriteLine("There is no tour at the chosen hour.");
         }
-        else
+
+        // Check if the slot exists and is not full.
+        if (TourSlots.ContainsKey(hour) && TourSlots[hour].Count < MaxCapacity)
         {
-            Console.WriteLine("The tour at the chosen hour is full.");
+            TourSlots[hour].Add(visitor);
+            return true;
         }
 
         return false;
