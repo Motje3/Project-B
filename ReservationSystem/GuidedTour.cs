@@ -66,18 +66,23 @@ public class GuidedTour
 
     public void ListAvailableTours(int numberOfPeopleAttemptingToJoin)
     {
+        DateTime now = DateTime.Now;
+
         Console.WriteLine("Available tour times:");
         foreach (var slot in TourSlots)
         {
-            if ((slot.Value.Count + numberOfPeopleAttemptingToJoin) <= MaxCapacity)
+            // Ensure the slot is in the future
+            if (slot.Key > now)
             {
-                // Use "h:mm tt" for 12-hour format without seconds (e.g., "1:00 PM"), 
-                // or "HH:mm" for 24-hour format without seconds (e.g., "13:00").
-                string timeFormatted = slot.Key.ToString("h:mm tt", CultureInfo.InvariantCulture);
-                Console.WriteLine($"{timeFormatted}");
+                // Check if the tour slot plus the new participants does not exceed MaxCapacity
+                if ((slot.Value.Count + numberOfPeopleAttemptingToJoin) <= MaxCapacity)
+                {
+                    Console.WriteLine($"{slot.Key.ToString("h:mm tt")} - {slot.Value.Count} participants");
+                }
             }
         }
     }
+
 
 
     public void ListAvailableToursAdmin(int numberOfPeopleAttemptingToJoin)
@@ -110,6 +115,12 @@ public class GuidedTour
             return false;
         }
 
+        // if (tourTime <= DateTime.Now)
+        // {
+        //     Console.WriteLine("Cannot join a tour that has already started or passed.");
+        //     return false;
+        // }
+
         // Check if the slot exists and is not full.
         if (TourSlots[tourTime].Count < MaxCapacity)
         {
@@ -123,8 +134,6 @@ public class GuidedTour
             return false;
         }
     }
-
-
 
 
     public bool UpdateVisitorTour(string ticketCode, DateTime newTourDateTime)
