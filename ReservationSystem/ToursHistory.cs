@@ -1,11 +1,11 @@
 using Newtonsoft.Json;
 // namespace SavedToursHistory;  // uncomment this namespace to perform TestPopulation dont foget uncomment aftherwards 
 
-public class SavedToursHistory
+public class ToursHistory
 {
     public DateTime? Day;  // tracks current day
     
-    public SavedToursHistory()
+    public ToursHistory()
     {
         Day = null;
     }
