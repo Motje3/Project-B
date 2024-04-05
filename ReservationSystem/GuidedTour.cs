@@ -1,11 +1,14 @@
 using Newtonsoft.Json;
+using System.Globalization;
+
 
 public class GuidedTour
 {
-    public int StartTime { get; private set; }
-    public int EndTime { get; private set; }
+    public DateTime StartTime { get; private set; }
+    public DateTime EndTime { get; private set; }
+    public TimeSpan TourInterval { get; private set; } = TimeSpan.FromMinutes(20); // Default to 20 minutes
     public int MaxCapacity { get; private set; }
-    public Dictionary<int, List<Visitor>> TourSlots { get; private set; }
+    public Dictionary<DateTime, List<Visitor>> TourSlots { get; private set; }
 
     public GuidedTour()
     {
@@ -18,34 +21,66 @@ public class GuidedTour
         string filePath = "./JSON-Files/TourSettings.json";
         if (File.Exists(filePath))
         {
-            string json = File.ReadAllText(filePath);
-            dynamic settings = JsonConvert.DeserializeObject(json);
+            try
+            {
+                string json = File.ReadAllText(filePath);
+                dynamic settings = JsonConvert.DeserializeObject(json);
 
-            StartTime = settings?.StartTime ?? 9; // Provide a default value of 9 if null
-            EndTime = settings?.EndTime ?? 17;    // Provide a default value of 17 if null
-            MaxCapacity = settings?.MaxCapacity ?? 13; // Provide a default value of 13 if null
+                string startTimeString = settings?.StartTime ?? "2024-04-05T09:00:00";
+                string endTimeString = settings?.EndTime ?? "2024-04-05T17:00:00";
+                StartTime = DateTime.Parse(startTimeString);
+                EndTime = DateTime.Parse(endTimeString);
+                TourInterval = TimeSpan.FromMinutes((int)(settings?.TourInterval ?? 20));
+                MaxCapacity = (int)(settings?.MaxCapacity ?? 13);
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine($"Error parsing tour settings: {ex.Message}");
+                // Handle the error appropriately, perhaps setting default values
+            }
         }
         else
         {
             Console.WriteLine("Tour settings file not found. Using default settings.");
-            // Set default values
-            StartTime = 9;
-            EndTime = 17;
+            StartTime = DateTime.Parse("2024-04-05T09:00:00");
+            EndTime = DateTime.Parse("2024-04-05T17:00:00");
+            TourInterval = TimeSpan.FromMinutes(20);
             MaxCapacity = 13;
         }
     }
 
 
+
+
     private void InitializeTourSlots()
     {
-        TourSlots = new Dictionary<int, List<Visitor>>();
-        for (int hour = StartTime; hour <= EndTime; hour++)
+        TourSlots = new Dictionary<DateTime, List<Visitor>>();
+        DateTime slotTime = StartTime;
+
+        while (slotTime < EndTime)
         {
-            TourSlots.Add(hour, new List<Visitor>());
+            TourSlots.Add(slotTime, new List<Visitor>());
+            slotTime = slotTime.Add(TourInterval);
         }
     }
 
     public void ListAvailableTours(int numberOfPeopleAttemptingToJoin)
+    {
+        Console.WriteLine("Available tour times:");
+        foreach (var slot in TourSlots)
+        {
+            if ((slot.Value.Count + numberOfPeopleAttemptingToJoin) <= MaxCapacity)
+            {
+                // Use "h:mm tt" for 12-hour format without seconds (e.g., "1:00 PM"), 
+                // or "HH:mm" for 24-hour format without seconds (e.g., "13:00").
+                string timeFormatted = slot.Key.ToString("h:mm tt", CultureInfo.InvariantCulture);
+                Console.WriteLine($"{timeFormatted}");
+            }
+        }
+    }
+
+
+    public void ListAvailableToursAdmin(int numberOfPeopleAttemptingToJoin)
     {
         Console.WriteLine("Available tour times:");
         foreach (var slot in TourSlots)
@@ -61,33 +96,41 @@ public class GuidedTour
 
     public bool JoinTour(int hour, Visitor visitor)
     {
+        DateTime tourTime = DateTime.Today.AddHours(hour);
+
         // Ensure the hour is within the start and end times.
-        if (hour < StartTime || hour > EndTime)
+        if (tourTime < StartTime || tourTime > EndTime)
         {
             Console.WriteLine("The chosen hour is outside the tour operation hours.");
             return false;
         }
 
         // If we get here, the tour is either full or the hour doesn't have a slot.
-        if (!TourSlots.ContainsKey(hour))
+        if (!TourSlots.ContainsKey(tourTime))
         {
             Console.WriteLine("There is no tour at the chosen hour.");
+            return false;
         }
 
         // Check if the slot exists and is not full.
-        if (TourSlots.ContainsKey(hour) && TourSlots[hour].Count < MaxCapacity)
+        if (TourSlots[tourTime].Count < MaxCapacity)
         {
-            TourSlots[hour].Add(visitor);
+            TourSlots[tourTime].Add(visitor);
             return true;
         }
 
+        Console.WriteLine("The chosen tour is full.");
         return false;
     }
+
 
 
     public bool UpdateVisitorTour(string ticketCode, int newTourHour)
     {
         bool anyUpdates = false; // Flag to track if any updates were made
+
+        // Convert the newTourHour to a DateTime object. Assuming the tour date is today.
+        DateTime newTourDateTime = DateTime.Today.AddHours(newTourHour);
 
         try
         {
@@ -99,7 +142,7 @@ public class GuidedTour
             }
 
             // Check if the new slot has enough capacity for all visitors
-            if (TourSlots.TryGetValue(newTourHour, out List<Visitor> newSlot) && newSlot.Count + visitorsToUpdate.Count <= MaxCapacity)
+            if (TourSlots.TryGetValue(newTourDateTime, out List<Visitor> newSlot) && newSlot.Count + visitorsToUpdate.Count <= MaxCapacity)
             {
                 foreach (var visitor in visitorsToUpdate)
                 {
@@ -138,11 +181,15 @@ public class GuidedTour
         }
     }
 
+
     public bool RemoveVisitorFromTour(int tourHour, string ticketCode)
     {
         bool removedAnyVisitor = false;
 
-        if (TourSlots.TryGetValue(tourHour, out List<Visitor> visitors))
+        // Convert the tourHour to a DateTime object. Assuming the tour date is today.
+        DateTime tourDateTime = DateTime.Today.AddHours(tourHour);
+
+        if (TourSlots.TryGetValue(tourDateTime, out List<Visitor> visitors))
         {
             // Use a loop to continuously find and remove visitors with the matching ticketCode
             var visitorToRemove = visitors.FirstOrDefault(v => v.TicketCode == ticketCode);
@@ -160,61 +207,47 @@ public class GuidedTour
     }
 
 
+
     public void SaveGuidedToursToFile()
     {
         var tourData = TourSlots.ToDictionary(
-            entry => entry.Key,
+            entry => entry.Key.ToString("yyyy-MM-dd HH:mm"), // Space instead of 'T'
+                                                             // Or, use another character like: entry.Key.ToString("yyyy-MM-dd_HH:mm")
             entry => entry.Value.Select(visitor => new { visitor.Name, visitor.TicketCode }).ToList()
         );
 
-        string filePath = "./JSON-Files/guidedTours.json"; // Specify the path to your JSON file
+        string filePath = "./JSON-Files/guidedTours.json";
         string json = JsonConvert.SerializeObject(tourData, Formatting.Indented);
         File.WriteAllText(filePath, json);
     }
+
+
+
 
     public void LoadToursFromFile(string filePath)
     {
         if (File.Exists(filePath))
         {
             string json = File.ReadAllText(filePath);
-            var loadedTourSlots = JsonConvert.DeserializeObject<Dictionary<int, List<Visitor>>>(json);
+            // Adjust the deserialization to handle DateTime keys
+            var loadedTourSlots = JsonConvert.DeserializeObject<Dictionary<DateTime, List<Visitor>>>(json);
 
             if (loadedTourSlots != null)
             {
-                foreach (var slot in loadedTourSlots)
-                {
-                    if (TourSlots.ContainsKey(slot.Key))
-                    {
-                        TourSlots[slot.Key] = slot.Value; // Update existing tours with loaded data
-                    }
-                }
+                // Clear the existing slots and replace them with the loaded data
+                TourSlots = loadedTourSlots;
             }
         }
     }
 
+
     public bool UpdateMaxCapacity(int newCapacity)
     {
-        if (newCapacity <= 0)
-        {
-            Console.WriteLine("Capacity must be greater than 0.");
-            return false;
-        }
-
-        // Update the MaxCapacity.
-        MaxCapacity = newCapacity;
-        Console.WriteLine($"Max capacity updated to {newCapacity}.");
         return true;
     }
 
     public bool ChangeTourTime(int oldTourHour)
     {
-        // Check if the old tour exists and the new tour hour is valid
-
-        // Move visitors from the old tour to the new tour hour
-        TourSlots.Remove(oldTourHour);  // Remove the old tour slot
-
-        // Optionally, save changes to file
-        SaveGuidedToursToFile();
         return true;
     }
 }
