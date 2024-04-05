@@ -1,6 +1,4 @@
 using Newtonsoft.Json;
-// namespace SavedToursHistory;  // uncomment this namespace to perform TestPopulation dont foget uncomment aftherwards 
-
 public class ToursHistory
 {
     public DateTime? Day;  // tracks current day
@@ -14,13 +12,14 @@ public class ToursHistory
         // bool RegOrCan: true for Registration, false for Canelation
         DateTime currentDate = DateTime.Today;
         DateTime logtime = DateTime.Now;
+        string strlogtime = logtime.ToString("HH:mm");  // This ensures only the clock will be displayed
         string directoryPath = "./Logs/TourReservationLog"; 
         CheckDirectory(directoryPath);  // create directory if it does no exist
-        string textPath = $"./Logs/TourReservationLog/{currentDate:dd-MM-yyyy}_TourReservationLog.txt";
+        string textPath = $"./Logs/TourReservationLog/{currentDate:dd-MM-yyyy}_TourReservationLog.txt";  // create new textfile at current day
         string Log = IsCancel
             // checks bool to log aproperiate string
-            ? $"{logtime}: {ticketcode} {name} canceled his/her tour on {TourTime}" 
-            : $"{logtime}: {ticketcode} {name} registered for tour on {TourTime}";
+            ? $"{strlogtime}: {ticketcode} {name} canceled his/her tour on {TourTime}"  // true
+            : $"{strlogtime}: {ticketcode} {name} registered for tour on {TourTime}";  // false
 
         WriteLog(textPath, Log);
     }
@@ -35,10 +34,11 @@ public class ToursHistory
         // bool RegOrCan: true for Registration, false for Canelation
         DateTime currentDate = DateTime.Today;
         DateTime logtime = DateTime.Now;
+        string strlogtime = logtime.ToString("HH:mm");  // This ensures only the clock will be displayed
         string directoryPath = "./Logs/GuidedTourLog";  
         CheckDirectory(directoryPath);  // create directory if it does not exist
-        string textPath = $"./Logs/GuidedTourLog/{currentDate:dd-MM-yyyy}_GuidedTourLog.txt";
-        string Log = $"{logtime}: TourTime({TourTime}) {ticketcode} {name} has joined the tour";
+        string textPath = $"./Logs/GuidedTourLog/{currentDate:dd-MM-yyyy}_GuidedTourLog.txt";  // create new textfile at current day
+        string Log = $"{strlogtime}: TourTime({TourTime}) {ticketcode} {name} has joined the tour";
 
         WriteLog(textPath, Log);
     }
@@ -64,6 +64,7 @@ public class ToursHistory
         }
     }
     
+
     // this method MIGHT not be used.
     public void CreateTourHistory()
     {
