@@ -164,7 +164,7 @@ public class GuidedTour
 
             if (anyUpdates)
             {
-                Console.WriteLine("All visitors updated successfully.");
+                Console.WriteLine("All visitors reservation's updated successfully.");
                 return true; // Successful update for all visitors
             }
             else

@@ -98,7 +98,6 @@ public class ReservationManager
                 // Now, also update the guided tours file to reflect the change.
                 guidedTour.SaveGuidedToursToFile(); // Assuming this method saves the entire state of `TourSlots` to a file.
 
-                Console.WriteLine("Reservation updated successfully.");
                 return true;
             }
             else

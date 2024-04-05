@@ -133,7 +133,6 @@ public class MenuManager
 
                             if (_reservationManager.EditReservation(ticketCode, newTourDateTime))
                             {
-                                Console.WriteLine("Tour time updated successfully.");
                                 selectingTour = false; // Exit the tour selection loop.
                             }
                             else
