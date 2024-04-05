@@ -9,7 +9,6 @@ public class ToursHistory
     {
         Day = null;
     }
-    
     public void LogReservation(string name, string ticketcode, DateTime TourTime, bool IsCancel)  // true for cancel tour, false for regester tour.
     {
         // bool RegOrCan: true for Registration, false for Canelation
