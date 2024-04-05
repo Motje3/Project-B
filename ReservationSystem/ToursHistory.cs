@@ -17,7 +17,7 @@ public class SavedToursHistory
         DateTime logtime = DateTime.Now;
         string directoryPath = "./Logs/TourReservationLog"; 
         CheckDirectory(directoryPath);  // create directory if it does no exist
-        string textPath = $"./Logs/TourReservationLog/{currentDate:dd-MM-yyyy}_TourReservationManager.txt";
+        string textPath = $"./Logs/TourReservationLog/{currentDate:dd-MM-yyyy}_TourReservationManagerLog.txt";
         string Log = IsCancel
             // checks bool to log aproperiate string
             ? $"{logtime}: {ticketcode} {name} canceled his/her tour on {TourTime}" 
@@ -30,6 +30,18 @@ public class SavedToursHistory
         // logic here is that it will cancel, and register with same ticket code.
         this.LogReservation(name, ticketcode, OldTourTime, false);
         this.LogReservation(name, ticketcode, NewTourTime, true);
+    }
+    public void LogGuidedTour(string name, string ticketcode, DateTime TourTime)  // this only logs joined tours in DIFFRENT folder 
+    {
+        // bool RegOrCan: true for Registration, false for Canelation
+        DateTime currentDate = DateTime.Today;
+        DateTime logtime = DateTime.Now;
+        string directoryPath = "./Logs/GuidedTourLog";  
+        CheckDirectory(directoryPath);  // create directory if it does not exist
+        string textPath = $"./Logs/GuidedTourLog/{currentDate:dd-MM-yyyy}_GuidedTourLog.txt";
+        string Log = $"{logtime}: TourTime({TourTime}) {ticketcode} {name} has joined the tour";
+
+        WriteLog(textPath, Log);
     }
     private void WriteLog(string filePath, string log)
     {
@@ -45,7 +57,7 @@ public class SavedToursHistory
             Console.WriteLine($"An error occurred while writing to the log file: {ex.Message}");
         }
     }
-    public void CheckDirectory(string directoryPath)
+    private void CheckDirectory(string directoryPath)
     {
         if (!Directory.Exists(directoryPath))
         {
@@ -85,7 +97,7 @@ public class SavedToursHistory
         }
         Console.WriteLine();
     }
-    public void JSONWriter(string TourData, string filePath, DateTime currentDate)
+    private void JSONWriter(string TourData, string filePath, DateTime currentDate)
     {
         StreamWriter writer = new StreamWriter(filePath);
         string jsonData = TourData;
