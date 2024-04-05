@@ -74,7 +74,7 @@ public class ReservationManager
 
 
 
-    public bool EditReservation(string ticketCode, int newTourHour)
+    public bool EditReservation(string ticketCode, DateTime newTourDateTime)
     {
         string reservationsFilePath = "./JSON-Files/reservations.json";
         var reservations = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(reservationsFilePath)) ?? new List<dynamic>();
@@ -82,15 +82,15 @@ public class ReservationManager
         var reservation = reservations.FirstOrDefault(r => r.TicketCode == ticketCode);
         if (reservation != null)
         {
-            // Directly using TourHour, assuming it's always an integer.
-            int oldHour = (int)reservation.TourHour;
+            // Parse the old tour time as DateTime
+            DateTime oldTourDateTime = DateTime.Parse(reservation.TourHour.ToString());
 
-            // Attempt to update the tour hour for the visitor.
-            bool updateSuccess = guidedTour.UpdateVisitorTour(ticketCode, newTourHour);
+            // Attempt to update the tour time for the visitor.
+            bool updateSuccess = guidedTour.UpdateVisitorTour(ticketCode, newTourDateTime);
             if (updateSuccess)
             {
-                // Update the reservation details.
-                reservation.TourHour = newTourHour;
+                // Update the reservation details with the new tour time.
+                reservation.TourHour = newTourDateTime.ToString("o"); // Using the round-trip format specifier
 
                 // Write the changes back to the reservations file.
                 File.WriteAllText(reservationsFilePath, JsonConvert.SerializeObject(reservations, Formatting.Indented));
@@ -115,6 +115,7 @@ public class ReservationManager
     }
 
 
+
     public void CancelReservation(string ticketCode)
     {
         string reservationsFilePath = "./JSON-Files/reservations.json";
@@ -123,20 +124,26 @@ public class ReservationManager
         var reservationToRemove = reservations.FirstOrDefault(r => r.TicketCode == ticketCode);
         if (reservationToRemove != null)
         {
-            // Accessing TourHour directly assuming it's always present and is an integer.
-            int tourHour = (int)reservationToRemove.TourHour;
-
-            reservations.Remove(reservationToRemove);
-            File.WriteAllText(reservationsFilePath, JsonConvert.SerializeObject(reservations, Formatting.Indented));
-
-            if (guidedTour.RemoveVisitorFromTour(tourHour, ticketCode))
+            // Assuming reservationToRemove.TourHour is a date-time string in the JSON file.
+            DateTime tourDateTime;
+            if (DateTime.TryParse(reservationToRemove.TourHour.ToString(), out tourDateTime))
             {
-                Console.WriteLine("Reservation cancelled successfully.");
-                guidedTour.SaveGuidedToursToFile(); // Save the tours after updating
+                reservations.Remove(reservationToRemove);
+                File.WriteAllText(reservationsFilePath, JsonConvert.SerializeObject(reservations, Formatting.Indented));
+
+                if (guidedTour.RemoveVisitorFromTour(tourDateTime, ticketCode))
+                {
+                    Console.WriteLine("Reservation cancelled successfully.");
+                    guidedTour.SaveGuidedToursToFile(); // Save the tours after updating
+                }
+                else
+                {
+                    Console.WriteLine("Failed to remove the visitor from the guided tour.");
+                }
             }
             else
             {
-                Console.WriteLine("Failed to remove the visitor from the guided tour.");
+                Console.WriteLine("Failed to parse the tour hour from the reservation.");
             }
         }
         else
@@ -144,6 +151,7 @@ public class ReservationManager
             Console.WriteLine("Reservation not found.");
         }
     }
+
 
 
     public void SaveReservation(Visitor visitor)
@@ -158,7 +166,7 @@ public class ReservationManager
 
         // Look for an existing reservation with the same TicketCode and TourHour.
         var existingReservation = reservations
-            .FirstOrDefault(r => r.TicketCode == visitor.TicketCode && r.TourHour == visitor.RondleidingChoice);
+            .FirstOrDefault(r => r.TicketCode == visitor.TicketCode && r.TourHour == visitor.TourTime);
 
         if (existingReservation != null)
         {
@@ -171,7 +179,7 @@ public class ReservationManager
             var newReservation = new
             {
                 TicketCode = visitor.TicketCode,
-                TourHour = visitor.RondleidingChoice,
+                TourHour = visitor.TourTime,
                 Visitors = new List<string> { visitor.Name }
             };
 

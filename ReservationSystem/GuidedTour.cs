@@ -94,21 +94,19 @@ public class GuidedTour
     }
 
 
-    public bool JoinTour(int hour, Visitor visitor)
+    public bool JoinTour(DateTime tourTime, Visitor visitor)
     {
-        DateTime tourTime = DateTime.Today.AddHours(hour);
-
-        // Ensure the hour is within the start and end times.
+        // Ensure the tourTime is within the start and end times.
         if (tourTime < StartTime || tourTime > EndTime)
         {
-            Console.WriteLine("The chosen hour is outside the tour operation hours.");
+            Console.WriteLine("The chosen time is outside the tour operation hours.");
             return false;
         }
 
         // If we get here, the tour is either full or the hour doesn't have a slot.
         if (!TourSlots.ContainsKey(tourTime))
         {
-            Console.WriteLine("There is no tour at the chosen hour.");
+            Console.WriteLine("There is no tour at the chosen time.");
             return false;
         }
 
@@ -116,21 +114,22 @@ public class GuidedTour
         if (TourSlots[tourTime].Count < MaxCapacity)
         {
             TourSlots[tourTime].Add(visitor);
+            Console.WriteLine($"{visitor.Name} has successfully joined the tour at {tourTime.ToString("h:mm tt")}");
             return true;
         }
-
-        Console.WriteLine("The chosen tour is full.");
-        return false;
+        else
+        {
+            Console.WriteLine("The chosen tour is full.");
+            return false;
+        }
     }
 
 
 
-    public bool UpdateVisitorTour(string ticketCode, int newTourHour)
+
+    public bool UpdateVisitorTour(string ticketCode, DateTime newTourDateTime)
     {
         bool anyUpdates = false; // Flag to track if any updates were made
-
-        // Convert the newTourHour to a DateTime object. Assuming the tour date is today.
-        DateTime newTourDateTime = DateTime.Today.AddHours(newTourHour);
 
         try
         {
@@ -182,13 +181,12 @@ public class GuidedTour
     }
 
 
-    public bool RemoveVisitorFromTour(int tourHour, string ticketCode)
+
+    public bool RemoveVisitorFromTour(DateTime tourDateTime, string ticketCode)
     {
         bool removedAnyVisitor = false;
 
-        // Convert the tourHour to a DateTime object. Assuming the tour date is today.
-        DateTime tourDateTime = DateTime.Today.AddHours(tourHour);
-
+        // No need to convert tourHour; we are already getting a DateTime object as tourDateTime.
         if (TourSlots.TryGetValue(tourDateTime, out List<Visitor> visitors))
         {
             // Use a loop to continuously find and remove visitors with the matching ticketCode
@@ -205,6 +203,7 @@ public class GuidedTour
 
         return removedAnyVisitor;
     }
+
 
 
 
