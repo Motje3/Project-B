@@ -17,7 +17,7 @@ public class SavedToursHistory
         DateTime logtime = DateTime.Now;
         string directoryPath = "./Logs/TourReservationLog"; 
         CheckDirectory(directoryPath);  // create directory if it does no exist
-        string textPath = $"./Logs/TourReservationLog/{currentDate:dd-MM-yyyy}_TourReservationManagerLog.txt";
+        string textPath = $"./Logs/TourReservationLog/{currentDate:dd-MM-yyyy}_TourReservationLog.txt";
         string Log = IsCancel
             // checks bool to log aproperiate string
             ? $"{logtime}: {ticketcode} {name} canceled his/her tour on {TourTime}" 
