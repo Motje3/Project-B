@@ -10,29 +10,26 @@ public class SavedToursHistory
         Day = null;
     }
     
-    public void LogCancelation(string name, string ticketcode, DateTime TourTime) // TourTime can be string depending on impletation
+    public void LogReservation(string name, string ticketcode, DateTime TourTime, bool IsCancel)  // true for cancel tour, false for regester tour.
     {
-        // need cancelation data
+        // bool RegOrCan: true for Registration, false for Canelation
         DateTime currentDate = DateTime.Today;
         DateTime logtime = DateTime.Now;
-        string textPath = $"./Logs/TourData_{currentDate:dd-MM-yyyy}.txt";
-        string Log = $"{logtime}: {ticketcode} {name} canceled his/her tour on {TourTime}";
-        WriteLog(textPath, Log);
-    }
-    public void LogRegestration(string name, string ticketcode, DateTime TourTime) // TourTime can be string depending on impletation
-    { 
-        // need registration data
-        DateTime currentDate = DateTime.Today;
-        DateTime logtime = DateTime.Now;
-        string textPath = $"./Logs/TourData_{currentDate:dd-MM-yyyy}.txt";
-        string Log = $"{logtime}: {ticketcode} {name} registerd for tour on {TourTime}";
+        string directoryPath = "./Logs/TourReservationLog"; 
+        CheckDirectory(directoryPath);  // create directory if it does no exist
+        string textPath = $"./Logs/TourReservationLog/{currentDate:dd-MM-yyyy}_TourReservationManager.txt";
+        string Log = IsCancel
+            // checks bool to log aproperiate string
+            ? $"{logtime}: {ticketcode} {name} canceled his/her tour on {TourTime}" 
+            : $"{logtime}: {ticketcode} {name} registered for tour on {TourTime}";
+
         WriteLog(textPath, Log);
     }
     public void LogTourchange(string name, string ticketcode, DateTime OldTourTime, DateTime NewTourTime) // old for cancelation, new for Regestration
     {
         // logic here is that it will cancel, and register with same ticket code.
-        this.LogCancelation(name, ticketcode, OldTourTime);
-        this.LogRegestration(name, ticketcode, NewTourTime);
+        this.LogReservation(name, ticketcode, OldTourTime, false);
+        this.LogReservation(name, ticketcode, NewTourTime, true);
     }
     private void WriteLog(string filePath, string log)
     {
@@ -48,6 +45,15 @@ public class SavedToursHistory
             Console.WriteLine($"An error occurred while writing to the log file: {ex.Message}");
         }
     }
+    public void CheckDirectory(string directoryPath)
+    {
+        if (!Directory.Exists(directoryPath))
+        {
+            Directory.CreateDirectory(directoryPath);
+        }
+    }
+    
+    // this method MIGHT not be used.
     public void CreateTourHistory()
     {
         DateTime currentDate = DateTime.Today;
@@ -83,6 +89,7 @@ public class SavedToursHistory
     {
         StreamWriter writer = new StreamWriter(filePath);
         string jsonData = TourData;
+        Console.WriteLine(jsonData);
         writer.Write(JsonConvert.SerializeObject(jsonData));
         writer.Close();
     }
