@@ -1,25 +1,20 @@
 using Newtonsoft.Json;
 public class ToursHistory
 {
-    public DateTime? Day;  // tracks current day
-    
-    public ToursHistory()
-    {
-        Day = null;
-    }
-    public void LogReservation(string name, string ticketcode, DateTime TourTime, bool IsCancel)  // true for cancel tour, false for regester tour.
+    public void LogReservation(string name, string ticketcode, DateTime tourtime, bool IsCancel)  // true for cancel tour, false for regester tour.
     {
         // bool RegOrCan: true for Registration, false for Canelation
         DateTime currentDate = DateTime.Today;
         DateTime logtime = DateTime.Now;
         string strlogtime = logtime.ToString("HH:mm");  // This ensures only the clock will be displayed
+        string strtourtime = tourtime.ToString("HH:mm");
         string directoryPath = "./Logs/TourReservationLog"; 
         CheckDirectory(directoryPath);  // create directory if it does no exist
         string textPath = $"./Logs/TourReservationLog/{currentDate:dd-MM-yyyy}_TourReservationLog.txt";  // create new textfile at current day
         string Log = IsCancel
             // checks bool to log aproperiate string
-            ? $"{strlogtime}: {ticketcode} {name} canceled his/her tour on {TourTime}"  // true
-            : $"{strlogtime}: {ticketcode} {name} registered for tour on {TourTime}";  // false
+            ? $"{strlogtime}: {ticketcode} {name} canceled his/her tour on {strtourtime}"  // true
+            : $"{strlogtime}: {ticketcode} {name} registered for tour on {strtourtime}";  // false
 
         WriteLog(textPath, Log);
     }
@@ -29,16 +24,17 @@ public class ToursHistory
         this.LogReservation(name, ticketcode, OldTourTime, false);
         this.LogReservation(name, ticketcode, NewTourTime, true);
     }
-    public void LogGuidedTour(string name, string ticketcode, DateTime TourTime)  // this only logs joined tours in DIFFRENT folder 
+    public void LogGuidedTour(string name, string ticketcode, DateTime tourtime)  // this logs joined tours in DIFFRENT folder 
     {
         // bool RegOrCan: true for Registration, false for Canelation
         DateTime currentDate = DateTime.Today;
         DateTime logtime = DateTime.Now;
         string strlogtime = logtime.ToString("HH:mm");  // This ensures only the clock will be displayed
+        string strtourtime = tourtime.ToString("HH:mm");
         string directoryPath = "./Logs/GuidedTourLog";  
         CheckDirectory(directoryPath);  // create directory if it does not exist
         string textPath = $"./Logs/GuidedTourLog/{currentDate:dd-MM-yyyy}_GuidedTourLog.txt";  // create new textfile at current day
-        string Log = $"{strlogtime}: TourTime({TourTime}) {ticketcode} {name} has joined the tour";
+        string Log = $"{strlogtime}: TourTime[{strtourtime}] {ticketcode} {name} has joined the tour";  // this log will be written/appended to log
 
         WriteLog(textPath, Log);
     }
