@@ -13,8 +13,8 @@ public class ToursHistory
         string textPath = $"./Logs/TourReservationLog/{currentDate:dd-MM-yyyy}_TourReservationLog.txt";  // create new textfile at current day
         string Log = IsCancel
             // checks bool to log aproperiate string
-            ? $"{strlogtime}: {ticketcode} {name} canceled his/her tour on {strtourtime}"  // true
-            : $"{strlogtime}: {ticketcode} {name} registered for tour on {strtourtime}";  // false
+            ? $"{strlogtime}: {ticketcode} {name} canceled his/her tour on {tourtime}"  // true
+            : $"{strlogtime}: {ticketcode} {name} registered for tour on {tourtime}";  // false
 
         WriteLog(textPath, Log);
     }

@@ -18,10 +18,10 @@ namespace TestTourHistory
             Assert.IsTrue(result);
 
             DateTime logtime = DateTime.Now;
-            string strtourtime = TourTime.ToString("HH:mm");
+            // string strtourtime = TourTime.ToString("HH:mm");
             string strlogtime = logtime.ToString("HH:mm");
-            string matchRegistration = $"{strlogtime}: CODE-0001 DEV1 registered for tour on {strtourtime}"; // match for index [-2] of text file // false
-            string matchCancel = $"{strlogtime}: CODE-0001 DEV1 canceled his/her tour on {strtourtime}"; // match for index [-1] of text file // true
+            string matchRegistration = $"{strlogtime}: CODE-0001 DEV1 registered for tour on {TourTime}"; // match for index [-2] of text file // false
+            string matchCancel = $"{strlogtime}: CODE-0001 DEV1 canceled his/her tour on {TourTime}"; // match for index [-1] of text file // true
 
             string[] lines = File.ReadAllLines(textPath);
             string lastLine = lines[^1]; // Python equivalent of lines[-1]
