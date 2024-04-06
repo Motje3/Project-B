@@ -12,13 +12,17 @@ public class GuidedTour
 
     public GuidedTour()
     {
+        TourSlots = new Dictionary<DateTime, List<Visitor>>();
         LoadTourSettings();
-        InitializeTourSlots();
+        InitializeTourSlotsForToday(); // Now it's safe to call this
     }
+
+
 
     private void LoadTourSettings()
     {
         string filePath = "./JSON-Files/TourSettings.json";
+
         if (File.Exists(filePath))
         {
             try
@@ -26,43 +30,72 @@ public class GuidedTour
                 string json = File.ReadAllText(filePath);
                 dynamic settings = JsonConvert.DeserializeObject(json);
 
-                string startTimeString = settings?.StartTime ?? "2024-04-05T09:00:00";
-                string endTimeString = settings?.EndTime ?? "2024-04-05T17:00:00";
-                StartTime = DateTime.Parse(startTimeString);
-                EndTime = DateTime.Parse(endTimeString);
+                // Assuming the times in settings are for the current day
+                DateTime today = DateTime.Today;
+                DateTime startDateTime = DateTime.Parse((string)settings?.StartTime);
+                DateTime endDateTime = DateTime.Parse((string)settings?.EndTime);
+
+                // Use today's date but the time from settings
+                StartTime = new DateTime(today.Year, today.Month, today.Day, startDateTime.Hour, startDateTime.Minute, 0);
+                EndTime = new DateTime(today.Year, today.Month, today.Day, endDateTime.Hour, endDateTime.Minute, 0);
+
                 TourInterval = TimeSpan.FromMinutes((int)(settings?.TourInterval ?? 20));
                 MaxCapacity = (int)(settings?.MaxCapacity ?? 13);
             }
-            catch (FormatException ex)
+            catch (Exception ex)
             {
-                Console.WriteLine($"Error parsing tour settings: {ex.Message}");
-                // Handle the error appropriately, perhaps setting default values
+                Console.WriteLine($"Error loading tour settings: {ex.Message}");
+                // Handle the error, possibly by setting default values
             }
         }
         else
         {
             Console.WriteLine("Tour settings file not found. Using default settings.");
-            StartTime = DateTime.Parse("2024-04-05T09:00:00");
-            EndTime = DateTime.Parse("2024-04-05T17:00:00");
-            TourInterval = TimeSpan.FromMinutes(20);
-            MaxCapacity = 13;
+            // Set default values if needed
         }
     }
 
 
 
 
-    private void InitializeTourSlots()
-    {
-        TourSlots = new Dictionary<DateTime, List<Visitor>>();
-        DateTime slotTime = StartTime;
 
-        while (slotTime < EndTime)
+    private void InitializeTourSlotsForToday()
+    {
+        ClearTourSlots();
+
+        DateTime today = DateTime.Today;
+        DateTime startTimeToday = new DateTime(today.Year, today.Month, today.Day, StartTime.Hour, StartTime.Minute, 0);
+        DateTime endTimeToday = new DateTime(today.Year, today.Month, today.Day, EndTime.Hour, EndTime.Minute, 0);
+
+        // Debugging output
+        Console.WriteLine($"Initializing slots from {startTimeToday} to {endTimeToday}");
+
+        DateTime slotTime = startTimeToday;
+        while (slotTime < endTimeToday)
         {
-            TourSlots.Add(slotTime, new List<Visitor>());
+            if (!TourSlots.ContainsKey(slotTime))
+            {
+                TourSlots.Add(slotTime, new List<Visitor>());
+                // More debugging output for each slot
+            }
             slotTime = slotTime.Add(TourInterval);
         }
     }
+
+
+    private void ClearTourSlots()
+    {
+        if (TourSlots == null)
+        {
+            TourSlots = new Dictionary<DateTime, List<Visitor>>();
+        }
+        else
+        {
+            TourSlots.Clear();
+        }
+    }
+
+
 
     public void ListAvailableTours(int numberOfPeopleAttemptingToJoin)
     {
@@ -71,15 +104,11 @@ public class GuidedTour
         Console.WriteLine("Available tour times:");
         foreach (var slot in TourSlots)
         {
-            // Ensure the slot is in the future
-            if (slot.Key > now)
+            if ((slot.Value.Count + numberOfPeopleAttemptingToJoin) <= MaxCapacity)
             {
-                // Check if the tour slot plus the new participants does not exceed MaxCapacity
-                if ((slot.Value.Count + numberOfPeopleAttemptingToJoin) <= MaxCapacity)
-                {
-                    Console.WriteLine($"{slot.Key.ToString("h:mm tt")} - {slot.Value.Count} participants");
-                }
+                Console.WriteLine($"{slot.Key.ToString("MM/dd/yyyy h:mm tt")} - {slot.Value.Count} participants");
             }
+
         }
     }
 
@@ -108,7 +137,6 @@ public class GuidedTour
             return false;
         }
 
-
         // If we get here, the tour is either full or the hour doesn't have a slot.
         if (!TourSlots.ContainsKey(tourTime))
         {
@@ -116,11 +144,11 @@ public class GuidedTour
             return false;
         }
 
-        if (tourTime <= DateTime.Now)
-        {
-            Console.WriteLine("Cannot join a tour that has already started or passed.");
-            return false;
-        }
+        // if (tourTime <= DateTime.Now)
+        // {
+        //     Console.WriteLine("Cannot join a tour that has already started or passed.");
+        //     return false;
+        // }
 
         // Check if the slot exists and is not full.
         if (TourSlots[tourTime].Count < MaxCapacity)
@@ -253,31 +281,36 @@ public class GuidedTour
 
     public void ArchiveGuidedToursFile()
     {
-        // The folder path for the JSON files
-        string jsonFilesFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "JSON-Files");
-        // The folder path for the Guided Tours archive within the JSON-Files folder
-        string archiveFolderPath = Path.Combine(jsonFilesFolderPath, "GuidedTours");
-
-        // Ensure the GuidedTours archive folder exists
-        if (!Directory.Exists(archiveFolderPath))
+        try
         {
-            Directory.CreateDirectory(archiveFolderPath);
-        }
+            string targetBasePath = @"C:\Users\moham\Desktop\School\Project-B\Project-B\ReservationSystem";
+            string jsonFilesFolderPath = Path.Combine(targetBasePath, "JSON-Files");
+            string archiveFolderPath = Path.Combine(jsonFilesFolderPath, "GuidedTours");
+            string sourceFilePath = Path.Combine(jsonFilesFolderPath, "guidedTours.json");
+            string archiveFilePath = Path.Combine(archiveFolderPath, $"guidedTours_{DateTime.Now:yyyyMMdd}.json");
 
-        // The path for the current guidedTours.json file
-        string sourceFilePath = Path.Combine(jsonFilesFolderPath, "guidedTours.json");
-        // The path where the archive file will be saved
-        string archiveFilePath = Path.Combine(archiveFolderPath, $"guidedTours_{DateTime.Now.ToString("yyyyMMdd")}.json");
+            if (!Directory.Exists(archiveFolderPath))
+            {
+                Directory.CreateDirectory(archiveFolderPath);
+            }
 
-        // Only copy the file if today's archive does not already exist
-        if (!File.Exists(archiveFilePath))
-        {
+            // Copy the file to the archive, overwriting the existing file if it's already there
             if (File.Exists(sourceFilePath))
             {
-                File.Copy(sourceFilePath, archiveFilePath);
+                File.Copy(sourceFilePath, archiveFilePath, true); // Set 'true' to overwrite existing files
+                Console.WriteLine($"Archive updated successfully at: {archiveFilePath}");
+            }
+            else
+            {
+                Console.WriteLine("Source file not found. Cannot archive.");
             }
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred during archiving: {ex.Message}");
+        }
     }
+
 
 
     public bool UpdateMaxCapacity(int newCapacity)

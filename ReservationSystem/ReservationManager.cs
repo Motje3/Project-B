@@ -12,12 +12,14 @@ public class ReservationManager
     }
 
     public ReservationManager()
+
     {
         validator = new EntreeCodeValidator();
         guidedTour = new GuidedTour();
         menumanager = new MenuManager(this, guidedTour); // Pass the same GuidedTour instance
         guidedTour.LoadToursFromFile("./JSON-Files/guidedTours.json");
         _tickets = Ticket.LoadTicketsFromFile("./JSON-Files/OnlineTickets.json");
+
     }
 
     public void ValidateCodeAndProcessReservations()
@@ -27,6 +29,7 @@ public class ReservationManager
         {
             Console.WriteLine("Enter your unique ticket code:");
             string userCode = Console.ReadLine();
+
 
             if (userCode == "123")
             {

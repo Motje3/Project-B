@@ -25,6 +25,7 @@ public class MenuManager
             switch (choice)
             {
                 case "1":
+                
                     var ticket = _reservationManager.Tickets.FirstOrDefault(t => t.TicketCode == ticketCode);
                     if (ticket == null)
                     {
@@ -34,7 +35,11 @@ public class MenuManager
 
                     int numberOfPeople = ticket.NumberOfPeople;
                     _guidedTour.ListAvailableTours(numberOfPeople);
+
+
                     Console.WriteLine($"\nPlease enter the time of the tour you wish to join (e.g., '1:00 PM') between {_guidedTour.StartTime.ToString("h:mm tt")} to {_guidedTour.EndTime.ToString("h:mm tt")}:");
+
+                    
 
                     string inputTime = Console.ReadLine();
                     if (DateTime.TryParseExact(inputTime, new[] { "h:mm tt" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime chosenTourTime))
