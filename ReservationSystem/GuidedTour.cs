@@ -101,12 +101,13 @@ public class GuidedTour
 
     public bool JoinTour(DateTime tourTime, Visitor visitor)
     {
-        // Ensure the tourTime is within the start and end times.
+
         if (tourTime < StartTime || tourTime > EndTime)
         {
             Console.WriteLine("The chosen time is outside the tour operation hours.");
             return false;
         }
+
 
         // If we get here, the tour is either full or the hour doesn't have a slot.
         if (!TourSlots.ContainsKey(tourTime))
@@ -218,6 +219,8 @@ public class GuidedTour
 
     public void SaveGuidedToursToFile()
     {
+        ArchiveGuidedToursFile();
+
         var tourData = TourSlots.ToDictionary(
             entry => entry.Key.ToString("yyyy-MM-dd HH:mm"), // Space instead of 'T'
                                                              // Or, use another character like: entry.Key.ToString("yyyy-MM-dd_HH:mm")
@@ -244,6 +247,34 @@ public class GuidedTour
             {
                 // Clear the existing slots and replace them with the loaded data
                 TourSlots = loadedTourSlots;
+            }
+        }
+    }
+
+    public void ArchiveGuidedToursFile()
+    {
+        // The folder path for the JSON files
+        string jsonFilesFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "JSON-Files");
+        // The folder path for the Guided Tours archive within the JSON-Files folder
+        string archiveFolderPath = Path.Combine(jsonFilesFolderPath, "GuidedTours");
+
+        // Ensure the GuidedTours archive folder exists
+        if (!Directory.Exists(archiveFolderPath))
+        {
+            Directory.CreateDirectory(archiveFolderPath);
+        }
+
+        // The path for the current guidedTours.json file
+        string sourceFilePath = Path.Combine(jsonFilesFolderPath, "guidedTours.json");
+        // The path where the archive file will be saved
+        string archiveFilePath = Path.Combine(archiveFolderPath, $"guidedTours_{DateTime.Now.ToString("yyyyMMdd")}.json");
+
+        // Only copy the file if today's archive does not already exist
+        if (!File.Exists(archiveFilePath))
+        {
+            if (File.Exists(sourceFilePath))
+            {
+                File.Copy(sourceFilePath, archiveFilePath);
             }
         }
     }

@@ -43,7 +43,7 @@ public class MenuManager
 
                         if (chosenTourTime < _guidedTour.StartTime || chosenTourTime > _guidedTour.EndTime)
                         {
-                            Console.WriteLine("The chosen time is outside the tour operation hours.");
+                            Console.WriteLine("The chosen time is outside the tour operation hours!!!");
                             break;
                         }
 
@@ -127,7 +127,7 @@ public class MenuManager
 
                             if (newTourDateTime < _guidedTour.StartTime || newTourDateTime > _guidedTour.EndTime)
                             {
-                                Console.WriteLine("The chosen time is outside the tour operation hours.");
+                                Console.WriteLine("The chosen time is outside the tour operation hours!!");
                                 continue; // Ask for input again
                             }
 
