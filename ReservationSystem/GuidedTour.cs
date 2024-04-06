@@ -116,11 +116,11 @@ public class GuidedTour
             return false;
         }
 
-        // if (tourTime <= DateTime.Now)
-        // {
-        //     Console.WriteLine("Cannot join a tour that has already started or passed.");
-        //     return false;
-        // }
+        if (tourTime <= DateTime.Now)
+        {
+            Console.WriteLine("Cannot join a tour that has already started or passed.");
+            return false;
+        }
 
         // Check if the slot exists and is not full.
         if (TourSlots[tourTime].Count < MaxCapacity)
