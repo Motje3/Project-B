@@ -14,29 +14,37 @@ public class ReservationManager
     public ReservationManager()
 
     {
-        
+
         validator = new EntreeCodeValidator();
         guidedTour = new GuidedTour();
         menumanager = new MenuManager(this, guidedTour); // Pass the same GuidedTour instance
         guidedTour.LoadToursFromFile("./JSON-Files/guidedTours.json");
         _tickets = Ticket.LoadTicketsFromFile("./JSON-Files/OnlineTickets.json");
-        DebugTourDates();
 
     }
-
-    public void DebugTourDates()
+    private void DebugTourDates()
     {
-        foreach (var tourSlot in guidedTour.TourSlots)
+        if (guidedTour.TourSlots != null)
         {
-            Console.WriteLine($"Tour Date and Time: {tourSlot.Key.ToString("yyyy-MM-dd HH:mm:ss")} with {tourSlot.Value.Count} participant(s)");
+            foreach (var tourSlot in guidedTour.TourSlots)
+            {
+                Console.WriteLine($"Tour Date and Time: {tourSlot.Key.ToString("yyyy-MM-dd HH:mm:ss")} with {tourSlot.Value.Count} participant(s)");
+            }
+        }
+        else
+        {
+            Console.WriteLine("TourSlots is null.");
         }
     }
+
+
 
     public void ValidateCodeAndProcessReservations()
     {
         bool isValidCode = false;
         while (!isValidCode)
         {
+            DebugTourDates();
             Console.WriteLine("Enter your unique ticket code:");
             string userCode = Console.ReadLine();
 

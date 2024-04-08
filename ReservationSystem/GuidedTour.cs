@@ -17,8 +17,6 @@ public class GuidedTour
         InitializeTourSlotsForToday(); // Now it's safe to call this
     }
 
-
-
     private void LoadTourSettings()
     {
         string filePath = "./JSON-Files/TourSettings.json";
@@ -60,6 +58,7 @@ public class GuidedTour
         }
     }
 
+    
 
 
     private void InitializeTourSlotsForToday()

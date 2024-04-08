@@ -23,4 +23,5 @@ public class EntreeCodeValidator
     {
         return tickets.FirstOrDefault(t => t.TicketCode == code);
     }
+
 }
