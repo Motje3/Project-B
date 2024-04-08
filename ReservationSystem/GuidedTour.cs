@@ -6,7 +6,7 @@ public class GuidedTour
 {
     public DateTime StartTime { get; private set; }
     public DateTime EndTime { get; private set; }
-    public TimeSpan TourInterval { get; private set; } = TimeSpan.FromMinutes(20); // Default to 20 minutes
+    public TimeSpan TourInterval { get; private set; }
     public int MaxCapacity { get; private set; }
     public Dictionary<DateTime, List<Visitor>> TourSlots { get; private set; }
 
@@ -30,14 +30,14 @@ public class GuidedTour
                 string json = File.ReadAllText(filePath);
                 dynamic settings = JsonConvert.DeserializeObject(json);
 
-                // Assuming the times in settings are for the current day
-                DateTime today = DateTime.Today;
-                DateTime startDateTime = DateTime.Parse((string)settings?.StartTime);
-                DateTime endDateTime = DateTime.Parse((string)settings?.EndTime);
+                // Parse the times as TimeSpan objects
+                TimeSpan startTimeSpan = TimeSpan.Parse((string)settings?.StartTime);
+                TimeSpan endTimeSpan = TimeSpan.Parse((string)settings?.EndTime);
 
-                // Use today's date but the time from settings
-                StartTime = new DateTime(today.Year, today.Month, today.Day, startDateTime.Hour, startDateTime.Minute, 0);
-                EndTime = new DateTime(today.Year, today.Month, today.Day, endDateTime.Hour, endDateTime.Minute, 0);
+                // Combine today's date with the loaded times
+                DateTime today = DateTime.Today;
+                StartTime = today.Add(startTimeSpan);
+                EndTime = today.Add(endTimeSpan);
 
                 TourInterval = TimeSpan.FromMinutes((int)(settings?.TourInterval ?? 20));
                 MaxCapacity = (int)(settings?.MaxCapacity ?? 13);
@@ -51,11 +51,14 @@ public class GuidedTour
         else
         {
             Console.WriteLine("Tour settings file not found. Using default settings.");
-            // Set default values if needed
+
+            DateTime today = DateTime.Today;
+            StartTime = today.AddHours(9); // Start at 9 AM today
+            EndTime = today.AddHours(17); // End at 5 PM today
+            TourInterval = TimeSpan.FromMinutes(20); // 20-minute interval between tours
+            MaxCapacity = 13; // Default maximum capacity
         }
     }
-
-
 
 
 
@@ -265,17 +268,35 @@ public class GuidedTour
 
     public void LoadToursFromFile(string filePath)
     {
-        if (File.Exists(filePath))
+        try
         {
-            string json = File.ReadAllText(filePath);
-            // Adjust the deserialization to handle DateTime keys
-            var loadedTourSlots = JsonConvert.DeserializeObject<Dictionary<DateTime, List<Visitor>>>(json);
-
-            if (loadedTourSlots != null)
+            if (File.Exists(filePath))
             {
-                // Clear the existing slots and replace them with the loaded data
-                TourSlots = loadedTourSlots;
+                string json = File.ReadAllText(filePath);
+                var loadedTourSlots = JsonConvert.DeserializeObject<Dictionary<DateTime, List<Visitor>>>(json);
+
+                if (loadedTourSlots != null)
+                {
+                    ClearTourSlots();
+                    TourSlots = loadedTourSlots;
+                }
+                else
+                {
+                    Console.WriteLine("couldnt findtours so intilizing for today");
+                    InitializeTourSlotsForToday();
+                }
             }
+            else
+            {
+                // If the file does not exist, initialize tours for today
+                InitializeTourSlotsForToday();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred while loading tours: {ex.Message}");
+            // Optionally initialize tours for today even in case of error, or handle differently
+            InitializeTourSlotsForToday();
         }
     }
 

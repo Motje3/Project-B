@@ -16,7 +16,7 @@ public class MenuManager
         bool loopOption = true;
         while (loopOption)
         {
-            Console.WriteLine("\nPlease choose an option:");
+            Console.WriteLine("\nPlease choose an option:");            
             Console.WriteLine("1. Join a tour");
             Console.WriteLine("2. Exit");
             Console.Write("\nEnter your choice: ");

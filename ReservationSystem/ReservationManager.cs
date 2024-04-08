@@ -14,12 +14,22 @@ public class ReservationManager
     public ReservationManager()
 
     {
+        
         validator = new EntreeCodeValidator();
         guidedTour = new GuidedTour();
         menumanager = new MenuManager(this, guidedTour); // Pass the same GuidedTour instance
         guidedTour.LoadToursFromFile("./JSON-Files/guidedTours.json");
         _tickets = Ticket.LoadTicketsFromFile("./JSON-Files/OnlineTickets.json");
+        DebugTourDates();
 
+    }
+
+    public void DebugTourDates()
+    {
+        foreach (var tourSlot in guidedTour.TourSlots)
+        {
+            Console.WriteLine($"Tour Date and Time: {tourSlot.Key.ToString("yyyy-MM-dd HH:mm:ss")} with {tourSlot.Value.Count} participant(s)");
+        }
     }
 
     public void ValidateCodeAndProcessReservations()

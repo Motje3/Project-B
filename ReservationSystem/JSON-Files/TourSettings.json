@@ -1,6 +1,6 @@
 {
-    "StartTime": "2024-04-06T09:00:00",
-    "EndTime": "2024-04-06T17:00:00",
-    "TourInterval": 20,
-    "MaxCapacity": 13
-  }
+  "StartTime": "09:00:00",
+  "EndTime": "17:00:00",
+  "TourInterval": 20,
+  "MaxCapacity": 13
+}
