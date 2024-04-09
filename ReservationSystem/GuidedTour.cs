@@ -108,7 +108,7 @@ public class GuidedTour
         {
             if ((slot.Value.Count + numberOfPeopleAttemptingToJoin) <= MaxCapacity)
             {
-                Console.WriteLine($"{slot.Key.ToString("MM/dd/yyyy h:mm tt")} - {slot.Value.Count} participants");
+                Console.WriteLine($"{slot.Key.ToString("MM/dd/yyyy h:mm tt")}");
             }
 
         }
