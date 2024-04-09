@@ -146,7 +146,7 @@ public class GuidedTour
         }
         else
         {
-            Console.WriteLine("The chosen tour is full.");
+            Console.WriteLine("Could not join tour.");
             return false;
         }
     }
@@ -280,7 +280,7 @@ public class GuidedTour
                 }
                 else
                 {
-                    Console.WriteLine("Couldn't find tours so initializing for today.");
+                    // Console.WriteLine("Couldn't find tours so initializing for today.");
                     InitializeTourSlotsForToday();
                 }
             }
@@ -325,7 +325,7 @@ public class GuidedTour
 
                 // Copy the file to the archive
                 File.Copy(sourceFilePath, archiveFilePath, true);
-                Console.WriteLine($"Archive updated successfully at: {archiveFilePath}");
+                // Console.WriteLine($"Archive updated successfully at: {archiveFilePath}");
             }
             else
             {
