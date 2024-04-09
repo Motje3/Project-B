@@ -7,7 +7,6 @@ public class ToursHistory
         DateTime currentDate = DateTime.Today;
         DateTime logtime = DateTime.Now;
         string strlogtime = logtime.ToString("HH:mm");  // This ensures only the clock will be displayed
-        string strtourtime = tourtime.ToString("HH:mm");
         string header = $"Reservation logger, Date: {currentDate:dd-MM-yyyy}";
         string directoryPath = "./Logs/TourReservationLog"; 
         CheckDirectory(directoryPath);  // create directory if it does no exist
@@ -52,7 +51,7 @@ public class ToursHistory
                     // Write header if the file is empty
                     writer.WriteLine(header);
                 }
-                
+
                 // Write log message
                 writer.WriteLine(log);
             }
