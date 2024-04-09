@@ -168,6 +168,8 @@ public class ToursHistory
         // 05-04-2024: 3 visitors has joined a tour
         // 06-04-2024: 9 visitors has joined a tour
         // 09-04-2024: 4 visitors has joined a tour
+
+        // Total amount of visitors from 01-01-2024 to 01-01-2025: 16
     }
     
     // this method MIGHT not be used.
