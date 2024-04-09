@@ -10,17 +10,19 @@ public class GuidedTour
     public DateTime EndTime { get; private set; }
     //public TimeSpan TourInterval { get; private set; } // To be removed
     public int MaxCapacity { get; private set; }
-    public Dictionary<DateTime, List<Visitor>> TourSlots { get; private set; }
+    public List<Visitor> Visitors{ get; private set; } = new List<Visitor>();
+    public Dictionary<DateTime, List<Visitor>> TourSlots { get; private set; } // To be removed
 
     public GuidedTour(DateTime startTime)
     {
         StartTime = startTime;
         Duration = 20; // 20 minutes
         EndTime = startTime.AddMinutes(Duration);
-
+        MaxCapacity = 13;
+        
+        
+        
         TourSlots = new Dictionary<DateTime, List<Visitor>>();
-        
-        
         //LoadTourSettings();
         //InitializeTourSlotsForToday(); // Now it's safe to call this
     }
@@ -359,6 +361,7 @@ public class GuidedTour
 
     // Static class
 
+    public static string tourJSONpath = "./JSON-Files/guidedTours.json"; 
     public static List<DateOnly> Holidays 
     {
         get;
@@ -367,6 +370,21 @@ public class GuidedTour
     static GuidedTour()
     {
         Holidays = returnHolidays(DateTime.Today.Year);
+    }
+
+    public static void AddTourToJSON(GuidedTour tour)
+    {
+        TimeOnly tourTime = TimeOnly.FromDateTime(tour.StartTime);
+        DateOnly tourDate = DateOnly.FromDateTime(tour.StartTime);
+        if (!checkIfAllowedTime(tourTime) || !checkIfAllowedDate(tourDate))
+        {
+            return;
+        }
+
+        using (StreamWriter writer = new StreamWriter(GuidedTour.tourJSONpath, true))
+        {
+            
+        }
     }
 
     private static List<DateOnly> returnHolidays(int year)
@@ -385,5 +403,56 @@ public class GuidedTour
         DateOnly Kerstmis2 = new(year, 12, 26); // Kerstmis (eerste en tweede kerstdag): woensdag 25 en donderdag 26 december 2024
 
         return new() { Nieuwjaarsdag, GoedeVrijdag, DagTussen, Pasen1, Pasen2, Koningsdag, Bevrijdingsdag, Hemelvaartsdag, Pinksteren1, Pinksteren2, Kerstmis1, Kerstmis2 };
+    }
+
+    private static List<DateOnly> returnEveryMondayThisYear()
+    {
+        List<DateOnly> mondays = new();
+        for (int dayIndex = 0; dayIndex < 365; dayIndex++)
+        {
+            DateOnly day = new(DateTime.Today.Year, 1, 1);
+            day.AddDays(dayIndex-1);
+
+            if (day.DayOfWeek == DayOfWeek.Monday)
+            {
+                mondays.Add(day);
+            }
+        }
+        return mondays;
+    }
+
+    private static bool checkIfAllowedTime(TimeOnly time)
+    {
+        List<int> allowedHours = new List<int>(){9,10,11,12,13,14,15,16,17};
+        bool allowed = true;
+
+        if (time.Minute != 0 || time.Minute != 20 || time.Minute != 40)
+        {
+            allowed = false;
+        }
+        if (!allowedHours.Contains(time.Hour))
+        {
+            allowed = false;
+        }
+
+        return allowed;
+    }
+
+    private static bool checkIfAllowedDate(DateOnly date)
+    {
+        List<DateOnly> mondays = returnEveryMondayThisYear();
+        bool allowed = true;
+
+        if(Holidays.Contains(date))
+        {
+            allowed = false;
+        }
+        
+        if (mondays.Contains(date))
+        {
+            allowed = false;
+        }
+
+        return allowed;
     }
 }
