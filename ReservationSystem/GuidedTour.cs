@@ -4,15 +4,23 @@ using System.Globalization;
 
 public class GuidedTour
 {
+    // Non-static class
+    public int Duration { get; }
     public DateTime StartTime { get; private set; }
     public DateTime EndTime { get; private set; }
     public TimeSpan TourInterval { get; private set; }
     public int MaxCapacity { get; private set; }
     public Dictionary<DateTime, List<Visitor>> TourSlots { get; private set; }
 
-    public GuidedTour()
+    public GuidedTour(DateTime startTime)
     {
+        StartTime = startTime;
+        Duration = 20; // 20 minutes
+        EndTime = startTime.AddMinutes(Duration);
+
         TourSlots = new Dictionary<DateTime, List<Visitor>>();
+        
+        
         LoadTourSettings();
         InitializeTourSlotsForToday(); // Now it's safe to call this
     }
@@ -347,5 +355,35 @@ public class GuidedTour
     public bool ChangeTourTime(int oldTourHour)
     {
         return true;
+    }
+
+    // Static class
+
+    public static List<DateOnly> Holidays 
+    {
+        get;
+    }
+    
+    static GuidedTour()
+    {
+        Holidays = returnHolidays(DateTime.Today.Year);
+    }
+
+    private static List<DateOnly> returnHolidays(int year)
+    {
+        DateOnly Nieuwjaarsdag = new(year, 1, 1); // Nieuwjaarsdag: maandag 1 januari 2024
+        DateOnly GoedeVrijdag = new(year, 3, 29); // Goede Vrijdag: vrijdag 29 maart 2024
+        DateOnly DagTussen = new(year, 3, 30); // Pasen (eerste en tweede paasdag): zondag 31 maart en maandag 1 april 2024
+        DateOnly Pasen1 = new(year, 3, 31); // Pasen (eerste en tweede paasdag): zondag 31 maart en maandag 1 april 2024
+        DateOnly Pasen2 = new(year, 4, 1); // Pasen (eerste en tweede paasdag): zondag 31 maart en maandag 1 april 2024
+        DateOnly Koningsdag = new(year, 4, 27); // Koningsdag: zaterdag 27 april 2024
+        DateOnly Bevrijdingsdag = new(year, 5, 5); // Bevrijdingsdag: zondag 5 mei 2024
+        DateOnly Hemelvaartsdag = new(year, 5, 9); // Hemelvaartsdag: donderdag 9 mei 2024
+        DateOnly Pinksteren1 = new(year, 5, 19); // Pinksteren (eerste en tweede pinksterdag): zondag 19 en maandag 20 mei 2024
+        DateOnly Pinksteren2 = new(year, 5, 20); // Pinksteren (eerste en tweede pinksterdag): zondag 19 en maandag 20 mei 2024
+        DateOnly Kerstmis1 = new(year, 12, 25); // Kerstmis (eerste en tweede kerstdag): woensdag 25 en donderdag 26 december 2024
+        DateOnly Kerstmis2 = new(year, 12, 26); // Kerstmis (eerste en tweede kerstdag): woensdag 25 en donderdag 26 december 2024
+
+        return new() { Nieuwjaarsdag, GoedeVrijdag, DagTussen, Pasen1, Pasen2, Koningsdag, Bevrijdingsdag, Hemelvaartsdag, Pinksteren1, Pinksteren2, Kerstmis1, Kerstmis2 };
     }
 }
