@@ -233,8 +233,6 @@ public class GuidedTour
 
     public void SaveGuidedToursToFile()
     {
-        ArchiveGuidedToursFile();
-
         // Filter out past tours before saving
         var filteredTourData = TourSlots
             .Where(entry => entry.Key.Date >= DateTime.Today) // Keep only today and future tours
@@ -245,9 +243,13 @@ public class GuidedTour
 
         string filePath = "./JSON-Files/guidedTours.json";
         string json = JsonConvert.SerializeObject(filteredTourData, Formatting.Indented);
-        File.WriteAllText(filePath, json);
-    }
 
+        // First, update the guidedTours.json file with the current state
+        File.WriteAllText(filePath, json);
+
+        // Then, archive this updated file
+        ArchiveGuidedToursFile();
+    }
 
 
     public void LoadToursFromFile(string filePath)
