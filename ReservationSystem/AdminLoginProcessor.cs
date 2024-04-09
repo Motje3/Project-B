@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System.Globalization;
 
 public class AdminLoginProcessor
 {
@@ -6,6 +7,39 @@ public class AdminLoginProcessor
     {
         public string Username { get; set; }
         public string Password { get; set; }
+    }
+
+    public void AnalyzeYesterdayToursAndSuggest()
+    {
+        string archiveFolderPath = "./JSON-Files/GuidedTours";
+        string yesterdayFileName = $"guidedTours_{DateTime.Today.AddDays(-1):yyyyMMdd}.json";
+        string fullPath = Path.Combine(archiveFolderPath, yesterdayFileName);
+
+        if (File.Exists(fullPath))
+        {
+            string jsonContent = File.ReadAllText(fullPath);
+            var tourData = JsonConvert.DeserializeObject<Dictionary<string, List<dynamic>>>(jsonContent); // Using dynamic for simplicity
+            if (tourData != null)
+            {
+                foreach (var tour in tourData)
+                {
+                    DateTime tourTime = DateTime.ParseExact(tour.Key, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+                    int participantCount = tour.Value.Count;
+                    if (participantCount >= 10)
+                    {
+                        Console.WriteLine($"The tour at {tourTime.ToString("HH:mm")} had high attendance with {participantCount} people. Consider adding another slot around this time.");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("No tour data found for yesterday.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Yesterday's guided tour archive file not found.");
+        }
     }
 
     public void ProcessLoginForm(GuidedTour guidedTour)
@@ -57,8 +91,9 @@ public class AdminLoginProcessor
             Console.WriteLine("\nAdmin Menu:");
             Console.WriteLine("1. Change Capacity");
             Console.WriteLine("2. View Tours");
-            Console.WriteLine("3. Cancel a Tour (Visitors tickets will be deleted)");
-            Console.WriteLine("4. Exit");
+            Console.WriteLine("3. Cancel a Tour");
+            Console.WriteLine("4. Advice for upcoming tours");
+            Console.WriteLine("5. Exit");
 
             Console.Write("\nEnter your choice: ");
             string choice = Console.ReadLine();
@@ -75,6 +110,9 @@ public class AdminLoginProcessor
                     CancelTour(guidedTour);
                     break;
                 case "4":
+                    AnalyzeYesterdayToursAndSuggest();
+                    break;
+                case "5":
                     continueRunning = false;
                     break;
                 default:
