@@ -8,7 +8,7 @@ public class GuidedTour
     public int Duration { get; }
     public DateTime StartTime { get; private set; }
     public DateTime EndTime { get; private set; }
-    public TimeSpan TourInterval { get; private set; }
+    //public TimeSpan TourInterval { get; private set; } // To be removed
     public int MaxCapacity { get; private set; }
     public Dictionary<DateTime, List<Visitor>> TourSlots { get; private set; }
 
@@ -21,11 +21,11 @@ public class GuidedTour
         TourSlots = new Dictionary<DateTime, List<Visitor>>();
         
         
-        LoadTourSettings();
-        InitializeTourSlotsForToday(); // Now it's safe to call this
+        //LoadTourSettings();
+        //InitializeTourSlotsForToday(); // Now it's safe to call this
     }
 
-    private void LoadTourSettings()
+    /*private void LoadTourSettings()
     {
         string filePath = "./JSON-Files/TourSettings.json";
 
@@ -64,12 +64,12 @@ public class GuidedTour
             TourInterval = TimeSpan.FromMinutes(20); // 20-minute interval between tours
             MaxCapacity = 13; // Default maximum capacity
         }
-    }
+    }*/
 
 
 
 
-    private void InitializeTourSlotsForToday()
+    /*private void InitializeTourSlotsForToday()
     {
         ClearTourSlots();
 
@@ -90,7 +90,7 @@ public class GuidedTour
             }
             slotTime = slotTime.Add(TourInterval);
         }
-    }
+    }*/
 
 
     private void ClearTourSlots()
@@ -283,26 +283,26 @@ public class GuidedTour
                     // Check if there are slots for today and initialize if not
                     if (!TourSlots.Keys.Any(dt => dt.Date == DateTime.Today))
                     {
-                        InitializeTourSlotsForToday();
+                        //InitializeTourSlotsForToday();
                     }
                 }
                 else
                 {
                     // Console.WriteLine("Couldn't find tours so initializing for today.");
-                    InitializeTourSlotsForToday();
+                    //InitializeTourSlotsForToday();
                 }
             }
             else
             {
                 // If the file does not exist, initialize tours for today
-                InitializeTourSlotsForToday();
+                //InitializeTourSlotsForToday();
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine($"An error occurred while loading tours: {ex.Message}");
             // Optionally initialize tours for today even in case of error, or handle differently
-            InitializeTourSlotsForToday();
+            //InitializeTourSlotsForToday();
         }
     }
 
