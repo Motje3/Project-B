@@ -22,20 +22,6 @@ public class ReservationManager
         _tickets = Ticket.LoadTicketsFromFile("./JSON-Files/OnlineTickets.json");
 
     }
-    private void DebugTourDates()
-    {
-        if (guidedTour.TourSlots != null)
-        {
-            foreach (var tourSlot in guidedTour.TourSlots)
-            {
-                Console.WriteLine($"Tour Date and Time: {tourSlot.Key.ToString("yyyy-MM-dd HH:mm:ss")} with {tourSlot.Value.Count} participant(s)");
-            }
-        }
-        else
-        {
-            Console.WriteLine("TourSlots is null.");
-        }
-    }
 
 
 
@@ -44,7 +30,6 @@ public class ReservationManager
         bool isValidCode = false;
         while (!isValidCode)
         {
-            DebugTourDates();
             Console.WriteLine("Enter your unique ticket code:");
             string userCode = Console.ReadLine();
 

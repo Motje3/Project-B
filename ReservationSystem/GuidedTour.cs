@@ -58,7 +58,7 @@ public class GuidedTour
         }
     }
 
-    
+
 
 
     private void InitializeTourSlotsForToday()
@@ -70,7 +70,7 @@ public class GuidedTour
         DateTime endTimeToday = new DateTime(today.Year, today.Month, today.Day, EndTime.Hour, EndTime.Minute, 0);
 
         // Debugging output
-        Console.WriteLine($"Initializing slots from {startTimeToday} to {endTimeToday}");
+        // Console.WriteLine($"Initializing slots from {startTimeToday} to {endTimeToday}");
 
         DateTime slotTime = startTimeToday;
         while (slotTime < endTimeToday)
@@ -111,21 +111,6 @@ public class GuidedTour
                 Console.WriteLine($"{slot.Key.ToString("MM/dd/yyyy h:mm tt")} - {slot.Value.Count} participants");
             }
 
-        }
-    }
-
-
-
-    public void ListAvailableToursAdmin(int numberOfPeopleAttemptingToJoin)
-    {
-        Console.WriteLine("Available tour times:");
-        foreach (var slot in TourSlots)
-        {
-            // Check if the tour slot plus the new participants does not exceed MaxCapacity
-            if ((slot.Value.Count + numberOfPeopleAttemptingToJoin) <= MaxCapacity)
-            {
-                Console.WriteLine($"{slot.Key}:00 - {slot.Value.Count} participants");
-            }
         }
     }
 
@@ -246,22 +231,22 @@ public class GuidedTour
 
 
 
-
     public void SaveGuidedToursToFile()
     {
         ArchiveGuidedToursFile();
 
-        var tourData = TourSlots.ToDictionary(
-            entry => entry.Key.ToString("yyyy-MM-dd HH:mm"), // Space instead of 'T'
-                                                             // Or, use another character like: entry.Key.ToString("yyyy-MM-dd_HH:mm")
-            entry => entry.Value.Select(visitor => new { visitor.Name, visitor.TicketCode }).ToList()
-        );
+        // Filter out past tours before saving
+        var filteredTourData = TourSlots
+            .Where(entry => entry.Key.Date >= DateTime.Today) // Keep only today and future tours
+            .ToDictionary(
+                entry => entry.Key.ToString("yyyy-MM-dd HH:mm"), // Format the date as a string
+                entry => entry.Value.Select(visitor => new { visitor.Name, visitor.TicketCode }).ToList()
+            );
 
         string filePath = "./JSON-Files/guidedTours.json";
-        string json = JsonConvert.SerializeObject(tourData, Formatting.Indented);
+        string json = JsonConvert.SerializeObject(filteredTourData, Formatting.Indented);
         File.WriteAllText(filePath, json);
     }
-
 
 
 
@@ -272,16 +257,28 @@ public class GuidedTour
             if (File.Exists(filePath))
             {
                 string json = File.ReadAllText(filePath);
-                var loadedTourSlots = JsonConvert.DeserializeObject<Dictionary<DateTime, List<Visitor>>>(json);
+                var loadedTourSlots = JsonConvert.DeserializeObject<Dictionary<string, List<Visitor>>>(json);
 
                 if (loadedTourSlots != null)
                 {
                     ClearTourSlots();
-                    TourSlots = loadedTourSlots;
+
+                    // Convert the string keys back to DateTime and initialize tours for today if needed
+                    foreach (var slot in loadedTourSlots)
+                    {
+                        DateTime slotTime = DateTime.ParseExact(slot.Key, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+                        TourSlots[slotTime] = slot.Value;
+                    }
+
+                    // Check if there are slots for today and initialize if not
+                    if (!TourSlots.Keys.Any(dt => dt.Date == DateTime.Today))
+                    {
+                        InitializeTourSlotsForToday();
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("couldnt findtours so intilizing for today");
+                    Console.WriteLine("Couldn't find tours so initializing for today.");
                     InitializeTourSlotsForToday();
                 }
             }
@@ -299,6 +296,7 @@ public class GuidedTour
         }
     }
 
+
     public void ArchiveGuidedToursFile()
     {
         try
@@ -314,10 +312,17 @@ public class GuidedTour
                 Directory.CreateDirectory(archiveFolderPath);
             }
 
-            // Copy the file to the archive, overwriting the existing file if it's already there
             if (File.Exists(sourceFilePath))
             {
-                File.Copy(sourceFilePath, archiveFilePath, true); // Set 'true' to overwrite existing files
+                // Check if the archive file already exists
+                if (File.Exists(archiveFilePath))
+                {
+                    // Try to delete the existing file
+                    File.Delete(archiveFilePath);
+                }
+
+                // Copy the file to the archive
+                File.Copy(sourceFilePath, archiveFilePath, true);
                 Console.WriteLine($"Archive updated successfully at: {archiveFilePath}");
             }
             else
@@ -330,7 +335,6 @@ public class GuidedTour
             Console.WriteLine($"An error occurred during archiving: {ex.Message}");
         }
     }
-
 
 
     public bool UpdateMaxCapacity(int newCapacity)
