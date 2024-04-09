@@ -40,6 +40,8 @@ public class ToursHistory
         WriteLog(textPath, Log, header);
     }
 
+    
+
     private void WriteLog(string filePath, string log, string header)
     {
         try
@@ -68,8 +70,106 @@ public class ToursHistory
             Directory.CreateDirectory(directoryPath);
         }
     }
-    
 
+
+    public void GetPop()  // retrieve data by selecting start and end dates to search total amount of visitors
+    {
+        
+        DateTime startDate;
+        DateTime endDate;
+
+        // Read start date until a valid date is entered
+        while (true)
+        {
+            Console.WriteLine("Enter start date (yyyy-MM-dd):");  // do to limitatation of console engine, it must be in american format
+            string startDateString = Console.ReadLine();
+            Console.WriteLine();
+
+            if (DateTime.TryParse(startDateString, out startDate))
+            {
+                break; // Break the loop if parsing is successful
+            }
+            else
+            {
+                Console.WriteLine("Invalid date format. Please enter a date in yyyy-MM-dd format.");
+                // continue untill Parseble
+            }
+        }
+
+        // Read end date until a valid date is entered
+        while (true)
+        {
+            Console.WriteLine("Enter end date (yyyy-MM-dd):");  // do to limitatation of console engine, it must be in american format
+            string endDateString = Console.ReadLine();
+            Console.WriteLine();
+
+            if (DateTime.TryParse(endDateString, out endDate))
+            {
+                break; // Break the loop if parsing is successful
+            }
+            else
+            {
+                Console.WriteLine("Invalid date format. Please enter a date in yyyy-MM-dd format.");
+                // continue untill Parseble
+            }
+        }
+        
+        List<string> datestosearch = new List<string>();
+
+        while(startDate < endDate)
+        {
+            string datetoadd = startDate.ToString("dd-MM-yyyy");
+            datestosearch.Add(datetoadd); // add date to list
+            startDate = startDate.AddDays(1); // add a day to DateTime object
+        }
+        int totalpop = 0;
+
+        foreach(string date in datestosearch)
+        {
+            
+            string textPath = $"./Logs/GuidedTourLog/{date}_GuidedTourLog.txt";  // loops trought evry log that has the name: dd-MM-yyyy_GuidedTourLog.txt"
+
+            if (File.Exists(textPath)) // checks if file exist when looping trought the list of dates, ignore futher action if does not exist.
+            {
+                using (StreamReader reader = new StreamReader(textPath))
+                try
+                {
+                    int lineCount = -1; // logic is that the header is a line so start with -1
+
+                    // Read the file line by line until the end
+                    while (reader.ReadLine() != null)
+                    {
+                        lineCount++; // Increment line count for each line read
+                    }
+
+                    if (!(lineCount == -1)) // failsave to prevent displaying currupted data (empty file)
+                    {
+                        Console.WriteLine($"{date}: {lineCount} visitors has joined a tour");
+                        totalpop += lineCount;
+                    }
+                    lineCount = -1;  // reset count for next file            
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred while writing to the log file: {ex.Message}");
+                }
+            }
+        }   
+        string strEndDate = endDate.ToString("dd-MM-yyyy");  // for end date display
+        Console.WriteLine($"\nTotal amount of visitors from {datestosearch[0]} to {strEndDate}: {totalpop}");
+        // tested:
+
+        // Enter start date (yyyy-MM-dd):
+        // 2024-01-01
+
+        // Enter end date (yyyy-MM-dd):
+        // 2025-01-01
+
+        // 05-04-2024: 3 visitors has joined a tour
+        // 06-04-2024: 9 visitors has joined a tour
+        // 09-04-2024: 4 visitors has joined a tour
+    }
+    
     // this method MIGHT not be used.
     public void CreateTourHistory()
     {
