@@ -20,13 +20,17 @@ namespace TestTourHistory
             DateTime logtime = DateTime.Now;
             // string strtourtime = TourTime.ToString("HH:mm");
             string strlogtime = logtime.ToString("HH:mm");
+            
+            string matchHeader = $"Reservation logger, Date: {currentDate:dd-MM-yyyy}";
             string matchRegistration = $"{strlogtime}: CODE-0001 DEV1 registered for tour on {TourTime}"; // match for index [-2] of text file // false
             string matchCancel = $"{strlogtime}: CODE-0001 DEV1 canceled his/her tour on {TourTime}"; // match for index [-1] of text file // true
 
             string[] lines = File.ReadAllLines(textPath);
+            string firstLine = lines[0]; // match for header
             string lastLine = lines[^1]; // Python equivalent of lines[-1]
             string secondLastLine = lines[^2]; // Python equivalent of lines[-2]
 
+            Assert.AreEqual(matchHeader, firstLine);
             Assert.AreEqual(matchRegistration, secondLastLine);
             Assert.AreEqual(matchCancel, lastLine);
         }
@@ -43,15 +47,19 @@ namespace TestTourHistory
             Assert.IsTrue(result);
 
             string[] lines = File.ReadAllLines(textPath);
+            string firstLine = lines[0]; // match for header
             string lastLine = lines[^1]; // Python equivalent of lines[-1]
             string secondLastLine = lines[^2]; // Python equivalent of lines[-2]
 
             DateTime logtime = DateTime.Now;
             string strtourtime = TourTime.ToString("HH:mm");
             string strlogtime = logtime.ToString("HH:mm");
+
+            string matchHeader = $"GuidedTour logger, Date: {currentDate:dd-MM-yyyy}";
             string checkMatch1 = $"{strlogtime}: TourTime[{strtourtime}] CODE-0001 DEV1 has joined the tour";  // match for index [-2] of text file
             string checkMatch2 = $"{strlogtime}: TourTime[{strtourtime}] CODE-0002 DEV2 has joined the tour";  // match for index [-1] of text file
 
+            Assert.AreEqual(matchHeader, firstLine);
             Assert.AreEqual(checkMatch1, secondLastLine);
             Assert.AreEqual(checkMatch2, lastLine);
         }

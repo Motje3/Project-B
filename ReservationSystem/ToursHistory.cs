@@ -8,6 +8,7 @@ public class ToursHistory
         DateTime logtime = DateTime.Now;
         string strlogtime = logtime.ToString("HH:mm");  // This ensures only the clock will be displayed
         string strtourtime = tourtime.ToString("HH:mm");
+        string header = $"Reservation logger, Date: {currentDate:dd-MM-yyyy}";
         string directoryPath = "./Logs/TourReservationLog"; 
         CheckDirectory(directoryPath);  // create directory if it does no exist
         string textPath = $"./Logs/TourReservationLog/{currentDate:dd-MM-yyyy}_TourReservationLog.txt";  // create new textfile at current day
@@ -16,7 +17,7 @@ public class ToursHistory
             ? $"{strlogtime}: {ticketcode} {name} canceled his/her tour on {tourtime}"  // true
             : $"{strlogtime}: {ticketcode} {name} registered for tour on {tourtime}";  // false
 
-        WriteLog(textPath, Log);
+        WriteLog(textPath, Log, header);
     }
     public void LogTourchange(string name, string ticketcode, DateTime OldTourTime, DateTime NewTourTime) // old for cancelation, new for Regestration
     {
@@ -31,19 +32,28 @@ public class ToursHistory
         DateTime logtime = DateTime.Now;
         string strlogtime = logtime.ToString("HH:mm");  // This ensures only the clock will be displayed
         string strtourtime = tourtime.ToString("HH:mm");
+        string header = $"GuidedTour logger, Date: {currentDate:dd-MM-yyyy}";
         string directoryPath = "./Logs/GuidedTourLog";  
         CheckDirectory(directoryPath);  // create directory if it does not exist
         string textPath = $"./Logs/GuidedTourLog/{currentDate:dd-MM-yyyy}_GuidedTourLog.txt";  // create new textfile at current day
         string Log = $"{strlogtime}: TourTime[{strtourtime}] {ticketcode} {name} has joined the tour";  // this log will be written/appended to log
 
-        WriteLog(textPath, Log);
+        WriteLog(textPath, Log, header);
     }
-    private void WriteLog(string filePath, string log)
+
+    private void WriteLog(string filePath, string log, string header)
     {
         try
         {
             using (StreamWriter writer = new StreamWriter(filePath, true))
             {
+                if (writer.BaseStream.Length == 0) // checks if header already pressent
+                {
+                    // Write header if the file is empty
+                    writer.WriteLine(header);
+                }
+                
+                // Write log message
                 writer.WriteLine(log);
             }
         }
