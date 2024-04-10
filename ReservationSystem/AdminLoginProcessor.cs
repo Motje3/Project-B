@@ -11,7 +11,7 @@ public class AdminLoginProcessor
 
     public void AnalyzeYesterdayToursAndSuggest()
     {
-        string archiveFolderPath = "./JSON-Files/GuidedTours";
+        string archiveFolderPath = "./JSON-Files/ArchivedTours";
         string yesterdayFileName = $"guidedTours_{DateTime.Today.AddDays(-1):yyyyMMdd}.json";
         string fullPath = Path.Combine(archiveFolderPath, yesterdayFileName);
 
@@ -29,6 +29,11 @@ public class AdminLoginProcessor
                     {
                         Console.WriteLine($"The tour at {tourTime.ToString("HH:mm")} had high attendance with {participantCount} people. Consider adding another slot around this time.");
                     }
+                    if (participantCount <= 3)
+                    {
+                        Console.WriteLine($"The tour at {tourTime.ToString("HH:mm")} had low attendance with {participantCount} people. Consider removing the slot arround that time.");
+                    }
+
                 }
             }
             else
