@@ -11,8 +11,8 @@ public class GuidedTour
     //public TimeSpan TourInterval { get; private set; } // To be removed
     public int MaxCapacity { get; private set; }
     public List<Visitor> Visitors { get; private set; } = new List<Visitor>();
-    public Dictionary<DateTime, List<Visitor>> TourSlots { get; private set; } // To be removed
-    private int _tourId { get; }
+    //public Dictionary<DateTime, List<Visitor>> TourSlots { get; private set; } // To be removed
+    public int TourId { get; }
 
     public GuidedTour(DateTime startTime)
     {
@@ -20,10 +20,10 @@ public class GuidedTour
         Duration = 20; // 20 minutes
         EndTime = startTime.AddMinutes(Duration);
         MaxCapacity = 13;
-        _tourId = GuidedTour._generateUniqueId();
+        TourId = GuidedTour._generateUniqueId();
 
 
-        TourSlots = new Dictionary<DateTime, List<Visitor>>();
+        //TourSlots = new Dictionary<DateTime, List<Visitor>>();
         //LoadTourSettings();
         //InitializeTourSlotsForToday(); // Now it's safe to call this
     }
@@ -34,8 +34,21 @@ public class GuidedTour
         Duration = 20; // 20 minutes
         EndTime = startTime.AddMinutes(Duration);
         MaxCapacity = 13;
-        _tourId = tourId;
+        TourId = tourId;
     }
+
+    [JsonConstructor]
+    public GuidedTour(int duration, DateTime startTime, DateTime endTime, int maxCapacity, int tourId)
+    {
+        Duration = duration;
+        StartTime = startTime;
+        EndTime = endTime;
+        MaxCapacity = maxCapacity;
+        TourId = tourId;
+    }
+
+    // constructor for json serializer DO NOT USE IT WILL PROBABLY BREAK SOMETHING
+
 
     /*private void LoadTourSettings()
     {
@@ -105,7 +118,7 @@ public class GuidedTour
     }*/
 
 
-    private void ClearTourSlots()
+    /*private void ClearTourSlots()
     {
         if (TourSlots == null)
         {
@@ -367,7 +380,7 @@ public class GuidedTour
     public bool ChangeTourTime(int oldTourHour)
     {
         return true;
-    }
+    }*/
 
     // Static class
 
@@ -385,6 +398,7 @@ public class GuidedTour
     static GuidedTour()
     {
         Holidays = returnHolidays(DateTime.Today.Year);
+        CurrentTours = new() { };
         GuidedTour._updateCurrentTours();
     }
 
@@ -399,8 +413,10 @@ public class GuidedTour
         TimeOnly tourTime = TimeOnly.FromDateTime(tour.StartTime);
         DateOnly tourDate = DateOnly.FromDateTime(tour.StartTime);
         bool tourAlreadyInFile = _checkIfInFile(tour);
-        bool allowedId = tour._tourId >= 100000000 && tour._tourId <= 999999999;
-        if (!_checkIfAllowedTime(tourTime) || !_checkIfAllowedDate(tourDate) || tourAlreadyInFile || !allowedId)
+        bool allowedId = tour.TourId >= 100000000 && tour.TourId <= 999999999;
+        bool allowedTime = _checkIfAllowedTime(tourTime);
+        bool allowedDate = _checkIfAllowedDate(tourDate);
+        if (!allowedTime || !allowedDate || tourAlreadyInFile || !allowedId)
         {
             return;
         }
@@ -424,7 +440,7 @@ public class GuidedTour
         bool foundTour = false;
         foreach (GuidedTour currentTour in GuidedTour.CurrentTours)
         {
-            if (currentTour._tourId == tour._tourId)
+            if (currentTour.TourId == tour.TourId)
             {
                 foundTour = true;
                 break;
@@ -455,7 +471,7 @@ public class GuidedTour
     {
         GuidedTour._updateCurrentTours();
         bool oldTourExsists = GuidedTour.CurrentTours.Contains(oldTour);
-        bool bothToursSameId = oldTour._tourId == newTour._tourId;
+        bool bothToursSameId = oldTour.TourId == newTour.TourId;
 
         if (oldTourExsists == false || !bothToursSameId)
         {
@@ -492,10 +508,10 @@ public class GuidedTour
 
         foreach (GuidedTour tour in GuidedTour.CurrentTours)
         {
-            ids.Add(tour._tourId);
+            ids.Add(tour.TourId);
         }
 
-        while (idIsUnique)
+        while (idIsUnique == false)
         {
             int newId = gen.Next(100000000, 999999999);
             if (!ids.Contains(newId))
@@ -547,7 +563,7 @@ public class GuidedTour
         List<int> allowedHours = new List<int>() { 9, 10, 11, 12, 13, 14, 15, 16, 17 };
         bool allowed = true;
 
-        if (time.Minute != 0 || time.Minute != 20 || time.Minute != 40)
+        if (time.Minute != 0 && time.Minute != 20 && time.Minute != 40)
         {
             allowed = false;
         }
@@ -577,22 +593,19 @@ public class GuidedTour
         return allowed;
     }
 
-    // Checks if a given tour is already in the json, based on the _tourId
+    // Checks if a given tour is already in the json, based on the TourId
     private static bool _checkIfInFile(GuidedTour tour)
     {
-        List<GuidedTour> tours;
-        using (StreamReader reader = new(GuidedTour.tourJSONpath))
+        GuidedTour._updateCurrentTours();
+        foreach (GuidedTour currentTour in GuidedTour.CurrentTours)
         {
-            string jsonContent = reader.ReadToEnd();
-            tours = JsonConvert.DeserializeObject<List<GuidedTour>>(jsonContent);
-            foreach (GuidedTour currentTour in tours)
+            bool sameId = currentTour.TourId == tour.TourId;
+            bool sameDateTime = currentTour.StartTime == tour.StartTime;
+            if (sameDateTime || sameId)
             {
-                if (currentTour._tourId == tour._tourId)
-                {
-                    return true;
-                }
+                return true;
             }
-            return false;
         }
+        return false;
     }
 }

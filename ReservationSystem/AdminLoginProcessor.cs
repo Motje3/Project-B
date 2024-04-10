@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+/*using Newtonsoft.Json;
 
 public class AdminLoginProcessor
 {
@@ -69,7 +69,7 @@ public class AdminLoginProcessor
                     ChangeCapacity(guidedTour);
                     break;
                 case "2":
-                    guidedTour.ListAvailableTours(0);
+                    //guidedTour.ListAvailableTours(0);
                     break;
                 case "3":
                     CancelTour(guidedTour);
@@ -120,3 +120,4 @@ public class AdminLoginProcessor
         }
     }
 }
+*/

@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+/*using Newtonsoft.Json;
 
 public class GidsLoginProcessor
 {
@@ -213,4 +213,4 @@ public class GidsLoginProcessor
             return new List<Credential>();
         }
     }
-}
+}*/
