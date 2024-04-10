@@ -452,7 +452,16 @@ public class GuidedTour
             return;
         }
 
-        GuidedTour.CurrentTours.Remove(tour);
+        //GuidedTour.CurrentTours.Remove(tour);
+        for (int tourIndex = 0; tourIndex < GuidedTour.CurrentTours.Count; tourIndex++)
+        {
+            GuidedTour currentTour = GuidedTour.CurrentTours[tourIndex];
+            if (currentTour.TourId == tour.TourId)
+            {
+                GuidedTour.CurrentTours.Remove(currentTour);
+                break;
+            }
+        }
 
         using (StreamWriter writer = new StreamWriter(GuidedTour.tourJSONpath))
         {
@@ -473,7 +482,7 @@ public class GuidedTour
         bool oldTourExsists = GuidedTour.CurrentTours.Contains(oldTour);
         bool bothToursSameId = oldTour.TourId == newTour.TourId;
 
-        if (oldTourExsists == false || !bothToursSameId)
+        if (oldTourExsists || !bothToursSameId)
         {
             return;
         }
