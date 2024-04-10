@@ -329,7 +329,7 @@ public class GuidedTour
             }
             else
             {
-                Console.WriteLine("Source file not found. Cannot archive.");
+                Console.WriteLine("");
             }
         }
         catch (Exception ex)
