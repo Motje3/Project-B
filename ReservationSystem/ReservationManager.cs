@@ -16,7 +16,7 @@ public class ReservationManager
     {
 
         validator = new EntreeCodeValidator();
-        guidedTour = new GuidedTour();
+        //guidedTour = new GuidedTour();
         menumanager = new MenuManager(this, guidedTour); // Pass the same GuidedTour instance
         guidedTour.LoadToursFromFile("./JSON-Files/guidedTours.json");
         _tickets = Ticket.LoadTicketsFromFile("./JSON-Files/OnlineTickets.json");
