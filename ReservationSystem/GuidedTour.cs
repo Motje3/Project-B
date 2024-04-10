@@ -303,11 +303,15 @@ public class GuidedTour
     {
         try
         {
-            string targetBasePath = @"C:\Users\moham\Desktop\School\Project-B\Project-B\ReservationSystem";
-            string jsonFilesFolderPath = Path.Combine(targetBasePath, "JSON-Files");
-            string archiveFolderPath = Path.Combine(jsonFilesFolderPath, "GuidedTours");
+            string jsonFilesFolderPath = "./JSON-Files";
+            string archiveFolderPath = Path.Combine(jsonFilesFolderPath, "ArchivedTours");
             string sourceFilePath = Path.Combine(jsonFilesFolderPath, "guidedTours.json");
             string archiveFilePath = Path.Combine(archiveFolderPath, $"guidedTours_{DateTime.Now:yyyyMMdd}.json");
+
+            Console.WriteLine("JSON folder path: " + jsonFilesFolderPath);
+            Console.WriteLine("Source file path: " + sourceFilePath);
+            Console.WriteLine("Archive folder path: " + archiveFolderPath);
+            Console.WriteLine("Archive file path: " + archiveFilePath);
 
             if (!Directory.Exists(archiveFolderPath))
             {
@@ -316,27 +320,21 @@ public class GuidedTour
 
             if (File.Exists(sourceFilePath))
             {
-                // Check if the archive file already exists
-                if (File.Exists(archiveFilePath))
-                {
-                    // Try to delete the existing file
-                    File.Delete(archiveFilePath);
-                }
-
-                // Copy the file to the archive
                 File.Copy(sourceFilePath, archiveFilePath, true);
-                // Console.WriteLine($"Archive updated successfully at: {archiveFilePath}");
+                Console.WriteLine($"Archive created: {archiveFilePath}");
             }
             else
             {
-                Console.WriteLine("");
+                Console.WriteLine("The source file was not found. Cannot archive.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An error occurred during archiving: {ex.Message}");
+            Console.WriteLine($"An error occurred while trying to archive: {ex.Message}");
         }
     }
+
+
 
 
     public bool UpdateMaxCapacity(int newCapacity)
