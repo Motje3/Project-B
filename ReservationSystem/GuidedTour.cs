@@ -600,8 +600,8 @@ public class GuidedTour
         foreach (GuidedTour currentTour in GuidedTour.CurrentTours)
         {
             bool sameId = currentTour.TourId == tour.TourId;
-            bool sameDateTime = currentTour.StartTime == tour.StartTime;
-            if (sameDateTime || sameId)
+            //bool sameDateTime = currentTour.StartTime == tour.StartTime;
+            if (/*sameDateTime ||*/ sameId)
             {
                 return true;
             }
