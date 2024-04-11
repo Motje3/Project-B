@@ -470,7 +470,7 @@ public class GuidedTour
     //  - Checks if the the given tour is in the future or in the past
     //  - Soft delete the given tour from the list of tours in the static class
     //  - Updates the Json file with the list of tours in the static class
-    public static void DeleteTourFromJson(GuidedTour tour)
+    public static void DeleteTourFromJSON(GuidedTour tour)
     {
         GuidedTour._updateCurrentTours();
         bool foundTour = false;
@@ -519,7 +519,7 @@ public class GuidedTour
     //  - Checks if the the given tour is in the future or in the past
     //  - Hard deletes the given tour from the list of tours in the static class
     //  - Updates the Json file with the list of tours in the static class
-    public static void RemoveTourFromJson(GuidedTour tour)
+    public static void RemoveTourFromJSON(GuidedTour tour)
     {
         GuidedTour._updateCurrentTours();
         bool foundTour = false;
@@ -568,7 +568,7 @@ public class GuidedTour
     //  - Checks if the newTour and oldTour have the same _tourId
     //  - Uses the static method DeleteTourFromJson with oldTour
     //  - Uses the static method AddTourToJSON with newTour
-    public static void EditTourInJson(GuidedTour oldTour, GuidedTour newTour)
+    public static void EditTourInJSON(GuidedTour oldTour, GuidedTour newTour)
     {
         GuidedTour._updateCurrentTours();
         bool oldTourExsists = GuidedTour.CurrentTours.Contains(oldTour);
@@ -579,7 +579,7 @@ public class GuidedTour
             return;
         }
 
-        GuidedTour.RemoveTourFromJson(oldTour);
+        GuidedTour.RemoveTourFromJSON(oldTour);
         GuidedTour.AddTourToJSON(newTour);
     }
 
