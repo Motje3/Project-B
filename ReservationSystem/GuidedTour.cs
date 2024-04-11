@@ -423,6 +423,7 @@ public class GuidedTour
 
     // Adds the given tour to the Json file :
     //  - Checks if the tour has correct format
+    //  - Checks if the tour is in the future or in the past
     //  - Checks if the tour is already in the file, based on the _tourId
     //  - Adds the given tour to the list of tours in the static class
     //  - Updates the Json file with the list of tours in the static class
@@ -440,7 +441,22 @@ public class GuidedTour
             return;
         }
 
-        GuidedTour.CurrentTours.Add(tour);
+
+        bool tourIsInThePast = DateTime.Compare(DateTime.Now, tour.StartTime) == -1;
+        bool tourIsInTheFuture = DateTime.Compare(DateTime.Now, tour.StartTime) == 1;
+        bool tourIsHappeningRightNow = DateTime.Compare(DateTime.Now, tour.StartTime) == 0;
+        if (tourIsInTheFuture)
+        {
+            GuidedTour.CurrentTours.Add(tour);
+        }
+        else if (tourIsInThePast)
+        {
+            GuidedTour.CompletedTours.Add(tour);
+        }
+        else if (tourIsHappeningRightNow)
+        {
+        }
+        
 
         using (StreamWriter writer = new StreamWriter(GuidedTour.tourJSONpath))
         {
@@ -451,6 +467,7 @@ public class GuidedTour
 
     // Deletes the given tour from json file
     //  - Checks if the the given tour is actually in the json file
+    //  - Checks if the the given tour is in the future or in the past
     //  - Remove the given tour from the list of tours in the static class
     //  - Updates the Json file with the list of tours in the static class
     public static void DeleteTourFromJson(GuidedTour tour)
@@ -471,14 +488,22 @@ public class GuidedTour
             return;
         }
 
-        //GuidedTour.CurrentTours.Remove(tour);
-        for (int tourIndex = 0; tourIndex < GuidedTour.CurrentTours.Count; tourIndex++)
+        bool tourIsInThePast = DateTime.Compare(DateTime.Now, tour.StartTime) == -1;
+        bool tourIsInTheFuture = DateTime.Compare(DateTime.Now, tour.StartTime) == 1;
+        if (tourIsInTheFuture)
         {
-            GuidedTour currentTour = GuidedTour.CurrentTours[tourIndex];
-            if (currentTour.TourId == tour.TourId)
+            for (int tourIndex = 0; tourIndex < GuidedTour.CurrentTours.Count; tourIndex++)
             {
-                GuidedTour.CurrentTours.Remove(currentTour);
-                break;
+                GuidedTour currentTour = GuidedTour.CurrentTours[tourIndex];
+                currentTour.Deleted = true;
+            }
+        }
+        else if (tourIsInThePast)
+        {
+            for (int tourIndex = 0; tourIndex < GuidedTour.CompletedTours.Count; tourIndex++)
+            {
+                GuidedTour currentTour = GuidedTour.CurrentTours[tourIndex];
+                currentTour.Deleted = true;
             }
         }
 
