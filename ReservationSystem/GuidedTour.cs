@@ -10,7 +10,11 @@ public class GuidedTour
     public DateTime EndTime { get; private set; }
     //public TimeSpan TourInterval { get; private set; } // To be removed
     public int MaxCapacity { get; private set; }
-    public List<Visitor> Visitors { get; private set; } = new List<Visitor>();
+    public List<Visitor> ExpectedVisitors { get; set; } = new List<Visitor>();
+    public List<Visitor> PresentVisitors { get; set; } = new List<Visitor>();
+    public bool Complete { get; private set; }
+    public bool Deleted { get; private set; }
+
     //public Dictionary<DateTime, List<Visitor>> TourSlots { get; private set; } // To be removed
     public int TourId { get; }
 
@@ -37,17 +41,20 @@ public class GuidedTour
         TourId = tourId;
     }
 
+    // constructor for json serializer DO NOT USE IT WILL PROBABLY BREAK SOMETHING
     [JsonConstructor]
-    public GuidedTour(int duration, DateTime startTime, DateTime endTime, int maxCapacity, int tourId)
+    public GuidedTour(int duration, DateTime startTime, DateTime endTime, int maxCapacity, int tourId, bool complete, bool deleted)
     {
         Duration = duration;
         StartTime = startTime;
         EndTime = endTime;
         MaxCapacity = maxCapacity;
         TourId = tourId;
+        Complete = complete;
+        Deleted = deleted;
     }
 
-    // constructor for json serializer DO NOT USE IT WILL PROBABLY BREAK SOMETHING
+    
 
 
     /*private void LoadTourSettings()
