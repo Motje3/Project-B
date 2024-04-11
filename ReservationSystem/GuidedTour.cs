@@ -308,11 +308,6 @@ public class GuidedTour
             string sourceFilePath = Path.Combine(jsonFilesFolderPath, "guidedTours.json");
             string archiveFilePath = Path.Combine(archiveFolderPath, $"guidedTours_{DateTime.Now:yyyyMMdd}.json");
 
-            Console.WriteLine("JSON folder path: " + jsonFilesFolderPath);
-            Console.WriteLine("Source file path: " + sourceFilePath);
-            Console.WriteLine("Archive folder path: " + archiveFolderPath);
-            Console.WriteLine("Archive file path: " + archiveFilePath);
-
             if (!Directory.Exists(archiveFolderPath))
             {
                 Directory.CreateDirectory(archiveFolderPath);
