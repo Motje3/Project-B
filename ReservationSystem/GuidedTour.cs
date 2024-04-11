@@ -465,10 +465,10 @@ public class GuidedTour
         }
     }
 
-    // Deletes the given tour from json file
+    // Soft deletes the given tour from json file
     //  - Checks if the the given tour is actually in the json file
     //  - Checks if the the given tour is in the future or in the past
-    //  - Remove the given tour from the list of tours in the static class
+    //  - Soft delete the given tour from the list of tours in the static class
     //  - Updates the Json file with the list of tours in the static class
     public static void DeleteTourFromJson(GuidedTour tour)
     {
@@ -514,6 +514,54 @@ public class GuidedTour
         }
     }
 
+    // Hard deletes the given tour from json file
+    //  - Checks if the the given tour is actually in the json file
+    //  - Checks if the the given tour is in the future or in the past
+    //  - Hard deletes the given tour from the list of tours in the static class
+    //  - Updates the Json file with the list of tours in the static class
+    public static void RemoveTourFromJson(GuidedTour tour)
+    {
+        GuidedTour._updateCurrentTours();
+        bool foundTour = false;
+        foreach (GuidedTour currentTour in GuidedTour.CurrentTours)
+        {
+            if (currentTour.TourId == tour.TourId)
+            {
+                foundTour = true;
+                break;
+            }
+        }
+
+        if (foundTour == false)
+        {
+            return;
+        }
+
+        bool tourIsInThePast = DateTime.Compare(DateTime.Now, tour.StartTime) == -1;
+        bool tourIsInTheFuture = DateTime.Compare(DateTime.Now, tour.StartTime) == 1;
+        if (tourIsInTheFuture)
+        {
+            for (int tourIndex = 0; tourIndex < GuidedTour.CurrentTours.Count; tourIndex++)
+            {
+                GuidedTour currentTour = GuidedTour.CurrentTours[tourIndex];
+                currentTour.Deleted = true;
+            }
+        }
+        else if (tourIsInThePast)
+        {
+            for (int tourIndex = 0; tourIndex < GuidedTour.CompletedTours.Count; tourIndex++)
+            {
+                GuidedTour currentTour = GuidedTour.CurrentTours[tourIndex];
+                currentTour.Deleted = true;
+            }
+        }
+
+        using (StreamWriter writer = new StreamWriter(GuidedTour.tourJSONpath))
+        {
+            string List2json = JsonConvert.SerializeObject(GuidedTour.CurrentTours, Formatting.Indented);
+            writer.Write(List2json);
+        }
+    }
 
     // Replaces the oldTour parameter in the json file with the newTour parameter
     //  - Checks if the oldTour is in the json File
@@ -531,7 +579,7 @@ public class GuidedTour
             return;
         }
 
-        GuidedTour.DeleteTourFromJson(oldTour);
+        GuidedTour.RemoveTourFromJson(oldTour);
         GuidedTour.AddTourToJSON(newTour);
     }
 
