@@ -12,8 +12,10 @@ public class GuidedTour
     public int MaxCapacity { get; private set; }
     public List<Visitor> ExpectedVisitors { get; set; } = new List<Visitor>();
     public List<Visitor> PresentVisitors { get; set; } = new List<Visitor>();
-    public bool Completed { get; private set; }
-    public bool Deleted { get; private set; }
+    // Has to be completely public or JsonConvert.DeserializeObject refuses to set it properly
+    public bool Completed { get; set; }
+    // Has to be completely public or JsonConvert.DeserializeObject refuses to set it properly
+    public bool Deleted { get; set; }
 
     //public Dictionary<DateTime, List<Visitor>> TourSlots { get; private set; } // To be removed
     public int TourId { get; }
@@ -441,9 +443,8 @@ public class GuidedTour
             return;
         }
 
-
-        bool tourIsInThePast = DateTime.Compare(DateTime.Now, tour.StartTime) == -1;
-        bool tourIsInTheFuture = DateTime.Compare(DateTime.Now, tour.StartTime) == 1;
+        bool tourIsInThePast = DateTime.Compare(DateTime.Now, tour.StartTime) == 1;
+        bool tourIsInTheFuture = DateTime.Compare(DateTime.Now, tour.StartTime) == -1;
         bool tourIsHappeningRightNow = DateTime.Compare(DateTime.Now, tour.StartTime) == 0;
         if (tourIsInTheFuture)
         {
@@ -451,6 +452,7 @@ public class GuidedTour
         }
         else if (tourIsInThePast)
         {
+            tour.Completed = true;
             GuidedTour.CompletedTours.Add(tour);
         }
         else if (tourIsHappeningRightNow)
@@ -460,8 +462,10 @@ public class GuidedTour
 
         using (StreamWriter writer = new StreamWriter(GuidedTour.tourJSONpath))
         {
-            string List2json = JsonConvert.SerializeObject(GuidedTour.CurrentTours, Formatting.Indented);
+            List<GuidedTour> ListOfAllTourTypes = CompletedTours.Concat(CurrentTours).ToList().Concat(DeletedTours).ToList();
+            string List2json = JsonConvert.SerializeObject(ListOfAllTourTypes, Formatting.Indented);
             writer.Write(List2json);
+
         }
     }
 
@@ -482,34 +486,49 @@ public class GuidedTour
                 break;
             }
         }
+        foreach (GuidedTour currentTour in GuidedTour.CompletedTours)
+        {
+            if (currentTour.TourId == tour.TourId)
+            {
+                foundTour = true;
+                break;
+            }
+        }
 
         if (foundTour == false)
         {
             return;
         }
 
-        bool tourIsInThePast = DateTime.Compare(DateTime.Now, tour.StartTime) == -1;
-        bool tourIsInTheFuture = DateTime.Compare(DateTime.Now, tour.StartTime) == 1;
+        bool tourIsInThePast = DateTime.Compare(DateTime.Now, tour.StartTime) == 1;
+        bool tourIsInTheFuture = DateTime.Compare(DateTime.Now, tour.StartTime) == -1;
         if (tourIsInTheFuture)
         {
             for (int tourIndex = 0; tourIndex < GuidedTour.CurrentTours.Count; tourIndex++)
             {
                 GuidedTour currentTour = GuidedTour.CurrentTours[tourIndex];
-                currentTour.Deleted = true;
+                if (currentTour.TourId == tour.TourId)
+                { 
+                    currentTour.Deleted = true; 
+                }
             }
         }
         else if (tourIsInThePast)
         {
             for (int tourIndex = 0; tourIndex < GuidedTour.CompletedTours.Count; tourIndex++)
             {
-                GuidedTour currentTour = GuidedTour.CurrentTours[tourIndex];
-                currentTour.Deleted = true;
+                GuidedTour currentTour = GuidedTour.CompletedTours[tourIndex];
+                if (currentTour.TourId == tour.TourId)
+                { 
+                    currentTour.Deleted = true; 
+                }
             }
         }
 
         using (StreamWriter writer = new StreamWriter(GuidedTour.tourJSONpath))
         {
-            string List2json = JsonConvert.SerializeObject(GuidedTour.CurrentTours, Formatting.Indented);
+            List<GuidedTour> ListOfAllTourTypes = CompletedTours.Concat(CurrentTours).ToList().Concat(DeletedTours).ToList();
+            string List2json = JsonConvert.SerializeObject(ListOfAllTourTypes, Formatting.Indented);
             writer.Write(List2json);
         }
     }
@@ -531,34 +550,57 @@ public class GuidedTour
                 break;
             }
         }
+        foreach (GuidedTour currentTour in GuidedTour.CompletedTours)
+        {
+            if (currentTour.TourId == tour.TourId)
+            {
+                foundTour = true;
+                break;
+            }
+        }
+        foreach (GuidedTour currentTour in GuidedTour.DeletedTours)
+        {
+            if (currentTour.TourId == tour.TourId)
+            {
+                foundTour = true;
+                break;
+            }
+        }
 
         if (foundTour == false)
         {
             return;
         }
 
-        bool tourIsInThePast = DateTime.Compare(DateTime.Now, tour.StartTime) == -1;
-        bool tourIsInTheFuture = DateTime.Compare(DateTime.Now, tour.StartTime) == 1;
+        bool tourIsInThePast = DateTime.Compare(DateTime.Now, tour.StartTime) == 1;
+        bool tourIsInTheFuture = DateTime.Compare(DateTime.Now, tour.StartTime) == -1;
         if (tourIsInTheFuture)
         {
             for (int tourIndex = 0; tourIndex < GuidedTour.CurrentTours.Count; tourIndex++)
             {
                 GuidedTour currentTour = GuidedTour.CurrentTours[tourIndex];
-                currentTour.Deleted = true;
+                if (currentTour.TourId == tour.TourId)
+                {
+                    CurrentTours.Remove(currentTour);
+                }
             }
         }
         else if (tourIsInThePast)
         {
             for (int tourIndex = 0; tourIndex < GuidedTour.CompletedTours.Count; tourIndex++)
             {
-                GuidedTour currentTour = GuidedTour.CurrentTours[tourIndex];
-                currentTour.Deleted = true;
+                GuidedTour currentTour = GuidedTour.CompletedTours[tourIndex];
+                if (currentTour.TourId == tour.TourId)
+                {
+                    CompletedTours.Remove(currentTour);
+                }
             }
         }
 
         using (StreamWriter writer = new StreamWriter(GuidedTour.tourJSONpath))
         {
-            string List2json = JsonConvert.SerializeObject(GuidedTour.CurrentTours, Formatting.Indented);
+            List<GuidedTour> ListOfAllTourTypes = CompletedTours.Concat(CurrentTours).ToList().Concat(DeletedTours).ToList();
+            string List2json = JsonConvert.SerializeObject(ListOfAllTourTypes, Formatting.Indented);
             writer.Write(List2json);
         }
     }
@@ -593,6 +635,9 @@ public class GuidedTour
     //     - DeletedTours (tour.Deleted == true)
     private static void _updateCurrentTours()
     {
+        DeletedTours = new();
+        CurrentTours = new();
+        CompletedTours = new();
         using (StreamReader reader = new(GuidedTour.tourJSONpath))
         {
             string jsonContent = reader.ReadToEnd();
@@ -611,7 +656,7 @@ public class GuidedTour
                     CurrentTours.Add(currentTour);
                     continue;
                 }
-                else if (currentTour.Completed == true && currentTour.Completed == false)
+                else if (currentTour.Deleted == false && currentTour.Completed == true)
                 {
                     CompletedTours.Add(currentTour);
                     continue;
