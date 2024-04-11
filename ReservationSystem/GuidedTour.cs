@@ -12,7 +12,7 @@ public class GuidedTour
     public int MaxCapacity { get; private set; }
     public List<Visitor> ExpectedVisitors { get; set; } = new List<Visitor>();
     public List<Visitor> PresentVisitors { get; set; } = new List<Visitor>();
-    public bool Complete { get; private set; }
+    public bool Completed { get; private set; }
     public bool Deleted { get; private set; }
 
     //public Dictionary<DateTime, List<Visitor>> TourSlots { get; private set; } // To be removed
@@ -50,7 +50,7 @@ public class GuidedTour
         EndTime = endTime;
         MaxCapacity = maxCapacity;
         TourId = tourId;
-        Complete = complete;
+        Completed = complete;
         Deleted = deleted;
     }
 
@@ -402,6 +402,18 @@ public class GuidedTour
         private set;
     }
 
+    public static List<GuidedTour> DeletedTours
+    {
+        get;
+        private set;
+    }
+
+    public static List<GuidedTour> CompletedTours
+    {
+        get;
+        private set;
+    }
+
     static GuidedTour()
     {
         Holidays = returnHolidays(DateTime.Today.Year);
@@ -501,14 +513,37 @@ public class GuidedTour
     // Updates the list of tours in the static class, based on the json file, 
     // this prevents the changes made by anything else than the app from being 
     // unnoticed by the app
-    //  - Reads the GuidedTours.json file and sets CurrentTours list to its deserialized contents
+    //  - Reads the GuidedTours.json file and sets variable tours to its deserialized contents
+    //  - Goes through content of tours and based on properties Deleted and Completed properties add the tour to:
+    //     - CurrentTours (if tour.Completed == false and tour.Deleted == false)
+    //     - CompletedTours (if tour.Completed == true and tour.Deleted == false)
+    //     - DeletedTours (tour.Deleted == true)
     private static void _updateCurrentTours()
     {
         using (StreamReader reader = new(GuidedTour.tourJSONpath))
         {
             string jsonContent = reader.ReadToEnd();
             List<GuidedTour> tours = JsonConvert.DeserializeObject<List<GuidedTour>>(jsonContent);
-            GuidedTour.CurrentTours = tours;
+            //GuidedTour.CurrentTours = tours;
+            for (int tourIndex = 0; tourIndex < tours.Count; tourIndex++)
+            {
+                GuidedTour currentTour = tours[tourIndex];
+                if (currentTour.Deleted == true)
+                {
+                    DeletedTours.Add(currentTour);
+                    continue;
+                }
+                else if (currentTour.Deleted == false && currentTour.Completed == false)
+                {
+                    CurrentTours.Add(currentTour);
+                    continue;
+                }
+                else if (currentTour.Completed == true && currentTour.Completed == false)
+                {
+                    CompletedTours.Add(currentTour);
+                    continue;
+                }
+            }
         }
     }
 
