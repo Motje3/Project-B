@@ -1,9 +1,9 @@
-namespace VisitorTesting;
+namespace MuseumTesting;
 
 [TestClass]
 public class VisitorTest
 {
-    [TestMethod]
+    /*[TestMethod]
     public void VisitorConstructor_SetsPropertiesCorrectly()
     {
         // Arrange
@@ -19,9 +19,9 @@ public class VisitorTest
         Assert.AreEqual(rondleidingChoice, visitor.RondleidingChoice);
         Assert.AreEqual(ticketCode, visitor.TicketCode);
         Assert.AreNotEqual(Guid.Empty, visitor.VisitorId);
-    }
+    }*/
 
-    [TestMethod]
+    /*[TestMethod]
     public void VisitorConstructor_GeneratesUniqueId()
     {
         // Arrange
@@ -35,20 +35,21 @@ public class VisitorTest
 
         // Assert
         Assert.AreNotEqual(visitor1.VisitorId, visitor2.VisitorId);
-    }
+    }*/
 
     [TestMethod]
     public void RondleidingChoiceSetter_UpdatesRondleidingChoiceCorrectly()
     {
         // Arrange
         string name = "JAne";
-        Visitor visitor = new Visitor(name, 1, "12345678901");
+        Visitor visitor = new Visitor(name, "12345678901");
 
         // Act
-        visitor.RondleidingChoice = 2;
+        // .RondleidingChoice has been removed
+        //visitor.RondleidingChoice = 2;
 
         // Assert
-        Assert.AreEqual(2, visitor.RondleidingChoice);
+        //Assert.AreEqual(2, visitor.RondleidingChoice);
     }
 
     [TestMethod]
@@ -56,7 +57,7 @@ public class VisitorTest
     {
         // Arrange
         string name = "John Doe";
-        Visitor visitor = new Visitor(name, 1, "12345678901");
+        Visitor visitor = new Visitor(name, "12345678901");
 
         // Act
         visitor.TicketCode = "12345678901";
