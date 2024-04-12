@@ -1,31 +1,6 @@
-/*using Newtonsoft.Json;
-public class ReservationManager
+public static class ReservationManager
 {
-    private EntreeCodeValidator validator;
-    private GuidedTour guidedTour;
-    private MenuManager menumanager;
-    private List<Ticket> _tickets;
-
-    public List<Ticket> Tickets
-    {
-        get { return _tickets; }
-    }
-
-    public ReservationManager()
-
-    {
-
-        validator = new EntreeCodeValidator();
-        //guidedTour = new GuidedTour();
-        menumanager = new MenuManager(this, guidedTour); // Pass the same GuidedTour instance
-        guidedTour.LoadToursFromFile("./JSON-Files/guidedTours.json");
-        _tickets = Ticket.LoadTicketsFromFile("./JSON-Files/OnlineTickets.json");
-
-    }
-
-
-
-    public void ValidateCodeAndProcessReservations()
+    public static void ValidateCodeAndProcessReservations()
     {
         bool isValidCode = false;
         while (!isValidCode)
@@ -36,39 +11,35 @@ public class ReservationManager
 
             if (userCode == "123")
             {
-                AdminLoginProcessor adminManager = new AdminLoginProcessor();
-                adminManager.ProcessLoginForm(guidedTour); // Pass the instance of GuidedTour here
+                AdminLoginProcessor.ProcessLoginForm();
                 return; // Exit the method after admin login form is processed
             }
             else if (userCode == "456")
             {
-                GidsLoginProcessor gidsManager = new GidsLoginProcessor();
-                gidsManager.ProcessLoginForm();
+                GidsLoginProcessor.ProcessLoginForm();
                 return; //Exit the method after guide login form is processed
             }
-            else if (validator.IsCodeValid(userCode))
+            else if (EntreeCodeValidator.IsCodeValid(userCode))
             {
+                // Ask P.O about this, if visitors in Json with codes also have a name
+                // Ask P.O about this, if visitors in Json with codes also have a name
+                // Ask P.O about this, if visitors in Json with codes also have a name
+                // Ask P.O about this, if visitors in Json with codes also have a name
+                // Ask P.O about this, if visitors in Json with codes also have a name
+                Visitor currentVisitor = Visitor.FindVisitorByTicketCode(userCode);
                 Console.WriteLine("\nWelcome, your ticket is confirmed!\n");
                 isValidCode = true;
-
-                if (VisitorAlreadyHasReservation(userCode))
+                
+                bool visitorHasReservation = currentVisitor.HasReservation();
+                if (visitorHasReservation)
                 {
-                    menumanager.ShowFullMenu(userCode);
+                    MenuManager.ShowFullMenu(currentVisitor);
                 }
                 else
                 {
-                    // Retrieve the ticket associated with the code
-                    var ticket = validator.GetTicketByCode(userCode);
-                    if (ticket != null)
-                    {
-                        // Assuming the ShowRestrictedMenu method will handle the logic for
-                        // allowing all visitors in the ticket to join a tour.
-                        menumanager.ShowRestrictedMenu(userCode);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Sorry, your ticket is not valid. Please try again.");
-                    }
+                    // Assuming the ShowRestrictedMenu method will handle the logic for
+                    // allowing all visitors in the ticket to join a tour.
+                    MenuManager.ShowRestrictedMenu(currentVisitor);
                 }
             }
             else
@@ -79,8 +50,8 @@ public class ReservationManager
     }
 
 
-
-    public bool EditReservation(string ticketCode, DateTime newTourDateTime)
+    // To be removed
+    /*public bool EditReservation(string ticketCode, DateTime newTourDateTime)
     {
         string reservationsFilePath = "./JSON-Files/reservations.json";
         var reservations = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(reservationsFilePath)) ?? new List<dynamic>();
@@ -117,11 +88,10 @@ public class ReservationManager
             Console.WriteLine("Reservation not found.");
             return false;
         }
-    }
-
-
-
-    public void CancelReservation(string ticketCode)
+    }*/
+    
+    // To be removed
+    /*public void CancelReservation(string ticketCode)
     {
         string reservationsFilePath = "./JSON-Files/reservations.json";
         var reservations = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(reservationsFilePath)) ?? new List<dynamic>();
@@ -155,11 +125,11 @@ public class ReservationManager
         {
             Console.WriteLine("Reservation not found.");
         }
-    }
+    }*/
 
 
-
-    public void SaveReservation(Visitor visitor)
+    // To be removed
+    /*public void SaveReservation(Visitor visitor)
     {
         // Define the path to the reservations file.
         string filePath = "./JSON-Files/reservations.json";
@@ -197,18 +167,5 @@ public class ReservationManager
 
         // Write the updated JSON to the reservations file.
         File.WriteAllText(filePath, updatedReservationsJson);
-    }
-
-
-    private bool VisitorAlreadyHasReservation(string ticketCode)
-    {
-        string filePath = "./JSON-Files/reservations.json";
-        if (File.Exists(filePath))
-        {
-            var reservations = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(filePath)) ?? new List<dynamic>();
-            return reservations.Any(r => r.TicketCode == ticketCode);
-        }
-        return false;
-    }
+    }*/
 }
-*/

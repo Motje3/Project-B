@@ -1,13 +1,13 @@
-/*using Newtonsoft.Json;
+using Newtonsoft.Json;
 
-public class GidsLoginProcessor
+public static class GidsLoginProcessor
 {
     public class Credential
     {
         public string Password { get; set; }
     }
 
-    public void ProcessLoginForm()
+    public static void ProcessLoginForm()
     {
         bool isAuthenticated = false;
 
@@ -15,7 +15,7 @@ public class GidsLoginProcessor
         while (!isAuthenticated)
         {
             Console.WriteLine("\nGuide login\n");
-            Console.Write("Enter password: ");
+            Console.WriteLine("Enter password: ");
             string password = Console.ReadLine();
 
             isAuthenticated = AuthenticateUser(password);
@@ -38,7 +38,7 @@ public class GidsLoginProcessor
         }
     }
 
-    private bool DisplayMainMenu()
+    private static bool DisplayMainMenu()
     {
         Console.WriteLine("\nWhat would you like to do?\n");
         Console.WriteLine("1. See personal tours");
@@ -51,10 +51,10 @@ public class GidsLoginProcessor
             switch (guideChoice)
             {
                 case 1:
-                    DisplayTimetable();
+                    //DisplayTimetable();
                     break;
                 case 2:
-                    NoteParticipants();
+                    //NoteParticipants();
                     break;
                 case 3:
                     Console.WriteLine("Logging out...");
@@ -71,8 +71,8 @@ public class GidsLoginProcessor
 
         return true; // Continues the main menu loop
     }
-
-    private void DisplayTimetable()
+    // To be changed
+    /*private void DisplayTimetable()
     {
         bool backToMenu = false;
 
@@ -94,9 +94,10 @@ public class GidsLoginProcessor
                 Console.WriteLine("Invalid input. Please press M/m to go back to the main menu");
             }
         }
-    }
+    }*/
 
-    private void NoteParticipants()
+    // To be changed
+    /*private void NoteParticipants()
     {
         int hour;
         Console.WriteLine("Which hour's tour would you like to check participants for? (9-17)");
@@ -152,9 +153,10 @@ public class GidsLoginProcessor
         {
             Console.WriteLine("Invalid input. Please press M/m to go back to the main menu");
         }
-    }
+    }*/
 
-    private void SaveAttendingVisitorsToFile(string filePath, Dictionary<int, List<Visitor>> checklist)
+    // Change to add Visitor to ExpectedVisitors list of given GuidedTour object
+    private static void SaveAttendingVisitorsToFile(string filePath, Dictionary<int, List<Visitor>> checklist)
     {
         string json = JsonConvert.SerializeObject(checklist, Formatting.Indented);
         File.WriteAllText(filePath, json);
@@ -162,7 +164,7 @@ public class GidsLoginProcessor
         Console.WriteLine("Checklist for attending visitors saved successfully.");
     }
 
-    private Dictionary<int, List<Visitor>> LoadToursFromFile(string filePath)
+    /*private Dictionary<int, List<Visitor>> LoadToursFromFile(string filePath)
     {
         if (File.Exists(filePath))
         {
@@ -191,15 +193,15 @@ public class GidsLoginProcessor
         File.WriteAllText(filePath, json);
 
         Console.WriteLine("Checklist for attending visitors saved successfully.");
-    }
+    }*/
 
-    private bool AuthenticateUser(string password)
+    private static bool AuthenticateUser(string password)
     {
         List<Credential> credentials = LoadUserCredentials();
         return credentials.Any(cred => cred.Password == password);
     }
 
-    private List<Credential> LoadUserCredentials()
+    private static List<Credential> LoadUserCredentials()
     {
         string filePath = "./JSON-Files/GidsCredentials.json";
         if (File.Exists(filePath))
@@ -213,4 +215,4 @@ public class GidsLoginProcessor
             return new List<Credential>();
         }
     }
-}*/
+}

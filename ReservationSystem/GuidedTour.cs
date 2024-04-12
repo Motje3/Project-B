@@ -18,7 +18,7 @@ public class GuidedTour
     public bool Deleted { get; set; }
 
     //public Dictionary<DateTime, List<Visitor>> TourSlots { get; private set; } // To be removed
-    public int TourId { get; }
+    public Guid TourId { get; set; }
 
     public GuidedTour(DateTime startTime)
     {
@@ -26,7 +26,8 @@ public class GuidedTour
         Duration = 20; // 20 minutes
         EndTime = startTime.AddMinutes(Duration);
         MaxCapacity = 13;
-        TourId = GuidedTour._generateUniqueId();
+        //TourId = GuidedTour._generateUniqueId();
+        TourId = Guid.NewGuid();
 
 
         //TourSlots = new Dictionary<DateTime, List<Visitor>>();
@@ -34,7 +35,7 @@ public class GuidedTour
         //InitializeTourSlotsForToday(); // Now it's safe to call this
     }
 
-    public GuidedTour(DateTime startTime, int tourId)
+    public GuidedTour(DateTime startTime, Guid tourId)
     {
         StartTime = startTime;
         Duration = 20; // 20 minutes
@@ -45,7 +46,7 @@ public class GuidedTour
 
     // constructor for json serializer DO NOT USE IT WILL PROBABLY BREAK SOMETHING
     [JsonConstructor]
-    public GuidedTour(int duration, DateTime startTime, DateTime endTime, int maxCapacity, int tourId, bool complete, bool deleted)
+    public GuidedTour(int duration, DateTime startTime, DateTime endTime, int maxCapacity, Guid tourId, bool complete, bool deleted)
     {
         Duration = duration;
         StartTime = startTime;
@@ -56,336 +57,28 @@ public class GuidedTour
         Deleted = deleted;
     }
 
-    
-
-
-    /*private void LoadTourSettings()
+    public void AddVisitor(Visitor visitor)
     {
-        string filePath = "./JSON-Files/TourSettings.json";
-
-        if (File.Exists(filePath))
-        {
-            try
-            {
-                string json = File.ReadAllText(filePath);
-                dynamic settings = JsonConvert.DeserializeObject(json);
-
-                // Parse the times as TimeSpan objects
-                TimeSpan startTimeSpan = TimeSpan.Parse((string)settings?.StartTime);
-                TimeSpan endTimeSpan = TimeSpan.Parse((string)settings?.EndTime);
-
-                // Combine today's date with the loaded times
-                DateTime today = DateTime.Today;
-                StartTime = today.Add(startTimeSpan);
-                EndTime = today.Add(endTimeSpan);
-
-                TourInterval = TimeSpan.FromMinutes((int)(settings?.TourInterval ?? 20));
-                MaxCapacity = (int)(settings?.MaxCapacity ?? 13);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error loading tour settings: {ex.Message}");
-                // Handle the error, possibly by setting default values
-            }
-        }
-        else
-        {
-            Console.WriteLine("Tour settings file not found. Using default settings.");
-
-            DateTime today = DateTime.Today;
-            StartTime = today.AddHours(9); // Start at 9 AM today
-            EndTime = today.AddHours(17); // End at 5 PM today
-            TourInterval = TimeSpan.FromMinutes(20); // 20-minute interval between tours
-            MaxCapacity = 13; // Default maximum capacity
-        }
-    }*/
-
-
-
-
-    /*private void InitializeTourSlotsForToday()
-    {
-        ClearTourSlots();
-
-        DateTime today = DateTime.Today;
-        DateTime startTimeToday = new DateTime(today.Year, today.Month, today.Day, StartTime.Hour, StartTime.Minute, 0);
-        DateTime endTimeToday = new DateTime(today.Year, today.Month, today.Day, EndTime.Hour, EndTime.Minute, 0);
-
-        // Debugging output
-        // Console.WriteLine($"Initializing slots from {startTimeToday} to {endTimeToday}");
-
-        DateTime slotTime = startTimeToday;
-        while (slotTime < endTimeToday)
-        {
-            if (!TourSlots.ContainsKey(slotTime))
-            {
-                TourSlots.Add(slotTime, new List<Visitor>());
-                // More debugging output for each slot
-            }
-            slotTime = slotTime.Add(TourInterval);
-        }
-    }*/
-
-
-    /*private void ClearTourSlots()
-    {
-        if (TourSlots == null)
-        {
-            TourSlots = new Dictionary<DateTime, List<Visitor>>();
-        }
-        else
-        {
-            TourSlots.Clear();
-        }
+        throw new NotImplementedException();
     }
 
-
-
-    public void ListAvailableTours(int numberOfPeopleAttemptingToJoin)
+    public void RemoveVisitor(Visitor visitor)
     {
-        DateTime now = DateTime.Now;
-
-        Console.WriteLine("Available tour times:");
-        foreach (var slot in TourSlots)
-        {
-            if ((slot.Value.Count + numberOfPeopleAttemptingToJoin) <= MaxCapacity)
-            {
-                Console.WriteLine($"{slot.Key.ToString("MM/dd/yyyy h:mm tt")} - {slot.Value.Count} participants");
-            }
-
-        }
+        throw new NotImplementedException();
     }
 
-
-    public bool JoinTour(DateTime tourTime, Visitor visitor)
+    public void TransferVisitor(Visitor visitor, GuidedTour newTour)
     {
-
-        if (tourTime < StartTime || tourTime > EndTime)
-        {
-            Console.WriteLine("The chosen time is outside the tour operation hours.");
-            return false;
-        }
-
-        // If we get here, the tour is either full or the hour doesn't have a slot.
-        if (!TourSlots.ContainsKey(tourTime))
-        {
-            Console.WriteLine("There is no tour at the chosen time.");
-            return false;
-        }
-
-        // if (tourTime <= DateTime.Now)
-        // {
-        //     Console.WriteLine("Cannot join a tour that has already started or passed.");
-        //     return false;
-        // }
-
-        // Check if the slot exists and is not full.
-        if (TourSlots[tourTime].Count < MaxCapacity)
-        {
-            TourSlots[tourTime].Add(visitor);
-            Console.WriteLine($"{visitor.Name} has successfully joined the tour at {tourTime.ToString("h:mm tt")}");
-            return true;
-        }
-        else
-        {
-            Console.WriteLine("Could not join tour.");
-            return false;
-        }
+        throw new NotImplementedException();
     }
-
-
-    public bool UpdateVisitorTour(string ticketCode, DateTime newTourDateTime)
-    {
-        bool anyUpdates = false; // Flag to track if any updates were made
-
-        try
-        {
-            // Collect all visitors across all slots with the given ticketCode
-            var visitorsToUpdate = new List<Visitor>();
-            foreach (var slot in TourSlots)
-            {
-                visitorsToUpdate.AddRange(slot.Value.Where(v => v.TicketCode == ticketCode).ToList());
-            }
-
-            // Check if the new slot has enough capacity for all visitors
-            if (TourSlots.TryGetValue(newTourDateTime, out List<Visitor> newSlot) && newSlot.Count + visitorsToUpdate.Count <= MaxCapacity)
-            {
-                foreach (var visitor in visitorsToUpdate)
-                {
-                    // Remove visitor from their current slot
-                    foreach (var slot in TourSlots.Values)
-                    {
-                        slot.Remove(visitor);
-                    }
-
-                    // Add visitor to the new slot
-                    newSlot.Add(visitor);
-                    anyUpdates = true; // Mark that at least one update was made
-                }
-            }
-            else
-            {
-                Console.WriteLine("The tour at the new hour is full or does not exist.");
-                return false; // Indicate failure due to full capacity or non-existent slot
-            }
-
-            if (anyUpdates)
-            {
-                Console.WriteLine("All visitors reservation's updated successfully.");
-                return true; // Successful update for all visitors
-            }
-            else
-            {
-                Console.WriteLine("No visitors found with the given ticket code.");
-                return false; // No visitors were found and updated
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred: {ex.Message}");
-            return false; // Indicate failure due to an exception
-        }
-    }
-
-
-
-    public bool RemoveVisitorFromTour(DateTime tourDateTime, string ticketCode)
-    {
-        bool removedAnyVisitor = false;
-
-        // No need to convert tourHour; we are already getting a DateTime object as tourDateTime.
-        if (TourSlots.TryGetValue(tourDateTime, out List<Visitor> visitors))
-        {
-            // Use a loop to continuously find and remove visitors with the matching ticketCode
-            var visitorToRemove = visitors.FirstOrDefault(v => v.TicketCode == ticketCode);
-            while (visitorToRemove != null)
-            {
-                visitors.Remove(visitorToRemove);
-                removedAnyVisitor = true;
-
-                // Look for the next visitor with the same ticketCode, if any
-                visitorToRemove = visitors.FirstOrDefault(v => v.TicketCode == ticketCode);
-            }
-        }
-
-        return removedAnyVisitor;
-    }
-
-
-
-    public void SaveGuidedToursToFile()
-    {
-        // Filter out past tours before saving
-        var filteredTourData = TourSlots
-            .Where(entry => entry.Key.Date >= DateTime.Today) // Keep only today and future tours
-            .ToDictionary(
-                entry => entry.Key.ToString("yyyy-MM-dd HH:mm"), // Format the date as a string
-                entry => entry.Value.Select(visitor => new { visitor.Name, visitor.TicketCode }).ToList()
-            );
-
-        string filePath = "./JSON-Files/guidedTours.json";
-        string json = JsonConvert.SerializeObject(filteredTourData, Formatting.Indented);
-
-        // First, update the guidedTours.json file with the current state
-        File.WriteAllText(filePath, json);
-
-        // Then, archive this updated file
-        ArchiveGuidedToursFile();
-    }
-
-
-    public void LoadToursFromFile(string filePath)
-    {
-        try
-        {
-            if (File.Exists(filePath))
-            {
-                string json = File.ReadAllText(filePath);
-                var loadedTourSlots = JsonConvert.DeserializeObject<Dictionary<string, List<Visitor>>>(json);
-
-                if (loadedTourSlots != null)
-                {
-                    ClearTourSlots();
-
-                    // Convert the string keys back to DateTime and initialize tours for today if needed
-                    foreach (var slot in loadedTourSlots)
-                    {
-                        DateTime slotTime = DateTime.ParseExact(slot.Key, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
-                        TourSlots[slotTime] = slot.Value;
-                    }
-
-                    // Check if there are slots for today and initialize if not
-                    if (!TourSlots.Keys.Any(dt => dt.Date == DateTime.Today))
-                    {
-                        //InitializeTourSlotsForToday();
-                    }
-                }
-                else
-                {
-                    // Console.WriteLine("Couldn't find tours so initializing for today.");
-                    //InitializeTourSlotsForToday();
-                }
-            }
-            else
-            {
-                // If the file does not exist, initialize tours for today
-                //InitializeTourSlotsForToday();
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred while loading tours: {ex.Message}");
-            // Optionally initialize tours for today even in case of error, or handle differently
-            //InitializeTourSlotsForToday();
-        }
-    }
-
-
-    public void ArchiveGuidedToursFile()
-    {
-        try
-        {
-            string targetBasePath = @"C:\Users\moham\Desktop\School\Project-B\Project-B\ReservationSystem";
-            string jsonFilesFolderPath = Path.Combine(targetBasePath, "JSON-Files");
-            string archiveFolderPath = Path.Combine(jsonFilesFolderPath, "GuidedTours");
-            string sourceFilePath = Path.Combine(jsonFilesFolderPath, "guidedTours.json");
-            string archiveFilePath = Path.Combine(archiveFolderPath, $"guidedTours_{DateTime.Now:yyyyMMdd}.json");
-
-            if (!Directory.Exists(archiveFolderPath))
-            {
-                Directory.CreateDirectory(archiveFolderPath);
-            }
-
-            if (File.Exists(sourceFilePath))
-            {
-                // Check if the archive file already exists
-                if (File.Exists(archiveFilePath))
-                {
-                    // Try to delete the existing file
-                    File.Delete(archiveFilePath);
-                }
-
-                // Copy the file to the archive
-                File.Copy(sourceFilePath, archiveFilePath, true);
-                // Console.WriteLine($"Archive updated successfully at: {archiveFilePath}");
-            }
-            else
-            {
-                Console.WriteLine("Source file not found. Cannot archive.");
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred during archiving: {ex.Message}");
-        }
-    }
-
-
+    /*
+    // To be changed, ?should be? implemented in AdminLoginProcessor as ChangeTourCapacity()
     public bool UpdateMaxCapacity(int newCapacity)
     {
         return true;
     }
 
+    // To be change, ?should be? implemented in AdminLoginProcessor as ChangeTourTime()
     public bool ChangeTourTime(int oldTourHour)
     {
         return true;
@@ -435,10 +128,10 @@ public class GuidedTour
         TimeOnly tourTime = TimeOnly.FromDateTime(tour.StartTime);
         DateOnly tourDate = DateOnly.FromDateTime(tour.StartTime);
         bool tourAlreadyInFile = _checkIfInFile(tour);
-        bool allowedId = tour.TourId >= 100000000 && tour.TourId <= 999999999;
+        bool forbiddenId = CheckTourId(tour.TourId);
         bool allowedTime = _checkIfAllowedTime(tourTime);
         bool allowedDate = _checkIfAllowedDate(tourDate);
-        if (!allowedTime || !allowedDate || tourAlreadyInFile || !allowedId)
+        if (!allowedTime || !allowedDate || tourAlreadyInFile || forbiddenId)
         {
             return;
         }
@@ -665,32 +358,57 @@ public class GuidedTour
         }
     }
 
-    // Generates a unique random int number between 100000000 and 999999999, this number is to be used as the id of new tours
-    //  - Uses a random seed to generate and return a number in the range
-    //  - Checks if the generated id already an id of a different tour
-    private static int _generateUniqueId()
+    // Returns all tours from today that have not yet taken place
+    //  - checks which tours have already started
+    //  - checks which tours are today
+    public static List<GuidedTour> ReturnAllCurrentToursFromToday()
     {
-        Random gen = new();
-        bool idIsUnique = false;
-        int uniqueId = 0;
-        List<int> ids = new();
+        List<GuidedTour> tours = new();
+        
+        for (int tourIndex = 0;tourIndex < CurrentTours.Count; tourIndex++)
+        {
+            GuidedTour currentTour = CurrentTours[tourIndex];
+            DateOnly TommorowDate = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
+            DateTime TommorowDateTime = new(TommorowDate.Year, TommorowDate.Month, TommorowDate.Day);
+
+            bool tourNotYetStarted = DateTime.Compare(DateTime.Now, currentTour.StartTime) == -1;
+            bool tourIsToday = DateTime.Compare(currentTour.StartTime, TommorowDateTime) == -1;
+            
+            if (tourNotYetStarted && tourIsToday)
+            {
+                tours.Add(currentTour);
+            }
+        }
+
+        return tours;
+    }
+
+    
+    // Returns if the given Guid is already a TourId in a different tour
+    private static bool CheckTourId(Guid id)
+    {
+        bool foundId = false;
+        List<Guid> ids = new();
 
         foreach (GuidedTour tour in GuidedTour.CurrentTours)
         {
             ids.Add(tour.TourId);
         }
-
-        while (idIsUnique == false)
+        foreach (GuidedTour tour in GuidedTour.CompletedTours)
         {
-            int newId = gen.Next(100000000, 999999999);
-            if (!ids.Contains(newId))
-            {
-                uniqueId = newId;
-                idIsUnique = true;
-            }
+            ids.Add(tour.TourId);
+        }
+        foreach (GuidedTour tour in GuidedTour.DeletedTours)
+        {
+            ids.Add(tour.TourId);
+        }
+        
+        if (ids.Contains(id))
+        {
+            foundId = true;
         }
 
-        return uniqueId;
+        return foundId;
     }
 
     private static List<DateOnly> returnHolidays(int year)
@@ -776,5 +494,32 @@ public class GuidedTour
             }
         }
         return false;
+    }
+
+    // Returns all tours from this year
+    public static List<GuidedTour> ReturnAllTourFromThisYear()
+    {
+        List<GuidedTour> tours = new();
+
+        return tours;
+    }
+
+    // Check if given visitor is in any tour
+    public static bool CheckIfVisitorInTour(Visitor visitor)
+    {
+        bool foundVisitor = false;
+
+        foreach (GuidedTour currentTour in CurrentTours)
+        {
+            foreach(Visitor currentVisitor in currentTour.ExpectedVisitors)
+            {
+                if (currentVisitor.VisitorId == visitor.VisitorId)
+                {
+                    foundVisitor = true;
+                }
+            }
+        }
+
+        return foundVisitor;
     }
 }

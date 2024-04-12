@@ -6,16 +6,23 @@ public class Ticket
     public int NumberOfPeople { get; set; }
     public List<Visitor> Visitors { get; set; }
 
-    public static List<Ticket> LoadTicketsFromFile(string filePath)
+
+    public static List<Ticket> Tickets { get; set; } = new List<Ticket>();
+    public static string OnlineTicketsFilePath = "./JSON-Files/OnlineTickets.json";
+    static Ticket()
+    {
+        Tickets = LoadTicketsFromFile();
+    }
+    public static List<Ticket> LoadTicketsFromFile()
     {
         try
         {
-            if (!File.Exists(filePath))
+            if (!File.Exists(OnlineTicketsFilePath))
             {
-                throw new FileNotFoundException($"The file {filePath} was not found.");
+                throw new FileNotFoundException($"The file {OnlineTicketsFilePath} was not found.");
             }
 
-            string jsonContent = File.ReadAllText(filePath);
+            string jsonContent = File.ReadAllText(OnlineTicketsFilePath);
             var tickets = JsonConvert.DeserializeObject<List<Ticket>>(jsonContent);
 
             if (tickets == null) throw new Exception("Failed to deserialize the JSON content.");
