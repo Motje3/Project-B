@@ -26,13 +26,10 @@ public class GuidedTour
         Duration = 20; // 20 minutes
         EndTime = startTime.AddMinutes(Duration);
         MaxCapacity = 13;
-        //TourId = GuidedTour._generateUniqueId();
         TourId = Guid.NewGuid();
+        Completed = false;
+        Deleted = false;
 
-
-        //TourSlots = new Dictionary<DateTime, List<Visitor>>();
-        //LoadTourSettings();
-        //InitializeTourSlotsForToday(); // Now it's safe to call this
     }
 
     public GuidedTour(DateTime startTime, Guid tourId)
@@ -42,6 +39,8 @@ public class GuidedTour
         EndTime = startTime.AddMinutes(Duration);
         MaxCapacity = 13;
         TourId = tourId;
+        Completed = false;
+        Deleted = false;
     }
 
     // constructor for json serializer DO NOT USE IT WILL PROBABLY BREAK SOMETHING
@@ -461,7 +460,7 @@ public class GuidedTour
 
         return allowed;
     }
-
+    
     private static bool _checkIfAllowedDate(DateOnly date)
     {
         List<DateOnly> mondays = returnEveryMondayThisYear();
@@ -497,9 +496,41 @@ public class GuidedTour
     }
 
     // Returns all tours from this year
-    public static List<GuidedTour> ReturnAllTourFromThisYear()
+    public static List<GuidedTour> ReturnAllToursFromThisYear()
     {
+        int thisYear = DateTime.Today.Year;
+        DateOnly yearStart = new(thisYear, 1, 1);
         List<GuidedTour> tours = new();
+
+        for (int dayIndex = 0; dayIndex < 365; dayIndex++)
+        {
+            DateOnly day = yearStart.AddDays(dayIndex);
+            List<GuidedTour> toursToday = _makeToursForDay(day);
+            foreach (GuidedTour tour in toursToday)
+            {
+                tours.Add(tour);
+            }
+        }
+        return tours;
+    }
+    // makes all possible tour for a given date
+    private static List<GuidedTour> _makeToursForDay(DateOnly date)
+    {
+        int year = date.Year;
+        int month = date.Month;
+        int day = date.Day;
+        List<GuidedTour> tours = new();
+        List<int> hours = new() {9,10,11,12,13,14,15,16,17};
+        for (int hourIndex = 0; hourIndex < hours.Count; hourIndex++)
+        {
+            int hour = hours[hourIndex];
+            GuidedTour Tour1 = new GuidedTour(new(year, month, day, hour, 0, 0));
+            GuidedTour Tour2 = new GuidedTour(new(year, month, day, hour, 20, 0));
+            GuidedTour Tour3 = new GuidedTour(new(year, month, day, hour, 40, 0));
+            tours.Add(Tour1);
+            tours.Add(Tour2);
+            tours.Add(Tour3);
+        }
 
         return tours;
     }
