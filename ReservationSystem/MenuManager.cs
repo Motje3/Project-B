@@ -39,6 +39,7 @@ public static class MenuManager
                     //chosenTour.AddVisitor(visitor);
                     _printSuccesfullyJoinedTour(chosenTour);
                     
+                    MenuManager.ShowFullMenu(visitor);
                     break;
 
                 case "2":
@@ -110,6 +111,7 @@ public static class MenuManager
                 case "2":
                     // visitor.ReservedTour.RemoveVisitor(visitor);
                     choosingOption = false; // Exit the main menu loop after cancelling.
+                    MenuManager.ShowRestrictedMenu(visitor);
                     break;
                 case "3":
                     choosingOption = false; // Exit the main menu loop.
