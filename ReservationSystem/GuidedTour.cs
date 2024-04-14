@@ -123,6 +123,44 @@ public class GuidedTour
         GuidedTour._updateCurrentTours();
     }
 
+    // 
+    public static GuidedTour FindTourById(Guid id)
+    {
+        GuidedTour foundTour = null;
+
+        foreach (GuidedTour currentTour in GuidedTour.CurrentTours)
+        {
+            if (currentTour.TourId == id)
+            {
+                foundTour = currentTour;
+                break;
+            }
+        }
+        foreach (GuidedTour currentTour in GuidedTour.CompletedTours)
+        {
+            if (currentTour.TourId == id)
+            {
+                foundTour = currentTour;
+                break;
+            }
+        }
+        foreach (GuidedTour currentTour in GuidedTour.DeletedTours)
+        {
+            if (currentTour.TourId == id)
+            {
+                foundTour = currentTour;
+                break;
+            }
+        }
+
+        if (foundTour == null)
+        {
+            return null;
+        }
+
+        return foundTour;
+    }
+
     // Adds the given tour to the Json file :
     //  - Checks if the tour has correct format
     //  - Checks if the tour is in the future or in the past
@@ -346,6 +384,12 @@ public class GuidedTour
             for (int tourIndex = 0; tourIndex < tours.Count; tourIndex++)
             {
                 GuidedTour currentTour = tours[tourIndex];
+                bool currentTourIsInThePast = DateTime.Compare(DateTime.Now, currentTour.StartTime) == 1;
+                if (currentTourIsInThePast && currentTour.Completed != true)
+                {
+                    currentTour.Completed = true;
+                }
+
                 if (currentTour.Deleted == true)
                 {
                     DeletedTours.Add(currentTour);

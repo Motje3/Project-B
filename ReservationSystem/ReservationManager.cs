@@ -2,6 +2,11 @@ public static class ReservationManager
 {
     public static void ValidateCodeAndProcessReservations()
     {
+        try
+        {
+            Console.Clear();
+        }catch{}
+        
         bool isValidCode = false;
         while (!isValidCode)
         {
@@ -12,12 +17,16 @@ public static class ReservationManager
             if (userCode == "123")
             {
                 AdminLoginProcessor.ProcessLoginForm();
-                return; // Exit the method after admin login form is processed
+                
+                // Repeat this method until app closed
+                ReservationManager.ValidateCodeAndProcessReservations();
             }
             else if (userCode == "456")
             {
                 GidsLoginProcessor.ProcessLoginForm();
-                return; //Exit the method after guide login form is processed
+                
+                // Repeat this method until app closed
+                ReservationManager.ValidateCodeAndProcessReservations();
             }
             else if (EntreeCodeValidator.IsCodeValid(userCode))
             {
@@ -43,6 +52,9 @@ public static class ReservationManager
                     MenuManager.ShowRestrictedMenu(null); // Ensure your ShowRestrictedMenu can handle null
                     isValidCode = true; // Consider whether you want to set this to true if no visitor is found
                 }
+
+                // Repeat this method until app closed
+                ReservationManager.ValidateCodeAndProcessReservations();
             }
             else
             {

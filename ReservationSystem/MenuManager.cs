@@ -58,6 +58,8 @@ public static class MenuManager
         bool choosingOption = true;
         while (choosingOption)
         {
+            Console.WriteLine("Your current tour reservation is:");
+            //_printTourString(GuidedTour.FindTourById(visitor.ReservedTourId));
             Console.WriteLine("\nPlease choose an option:");
             Console.WriteLine("1. Join a different tour");
             Console.WriteLine("2. Cancel my tour reservation");
@@ -102,6 +104,7 @@ public static class MenuManager
                         // visitor.ReservedTour.TransferVisitor(visitor, chosenTour);
 
                         _printSuccesfullyJoinedTour(chosenTour);
+                        selectingTour = false;
                     }
                     break;
                 case "2":
@@ -121,11 +124,18 @@ public static class MenuManager
     private static void _printSuccesfullyJoinedTour(GuidedTour chosenTour)
     {
         Console.WriteLine("Succesfully joined the following tour:");
-        DateOnly chosenTourDate = DateOnly.FromDateTime(chosenTour.StartTime);
-        string chosenHour = chosenTour.StartTime.Hour.ToString();
-        string chosenMinute = chosenTour.StartTime.Minute.ToString();
-        if (chosenMinute == "0")
-            chosenMinute = "00";
-        Console.WriteLine($"{chosenHour}:{chosenMinute} {chosenTourDate} | duration: {chosenTour.Duration} minutes |");
+        _printTourString(chosenTour);
     }
+
+    private static void _printTourString(GuidedTour tour)
+    {
+        DateOnly tourDate = DateOnly.FromDateTime(tour.StartTime);
+        string hour = tour.StartTime.Hour.ToString();
+        string minute = tour.StartTime.Minute.ToString();
+        if (minute == "0")
+            minute = "00";
+
+        Console.WriteLine($"{hour}:{minute} {tourDate} | duration: {tour.Duration} minutes\n");
+    }
+
 }
