@@ -76,7 +76,7 @@ public static class AdminLoginProcessor
                 case "3":
                     // To be implemented
                     // Here the code must print the content of GuidedTour.CurrentTours
-                    throw new NotImplementedException();
+                    GuidedTour.PrintToursOpenToday();
                     break;
                 case "4":
                     continueRunning = false;
