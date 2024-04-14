@@ -40,7 +40,7 @@ public static class MenuManager
                     _printSuccesfullyJoinedTour(chosenTour);
                     
                     MenuManager.ShowFullMenu(visitor);
-                    break;
+                    return;
 
                 case "2":
                     loopOption = false;
@@ -110,9 +110,8 @@ public static class MenuManager
                     break;
                 case "2":
                     // visitor.ReservedTour.RemoveVisitor(visitor);
-                    choosingOption = false; // Exit the main menu loop after cancelling.
                     MenuManager.ShowRestrictedMenu(visitor);
-                    break;
+                    return;
                 case "3":
                     choosingOption = false; // Exit the main menu loop.
                     break;
