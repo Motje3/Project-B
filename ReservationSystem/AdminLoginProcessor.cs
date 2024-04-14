@@ -1,7 +1,6 @@
 using Newtonsoft.Json;
-using System.Globalization;
 
-public class AdminLoginProcessor
+public static class AdminLoginProcessor
 {
     public class Credential
     {
@@ -9,45 +8,8 @@ public class AdminLoginProcessor
         public string Password { get; set; }
     }
 
-    public void AnalyzeYesterdayToursAndSuggest()
-    {
-        string archiveFolderPath = "./JSON-Files/ArchivedTours";
-        string yesterdayFileName = $"guidedTours_{DateTime.Today.AddDays(-1):yyyyMMdd}.json";
-        string fullPath = Path.Combine(archiveFolderPath, yesterdayFileName);
-
-        if (File.Exists(fullPath))
-        {
-            string jsonContent = File.ReadAllText(fullPath);
-            var tourData = JsonConvert.DeserializeObject<Dictionary<string, List<dynamic>>>(jsonContent); // Using dynamic for simplicity
-            if (tourData != null)
-            {
-                foreach (var tour in tourData)
-                {
-                    DateTime tourTime = DateTime.ParseExact(tour.Key, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
-                    int participantCount = tour.Value.Count;
-                    if (participantCount >= 10)
-                    {
-                        Console.WriteLine($"The tour at {tourTime.ToString("HH:mm")} had high attendance with {participantCount} people. Consider adding another slot around this time.");
-                    }
-                    if (participantCount <= 3)
-                    {
-                        Console.WriteLine($"The tour at {tourTime.ToString("HH:mm")} had low attendance with {participantCount} people. Consider removing the slot arround that time.");
-                    }
-
-                }
-            }
-            else
-            {
-                Console.WriteLine("No tour data found for yesterday.");
-            }
-        }
-        else
-        {
-            Console.WriteLine("Yesterday's guided tour archive file not found.");
-        }
-    }
-
-    public void ProcessLoginForm(GuidedTour guidedTour)
+    // To be changed
+    public static void ProcessLoginForm()
     {
         Console.WriteLine("\nAdmin login\n");
 
@@ -59,7 +21,7 @@ public class AdminLoginProcessor
         if (AuthenticateUser(username, password))
         {
             Console.WriteLine("\nAccess Granted!\n");
-            ShowAdminMenu(guidedTour);
+            ShowAdminMenu();
         }
         else
         {
@@ -67,13 +29,13 @@ public class AdminLoginProcessor
         }
     }
 
-    private bool AuthenticateUser(string username, string password)
+    private static bool AuthenticateUser(string username, string password)
     {
         List<Credential> credentials = LoadUserCredentials();
         return credentials.Any(cred => cred.Username == username && cred.Password == password);
     }
 
-    private List<Credential> LoadUserCredentials()
+    private static List<Credential> LoadUserCredentials()
     {
         string filePath = "./JSON-Files/AdminCredentials.json";
         if (File.Exists(filePath))
@@ -88,17 +50,17 @@ public class AdminLoginProcessor
         }
     }
 
-    public void ShowAdminMenu(GuidedTour guidedTour)
+    // To be changed
+    public static void ShowAdminMenu()
     {
         bool continueRunning = true;
         while (continueRunning)
         {
             Console.WriteLine("\nAdmin Menu:");
-            Console.WriteLine("1. Change Capacity");
-            Console.WriteLine("2. View Tours");
-            Console.WriteLine("3. Cancel a Tour");
-            Console.WriteLine("4. Advice for upcoming tours");
-            Console.WriteLine("5. Exit");
+            Console.WriteLine("1. Change capacity of a tour");
+            Console.WriteLine("2. Change time of a tour");
+            Console.WriteLine("3. View Tours");;
+            Console.WriteLine("4. Exit");
 
             Console.Write("\nEnter your choice: ");
             string choice = Console.ReadLine();
@@ -106,18 +68,17 @@ public class AdminLoginProcessor
             switch (choice)
             {
                 case "1":
-                    ChangeCapacity(guidedTour);
+                    // To be implemented
+                    ChangeTourCapacity();
                     break;
                 case "2":
-                    guidedTour.ListAvailableTours(0);
+                    // To be implemented
+                    ChangeTourTime();
                     break;
                 case "3":
-                    CancelTour(guidedTour);
+                    GuidedTour.PrintToursOpenToday();
                     break;
                 case "4":
-                    AnalyzeYesterdayToursAndSuggest();
-                    break;
-                case "5":
                     continueRunning = false;
                     break;
                 default:
@@ -127,9 +88,11 @@ public class AdminLoginProcessor
         }
     }
 
-    private void ChangeCapacity(GuidedTour guidedTour)
+    private static void ChangeTourCapacity()
     {
-        Console.Write("Enter new capacity: ");
+        // To be implemented, currently low priority in Trello so leave as is until told otherwise
+        throw new NotImplementedException();
+        /*Console.Write("Enter new capacity: ");
         if (int.TryParse(Console.ReadLine(), out int newCapacity))
         {
             if (guidedTour.UpdateMaxCapacity(newCapacity))
@@ -144,11 +107,14 @@ public class AdminLoginProcessor
         else
         {
             Console.WriteLine("Invalid input. Please enter a valid number.");
-        }
+        }*/
     }
 
-    private void CancelTour(GuidedTour guidedTour)
+    private static void ChangeTourTime()
     {
+        // To be implemented, currently low priority in Trello so leave as is until told otherwise
+        throw new NotImplementedException();
+        /*
         Console.Write("Enter the tour hour you would like to cancel: ");
         int oldTourHour = int.Parse(Console.ReadLine());
 
@@ -161,5 +127,6 @@ public class AdminLoginProcessor
         {
             Console.WriteLine("Failed to cancel tour.");
         }
+        */
     }
 }

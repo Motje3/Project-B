@@ -1,17 +1,8 @@
 using System.Globalization;
 
-public class MenuManager
+public static class MenuManager
 {
-    private ReservationManager _reservationManager;
-    private GuidedTour _guidedTour;
-
-    public MenuManager(ReservationManager reservationManager, GuidedTour guidedTour)
-    {
-        _reservationManager = reservationManager;
-        _guidedTour = guidedTour;
-    }
-
-    public void ShowRestrictedMenu(string ticketCode)
+    public static void ShowRestrictedMenu(Visitor visitor)
     {
         bool loopOption = true;
         while (loopOption)
@@ -19,68 +10,37 @@ public class MenuManager
             Console.WriteLine("\nPlease choose an option:");            
             Console.WriteLine("1. Join a tour");
             Console.WriteLine("2. Exit");
-            Console.Write("\nEnter your choice: ");
+            Console.WriteLine("\nEnter your choice: ");
 
             string choice = Console.ReadLine();
             switch (choice)
             {
                 case "1":
-                
-                    var ticket = _reservationManager.Tickets.FirstOrDefault(t => t.TicketCode == ticketCode);
-                    if (ticket == null)
+                    // Print all avaible tours
+                    List<GuidedTour> allowedTours = GuidedTour.PrintToursOpenToday();
+
+                    Console.WriteLine($"\nPlease choose a number next to the tour you wish to join");
+
+                    // Visitor has to choose a tour
+                    string chosenTourNumber = Console.ReadLine();
+                    int tourNumber;
+                    int.TryParse(chosenTourNumber, out tourNumber);
+                    bool outSideOfAllowedRange = tourNumber <= 0 || tourNumber > allowedTours.Count;
+                    while (outSideOfAllowedRange)
                     {
-                        Console.WriteLine("Ticket code is not valid.");
-                        break; // Exit the switch case
+                        Console.WriteLine("Invalid choice, please choose a number next to the tour you wish to join");
+                        chosenTourNumber = Console.ReadLine();
+                        int.TryParse(chosenTourNumber, out tourNumber);
+                        outSideOfAllowedRange = tourNumber <= 0 || tourNumber > allowedTours.Count;
                     }
+                    GuidedTour chosenTour = allowedTours[tourNumber - 1];
 
-                    int numberOfPeople = ticket.NumberOfPeople;
-                    _guidedTour.ListAvailableTours(numberOfPeople);
-
-
-                    Console.WriteLine($"\nPlease enter the time of the tour you wish to join (e.g., '1:00 PM') between {_guidedTour.StartTime.ToString("h:mm tt")} to {_guidedTour.EndTime.ToString("h:mm tt")}:");
-
+                    // Add visitor from to chosenTour
+                    chosenTour.AddVisitor(visitor);
+                    _printSuccesfullyJoinedTour(chosenTour);
                     
-
-                    string inputTime = Console.ReadLine();
-                    if (DateTime.TryParseExact(inputTime, new[] { "h:mm tt" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime chosenTourTime))
-                    {
-                        chosenTourTime = DateTime.Today.AddHours(chosenTourTime.Hour).AddMinutes(chosenTourTime.Minute);
-
-                        if (chosenTourTime < _guidedTour.StartTime || chosenTourTime > _guidedTour.EndTime)
-                        {
-                            Console.WriteLine("The chosen time is outside the tour operation hours!!!");
-                            break;
-                        }
-
-                        bool joinSuccess = true;
-                        foreach (var visitorInfo in ticket.Visitors)
-                        {
-                            Visitor visitor = new Visitor(visitorInfo.Name, chosenTourTime, ticketCode); // Create a Visitor object for each person in the ticket.
-
-                            if (!_guidedTour.JoinTour(chosenTourTime, visitor))
-                            {
-                                Console.WriteLine($"Failed to join {visitor.Name} to the tour. Please try again later.");
-                                joinSuccess = false;
-                                break; // If one fails, we exit the loop (consider how you want to handle partial success)
-                            }
-                        }
-
-                        if (joinSuccess)
-                        {
-                            foreach (var visitorInfo in ticket.Visitors)
-                            {
-                                Visitor visitor = new Visitor(visitorInfo.Name, chosenTourTime, ticketCode);
-                                _reservationManager.SaveReservation(visitor);
-                            }
-                            _guidedTour.SaveGuidedToursToFile();
-                            loopOption = false;  // Exit the main menu loop after successful operation.
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid input. Please enter the tour time in the format 'H:MM AM' or 'H:MM PM'.");
-                    }
-                    break;
+                    MenuManager.ShowFullMenu(visitor);
+                    return;
 
                 case "2":
                     loopOption = false;
@@ -94,11 +54,14 @@ public class MenuManager
     }
 
 
-    public void ShowFullMenu(string ticketCode)
+    public static void ShowFullMenu(Visitor visitor)
     {
+        GuidedTour visitorsTour = null;
         bool choosingOption = true;
         while (choosingOption)
         {
+            Console.WriteLine("Your current tour reservation is:");
+            //_printTourString(GuidedTour.FindTourById(visitor.ReservedTourId));
             Console.WriteLine("\nPlease choose an option:");
             Console.WriteLine("1. Join a different tour");
             Console.WriteLine("2. Cancel my tour reservation");
@@ -113,49 +76,46 @@ public class MenuManager
                     bool selectingTour = true;
                     while (selectingTour)
                     {
-                        var ticket = _reservationManager.Tickets.FirstOrDefault(t => t.TicketCode == ticketCode);
+                        var ticket = Ticket.Tickets.FirstOrDefault(t => t.TicketCode == visitor.TicketCode);
                         if (ticket == null)
                         {
                             Console.WriteLine("Ticket code is not valid.");
                             break; // Exit the switch case and the while loop
                         }
 
-                        int numberOfPeople = ticket.NumberOfPeople;
+                        // Print all avaible tours
+                        List<GuidedTour> allowedTours = GuidedTour.PrintToursOpenToday();
 
-                        _guidedTour.ListAvailableTours(numberOfPeople);
-                        Console.WriteLine($"\nPlease enter the time of the tour you wish to join (e.g., '1:00 PM') between {_guidedTour.StartTime.ToString("h:mm tt")} to {_guidedTour.EndTime.ToString("h:mm tt")}:");
+                        Console.WriteLine($"\nPlease choose a number next to the tour you wish to join");
 
-                        string inputTime = Console.ReadLine();
-                        if (DateTime.TryParseExact(inputTime, new[] { "h:mm tt" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime newTourDateTime))
+                        // Visitor has to choose a tour
+                        string chosenTourNumber = Console.ReadLine();
+                        int tourNumber;
+                        int.TryParse(chosenTourNumber, out tourNumber);
+                        bool outSideOfAllowedRange = tourNumber <= 0 || tourNumber > allowedTours.Count;
+                        while (outSideOfAllowedRange)
                         {
-                            newTourDateTime = DateTime.Today.AddHours(newTourDateTime.Hour).AddMinutes(newTourDateTime.Minute);
-
-                            if (newTourDateTime < _guidedTour.StartTime || newTourDateTime > _guidedTour.EndTime)
-                            {
-                                Console.WriteLine("The chosen time is outside the tour operation hours!!");
-                                continue; // Ask for input again
-                            }
-
-                            if (_reservationManager.EditReservation(ticketCode, newTourDateTime))
-                            {
-                                selectingTour = false; // Exit the tour selection loop.
-                            }
-                            else
-                            {
-                                Console.WriteLine("Failed to update the tour time. Please try a different time or cancel.");
-                            }
+                            Console.WriteLine("Invalid choice, please choose a number next to the tour you wish to join");
+                            chosenTourNumber = Console.ReadLine();
+                            int.TryParse(chosenTourNumber, out tourNumber);
+                            outSideOfAllowedRange = tourNumber <= 0 || tourNumber > allowedTours.Count;
                         }
-                        else
-                        {
-                            Console.WriteLine("Invalid input. Please enter the tour time in the format 'H:MM AM' or 'H:MM PM'.");
-                        }
+                        GuidedTour chosenTour = allowedTours[tourNumber - 1];
+
+                        // Transfer visitor from currentTour to chosenTour
+                        //visitorsTour = GuidedTour.FindTourById(visitor.ReservedTourId);
+                        //visitorsTour.TransferVisitor(visitor, chosenTour);
+
+                        _printSuccesfullyJoinedTour(chosenTour);
+                        selectingTour = false;
                     }
                     break;
-
                 case "2":
-                    _reservationManager.CancelReservation(ticketCode);
-                    choosingOption = false; // Exit the main menu loop after cancelling.
-                    break;
+                    //visitorsTour = GuidedTour.FindTourById(visitor.ReservedTourId);
+                    //visitorsTour.RemoveVisitor(visitor);
+
+                    MenuManager.ShowRestrictedMenu(visitor);
+                    return;
                 case "3":
                     choosingOption = false; // Exit the main menu loop.
                     break;
@@ -166,5 +126,21 @@ public class MenuManager
         }
     }
 
+    private static void _printSuccesfullyJoinedTour(GuidedTour chosenTour)
+    {
+        Console.WriteLine("Succesfully joined the following tour:");
+        _printTourString(chosenTour);
+    }
+
+    private static void _printTourString(GuidedTour tour)
+    {
+        DateOnly tourDate = DateOnly.FromDateTime(tour.StartTime);
+        string hour = tour.StartTime.Hour.ToString();
+        string minute = tour.StartTime.Minute.ToString();
+        if (minute == "0")
+            minute = "00";
+
+        Console.WriteLine($"{hour}:{minute} {tourDate} | duration: {tour.Duration} minutes\n");
+    }
 
 }

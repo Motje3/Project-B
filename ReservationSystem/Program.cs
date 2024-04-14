@@ -2,8 +2,7 @@
 {
     public static void Main()
 
-    {   
-        var reservationManager = new ReservationManager();
-        reservationManager.ValidateCodeAndProcessReservations();
+    {
+        ReservationManager.ValidateCodeAndProcessReservations();
     }
 }

@@ -39,9 +39,8 @@ public class EntryCodeTest
     {
         // Arrange
         _addNewCode(codeToAdd);
-        EntreeCodeValidator validator = new();
         // Act
-        bool actual = validator.IsCodeValid(testCode);
+        bool actual = EntreeCodeValidator.IsCodeValid(testCode);
         // Assert
         Assert.AreEqual(expected, actual);
     }

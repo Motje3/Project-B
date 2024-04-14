@@ -1,10 +1,9 @@
 
 public class ScreenStarting : Screen
 {
-    EntreeCodeValidator validator;
     public ScreenStarting(List<StaticConsoleObject> boxs, List<List<SelectionConsoleObject>> selectionGrid, int startingXposition, int startingYposition) : base(boxs, selectionGrid, startingXposition, startingYposition)
     {
-        validator = new();
+        
     }
 
     public override void Show()
@@ -35,7 +34,7 @@ public class ScreenStarting : Screen
 
             var currentKeyboard = _keyboardObjects[_currYpos][_currXpos];
             bool canDeleteText = currentKeyboard.text.Length > 0;
-            bool validCodeScanned = validator.IsCodeValid(currentKeyboard.text);
+            bool validCodeScanned = EntreeCodeValidator.IsCodeValid(currentKeyboard.text);
             bool maxLenCodeReached = currentKeyboard.text.Length == currentKeyboard.MaxLenKeyboard;
 
             // Trying to go to the next screen
