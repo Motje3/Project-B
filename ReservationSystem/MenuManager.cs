@@ -25,16 +25,20 @@ public static class MenuManager
                     string chosenTourNumber = Console.ReadLine();
                     int tourNumber;
                     int.TryParse(chosenTourNumber, out tourNumber);
-                    bool outSideOfAllowedRange = tourNumber < 0 && tourNumber > allowedTours.Count;
+                    bool outSideOfAllowedRange = tourNumber <= 0 || tourNumber > allowedTours.Count;
                     while (outSideOfAllowedRange)
                     {
+                        Console.WriteLine("Invalid choice, please choose a number next to the tour you wish to join");
                         chosenTourNumber = Console.ReadLine();
                         int.TryParse(chosenTourNumber, out tourNumber);
+                        outSideOfAllowedRange = tourNumber <= 0 || tourNumber > allowedTours.Count;
                     }
                     GuidedTour chosenTour = allowedTours[tourNumber - 1];
 
                     // Add visitor from to chosenTour
                     //chosenTour.AddVisitor(visitor);
+                    _printSuccesfullyJoinedTour(chosenTour);
+                    
                     break;
 
                 case "2":
@@ -80,20 +84,24 @@ public static class MenuManager
 
                         Console.WriteLine($"\nPlease choose a number next to the tour you wish to join");
 
+                        // Visitor has to choose a tour
                         string chosenTourNumber = Console.ReadLine();
                         int tourNumber;
                         int.TryParse(chosenTourNumber, out tourNumber);
-                        bool outSideOfAllowedRange = tourNumber < 0 && tourNumber > allowedTours.Count;
+                        bool outSideOfAllowedRange = tourNumber <= 0 || tourNumber > allowedTours.Count;
                         while (outSideOfAllowedRange)
                         {
+                            Console.WriteLine("Invalid choice, please choose a number next to the tour you wish to join");
                             chosenTourNumber = Console.ReadLine();
                             int.TryParse(chosenTourNumber, out tourNumber);
+                            outSideOfAllowedRange = tourNumber <= 0 || tourNumber > allowedTours.Count;
                         }
                         GuidedTour chosenTour = allowedTours[tourNumber - 1];
 
                         // Transfer visitor from currentTour to chosenTour
-
                         // visitor.ReservedTour.TransferVisitor(visitor, chosenTour);
+
+                        _printSuccesfullyJoinedTour(chosenTour);
                     }
                     break;
                 case "2":
@@ -110,5 +118,14 @@ public static class MenuManager
         }
     }
 
-
+    private static void _printSuccesfullyJoinedTour(GuidedTour chosenTour)
+    {
+        Console.WriteLine("Succesfully joined the following tour:");
+        DateOnly chosenTourDate = DateOnly.FromDateTime(chosenTour.StartTime);
+        string chosenHour = chosenTour.StartTime.Hour.ToString();
+        string chosenMinute = chosenTour.StartTime.Minute.ToString();
+        if (chosenMinute == "0")
+            chosenMinute = "00";
+        Console.WriteLine($"{chosenHour}:{chosenMinute} {chosenTourDate} | duration: {chosenTour.Duration} minutes |");
+    }
 }

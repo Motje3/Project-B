@@ -394,25 +394,83 @@ public class GuidedTour
         return tours;
     }
 
-    // Prints all tours that are not full yet
+    public static List<GuidedTour> ReturnAllCurrentToursFromTommorow()
+    {
+        List<GuidedTour> tours = new();
+
+        for (int tourIndex = 0; tourIndex < CurrentTours.Count; tourIndex++)
+        {
+            GuidedTour currentTour = CurrentTours[tourIndex];
+            DateOnly TommorowDate = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
+            DateTime TommorowDateTime = new(TommorowDate.Year, TommorowDate.Month, TommorowDate.Day);
+
+            bool sameYear = TommorowDate.Year == currentTour.StartTime.Year;
+            bool sameMonth = TommorowDate.Month == currentTour.StartTime.Month;
+            bool tourIsTommorow = TommorowDate.Day == currentTour.StartTime.Day && sameMonth && sameYear;
+            if (tourIsTommorow)
+            {
+                tours.Add(currentTour);
+            }
+        }
+
+        // sort list using linq
+        tours = tours.OrderBy(tour=>tour.StartTime).ToList();
+
+        return tours;
+    }
+
+    // Prints all tours from today that are not full yet
     //  - Also returns a list of tours that are not full yet
+    //  - Also prints tours from tommorw until 10 allowedTours if less than 10 are present
     public static List<GuidedTour> PrintToursOpenToday()
     {
         // Print all avaible tours could be simplified in a methode that is in guidedtour. 
         List<GuidedTour> allowedTours = new();
-        int allowedTourIndex = 0;
         List<GuidedTour> todayTours = GuidedTour.ReturnAllCurrentToursFromToday();
+        int allowedTourIndex = 0;
         for (int tourIndex = 0; tourIndex < todayTours.Count; tourIndex++)
         {
             GuidedTour currentTour = todayTours[tourIndex];
+            
             int spacesLeftInTour = currentTour.MaxCapacity - currentTour.ExpectedVisitors.Count;
             if (spacesLeftInTour >= 0) 
             {
                 allowedTours.Add(currentTour);
-                Console.WriteLine($"{allowedTourIndex+1} | {TimeOnly.FromDateTime(currentTour.StartTime)} | {currentTour.Duration} minutes | {spacesLeftInTour} places remaining ");
+
+                DateOnly tourDate = DateOnly.FromDateTime(currentTour.StartTime);
+                string hour = currentTour.StartTime.Hour.ToString();
+                string minute = currentTour.StartTime.Minute.ToString();
+                if (minute == "0")
+                    minute = "00";
+                Console.WriteLine($"{allowedTourIndex+1} | {hour}:{minute} {tourDate} | duration: {currentTour.Duration} minutes | {spacesLeftInTour} places remaining ");
                 allowedTourIndex++;
             }
         }
+
+        List<GuidedTour> toursTommorow = GuidedTour.ReturnAllCurrentToursFromTommorow();
+        int tommorowTourIndex = 0;
+        // if they are less than 10 allowedTours present, add tours from tommorow until 10 
+        while (allowedTours.Count < 10)
+        {
+            GuidedTour currentTour = toursTommorow[tommorowTourIndex];
+
+            int spacesLeftInTour = currentTour.MaxCapacity - currentTour.ExpectedVisitors.Count;
+            if (spacesLeftInTour >= 0)
+            {
+                allowedTours.Add(currentTour);
+
+                DateOnly tourDate = DateOnly.FromDateTime(currentTour.StartTime);
+                string hour = currentTour.StartTime.Hour.ToString();
+                string minute = currentTour.StartTime.Minute.ToString();
+                if (minute == "0")
+                    minute = "00";
+                Console.WriteLine($"{allowedTourIndex+1} | {hour}:{minute} {tourDate} | duration: {currentTour.Duration} minutes | {spacesLeftInTour} places remaining ");
+                allowedTourIndex++;
+            }
+
+            tommorowTourIndex++;
+        }
+
         return allowedTours;
     }
 
