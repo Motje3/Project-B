@@ -3,7 +3,7 @@
     public static void Main()
 
     {
-        //ReservationManager.ValidateCodeAndProcessReservations();
+        ReservationManager.ValidateCodeAndProcessReservations();
 
         //DateTime testTime = new(2024, 4, 10, 14, 20, 0);
         //Guid testID = Guid.NewGuid();

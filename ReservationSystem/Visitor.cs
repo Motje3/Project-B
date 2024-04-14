@@ -14,11 +14,9 @@ public class Visitor
 
     public bool HasReservation()
     {
-        if (GuidedTour.CheckIfVisitorInTour(this))
-        {
-            return false;
-        }
-        return true;
+        //updated to return true instade of false. no need for if statments. 
+        //Return true if the visitor is in any tour, indicating they have a reservation
+        return GuidedTour.CheckIfVisitorInTour(this);
     }
 
     public static Visitor FindVisitorByTicketCode(string ticketCode)
@@ -26,7 +24,7 @@ public class Visitor
         Visitor foundVisitor = null;
         foreach (GuidedTour currentTour in GuidedTour.CurrentTours)
         {
-            foreach(Visitor currentVisitor in currentTour.ExpectedVisitors)
+            foreach (Visitor currentVisitor in currentTour.ExpectedVisitors)
             {
                 if (currentVisitor.TicketCode == ticketCode)
                 {
@@ -41,5 +39,5 @@ public class Visitor
         return foundVisitor;
     }
 
-    
+
 }

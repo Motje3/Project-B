@@ -21,25 +21,27 @@ public static class ReservationManager
             }
             else if (EntreeCodeValidator.IsCodeValid(userCode))
             {
-                // Ask P.O about this, if visitors in Json with codes also have a name
-                // Ask P.O about this, if visitors in Json with codes also have a name
-                // Ask P.O about this, if visitors in Json with codes also have a name
-                // Ask P.O about this, if visitors in Json with codes also have a name
-                // Ask P.O about this, if visitors in Json with codes also have a name
+                //ASK PO ABOUT THIS WEATHER ONLINETICKETS WILL HAVE NAMES. 
+                //ASK PO ABOUT THIS WEATHER ONLINETICKETS WILL HAVE NAMES.
+                //ASK PO ABOUT THIS WEATHER ONLINETICKETS WILL HAVE NAMES.
+                //ASK PO ABOUT THIS WEATHER ONLINETICKETS WILL HAVE NAMES.
                 Visitor currentVisitor = Visitor.FindVisitorByTicketCode(userCode);
-                Console.WriteLine("\nWelcome, your ticket is confirmed!\n");
-                isValidCode = true;
-                
-                bool visitorHasReservation = currentVisitor.HasReservation();
-                if (visitorHasReservation)
+                if (currentVisitor != null)
                 {
-                    MenuManager.ShowFullMenu(currentVisitor);
+                    Console.WriteLine("\nWelcome, your ticket is confirmed!\n");
+                    isValidCode = true;
+
+                    bool visitorHasReservation = currentVisitor.HasReservation();
+                    if (visitorHasReservation)
+                    {
+                        MenuManager.ShowFullMenu(currentVisitor);
+                    }
                 }
+                //Else visitor was not found == methode returned null...
                 else
                 {
-                    // Assuming the ShowRestrictedMenu method will handle the logic for
-                    // allowing all visitors in the ticket to join a tour.
-                    MenuManager.ShowRestrictedMenu(currentVisitor);
+                    MenuManager.ShowRestrictedMenu(null); // Ensure your ShowRestrictedMenu can handle null
+                    isValidCode = true; // Consider whether you want to set this to true if no visitor is found
                 }
             }
             else
@@ -89,7 +91,7 @@ public static class ReservationManager
             return false;
         }
     }*/
-    
+
     // To be removed
     /*public void CancelReservation(string ticketCode)
     {

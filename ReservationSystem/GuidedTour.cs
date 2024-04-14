@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
-using System.Globalization;
+
+
 
 
 public class GuidedTour
@@ -150,7 +151,7 @@ public class GuidedTour
         else if (tourIsHappeningRightNow)
         {
         }
-        
+
 
         using (StreamWriter writer = new StreamWriter(GuidedTour.tourJSONpath))
         {
@@ -200,8 +201,8 @@ public class GuidedTour
             {
                 GuidedTour currentTour = GuidedTour.CurrentTours[tourIndex];
                 if (currentTour.TourId == tour.TourId)
-                { 
-                    currentTour.Deleted = true; 
+                {
+                    currentTour.Deleted = true;
                 }
             }
         }
@@ -211,8 +212,8 @@ public class GuidedTour
             {
                 GuidedTour currentTour = GuidedTour.CompletedTours[tourIndex];
                 if (currentTour.TourId == tour.TourId)
-                { 
-                    currentTour.Deleted = true; 
+                {
+                    currentTour.Deleted = true;
                 }
             }
         }
@@ -363,8 +364,8 @@ public class GuidedTour
     public static List<GuidedTour> ReturnAllCurrentToursFromToday()
     {
         List<GuidedTour> tours = new();
-        
-        for (int tourIndex = 0;tourIndex < CurrentTours.Count; tourIndex++)
+
+        for (int tourIndex = 0; tourIndex < CurrentTours.Count; tourIndex++)
         {
             GuidedTour currentTour = CurrentTours[tourIndex];
             DateOnly TommorowDate = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
@@ -372,7 +373,7 @@ public class GuidedTour
 
             bool tourNotYetStarted = DateTime.Compare(DateTime.Now, currentTour.StartTime) == -1;
             bool tourIsToday = DateTime.Compare(currentTour.StartTime, TommorowDateTime) == -1;
-            
+
             if (tourNotYetStarted && tourIsToday)
             {
                 tours.Add(currentTour);
@@ -382,7 +383,7 @@ public class GuidedTour
         return tours;
     }
 
-    
+
     // Returns if the given Guid is already a TourId in a different tour
     private static bool CheckTourId(Guid id)
     {
@@ -401,7 +402,7 @@ public class GuidedTour
         {
             ids.Add(tour.TourId);
         }
-        
+
         if (ids.Contains(id))
         {
             foundId = true;
@@ -460,7 +461,7 @@ public class GuidedTour
 
         return allowed;
     }
-    
+
     private static bool _checkIfAllowedDate(DateOnly date)
     {
         List<DateOnly> mondays = returnEveryMondayThisYear();
@@ -520,7 +521,7 @@ public class GuidedTour
         int month = date.Month;
         int day = date.Day;
         List<GuidedTour> tours = new();
-        List<int> hours = new() {9,10,11,12,13,14,15,16,17};
+        List<int> hours = new() { 9, 10, 11, 12, 13, 14, 15, 16, 17 };
         for (int hourIndex = 0; hourIndex < hours.Count; hourIndex++)
         {
             int hour = hours[hourIndex];
@@ -536,21 +537,9 @@ public class GuidedTour
     }
 
     // Check if given visitor is in any tour
+    //updated methode to use linq to be faster and more efficent. 
     public static bool CheckIfVisitorInTour(Visitor visitor)
     {
-        bool foundVisitor = false;
-
-        foreach (GuidedTour currentTour in CurrentTours)
-        {
-            foreach(Visitor currentVisitor in currentTour.ExpectedVisitors)
-            {
-                if (currentVisitor.VisitorId == visitor.VisitorId)
-                {
-                    foundVisitor = true;
-                }
-            }
-        }
-
-        return foundVisitor;
+        return CurrentTours.Any(tour => tour.ExpectedVisitors.Any(v => v.VisitorId == visitor.VisitorId));
     }
 }

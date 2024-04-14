@@ -16,7 +16,7 @@ public static class MenuManager
             switch (choice)
             {
                 case "1":
-                    // Print all avaible tours
+                    // Print all avaible tours could be simplified in a methode that is in guidedtour. 
                     List<GuidedTour> allowedTours = new();
                     int allowedTourIndex = 0;
                     for (int tourIndex = 0; tourIndex < GuidedTour.ReturnAllCurrentToursFromToday().Count; tourIndex++)
@@ -114,11 +114,12 @@ public static class MenuManager
                         GuidedTour chosenTour = allowedTours[tourNumber - 1];
 
                         // Transfer visitor from currentTour to chosenTour
-                        visitor.ReservedTour.TransferVisitor(visitor, chosenTour);
+
+                        // visitor.ReservedTour.TransferVisitor(visitor, chosenTour);
                     }
                     break;
                 case "2":
-                    visitor.ReservedTour.RemoveVisitor(visitor);
+                    // visitor.ReservedTour.RemoveVisitor(visitor);
                     choosingOption = false; // Exit the main menu loop after cancelling.
                     break;
                 case "3":
