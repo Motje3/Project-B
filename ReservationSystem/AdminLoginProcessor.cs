@@ -68,14 +68,14 @@ public static class AdminLoginProcessor
             switch (choice)
             {
                 case "1":
+                    // To be implemented
                     ChangeTourCapacity();
                     break;
                 case "2":
+                    // To be implemented
                     ChangeTourTime();
                     break;
                 case "3":
-                    // To be implemented
-                    // Here the code must print the content of GuidedTour.CurrentTours
                     GuidedTour.PrintToursOpenToday();
                     break;
                 case "4":

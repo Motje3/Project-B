@@ -36,7 +36,7 @@ public static class MenuManager
                     GuidedTour chosenTour = allowedTours[tourNumber - 1];
 
                     // Add visitor from to chosenTour
-                    //chosenTour.AddVisitor(visitor);
+                    chosenTour.AddVisitor(visitor);
                     _printSuccesfullyJoinedTour(chosenTour);
                     
                     MenuManager.ShowFullMenu(visitor);
@@ -56,6 +56,7 @@ public static class MenuManager
 
     public static void ShowFullMenu(Visitor visitor)
     {
+        GuidedTour visitorsTour = null;
         bool choosingOption = true;
         while (choosingOption)
         {
@@ -102,14 +103,17 @@ public static class MenuManager
                         GuidedTour chosenTour = allowedTours[tourNumber - 1];
 
                         // Transfer visitor from currentTour to chosenTour
-                        // visitor.ReservedTour.TransferVisitor(visitor, chosenTour);
+                        //visitorsTour = GuidedTour.FindTourById(visitor.ReservedTourId);
+                        //visitorsTour.TransferVisitor(visitor, chosenTour);
 
                         _printSuccesfullyJoinedTour(chosenTour);
                         selectingTour = false;
                     }
                     break;
                 case "2":
-                    // visitor.ReservedTour.RemoveVisitor(visitor);
+                    //visitorsTour = GuidedTour.FindTourById(visitor.ReservedTourId);
+                    //visitorsTour.RemoveVisitor(visitor);
+
                     MenuManager.ShowRestrictedMenu(visitor);
                     return;
                 case "3":

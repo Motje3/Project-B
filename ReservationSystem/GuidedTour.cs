@@ -1,8 +1,5 @@
 using Newtonsoft.Json;
 
-
-
-
 public class GuidedTour
 {
     // Non-static class
@@ -31,17 +28,6 @@ public class GuidedTour
         Completed = false;
         Deleted = false;
 
-    }
-
-    public GuidedTour(DateTime startTime, Guid tourId)
-    {
-        StartTime = startTime;
-        Duration = 20; // 20 minutes
-        EndTime = startTime.AddMinutes(Duration);
-        MaxCapacity = 13;
-        TourId = tourId;
-        Completed = false;
-        Deleted = false;
     }
 
     // constructor for json serializer DO NOT USE IT WILL PROBABLY BREAK SOMETHING
