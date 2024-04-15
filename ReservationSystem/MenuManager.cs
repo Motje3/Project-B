@@ -19,9 +19,10 @@ public static class MenuManager
                     // Print all avaible tours could be simplified in a methode that is in guidedtour. 
                     List<GuidedTour> allowedTours = new();
                     int allowedTourIndex = 0;
-                    for (int tourIndex = 0; tourIndex < GuidedTour.ReturnAllCurrentToursFromToday().Count; tourIndex++)
+                    List<GuidedTour> todayTours = GuidedTour.ReturnAllCurrentToursFromToday();
+                    for (int tourIndex = 0; tourIndex < todayTours.Count; tourIndex++)
                     {
-                        GuidedTour currentTour = GuidedTour.CurrentTours[tourIndex];
+                        GuidedTour currentTour = todayTours[tourIndex];
                         int spacesLeftInTour = currentTour.MaxCapacity - currentTour.ExpectedVisitors.Count;
                         if (spacesLeftInTour >= 0) 
                         {
