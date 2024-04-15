@@ -2,8 +2,10 @@ public class Visitor
 {
     public string Name { get; set; }
     public Guid VisitorId { get; private set; }
-
     public string TicketCode { get; set; } // Add ticket code property
+    public Guid? AssingedTourId { get; private set;}
+
+
 
     public Visitor(string name, string ticketCode)
     {

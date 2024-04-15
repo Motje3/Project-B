@@ -5,6 +5,7 @@ public class Ticket
     public string TicketCode { get; set; }
     public int NumberOfPeople { get; set; }
     public List<Visitor> Visitors { get; set; }
+    public Visitor visitor { get; set; }
 
 
     public static List<Ticket> Tickets { get; set; } = new List<Ticket>();
