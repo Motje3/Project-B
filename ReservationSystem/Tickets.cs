@@ -1,19 +1,21 @@
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 public class Ticket
 {
     public string TicketCode { get; set; }
-    public int NumberOfPeople { get; set; }
-    public List<Visitor> Visitors { get; set; }
-    public Visitor visitor { get; set; }
-
+    public Visitor visitor { get; set; }  // Now only a single Visitor object per ticket
 
     public static List<Ticket> Tickets { get; set; } = new List<Ticket>();
     public static string OnlineTicketsFilePath = "./JSON-Files/OnlineTickets.json";
+
     static Ticket()
     {
         Tickets = LoadTicketsFromFile();
     }
+
     public static List<Ticket> LoadTicketsFromFile()
     {
         try
@@ -28,12 +30,10 @@ public class Ticket
 
             if (tickets == null) throw new Exception("Failed to deserialize the JSON content.");
 
-            // Additional validation logic could be added here
             return tickets;
         }
         catch (Exception ex)
         {
-            // Log the exception or handle it as needed
             Console.WriteLine($"An error occurred: {ex.Message}");
             return new List<Ticket>(); // Return an empty list or handle the error as needed
         }

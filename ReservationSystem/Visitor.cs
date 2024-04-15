@@ -40,6 +40,4 @@ public class Visitor
 
         return foundVisitor;
     }
-
-
 }

@@ -17,14 +17,14 @@ public static class ReservationManager
                 AdminLoginProcessor.ProcessLoginForm();
                 
                 // Repeat this method until app closed
-                ReservationManager.ValidateCodeAndProcessReservations();
+                ValidateCodeAndProcessReservations();
             }
             else if (userCode == "456")
             {
                 GidsLoginProcessor.ProcessLoginForm();
                 
                 // Repeat this method until app closed
-                ReservationManager.ValidateCodeAndProcessReservations();
+                ValidateCodeAndProcessReservations();
             }
             else if (EntreeCodeValidator.IsCodeValid(userCode))
             {
@@ -52,7 +52,7 @@ public static class ReservationManager
                 }
 
                 // Repeat this method until app closed
-                ReservationManager.ValidateCodeAndProcessReservations();
+                ValidateCodeAndProcessReservations();
             }
             else
             {
