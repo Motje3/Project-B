@@ -1,8 +1,3 @@
-
-    // public string Name { get; set; }
-    // public Guid VisitorId { get; private set; }
-    // public string TicketCode { get; set; }
-
 public class Guide : Visitor
 {
     new List<Visitor> Present = new List<Visitor>();
