@@ -23,7 +23,7 @@ public static class MenuManager
                     {
                         GuidedTour currentTour = GuidedTour.CurrentTours[tourIndex];
                         int spacesLeftInTour = currentTour.MaxCapacity - currentTour.ExpectedVisitors.Count;
-                        if (spacesLeftInTour <= 0) 
+                        if (spacesLeftInTour >= 0) 
                         {
                             allowedTours.Add(currentTour);
                             Console.WriteLine($"{allowedTourIndex+1} | {TimeOnly.FromDateTime(currentTour.StartTime)} | {currentTour.Duration} minutes | {spacesLeftInTour} places remaining ");
@@ -45,7 +45,7 @@ public static class MenuManager
                     GuidedTour chosenTour = allowedTours[tourNumber - 1];
 
                     // Add visitor from to chosenTour
-                    chosenTour.AddVisitor(visitor);
+                    //chosenTour.AddVisitor(visitor);
                     break;
 
                 case "2":
