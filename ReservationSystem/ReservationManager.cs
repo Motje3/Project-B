@@ -21,10 +21,10 @@ public static class ReservationManager
             }
             else if (EntreeCodeValidator.IsCodeValid(userCode))
             {
-                //ASK PO ABOUT THIS WEATHER ONLINETICKETS WILL HAVE NAMES. 
-                //ASK PO ABOUT THIS WEATHER ONLINETICKETS WILL HAVE NAMES.
-                //ASK PO ABOUT THIS WEATHER ONLINETICKETS WILL HAVE NAMES.
-                //ASK PO ABOUT THIS WEATHER ONLINETICKETS WILL HAVE NAMES.
+                //ASK PO ABOUT THIS WHETHER ONLINETICKETS WILL HAVE NAMES. 
+                //ASK PO ABOUT THIS WHETHER ONLINETICKETS WILL HAVE NAMES.
+                //ASK PO ABOUT THIS WHETHER ONLINETICKETS WILL HAVE NAMES.
+                //ASK PO ABOUT THIS WHETHER ONLINETICKETS WILL HAVE NAMES.
                 Visitor currentVisitor = Visitor.FindVisitorByTicketCode(userCode);
                 if (currentVisitor != null)
                 {

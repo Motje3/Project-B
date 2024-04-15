@@ -16,21 +16,9 @@ public static class MenuManager
             switch (choice)
             {
                 case "1":
-                    // Print all avaible tours could be simplified in a methode that is in guidedtour. 
-                    List<GuidedTour> allowedTours = new();
-                    int allowedTourIndex = 0;
-                    List<GuidedTour> todayTours = GuidedTour.ReturnAllCurrentToursFromToday();
-                    for (int tourIndex = 0; tourIndex < todayTours.Count; tourIndex++)
-                    {
-                        GuidedTour currentTour = todayTours[tourIndex];
-                        int spacesLeftInTour = currentTour.MaxCapacity - currentTour.ExpectedVisitors.Count;
-                        if (spacesLeftInTour >= 0) 
-                        {
-                            allowedTours.Add(currentTour);
-                            Console.WriteLine($"{allowedTourIndex+1} | {TimeOnly.FromDateTime(currentTour.StartTime)} | {currentTour.Duration} minutes | {spacesLeftInTour} places remaining ");
-                            allowedTourIndex++;
-                        }
-                    }
+                    // Print all avaible tours
+                    List<GuidedTour> allowedTours = GuidedTour.PrintToursOpenToday();
+
                     Console.WriteLine($"\nPlease choose a number next to the tour you wish to join");
 
                     // Visitor has to choose a tour
@@ -88,19 +76,8 @@ public static class MenuManager
                         }
 
                         // Print all avaible tours
-                        List<GuidedTour> allowedTours = new();
-                        int allowedTourIndex = 0;
-                        for (int tourIndex = 0; tourIndex < GuidedTour.ReturnAllCurrentToursFromToday().Count; tourIndex++)
-                        {
-                            GuidedTour currentTour = GuidedTour.CurrentTours[tourIndex];
-                            int spacesLeftInTour = currentTour.MaxCapacity - currentTour.ExpectedVisitors.Count;
-                            if (spacesLeftInTour <= 0) 
-                            {
-                                allowedTours.Add(currentTour);
-                                Console.WriteLine($"{allowedTourIndex+1} | {TimeOnly.FromDateTime(currentTour.StartTime)} | {currentTour.Duration} minutes | {spacesLeftInTour} places remaining ");
-                                allowedTourIndex++;
-                            }
-                        }
+                        List<GuidedTour> allowedTours = GuidedTour.PrintToursOpenToday();
+
                         Console.WriteLine($"\nPlease choose a number next to the tour you wish to join");
 
                         string chosenTourNumber = Console.ReadLine();

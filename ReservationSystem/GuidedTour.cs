@@ -84,6 +84,13 @@ public class GuidedTour
         return true;
     }*/
 
+    public GuidedTour Clone()
+    {
+        var jsonString = JsonConvert.SerializeObject(this);
+
+        return JsonConvert.DeserializeObject<GuidedTour>(jsonString);
+    }
+
     // Static class
 
     public static string tourJSONpath = "./JSON-Files/GuidedTours.json";
@@ -361,6 +368,7 @@ public class GuidedTour
     // Returns all tours from today that have not yet taken place
     //  - checks which tours have already started
     //  - checks which tours are today
+    //  - at the end sorts starting from the earliest tour
     public static List<GuidedTour> ReturnAllCurrentToursFromToday()
     {
         List<GuidedTour> tours = new();
@@ -379,10 +387,34 @@ public class GuidedTour
                 tours.Add(currentTour);
             }
         }
+        
+        // sort list using linq
+        tours = tours.OrderBy(tour=>tour.StartTime).ToList();
 
         return tours;
     }
 
+    // Prints all tours that are not full yet
+    //  - Also returns a list of tours that are not full yet
+    public static List<GuidedTour> PrintToursOpenToday()
+    {
+        // Print all avaible tours could be simplified in a methode that is in guidedtour. 
+        List<GuidedTour> allowedTours = new();
+        int allowedTourIndex = 0;
+        List<GuidedTour> todayTours = GuidedTour.ReturnAllCurrentToursFromToday();
+        for (int tourIndex = 0; tourIndex < todayTours.Count; tourIndex++)
+        {
+            GuidedTour currentTour = todayTours[tourIndex];
+            int spacesLeftInTour = currentTour.MaxCapacity - currentTour.ExpectedVisitors.Count;
+            if (spacesLeftInTour >= 0) 
+            {
+                allowedTours.Add(currentTour);
+                Console.WriteLine($"{allowedTourIndex+1} | {TimeOnly.FromDateTime(currentTour.StartTime)} | {currentTour.Duration} minutes | {spacesLeftInTour} places remaining ");
+                allowedTourIndex++;
+            }
+        }
+        return allowedTours;
+    }
 
     // Returns if the given Guid is already a TourId in a different tour
     private static bool CheckTourId(Guid id)

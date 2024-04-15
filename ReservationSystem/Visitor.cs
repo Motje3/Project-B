@@ -22,7 +22,7 @@ public class Visitor
     public static Visitor FindVisitorByTicketCode(string ticketCode)
     {
         Visitor foundVisitor = null;
-        foreach (GuidedTour currentTour in GuidedTour.CurrentTours)
+        foreach (GuidedTour currentTour in GuidedTour.ReturnAllCurrentToursFromToday())
         {
             foreach (Visitor currentVisitor in currentTour.ExpectedVisitors)
             {
