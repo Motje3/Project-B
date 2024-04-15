@@ -1,9 +1,7 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace TestGuide;
+namespace  MuseumTesting;
 
 [TestClass]
-public class UnitTest1
+public class GuideTest
 {
     [TestMethod]
     public void TestOverride()
