@@ -6,7 +6,7 @@ using System.IO;
 public class Ticket
 {
     public string TicketCode { get; set; }
-    public Visitor Visitor { get; set; }  // Now only a single Visitor object per ticket
+    public Visitor visitor { get; set; }  // Now only a single Visitor object per ticket
 
     public static List<Ticket> Tickets { get; set; } = new List<Ticket>();
     public static string OnlineTicketsFilePath = "./JSON-Files/OnlineTickets.json";
