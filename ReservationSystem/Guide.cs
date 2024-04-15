@@ -1,6 +1,5 @@
 public class Guide : Visitor
 {
-    new List<Visitor> Present = new List<Visitor>();
     public Guide(string name, string ticketcode) : base(name, ticketcode) {}
     public override string ToString()
     {
