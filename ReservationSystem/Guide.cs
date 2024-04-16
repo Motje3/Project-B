@@ -1,9 +1,9 @@
 public class Guide : Visitor
 {
-    public Guide(string name, string ticketcode) : base(name, ticketcode) {}
+    public Guide(string ticketcode) : base(ticketcode) {}
     public override string ToString()
     {
-        return $"Name: {Name}\nTicket code: {TicketCode}";
+        return $"Ticket code: {TicketCode}";
     }
 }
 
