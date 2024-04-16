@@ -42,7 +42,7 @@ public class VisitorTest
     {
         // Arrange
         string name = "JAne";
-        Visitor visitor = new Visitor(name, "12345678901");
+        Visitor visitor = new Visitor("12345678901");
 
         // Act
         // .RondleidingChoice has been removed
@@ -57,7 +57,7 @@ public class VisitorTest
     {
         // Arrange
         string name = "John Doe";
-        Visitor visitor = new Visitor(name, "12345678901");
+        Visitor visitor = new Visitor("12345678901");
 
         // Act
         visitor.TicketCode = "12345678901";
