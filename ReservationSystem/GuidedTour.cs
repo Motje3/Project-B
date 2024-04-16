@@ -68,7 +68,7 @@ public class GuidedTour
             }
             // **AddVisitor** voor een gewoone **(niet een gids)** 
             // bezoeker moet checken dat visitor staat niet in ExpectedVisitors, if true return;
-            if (!foundVisitor)
+            if (foundVisitor)
             {
                 return;
             }
@@ -91,11 +91,14 @@ public class GuidedTour
             {
                 return;
             }
-            // **AddVisitor** voor een gewoone **(niet een gids)** bezoeker maakt een variabel **newTour **= **this.Clone()**
+            // **AddVisitor** voor een gewoone **(niet een gids)** 
+            // bezoeker maakt een variabel **newTour **= **this.Clone()**
             var newTour = this.Clone();
-            // **AddVisitor** voor een gewoone **(niet een gids)** bezoeker voegt **visitor **aan **newTour.ExpectedVisitor**
+            // **AddVisitor** voor een gewoone **(niet een gids)** 
+            // bezoeker voegt **visitor **aan **newTour.ExpectedVisitor**
             newTour.ExpectedVisitors.Add(visitor);
-            // **AddVisitor** voor een gewoone **(niet een gids)** bezoeker gebruikts **EditTourInJSON** (this, newTour)
+            // **AddVisitor** voor een gewoone **(niet een gids)** 
+            // bezoeker gebruikts **EditTourInJSON** (this, newTour)
             GuidedTour.EditTourInJSON(this, newTour);
         }
     }
