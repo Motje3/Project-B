@@ -1,36 +1,5 @@
 [
-    {
-      "TicketCode": "111",
-      "NumberOfPeople": 3,
-      "Visitors": [
-        { "Name": "Alice"},
-        { "Name": "Bob" },
-        { "Name": "Charlie"}
-      ]
-    },
-    {
-      "TicketCode": "222",
-      "NumberOfPeople": 1,
-      "Visitors": [
-        { "Name": "Diana" }
-      ]
-    },
-    {
-        "TicketCode": "333",
-        "NumberOfPeople": 11,
-        "Visitors": [
-          { "Name": "Person 1" },
-          { "Name": "Person 2" },
-          { "Name": "Person 3" },
-          { "Name": "Person 4" },
-          { "Name": "Person 5" },
-          { "Name": "Person 6" },
-          { "Name": "Person 7" },
-          { "Name": "Person 8" },
-          { "Name": "Person 9" },
-          { "Name": "Person 10" },
-          { "Name": "Person 11" }
-        ]
-      }
+  "111",
+  "222",
+  "333"
 ]
-  

@@ -39,7 +39,7 @@ public static class MenuManager
                     chosenTour.AddVisitor(visitor);
                     _printSuccesfullyJoinedTour(chosenTour);
                     
-                    MenuManager.ShowFullMenu(visitor);
+                    ShowFullMenu(visitor);
                     return;
 
                 case "2":
@@ -56,7 +56,6 @@ public static class MenuManager
 
     public static void ShowFullMenu(Visitor visitor)
     {
-        GuidedTour visitorsTour = null;
         bool choosingOption = true;
         while (choosingOption)
         {
@@ -76,13 +75,6 @@ public static class MenuManager
                     bool selectingTour = true;
                     while (selectingTour)
                     {
-                        var ticket = Ticket.Tickets.FirstOrDefault(t => t.TicketCode == visitor.TicketCode);
-                        if (ticket == null)
-                        {
-                            Console.WriteLine("Ticket code is not valid.");
-                            break; // Exit the switch case and the while loop
-                        }
-
                         // Print all avaible tours
                         List<GuidedTour> allowedTours = GuidedTour.PrintToursOpenToday();
 

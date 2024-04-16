@@ -1,15 +1,14 @@
 public class Visitor
 {
-    public string Name { get; set; }
+
     public Guid VisitorId { get; private set; }
     public string TicketCode { get; set; } // Add ticket code property
     public Guid? AssingedTourId { get; private set;}
 
 
 
-    public Visitor(string name, string ticketCode)
+    public Visitor( string ticketCode)
     {
-        Name = name;
         VisitorId = Guid.NewGuid();
         TicketCode = ticketCode; // Store the ticket code
     }
@@ -20,7 +19,10 @@ public class Visitor
         //Return true if the visitor is in any tour, indicating they have a reservation
         return GuidedTour.CheckIfVisitorInTour(this);
     }
+    
 
+
+    //probably not needed as we can just use hasreservation to check if vistor has reservation. 
     public static Visitor FindVisitorByTicketCode(string ticketCode)
     {
         Visitor foundVisitor = null;
