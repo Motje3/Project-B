@@ -81,7 +81,8 @@ public class GuidedTour
             {
                 return;
             }
-            
+            var newTour = this.Clone();
+            ExpectedVisitors.Add(visitor);
         }
     }
 
