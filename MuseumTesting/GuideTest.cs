@@ -7,7 +7,7 @@ public class GuideTest
     public void TestOverride()
     {
         // Arrange
-        Guide guide = new Guide("Bora", "111");
+        Guide guide = new("111");
 
         // Act
         string result = guide.ToString();
