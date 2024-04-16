@@ -45,7 +45,14 @@ public class GuidedTour
 
     public void AddVisitor(Visitor visitor)
     {
-        throw new NotImplementedException();
+        if ()
+        {
+
+        }
+        else;
+        {
+            
+        }
     }
 
     public void RemoveVisitor(Visitor visitor)
