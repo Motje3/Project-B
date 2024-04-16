@@ -191,6 +191,8 @@ public class GuidedTour
             writer.Write(List2json);
 
         }
+
+        GuidedTour._updateCurrentTours();
     }
 
     // Soft deletes the given tour from json file
@@ -234,6 +236,9 @@ public class GuidedTour
                 if (currentTour.TourId == tour.TourId)
                 {
                     currentTour.Deleted = true;
+                    GuidedTour.CurrentTours.Remove(currentTour);
+                    GuidedTour.DeletedTours.Add(currentTour);
+                    break;
                 }
             }
         }
@@ -245,6 +250,9 @@ public class GuidedTour
                 if (currentTour.TourId == tour.TourId)
                 {
                     currentTour.Deleted = true;
+                    GuidedTour.CompletedTours.Remove(currentTour);
+                    GuidedTour.DeletedTours.Add(currentTour);
+                    break;
                 }
             }
         }
@@ -567,7 +575,7 @@ public class GuidedTour
 
     private static bool _checkIfAllowedTime(TimeOnly time)
     {
-        List<int> allowedHours = new List<int>() { 9, 10, 11, 12, 13, 14, 15, 16, 17 };
+        List<int> allowedHours = new List<int>() { 9, 10, 11, 12, 13, 14, 15, };
         bool allowed = true;
 
         if (time.Minute != 0 && time.Minute != 20 && time.Minute != 40)
@@ -577,6 +585,10 @@ public class GuidedTour
         if (!allowedHours.Contains(time.Hour))
         {
             allowed = false;
+        }
+        if (time.Hour == 16 && (time.Minute == 20 || time.Minute == 0 ))
+        {
+            allowed = true;
         }
 
         return allowed;
