@@ -1,5 +1,6 @@
 public class Guide : Visitor
 {
+
     public Guide(string ticketcode) : base(ticketcode) {}
     public override string ToString()
     {

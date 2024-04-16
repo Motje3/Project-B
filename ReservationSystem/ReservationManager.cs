@@ -26,20 +26,16 @@ public static class ReservationManager
                 // Repeat this method until app closed
                 ValidateCodeAndProcessReservations();
             }
-            else if (EntreeCodeValidator.IsCodeValid(userCode))
+            else if (Ticket.IsCodeValid(userCode))
             {
-                //ASK PO ABOUT THIS WHETHER ONLINETICKETS WILL HAVE NAMES. 
-                //ASK PO ABOUT THIS WHETHER ONLINETICKETS WILL HAVE NAMES.
-                //ASK PO ABOUT THIS WHETHER ONLINETICKETS WILL HAVE NAMES.
-                //ASK PO ABOUT THIS WHETHER ONLINETICKETS WILL HAVE NAMES.
+
                 Visitor currentVisitor = Visitor.FindVisitorByTicketCode(userCode);
                 if (currentVisitor != null)
                 {
                     Console.WriteLine("\nWelcome, your ticket is confirmed!\n");
                     isValidCode = true;
 
-                    bool visitorHasReservation = currentVisitor.HasReservation();
-                    if (visitorHasReservation)
+                    if (currentVisitor.HasReservation())
                     {
                         MenuManager.ShowFullMenu(currentVisitor);
                     }
