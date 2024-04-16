@@ -2,32 +2,31 @@
 
 public class Guide : Visitor
 {
-    public Guide(string name, string ticketcode) : base(name, ticketcode) {}
-    public override string ToString()
-    {
-        return $"Name: {Name}\nTicket code: {TicketCode}";
-    }
+    public Guide(string name, string ticketcode) : base(name, ticketcode) { /* Name , TicketCode */ }
     public void CheckInVisitor(Visitor visitor)
     {
         GuidedTour tour = GuidedTour.FindTourById(base.AssingedTourId);
+        GuidedTour NewTour = tour.Clone();  // this will overwrite the old tour, Clone prefence changes to oldtour.
 
-        if (tour.ExpectedVisitors.Contains(visitor))
+        if (tour == null)
         {
-            Console.WriteLine($"\nWelcome {visitor.Name} to our museum");
-            return;
+            Console.WriteLine("\nNo matching tour not found");
         }
-        if (tour.PresentVisitors.Contains(visitor))
+        else if (tour.ExpectedVisitors.Contains(visitor))
         {
-            Console.WriteLine($"\nVisitor {visitor.Name} already joine the tour");
-            return;
+            if (!tour.PresentVisitors.Contains(visitor))
+            {
+                NewTour.PresentVisitors.Add(visitor);
+                GuidedTour.EditTourInJSON(tour, NewTour);  
+                return;
+            }
         }
-        if (!tour.PresentVisitors.Contains(visitor))
+        else if (!tour.ExpectedVisitors.Contains(visitor))  
         {
-            tour.PresentVisitors.Add(visitor);
-            Console.WriteLine($"\nVisitor is not Registerd");
-            return;
-        }  
-    }
+            // fail save message
+            Console.WriteLine("\nNo matching tour not found");
+        }       
+    }  
 }
 
     // public void CompleteTour() 
