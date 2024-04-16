@@ -18,6 +18,8 @@ public class GuidedTour
     //public Dictionary<DateTime, List<Visitor>> TourSlots { get; private set; } // To be removed
     public Guid TourId { get; set; }
 
+    public Guide AssignedGuide { get; set; }
+
     public GuidedTour(DateTime startTime)
     {
         StartTime = startTime;
@@ -32,7 +34,7 @@ public class GuidedTour
 
     // constructor for json serializer DO NOT USE IT WILL PROBABLY BREAK SOMETHING
     [JsonConstructor]
-    public GuidedTour(int duration, DateTime startTime, DateTime endTime, int maxCapacity, Guid tourId, bool complete, bool deleted)
+    public GuidedTour(int duration, DateTime startTime, DateTime endTime, int maxCapacity, Guid tourId, bool complete, bool deleted, Guide assignedGuide)
     {
         Duration = duration;
         StartTime = startTime;
@@ -41,16 +43,44 @@ public class GuidedTour
         TourId = tourId;
         Completed = complete;
         Deleted = deleted;
+        AssignedGuide = assignedGuide;
+
     }
 
     public void AddVisitor(Visitor visitor)
     {
-        if ()
+        if (visitor is Guide guide)
         {
-
+            AssignedGuide = guide;
         }
-        else;
+        else
         {
+            bool foundVisitor = false;
+            foreach (Visitor currentVisitor in ExpectedVisitors)
+            {
+                if(visitor.VisitorId == currentVisitor.VisitorId)
+                {
+                    foundVisitor = true;
+                    break;
+                }
+            }
+            if (!foundVisitor)
+            {
+                return;
+            }
+            int currentCapacity = ExpectedVisitors.Count;
+            if (currentCapacity == MaxCapacity)
+            {
+                return;
+            }
+            if (Deleted == true)
+            {
+                return;
+            }
+            if (Completed == true)
+            {
+                return;
+            }
             
         }
     }
