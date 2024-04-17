@@ -18,6 +18,8 @@ public class GuidedTour
     //public Dictionary<DateTime, List<Visitor>> TourSlots { get; private set; } // To be removed
     public Guid TourId { get; set; }
 
+    public Guide AssignedGuide { get; set; }
+
     public GuidedTour(DateTime startTime)
     {
         StartTime = startTime;
@@ -32,7 +34,7 @@ public class GuidedTour
 
     // constructor for json serializer DO NOT USE IT WILL PROBABLY BREAK SOMETHING
     [JsonConstructor]
-    public GuidedTour(int duration, DateTime startTime, DateTime endTime, int maxCapacity, Guid tourId, bool complete, bool deleted)
+    public GuidedTour(int duration, DateTime startTime, DateTime endTime, int maxCapacity, Guid tourId, bool complete, bool deleted, Guide assignedGuide)
     {
         Duration = duration;
         StartTime = startTime;
@@ -41,11 +43,64 @@ public class GuidedTour
         TourId = tourId;
         Completed = complete;
         Deleted = deleted;
+        AssignedGuide = assignedGuide;
+
     }
 
     public void AddVisitor(Visitor visitor)
     {
-        throw new NotImplementedException();
+        // Check if it is a guide
+        if (visitor is Guide guide)
+        {
+            AssignedGuide = guide;
+        }
+        else
+        {   
+            //  foundvisitor standard on false, when found will be set to true
+            bool foundVisitor = false;
+            foreach (Visitor currentVisitor in ExpectedVisitors)
+            {
+                if(visitor.VisitorId == currentVisitor.VisitorId)
+                {
+                    foundVisitor = true;
+                    break;
+                }
+            }
+            // **AddVisitor** voor een gewoone **(niet een gids)** 
+            // bezoeker moet checken dat visitor staat niet in ExpectedVisitors, if true return;
+            if (foundVisitor)
+            {
+                return;
+            }
+            // **AddVisitor** voor een gewoone **(niet een gids)** 
+            // bezoeker moet checken of de rondleiding nog niet vol is, if true return;
+            int currentCapacity = ExpectedVisitors.Count;
+            if (currentCapacity == MaxCapacity)
+            {
+                return;
+            }
+            // **AddVisitor** voor een gewoone **(niet een gids)** 
+            // bezoeker moet checken dat property Deleted == false, if Deleted == true return;
+            if (Deleted == true)
+            {
+                return;
+            }
+            // **AddVisitor** voor een gewoone **(niet een gids)** 
+            // bezoeker moet checken dat property **Completed **== false, if **Complete **== true return;
+            if (Completed == true)
+            {
+                return;
+            }
+            // **AddVisitor** voor een gewoone **(niet een gids)** 
+            // bezoeker maakt een variabel **newTour **= **this.Clone()**
+            var newTour = this.Clone();
+            // **AddVisitor** voor een gewoone **(niet een gids)** 
+            // bezoeker voegt **visitor **aan **newTour.ExpectedVisitor**
+            newTour.ExpectedVisitors.Add(visitor);
+            // **AddVisitor** voor een gewoone **(niet een gids)** 
+            // bezoeker gebruikts **EditTourInJSON** (this, newTour)
+            GuidedTour.EditTourInJSON(this, newTour);
+        }
     }
 
     public void RemoveVisitor(Visitor visitor)
