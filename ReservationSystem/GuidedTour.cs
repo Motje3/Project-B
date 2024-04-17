@@ -643,7 +643,7 @@ public class GuidedTour
         for (int dayIndex = 0; dayIndex < 365; dayIndex++)
         {
             DateOnly day = new(DateTime.Today.Year, 1, 1);
-            day.AddDays(dayIndex - 1);
+            day = day.AddDays(dayIndex - 1);
 
             if (day.DayOfWeek == DayOfWeek.Monday)
             {
