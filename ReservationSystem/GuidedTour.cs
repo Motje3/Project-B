@@ -57,18 +57,6 @@ public class GuidedTour
     {
         throw new NotImplementedException();
     }
-    /*
-    // To be changed, ?should be? implemented in AdminLoginProcessor as ChangeTourCapacity()
-    public bool UpdateMaxCapacity(int newCapacity)
-    {
-        return true;
-    }
-
-    // To be change, ?should be? implemented in AdminLoginProcessor as ChangeTourTime()
-    public bool ChangeTourTime(int oldTourHour)
-    {
-        return true;
-    }*/
 
     public GuidedTour Clone()
     {
