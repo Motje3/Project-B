@@ -28,8 +28,8 @@ public static class ReservationManager
             }
             else if (Ticket.IsCodeValid(userCode))
             {
-
                 Visitor currentVisitor = Visitor.FindVisitorByTicketCode(userCode);
+                
                 if (currentVisitor != null)
                 {
                     Console.WriteLine("\nWelcome, your ticket is confirmed!\n");
@@ -43,7 +43,7 @@ public static class ReservationManager
                 //Else visitor was not found == methode returned null...
                 else
                 {
-                    MenuManager.ShowRestrictedMenu(null); // Ensure your ShowRestrictedMenu can handle null
+                    MenuManager.ShowRestrictedMenu(userCode); // Ensure your ShowRestrictedMenu can handle null
                     isValidCode = true; // Consider whether you want to set this to true if no visitor is found
                 }
 

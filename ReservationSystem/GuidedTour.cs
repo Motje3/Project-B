@@ -55,12 +55,12 @@ public class GuidedTour
             AssignedGuide = guide;
         }
         else
-        {   
+        {
             //  foundvisitor standard on false, when found will be set to true
             bool foundVisitor = false;
             foreach (Visitor currentVisitor in ExpectedVisitors)
             {
-                if(visitor.VisitorId == currentVisitor.VisitorId)
+                if (visitor.TicketCode == currentVisitor.TicketCode)
                 {
                     foundVisitor = true;
                     break;
@@ -96,6 +96,7 @@ public class GuidedTour
             var newTour = this.Clone();
             // **AddVisitor** voor een gewoone **(niet een gids)** 
             // bezoeker voegt **visitor **aan **newTour.ExpectedVisitor**
+            visitor.AssingedTourId = this.TourId;
             newTour.ExpectedVisitors.Add(visitor);
             // **AddVisitor** voor een gewoone **(niet een gids)** 
             // bezoeker gebruikts **EditTourInJSON** (this, newTour)
@@ -105,7 +106,36 @@ public class GuidedTour
 
     public void RemoveVisitor(Visitor visitor)
     {
-        throw new NotImplementedException();
+        // Check if the visitor is a guide
+        if (visitor is Guide)
+        {
+            // If the visitor is a guide, remove their assignment
+            AssignedGuide = null;
+            return;
+        }
+
+        // Check if the visitor is found
+        bool foundVisitor = false;
+        foreach (Visitor currentVisitor in ExpectedVisitors)
+        {
+            if (visitor.TicketCode == currentVisitor.TicketCode)
+            {
+                foundVisitor = true;
+                break;
+            }
+        }
+        if (!foundVisitor)
+        {
+            return;
+        }
+        // Create a new tour to modify
+        GuidedTour newTour = this;
+
+        // Remove the visitor from ExpectedVisitors
+        newTour.ExpectedVisitors.Remove(visitor);
+
+        // Update the tour
+        GuidedTour.EditTourInJSON(this, newTour);
     }
 
     public void TransferVisitor(Visitor visitor, GuidedTour newTour)
@@ -468,9 +498,9 @@ public class GuidedTour
                 tours.Add(currentTour);
             }
         }
-        
+
         // sort list using linq
-        tours = tours.OrderBy(tour=>tour.StartTime).ToList();
+        tours = tours.OrderBy(tour => tour.StartTime).ToList();
 
         return tours;
     }
@@ -495,7 +525,7 @@ public class GuidedTour
         }
 
         // sort list using linq
-        tours = tours.OrderBy(tour=>tour.StartTime).ToList();
+        tours = tours.OrderBy(tour => tour.StartTime).ToList();
 
         return tours;
     }
@@ -512,9 +542,9 @@ public class GuidedTour
         for (int tourIndex = 0; tourIndex < todayTours.Count; tourIndex++)
         {
             GuidedTour currentTour = todayTours[tourIndex];
-            
+
             int spacesLeftInTour = currentTour.MaxCapacity - currentTour.ExpectedVisitors.Count;
-            if (spacesLeftInTour >= 0) 
+            if (spacesLeftInTour >= 0)
             {
                 allowedTours.Add(currentTour);
 
@@ -523,7 +553,7 @@ public class GuidedTour
                 string minute = currentTour.StartTime.Minute.ToString();
                 if (minute == "0")
                     minute = "00";
-                Console.WriteLine($"{allowedTourIndex+1} | {hour}:{minute} {tourDate} | duration: {currentTour.Duration} minutes | {spacesLeftInTour} places remaining ");
+                Console.WriteLine($"{allowedTourIndex + 1} | {hour}:{minute} {tourDate} | duration: {currentTour.Duration} minutes | {spacesLeftInTour} places remaining ");
                 allowedTourIndex++;
             }
         }
@@ -545,7 +575,7 @@ public class GuidedTour
                 string minute = currentTour.StartTime.Minute.ToString();
                 if (minute == "0")
                     minute = "00";
-                Console.WriteLine($"{allowedTourIndex+1} | {hour}:{minute} {tourDate} | duration: {currentTour.Duration} minutes | {spacesLeftInTour} places remaining ");
+                Console.WriteLine($"{allowedTourIndex + 1} | {hour}:{minute} {tourDate} | duration: {currentTour.Duration} minutes | {spacesLeftInTour} places remaining ");
                 allowedTourIndex++;
             }
 
@@ -629,7 +659,7 @@ public class GuidedTour
         {
             allowed = false;
         }
-        if (time.Hour == 16 && (time.Minute == 20 || time.Minute == 0 ))
+        if (time.Hour == 16 && (time.Minute == 20 || time.Minute == 0))
         {
             allowed = true;
         }
