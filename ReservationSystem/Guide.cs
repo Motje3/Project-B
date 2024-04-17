@@ -2,7 +2,11 @@
 
 public class Guide : Visitor
 {
-    public Guide(string name, string ticketcode) : base(name, ticketcode) { /* Name , TicketCode */ }
+    public Guide(string name, string ticketcode, Guid tourId) : base(name, ticketcode) 
+    { /* Name , TicketCode */ 
+        GuidedTour myTour = GuidedTour.FindTourById(tourId);
+        base.AssingedTourId = tourId;
+    }
     public void CheckInVisitor(Visitor visitor)
     {
         GuidedTour tour = GuidedTour.FindTourById(base.AssingedTourId);
@@ -17,7 +21,7 @@ public class Guide : Visitor
             if (!tour.PresentVisitors.Contains(visitor))
             {
                 NewTour.PresentVisitors.Add(visitor);
-                GuidedTour.EditTourInJSON(tour, NewTour);  
+                GuidedTour.EditTourInJSON(tour, NewTour);    
                 return;
             }
         }
