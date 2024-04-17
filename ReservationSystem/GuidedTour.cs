@@ -110,7 +110,15 @@ public class GuidedTour
 
     public void TransferVisitor(Visitor visitor, GuidedTour newTour)
     {
-        throw new NotImplementedException();
+        if (visitor is Guide guide)
+        {
+            AssignedGuide = guide;
+            newTour.AssignedGuide = (Guide) visitor;
+            //More logic might follow deppends if we leave the guid tour inheritance from visitor
+        }
+        RemoveVisitor(visitor);
+        AddVisitor(visitor);
+
     }
 
     public GuidedTour Clone()
