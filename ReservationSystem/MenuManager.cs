@@ -61,8 +61,8 @@ public static class MenuManager
         while (choosingOption)
         {
             Console.WriteLine("Your current tour reservation is:");
-            //_printTourString(GuidedTour.FindTourById(visitor.ReservedTourId));
-            Console.WriteLine("\nPlease choose an option:");
+            _printTourString(GuidedTour.FindTourById(visitor.AssingedTourId));
+            Console.WriteLine("Please choose an option:");
             Console.WriteLine("1. Join a different tour");
             Console.WriteLine("2. Cancel my tour reservation");
             Console.WriteLine("3. Exit");
@@ -106,7 +106,7 @@ public static class MenuManager
 
                 case "2":
                     // Find the tour the visitor is reserved for using the AssingedTourId
-                    GuidedTour visitorsTour = GuidedTour.FindTourById(visitor.AssingedTourId.Value);
+                    GuidedTour visitorsTour = GuidedTour.FindTourById(visitor.AssingedTourId);
 
                     if (visitorsTour == null)
                     {

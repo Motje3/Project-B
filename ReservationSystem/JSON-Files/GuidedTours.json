@@ -97424,9 +97424,7 @@
     "StartTime": "2024-04-17T15:20:00",
     "EndTime": "2024-04-17T15:40:00",
     "MaxCapacity": 13,
-    "ExpectedVisitors": [
-      null
-    ],
+    "ExpectedVisitors": [],
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,

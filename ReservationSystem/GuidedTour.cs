@@ -129,10 +129,17 @@ public class GuidedTour
             return;
         }
         // Create a new tour to modify
-        GuidedTour newTour = this;
+        GuidedTour newTour = this.Clone();
 
         // Remove the visitor from ExpectedVisitors
-        newTour.ExpectedVisitors.Remove(visitor);
+        for(int visitorIndex = 0; visitorIndex<newTour.ExpectedVisitors.Count; visitorIndex++)
+        {
+            Visitor currentVisitor = newTour.ExpectedVisitors[visitorIndex];
+            if (currentVisitor.TicketCode == visitor.TicketCode)
+            {
+                newTour.ExpectedVisitors.Remove(currentVisitor);
+            }
+        }
 
         // Update the tour
         GuidedTour.EditTourInJSON(this, newTour);

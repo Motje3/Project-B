@@ -2,7 +2,7 @@ public class Visitor
 {
     public Guid VisitorId { get; private set; }
     public string TicketCode { get; set; } // Add ticket code property
-    public Guid? AssingedTourId { get;  set; }
+    public Guid AssingedTourId { get;  set; }
 
     public Visitor(string ticketCode)
     {
@@ -15,11 +15,6 @@ public class Visitor
         //updated to return true instade of false. no need for if statments. 
         //Return true if the visitor is in any tour, indicating they have a reservation
         return GuidedTour.CheckIfVisitorInTour(this);
-    }
-
-    public void ClearTourReservation()
-    {
-        AssingedTourId = null;
     }
 
     //probably not needed as we can just use hasreservation to check if vistor has reservation. 

@@ -32,7 +32,7 @@ public static class ReservationManager
                 
                 if (currentVisitor != null)
                 {
-                    Console.WriteLine("\nWelcome, your ticket is confirmed!\n");
+                    Console.WriteLine("Welcome, your ticket is confirmed!\n");
                     isValidCode = true;
 
                     if (currentVisitor.HasReservation())
