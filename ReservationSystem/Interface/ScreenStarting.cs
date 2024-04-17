@@ -3,7 +3,6 @@ public class ScreenStarting : Screen
 {
     public ScreenStarting(List<StaticConsoleObject> boxs, List<List<SelectionConsoleObject>> selectionGrid, int startingXposition, int startingYposition) : base(boxs, selectionGrid, startingXposition, startingYposition)
     {
-        
     }
 
     public override void Show()
@@ -34,7 +33,7 @@ public class ScreenStarting : Screen
 
             var currentKeyboard = _keyboardObjects[_currYpos][_currXpos];
             bool canDeleteText = currentKeyboard.text.Length > 0;
-            bool validCodeScanned = EntreeCodeValidator.IsCodeValid(currentKeyboard.text);
+            bool validCodeScanned = Ticket.IsCodeValid(currentKeyboard.text);
             bool maxLenCodeReached = currentKeyboard.text.Length == currentKeyboard.MaxLenKeyboard;
 
             // Trying to go to the next screen
