@@ -2,7 +2,7 @@
 
 public class Guide : Visitor
 {
-    public Guide(string name, string ticketcode, Guid tourId) : base(name, ticketcode) 
+    public Guide(string ticketcode, Guid tourId) : base(ticketcode) 
     { /* Name , TicketCode */ 
         GuidedTour myTour = GuidedTour.FindTourById(tourId);
         base.AssingedTourId = tourId;

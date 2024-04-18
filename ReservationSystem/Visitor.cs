@@ -1,15 +1,13 @@
 public class Visitor
 {
-    public string Name { get; set; }
     public Guid VisitorId { get; private set; }
     public string TicketCode { get; set; } // Add ticket code property
     public Guid AssingedTourId { get; set;}
 
 
 
-    public Visitor(string name, string ticketCode)
+    public Visitor(string ticketCode)
     {
-        Name = name;
         VisitorId = Guid.NewGuid();
         TicketCode = ticketCode; // Store the ticket code
     }
