@@ -36,21 +36,23 @@ public class GuideTest
         
         tour1.AddVisitor(John);
         Visitor Alica = new Visitor("Alica Doe", "222");
-        
+        Visitor Ben = new("Ben", "333");
+
         tour1.AddVisitor(Alica);
         
         John.CheckInVisitor(Alica);  // add 
         John.CheckInVisitor(Alica);  // do twice to check if it is NOT creating dublicate expected visitor
+        John.CheckInVisitor(Ben);
 
         List<GuidedTour> currTours = _readJSON();
         var currTour = currTours[0]; // JSON[0] 
-        var ExpectedVistor = currTour.ExpectedVisitors; // JSON[0] => ExpectedVisitor
-        var visitor = ExpectedVistor[0]; // access visitor object by index
-        int Len = ExpectedVistor.Count; // should be only one in list
+        var PresentVisitors = currTour.PresentVisitors; // JSON[0] => PresentVisitors
+        var visitor = PresentVisitors[0]; // access visitor object by index
+        int Len = PresentVisitors.Count; // should be only one in list
 
         Assert.AreEqual(visitor.Name, "Alica Doe"); // check matching name
         Assert.AreEqual(visitor.TicketCode, "222"); // check matching ticketcode
-        Assert.AreEqual(Len, 1); // check if there is no dublicated
+        Assert.AreEqual(Len, 1); // check if there is no duplicated or unallowed visitors
     }
     
     // optional JSON Methods for tests
