@@ -18,7 +18,7 @@ public static class GidsLoginProcessor
         // Login loop
         while (!isAuthenticated)
         {
-            Console.WriteLine("\nGuide login\n");
+            Console.WriteLine("\nGuide login");
             Console.WriteLine("Enter password: ");
             string password = Console.ReadLine();
 
@@ -27,10 +27,12 @@ public static class GidsLoginProcessor
             if (isAuthenticated)
             {
                 Console.WriteLine("\nAccess Granted!\n");
+                Thread.Sleep(1000 * 1);
+                try{Console.Clear();}catch{} 
             }
             else
             {
-                Console.WriteLine("\nAccess Denied, invalid password. Returning to start menu\n");
+                Console.WriteLine("\nAccess Denied, invalid password. Returning to start menu in 3 seconds\n");
                 // Go back to start menu
                 Thread.Sleep(1000*3);
                 ReservationManager.ValidateCodeAndProcessReservations();
@@ -41,9 +43,9 @@ public static class GidsLoginProcessor
         if (_myGuide == null)
         {
             Console.WriteLine("You currently don't have any tours");
-            Console.WriteLine("You will be redirected to start menu in 4 seconds");
-            Thread.Sleep(1000*4);
-            //ReservationManager.ValidateCodeAndProcessReservations();
+            Console.WriteLine("You will be redirected to start menu in 3 seconds");
+            Thread.Sleep(1000*3);
+            ReservationManager.ValidateCodeAndProcessReservations();
         }
 
         // After successful login
@@ -64,20 +66,23 @@ public static class GidsLoginProcessor
             Console.WriteLine($"Your next tour is: {DateOnly.FromDateTime(_myTour.StartTime)} | {TimeOnly.FromDateTime(_myTour.StartTime)} - {TimeOnly.FromDateTime(_myTour.EndTime)} | {_myTour.ExpectedVisitors.Count} visitors have made a resevertaion\n");
         Console.WriteLine("What would you like to do?\n");
         Console.WriteLine("1. See personal tours");
-        Console.WriteLine("2. Check attending participants");
+        Console.WriteLine("2. Check in attending visitors for your next tour");
         Console.WriteLine("3. Logout");
 
         string guideChoice = Console.ReadLine();
+        Console.WriteLine("");
+
         switch (guideChoice)
         {
             case "1":
-                //DisplayTimetable();
+                ShowGuideTours();
                 break;
             case "2":
                 NoteParticipants();
                 break;
             case "3":
                 Console.WriteLine("Logging out...");
+                Thread.Sleep(1000 * 2);
                 return false; // Stops the main menu loop and logs out
             default:
                 Console.WriteLine("Invalid choice. Please enter a valid option.");
@@ -90,6 +95,12 @@ public static class GidsLoginProcessor
     private static void NoteParticipants()
     {
         List<string> addedCodes = new();
+        // Add visitor code already checked in to list
+        foreach (Visitor currentVisitor in _myTour.PresentVisitors)
+        {
+            addedCodes.Add(currentVisitor.TicketCode);
+        }
+
         if (_myGuide == null)
         {
             return;
@@ -98,16 +109,40 @@ public static class GidsLoginProcessor
         string visitorCode;
         do
         {
-            Console.WriteLine($"Currently added tickets: [{_returnListAsString(addedCodes)}]");
+            Console.WriteLine($"Currently checked in tickets: [{_returnListAsString(addedCodes)}]");
             // Guide has to scan a ticket of a visitor (Already checks if code is in expected visitors)
             visitorCode = _askVisitorCode();
+            Visitor visitor = Visitor.FindVisitorByTicketCode(visitorCode);
             if (visitorCode != "stop" && !addedCodes.Contains(visitorCode))
+            {
                 addedCodes.Add(visitorCode);
+                _myGuide.CheckInVisitor(visitor);
+            }
         }
         while (visitorCode != "stop");
 
-
+        try{Console.Clear();}catch{} 
     }
+
+    private static void ShowGuideTours()
+    {
+        try{Console.Clear();}catch{} 
+        int guideToursIndex = 1;
+        foreach(GuidedTour tour in GuidedTour.CurrentTours)
+        {
+            if (tour.AssignedGuide == null)
+            {
+
+            }
+            else if (tour.AssignedGuide.TicketCode == _myGuide.TicketCode)
+            {
+                Console.WriteLine($"{guideToursIndex} | {DateOnly.FromDateTime(tour.StartTime)} | {TimeOnly.FromDateTime(tour.StartTime)} - {TimeOnly.FromDateTime(tour.EndTime)} | {tour.ExpectedVisitors.Count} reservations ");
+                guideToursIndex++;
+            }
+        }
+        Console.WriteLine("");
+    }
+    
 
     private static bool AuthenticateUser(string password)
     {
@@ -129,6 +164,8 @@ public static class GidsLoginProcessor
             return new List<Credential>();
         }
     }
+
+    
 
     // Asks the guide for a visitor code and checks if the code is in expectedVisitors
     public static string _askVisitorCode()
