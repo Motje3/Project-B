@@ -214,31 +214,32 @@ public class GuidedTourTesting
         Assert.IsFalse(guidedTour.ExpectedVisitors.Contains(visitor));
     }
 
+        [TestMethod]
+    public void TestVisitorCancelsReservation()
+    {
+        // Arrange
+        DateTime startTime = new(nowYear, 1, 4, 9, 0, 0);
+        Guide guide = new Guide("GUIDE123");
+        Visitor visitor1 = new Visitor("TICKET456");
+        Visitor visitor2 = new Visitor("TICKET789");
 
+        GuidedTour tour = new GuidedTour(startTime);
+        tour.AssignedGuide = guide; // Assuming guide is properly set as a Guide object
+        tour.ExpectedVisitors.Add(visitor1);
+        
+        GuidedTour.AddTourToJSON(tour);
 
+        // Act
+        // Visitor1 cancels their reservation
+        tour.RemoveVisitor(visitor1);
+        // Try to remove a visitor that isn't in the tour
+        tour.RemoveVisitor(visitor2);
 
+        // Assert
+        List<GuidedTour> updatedTours = _readJSON();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        Assert.IsTrue(updatedTours[0].ExpectedVisitors.Count == 0);
+    }
 
 
 

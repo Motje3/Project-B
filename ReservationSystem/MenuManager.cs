@@ -2,12 +2,12 @@ using System.Globalization;
 
 public static class MenuManager
 {
-    public static void ShowRestrictedMenu(Visitor visitor)
+    public static void ShowRestrictedMenu(string visitorCode)
     {
         bool loopOption = true;
         while (loopOption)
         {
-            Console.WriteLine("\nPlease choose an option:");            
+            Console.WriteLine("\nPlease choose an option:");
             Console.WriteLine("1. Join a tour");
             Console.WriteLine("2. Exit");
             Console.WriteLine("\nEnter your choice: ");
@@ -36,10 +36,11 @@ public static class MenuManager
                     GuidedTour chosenTour = allowedTours[tourNumber - 1];
 
                     // Add visitor from to chosenTour
-                    chosenTour.AddVisitor(visitor);
+                    Visitor toBeAdded = new(visitorCode);
+                    chosenTour.AddVisitor(toBeAdded);
                     _printSuccesfullyJoinedTour(chosenTour);
-                    
-                    ShowFullMenu(visitor);
+
+                    ShowFullMenu(toBeAdded);
                     return;
 
                 case "2":
@@ -60,8 +61,8 @@ public static class MenuManager
         while (choosingOption)
         {
             Console.WriteLine("Your current tour reservation is:");
-            //_printTourString(GuidedTour.FindTourById(visitor.ReservedTourId));
-            Console.WriteLine("\nPlease choose an option:");
+            _printTourString(GuidedTour.FindTourById(visitor.AssingedTourId));
+            Console.WriteLine("Please choose an option:");
             Console.WriteLine("1. Join a different tour");
             Console.WriteLine("2. Cancel my tour reservation");
             Console.WriteLine("3. Exit");
@@ -102,12 +103,26 @@ public static class MenuManager
                         selectingTour = false;
                     }
                     break;
-                case "2":
-                    //visitorsTour = GuidedTour.FindTourById(visitor.ReservedTourId);
-                    //visitorsTour.RemoveVisitor(visitor);
 
-                    MenuManager.ShowRestrictedMenu(visitor);
+                case "2":
+                    // Find the tour the visitor is reserved for using the AssingedTourId
+                    GuidedTour visitorsTour = GuidedTour.FindTourById(visitor.AssingedTourId);
+
+                    if (visitorsTour == null)
+                    {
+                        Console.WriteLine("Error: Unable to find the tour.");
+                        break;
+                    }
+
+                    // Remove the visitor from the tour
+                    visitorsTour.RemoveVisitor(visitor);
+
+                    Console.WriteLine("Tour reservation canceled successfully.");
+
+                    // Show the restricted menu to the visitor after canceling the reservation
+                    MenuManager.ShowRestrictedMenu(visitor.TicketCode);
                     return;
+
                 case "3":
                     choosingOption = false; // Exit the main menu loop.
                     break;
