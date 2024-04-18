@@ -32,11 +32,11 @@ public class GuideTest
         DateTime starttime = new DateTime (2024, 5 ,4, 9, 00, 00); 
         GuidedTour tour1 = new GuidedTour(starttime);
         GuidedTour.AddTourToJSON(tour1);
-        Guide John = new Guide("John Doe", "111", tour1.TourId);
+        Guide John = new Guide("111", tour1.TourId);
         
         tour1.AddVisitor(John);
-        Visitor Alica = new Visitor("Alica Doe", "222");
-        Visitor Ben = new("Ben", "333");
+        Visitor Alica = new Visitor("222");
+        Visitor Ben = new("333");
 
         tour1.AddVisitor(Alica);
         
@@ -50,7 +50,6 @@ public class GuideTest
         var visitor = PresentVisitors[0]; // access visitor object by index
         int Len = PresentVisitors.Count; // should be only one in list
 
-        Assert.AreEqual(visitor.Name, "Alica Doe"); // check matching name
         Assert.AreEqual(visitor.TicketCode, "222"); // check matching ticketcode
         Assert.AreEqual(Len, 1); // check if there is no duplicated or unallowed visitors
     }
