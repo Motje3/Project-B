@@ -39,7 +39,7 @@ public static class MenuManager
                     chosenTour.AddVisitor(visitor);
                     _printSuccesfullyJoinedTour(chosenTour);
                     
-                    MenuManager.ShowFullMenu(visitor);
+                    ShowFullMenu(visitor);
                     return;
 
                 case "2":
@@ -56,7 +56,6 @@ public static class MenuManager
 
     public static void ShowFullMenu(Visitor visitor)
     {
-        GuidedTour visitorsTour = null;
         bool choosingOption = true;
         while (choosingOption)
         {

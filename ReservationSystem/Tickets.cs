@@ -1,41 +1,29 @@
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
 
-public class Ticket
+public static class Ticket
 {
-    public string TicketCode { get; set; }
-    public Visitor visitor { get; set; }  // Now only a single Visitor object per ticket
-
     public static List<string> Tickets { get; set; } = new List<string>();
-    public static string OnlineTicketsFilePath = "./JSON-Files/OnlineTickets.json";
+    public static string OnlineTicketsFilePath = "./JSON-Files/OnlineTickets.json"; // Adjust the path as necessary
 
     static Ticket()
     {
-        Tickets = LoadTicketsFromFile();
+        LoadTickets();
     }
 
-    public static List<string> LoadTicketsFromFile()
+    public static void LoadTickets()
     {
         try
         {
-            if (!File.Exists(OnlineTicketsFilePath))
-            {
-                throw new FileNotFoundException($"The file {OnlineTicketsFilePath} was not found.");
-            }
-
+            // Read the JSON content from the file
             string jsonContent = File.ReadAllText(OnlineTicketsFilePath);
-            var tickets = JsonConvert.DeserializeObject<List<string>>(jsonContent);
 
-            if (tickets == null) throw new Exception("Failed to deserialize the JSON content.");
-
-            return tickets;
+            // Deserialize the JSON content into the Tickets list
+            Tickets = JsonConvert.DeserializeObject<List<string>>(jsonContent);
         }
-        catch (Exception ex)
+        catch (FileNotFoundException fnfe)
         {
-            Console.WriteLine($"An error occurred: {ex.Message}");
-            return new List<string>(); // Return an empty list or handle the error as needed
+            Console.WriteLine("File not found: " + fnfe.Message);
+            // Handle the case where the file is not found - e.g., log the error, alert the user, etc.
         }
     }
 

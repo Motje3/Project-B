@@ -3,7 +3,6 @@ public class ScreenStarting : Screen
 {
     public ScreenStarting(List<StaticConsoleObject> boxs, List<List<SelectionConsoleObject>> selectionGrid, int startingXposition, int startingYposition) : base(boxs, selectionGrid, startingXposition, startingYposition)
     {
-        
     }
 
     public override void Show()

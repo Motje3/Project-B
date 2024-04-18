@@ -19,6 +19,8 @@ public class GuidedTour
     public Guid TourId { get; set; }
     public Guide AssignedGuide { get; set; }
 
+    public Guide AssignedGuide { get; set; }
+
     public GuidedTour(DateTime startTime)
     {
         StartTime = startTime;
@@ -33,7 +35,7 @@ public class GuidedTour
 
     // constructor for json serializer DO NOT USE IT WILL PROBABLY BREAK SOMETHING
     [JsonConstructor]
-    public GuidedTour(int duration, DateTime startTime, DateTime endTime, int maxCapacity, Guid tourId, bool complete, bool deleted)
+    public GuidedTour(int duration, DateTime startTime, DateTime endTime, int maxCapacity, Guid tourId, bool complete, bool deleted, Guide assignedGuide)
     {
         Duration = duration;
         StartTime = startTime;
@@ -42,10 +44,13 @@ public class GuidedTour
         TourId = tourId;
         Completed = complete;
         Deleted = deleted;
+        AssignedGuide = assignedGuide;
+
     }
 
     public void AddVisitor(Visitor visitor)
     {
+
         // **AddVisitor** voor een gewoone **(niet een gids)** 
         // bezoeker maakt een variabel **newTour **= **this.Clone()**
         var newTour = this.Clone();
@@ -114,20 +119,16 @@ public class GuidedTour
 
     public void TransferVisitor(Visitor visitor, GuidedTour newTour)
     {
-        throw new NotImplementedException();
-    }
-    /*
-    // To be changed, ?should be? implemented in AdminLoginProcessor as ChangeTourCapacity()
-    public bool UpdateMaxCapacity(int newCapacity)
-    {
-        return true;
-    }
+        if (visitor is Guide guide)
+        {
+            AssignedGuide = guide;
+            newTour.AssignedGuide = (Guide) visitor;
+            //More logic might follow deppends if we leave the guid tour inheritance from visitor
+        }
+        RemoveVisitor(visitor);
+        AddVisitor(visitor);
 
-    // To be change, ?should be? implemented in AdminLoginProcessor as ChangeTourTime()
-    public bool ChangeTourTime(int oldTourHour)
-    {
-        return true;
-    }*/
+    }
 
     public GuidedTour Clone()
     {
@@ -252,6 +253,8 @@ public class GuidedTour
             writer.Write(List2json);
 
         }
+
+        GuidedTour._updateCurrentTours();
     }
 
     // Soft deletes the given tour from json file
@@ -295,6 +298,9 @@ public class GuidedTour
                 if (currentTour.TourId == tour.TourId)
                 {
                     currentTour.Deleted = true;
+                    GuidedTour.CurrentTours.Remove(currentTour);
+                    GuidedTour.DeletedTours.Add(currentTour);
+                    break;
                 }
             }
         }
@@ -306,6 +312,9 @@ public class GuidedTour
                 if (currentTour.TourId == tour.TourId)
                 {
                     currentTour.Deleted = true;
+                    GuidedTour.CompletedTours.Remove(currentTour);
+                    GuidedTour.DeletedTours.Add(currentTour);
+                    break;
                 }
             }
         }
@@ -628,7 +637,7 @@ public class GuidedTour
 
     private static bool _checkIfAllowedTime(TimeOnly time)
     {
-        List<int> allowedHours = new List<int>() { 9, 10, 11, 12, 13, 14, 15, 16, 17 };
+        List<int> allowedHours = new List<int>() { 9, 10, 11, 12, 13, 14, 15, };
         bool allowed = true;
 
         if (time.Minute != 0 && time.Minute != 20 && time.Minute != 40)
@@ -638,6 +647,10 @@ public class GuidedTour
         if (!allowedHours.Contains(time.Hour))
         {
             allowed = false;
+        }
+        if (time.Hour == 16 && (time.Minute == 20 || time.Minute == 0 ))
+        {
+            allowed = true;
         }
 
         return allowed;

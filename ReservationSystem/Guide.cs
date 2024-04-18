@@ -1,12 +1,13 @@
 // **CheckInVisitor **moet variable **GuidedTour tour = GuidedTour.FindTourById(AssingedTourId)**
 
 public class Guide : Visitor
-{
+
     public Guide(string ticketcode, Guid tourId) : base(ticketcode) 
     { /* Name , TicketCode */ 
         GuidedTour myTour = GuidedTour.FindTourById(tourId);
         base.AssingedTourId = tourId;
     }
+
     public void CheckInVisitor(Visitor visitor)
     {
         GuidedTour tour = GuidedTour.FindTourById(base.AssingedTourId);

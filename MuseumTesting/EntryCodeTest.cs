@@ -40,7 +40,7 @@ public class EntryCodeTest
         // Arrange
         _addNewCode(codeToAdd);
         // Act
-        bool actual = EntreeCodeValidator.IsCodeValid(testCode);
+        bool actual = Ticket.IsCodeValid(testCode);
         // Assert
         Assert.AreEqual(expected, actual);
     }
