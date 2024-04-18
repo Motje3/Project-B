@@ -1,5 +1,4 @@
 using Newtonsoft.Json;
-
 public static class GidsLoginProcessor
 {
     public class Credential
