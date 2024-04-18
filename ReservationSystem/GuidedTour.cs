@@ -17,6 +17,7 @@ public class GuidedTour
 
     //public Dictionary<DateTime, List<Visitor>> TourSlots { get; private set; } // To be removed
     public Guid TourId { get; set; }
+    public Guide AssignedGuide { get; set; }
 
     public Guide AssignedGuide { get; set; }
 
@@ -49,10 +50,18 @@ public class GuidedTour
 
     public void AddVisitor(Visitor visitor)
     {
+
+        // **AddVisitor** voor een gewoone **(niet een gids)** 
+        // bezoeker maakt een variabel **newTour **= **this.Clone()**
+        var newTour = this.Clone();
         // Check if it is a guide
         if (visitor is Guide guide)
         {
-            AssignedGuide = guide;
+            newTour.AssignedGuide = guide;
+            newTour.AssignedGuide.AssingedTourId = this.TourId;
+
+            this.AssignedGuide = guide;
+            this.AssignedGuide.AssingedTourId = this.TourId;
         }
         else
         {   
@@ -91,16 +100,16 @@ public class GuidedTour
             {
                 return;
             }
-            // **AddVisitor** voor een gewoone **(niet een gids)** 
-            // bezoeker maakt een variabel **newTour **= **this.Clone()**
-            var newTour = this.Clone();
+            
             // **AddVisitor** voor een gewoone **(niet een gids)** 
             // bezoeker voegt **visitor **aan **newTour.ExpectedVisitor**
+            visitor.AssingedTourId = this.TourId;
             newTour.ExpectedVisitors.Add(visitor);
+            this.ExpectedVisitors.Add(visitor);
             // **AddVisitor** voor een gewoone **(niet een gids)** 
             // bezoeker gebruikts **EditTourInJSON** (this, newTour)
-            GuidedTour.EditTourInJSON(this, newTour);
         }
+        GuidedTour.EditTourInJSON(this, newTour);
     }
 
     public void RemoveVisitor(Visitor visitor)
@@ -164,6 +173,8 @@ public class GuidedTour
     public static GuidedTour FindTourById(Guid id)
     {
         GuidedTour foundTour = null;
+        if (id == null)
+            return null;
 
         foreach (GuidedTour currentTour in GuidedTour.CurrentTours)
         {

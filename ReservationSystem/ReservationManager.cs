@@ -21,7 +21,7 @@ public static class ReservationManager
             }
             else if (userCode == "456")
             {
-                GidsLoginProcessor.ProcessLoginForm();
+                GidsLoginProcessor.ProcessLoginForm(userCode);
                 
                 // Repeat this method until app closed
                 ValidateCodeAndProcessReservations();
