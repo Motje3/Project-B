@@ -58,12 +58,15 @@ public static class GidsLoginProcessor
 
     private static bool DisplayMainMenu()
     {
+        // Printing next tour of the guide
         if (_myTour.ExpectedVisitors.Count == 0)
             Console.WriteLine($"Your next tour is: {DateOnly.FromDateTime(_myTour.StartTime)} | {TimeOnly.FromDateTime(_myTour.StartTime)} - {TimeOnly.FromDateTime(_myTour.EndTime)} | Nobody has made a reservation\n");
         else if (_myTour.ExpectedVisitors.Count == 1)
             Console.WriteLine($"Your next tour is: {DateOnly.FromDateTime(_myTour.StartTime)} | {TimeOnly.FromDateTime(_myTour.StartTime)} - {TimeOnly.FromDateTime(_myTour.EndTime)} | {_myTour.ExpectedVisitors.Count} visitor has made a resevertaion\n");
         else
             Console.WriteLine($"Your next tour is: {DateOnly.FromDateTime(_myTour.StartTime)} | {TimeOnly.FromDateTime(_myTour.StartTime)} - {TimeOnly.FromDateTime(_myTour.EndTime)} | {_myTour.ExpectedVisitors.Count} visitors have made a resevertaion\n");
+        
+        // Printing menu options
         Console.WriteLine("What would you like to do?\n");
         Console.WriteLine("1. See personal tours");
         Console.WriteLine("2. Check in attending visitors for your next tour");
@@ -78,7 +81,7 @@ public static class GidsLoginProcessor
                 ShowGuideTours();
                 break;
             case "2":
-                NoteParticipants();
+                NoteVisitors();
                 break;
             case "3":
                 Console.WriteLine("Logging out...");
@@ -92,7 +95,7 @@ public static class GidsLoginProcessor
         return true; // Continues the main menu loop
     }
 
-    private static void NoteParticipants()
+    private static void NoteVisitors()
     {
         List<string> addedCodes = new();
         // Add visitor code already checked in to list
@@ -124,6 +127,33 @@ public static class GidsLoginProcessor
         try{Console.Clear();}catch{} 
     }
 
+    // Asks the guide for a visitor code and checks if the code is in expectedVisitors
+    public static string _askVisitorCode()
+    {
+        List<string> allowedCodes = new();
+        foreach (Visitor currentVisitor in _myTour.ExpectedVisitors)
+        {
+            allowedCodes.Add(currentVisitor.TicketCode);
+        }
+
+        Console.WriteLine("Please scan the ticket of a visitor or type in \"stop\" to stop checking in visitors");
+        string visitorTicket = Console.ReadLine();
+        if (visitorTicket == "stop")
+            return "stop";
+        else if (allowedCodes.Contains(visitorTicket))
+            return visitorTicket;
+        do
+        {
+            Console.WriteLine("This visitor doesn't have reservation for this tour,");
+            Console.WriteLine("Try again or try another visitor");
+            visitorTicket = Console.ReadLine();
+        } 
+        while (!(allowedCodes.Contains(visitorTicket) || (visitorTicket == "stop")));
+
+        return visitorTicket;
+    }
+
+    // Displays all tours where _myGuide is the guide
     private static void ShowGuideTours()
     {
         try{Console.Clear();}catch{} 
@@ -165,44 +195,14 @@ public static class GidsLoginProcessor
         }
     }
 
-    
-
-    // Asks the guide for a visitor code and checks if the code is in expectedVisitors
-    public static string _askVisitorCode()
-    {
-        List<string> allowedCodes = new();
-        foreach (Visitor currentVisitor in _myTour.ExpectedVisitors)
-        {
-            allowedCodes.Add(currentVisitor.TicketCode);
-        }
-
-        Console.WriteLine("Please scan the ticket of a visitor or type in \"stop\" to stop checking in visitors");
-        string visitorTicket = Console.ReadLine();
-        if (visitorTicket == "stop")
-            return "stop";
-        else if (allowedCodes.Contains(visitorTicket))
-            return visitorTicket;
-        do
-        {
-            Console.WriteLine("This visitor doesn't have reservation for this tour,");
-            Console.WriteLine("Try again or try another visitor");
-            visitorTicket = Console.ReadLine();
-        } 
-        while (!(allowedCodes.Contains(visitorTicket) || (visitorTicket == "stop")));
-
-        return visitorTicket;
-    }
-
+    // Sets guide with given guideCode to _myGuide and sets _myTour to GuidedTour that corresponds to _myGuide.AssingedTourId    
     private static void _loadMyGuide(string guideCode)
     {
         Guide returnGuide = null;
 
         foreach (GuidedTour tour in GuidedTour.CurrentTours) 
         {
-            if (tour.AssignedGuide == null)
-                {
-
-                }
+            if (tour.AssignedGuide == null){}                
             else if (tour.AssignedGuide.TicketCode == guideCode)
             {
                 returnGuide = tour.AssignedGuide;
@@ -210,10 +210,10 @@ public static class GidsLoginProcessor
                 break;
             }
         }
-
         _myGuide = returnGuide;
     }
 
+    // Returns the given list of strings as a string where each element is seperated by ", ", used in NoteVisitors
     private static string _returnListAsString(List<string> list)
     {
         string retStr = "";
