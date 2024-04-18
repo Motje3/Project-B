@@ -8,10 +8,26 @@ public class Guide : Visitor
     }
 }
 
-    // public void CompleteTour() 
-    // {
-
-    // }
+    public void CompleteTour() 
+    {
+        var newTour = GuidedTour.FindTourById(AssignedTourId)
+        var oldTour = GuidedTour.FindTourById(**AssignedTourId**)
+        if (AssignedTourId == null)
+        {
+            return;
+        }
+        if (newTour == null)
+        {
+            return;
+        }
+        if {newTour.Deleted == true}
+        {
+            return;
+        }
+        newTour.Completed = true;
+        GuidedTour.EditTourInJSON(oldTour, newTour);
+    }
+    
     // public void TourInProgress()
     // {
 
