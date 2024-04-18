@@ -67,7 +67,7 @@ public static class GidsLoginProcessor
         Console.WriteLine("What would you like to do?\n");
         Console.WriteLine("1. See personal tours");
         Console.WriteLine("2. Check in attending visitors for your next tour");
-        Console.WriteLine("3. Logout");
+        Console.WriteLine("3. Log out");
 
         string guideChoice = Console.ReadLine();
         Console.WriteLine("");
