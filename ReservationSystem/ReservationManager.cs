@@ -26,7 +26,7 @@ public static class ReservationManager
                 // Repeat this method until app closed
                 ValidateCodeAndProcessReservations();
             }
-            else if (EntreeCodeValidator.IsCodeValid(userCode))
+            else if (Ticket.IsCodeValid(userCode))
             {
                 //ASK PO ABOUT THIS WHETHER ONLINETICKETS WILL HAVE NAMES. 
                 //ASK PO ABOUT THIS WHETHER ONLINETICKETS WILL HAVE NAMES.

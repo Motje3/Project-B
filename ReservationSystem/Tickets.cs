@@ -8,7 +8,7 @@ public class Ticket
     public string TicketCode { get; set; }
     public Visitor visitor { get; set; }  // Now only a single Visitor object per ticket
 
-    public static List<Ticket> Tickets { get; set; } = new List<Ticket>();
+    public static List<string> Tickets { get; set; } = new List<string>();
     public static string OnlineTicketsFilePath = "./JSON-Files/OnlineTickets.json";
 
     static Ticket()
@@ -16,7 +16,7 @@ public class Ticket
         Tickets = LoadTicketsFromFile();
     }
 
-    public static List<Ticket> LoadTicketsFromFile()
+    public static List<string> LoadTicketsFromFile()
     {
         try
         {
@@ -26,7 +26,7 @@ public class Ticket
             }
 
             string jsonContent = File.ReadAllText(OnlineTicketsFilePath);
-            var tickets = JsonConvert.DeserializeObject<List<Ticket>>(jsonContent);
+            var tickets = JsonConvert.DeserializeObject<List<string>>(jsonContent);
 
             if (tickets == null) throw new Exception("Failed to deserialize the JSON content.");
 
@@ -35,7 +35,22 @@ public class Ticket
         catch (Exception ex)
         {
             Console.WriteLine($"An error occurred: {ex.Message}");
-            return new List<Ticket>(); // Return an empty list or handle the error as needed
+            return new List<string>(); // Return an empty list or handle the error as needed
+        }
+    }
+
+    public static bool IsCodeValid(string code)
+    {
+        try
+        {
+            // Check if the list contains the given code
+            return Tickets.Contains(code);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("An error occurred while checking the ticket code: " + ex.Message);
+            // Optionally handle errors when checking for the code
+            return false; // Or handle this scenario differently based on your application's needs
         }
     }
 }

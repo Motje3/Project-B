@@ -76,13 +76,6 @@ public static class MenuManager
                     bool selectingTour = true;
                     while (selectingTour)
                     {
-                        var ticket = Ticket.Tickets.FirstOrDefault(t => t.TicketCode == visitor.TicketCode);
-                        if (ticket == null)
-                        {
-                            Console.WriteLine("Ticket code is not valid.");
-                            break; // Exit the switch case and the while loop
-                        }
-
                         // Print all avaible tours
                         List<GuidedTour> allowedTours = GuidedTour.PrintToursOpenToday();
 
