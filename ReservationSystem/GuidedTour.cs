@@ -160,6 +160,9 @@ public class GuidedTour
     // Static class
 
     public static string tourJSONpath = "./JSON-Files/GuidedTours.json";
+    private Visitor visitor;
+    private List<Visitor> visitors;
+
     public static List<DateOnly> Holidays
     {
         get;
@@ -187,6 +190,12 @@ public class GuidedTour
         Holidays = returnHolidays(DateTime.Today.Year);
         CurrentTours = new() { };
         GuidedTour._updateCurrentTours();
+    }
+
+    public GuidedTour(DateTime startTime, Visitor visitor, List<Visitor> visitors) : this(startTime)
+    {
+        this.visitor = visitor;
+        this.visitors = visitors;
     }
 
     // 

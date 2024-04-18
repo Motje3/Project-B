@@ -3,6 +3,7 @@ public class Visitor
     public Guid VisitorId { get; private set; }
     public string TicketCode { get; set; } // Add ticket code property
     public Guid AssingedTourId { get;  set; }
+    public string Name { get; set; }
 
     public Visitor(string ticketCode)
     {
