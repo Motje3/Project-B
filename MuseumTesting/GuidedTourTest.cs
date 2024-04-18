@@ -152,6 +152,67 @@ public class GuidedTourTesting
         Assert.AreEqual(beforeSavedTour, savedTour);
     }
 
+    [TestMethod]
+    public void AddVisitor_GivenGuide_VerifyAssignedGuide()
+    {
+        // Arrange
+        var guidedTour = new GuidedTour(DateTime.Now);
+        var guide = new Guide("GUIDE123");
+
+        // Act
+        guidedTour.AddVisitor(guide);
+
+        // Assert
+        Assert.AreEqual(guide, guidedTour.AssignedGuide);
+    }
+
+    [TestMethod]
+    public void AddVisitor_GivenTourAtMaxCapacity()
+    {
+        // Arrange
+        var guidedTour = new GuidedTour(DateTime.Now);
+        for (int i = 0; i < guidedTour.MaxCapacity; i++)
+        {
+            guidedTour.ExpectedVisitors.Add(new Visitor("123"));
+        }
+        var visitor = new Visitor("456");
+
+        // Act
+        guidedTour.AddVisitor(visitor);
+
+        // Assert
+        Assert.IsFalse(guidedTour.ExpectedVisitors.Contains(visitor));
+    }
+
+    [TestMethod]
+    public void AddVisitor_GivenDeletedTour()
+    {
+        // Arrange
+        var guidedTour = new GuidedTour(DateTime.Now);
+        guidedTour.Deleted = true;
+        var visitor = new Visitor("123");
+
+        // Act
+        guidedTour.AddVisitor(visitor);
+
+        // Assert
+        Assert.IsFalse(guidedTour.ExpectedVisitors.Contains(visitor));
+    }
+
+    [TestMethod]
+    public void AddVisitor_GivenCompletedTour()
+    {
+        // Arrange
+        var guidedTour = new GuidedTour(DateTime.Now);
+        guidedTour.Completed = true;
+        var visitor = new Visitor("123");
+
+        // Act
+        guidedTour.AddVisitor(visitor);
+
+        // Assert
+        Assert.IsFalse(guidedTour.ExpectedVisitors.Contains(visitor));
+    }
 
 
 
