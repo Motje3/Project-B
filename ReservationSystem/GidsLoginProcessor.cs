@@ -143,7 +143,7 @@ public static class GidsLoginProcessor
             return visitorTicket;
         do
         {
-            Console.WriteLine("This visitor doesn't have reservation for this tour,");
+            Console.WriteLine("\nThis visitor doesn't have reservation for this tour,");
             Console.WriteLine("Try again or try another visitor");
             visitorTicket = Console.ReadLine();
         } 
