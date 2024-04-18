@@ -54,6 +54,9 @@ public class GuidedTour
         {
             newTour.AssignedGuide = guide;
             newTour.AssignedGuide.AssingedTourId = this.TourId;
+
+            this.AssignedGuide = guide;
+            this.AssignedGuide.AssingedTourId = this.TourId;
         }
         else
         {   
@@ -97,6 +100,7 @@ public class GuidedTour
             // bezoeker voegt **visitor **aan **newTour.ExpectedVisitor**
             visitor.AssingedTourId = this.TourId;
             newTour.ExpectedVisitors.Add(visitor);
+            this.ExpectedVisitors.Add(visitor);
             // **AddVisitor** voor een gewoone **(niet een gids)** 
             // bezoeker gebruikts **EditTourInJSON** (this, newTour)
         }
@@ -168,6 +172,8 @@ public class GuidedTour
     public static GuidedTour FindTourById(Guid id)
     {
         GuidedTour foundTour = null;
+        if (id == null)
+            return null;
 
         foreach (GuidedTour currentTour in GuidedTour.CurrentTours)
         {
