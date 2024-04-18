@@ -19,8 +19,6 @@ public class GuidedTour
     public Guid TourId { get; set; }
     public Guide AssignedGuide { get; set; }
 
-    public Guide AssignedGuide { get; set; }
-
     public GuidedTour(DateTime startTime)
     {
         StartTime = startTime;
