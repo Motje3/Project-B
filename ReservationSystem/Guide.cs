@@ -6,13 +6,13 @@ public class Guide : Visitor
     {
         return $"Ticket code: {TicketCode}";
     }
-}
+
 
     public void CompleteTour() 
     {
-        var newTour = GuidedTour.FindTourById(AssignedTourId)
-        var oldTour = GuidedTour.FindTourById(**AssignedTourId**)
-        if (AssignedTourId == null)
+        var newTour = GuidedTour.FindTourById(base.AssingedTourId);
+        var oldTour = GuidedTour.FindTourById(base.AssingedTourId);
+        if (base.AssingedTourId == null)
         {
             return;
         }
@@ -20,13 +20,14 @@ public class Guide : Visitor
         {
             return;
         }
-        if {newTour.Deleted == true}
+        if (newTour.Deleted == true)
         {
             return;
         }
         newTour.Completed = true;
         GuidedTour.EditTourInJSON(oldTour, newTour);
     }
+
     
     // public void TourInProgress()
     // {
@@ -39,3 +40,4 @@ public class Guide : Visitor
     //         Console.WriteLine(visitor);
     //     }
     // }
+}
