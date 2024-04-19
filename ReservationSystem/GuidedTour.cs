@@ -787,12 +787,15 @@ public class GuidedTour
         TimeOnly newTimeOnly = new TimeOnly(newDate.Hour, newDate.Minute, newDate.Second);
         if (!_checkIfAllowedDate(newDateOnly))
         {
-            return;
+            return; // break if false
         }
         if (!_checkIfAllowedTime(newTimeOnly))
         {
-            return;
+            return; // break if false
         }
+        GuidedTour newTour = this.Clone();
+        newTour.StartTime = newDate;
+        newTour.EndTime = newTour.StartTime.AddMinutes(newTour.Duration);
     }
 }
 
