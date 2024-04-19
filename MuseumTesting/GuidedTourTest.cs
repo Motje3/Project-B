@@ -157,7 +157,7 @@ public class GuidedTourTesting
     {
         // Arrange
         var guidedTour = new GuidedTour(DateTime.Now);
-        var guide = new Guide("GUIDE123");
+        var guide = new Guide("GUIDE123",guidedTour.TourId);
 
         // Act
         guidedTour.AddVisitor(guide);
@@ -219,11 +219,11 @@ public class GuidedTourTesting
     {
         // Arrange
         DateTime startTime = new(nowYear, 1, 4, 9, 0, 0);
-        Guide guide = new Guide("GUIDE123");
         Visitor visitor1 = new Visitor("TICKET456");
         Visitor visitor2 = new Visitor("TICKET789");
 
         GuidedTour tour = new GuidedTour(startTime);
+        Guide guide = new Guide("GUIDE123", tour.TourId);
         tour.AssignedGuide = guide; // Assuming guide is properly set as a Guide object
         tour.ExpectedVisitors.Add(visitor1);
         
