@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
 public class GuidedTour
@@ -779,4 +780,31 @@ public class GuidedTour
     {
         return CurrentTours.Any(tour => tour.ExpectedVisitors.Any(v => v.VisitorId == visitor.VisitorId));
     }
+
+    public void ChangeTime(DateTime newDate)
+    {
+        DateOnly newDateOnly = new DateOnly(newDate.Year, newDate.Month, newDate.Day);
+        TimeOnly newTimeOnly = new TimeOnly(newDate.Hour, newDate.Minute, newDate.Second);
+        if (!_checkIfAllowedDate(newDateOnly))
+        {
+            return;
+        }
+        if (!_checkIfAllowedTime(newTimeOnly))
+        {
+            return;
+        }
+    }
 }
+
+//     private bool _checkIfAllowedTime(TimeOnly time)
+//     {
+//         if (time.Hour >= 9 && time.Hour <= 16)
+//         {
+//             // if bellow 40Min on the 16th hour return true
+//             if (Time.Hour == 16) { return time.Minute < 40; }
+//             // if between 9th and 15th hour return true
+//             else { return true;}
+//         }
+//         return false;
+//     }
+// }
