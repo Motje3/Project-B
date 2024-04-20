@@ -98,7 +98,7 @@ public class GuidedTour
             {
                 return;
             }
-            
+
             // **AddVisitor** voor een gewoone **(niet een gids)** 
             // bezoeker voegt **visitor **aan **newTour.ExpectedVisitor**
             visitor.AssingedTourId = this.TourId;
@@ -138,7 +138,7 @@ public class GuidedTour
         GuidedTour newTour = this.Clone();
 
         // Remove the visitor from ExpectedVisitors
-        for(int visitorIndex = 0; visitorIndex<newTour.ExpectedVisitors.Count; visitorIndex++)
+        for (int visitorIndex = 0; visitorIndex < newTour.ExpectedVisitors.Count; visitorIndex++)
         {
             Visitor currentVisitor = newTour.ExpectedVisitors[visitorIndex];
             if (currentVisitor.TicketCode == visitor.TicketCode)
@@ -151,18 +151,15 @@ public class GuidedTour
         GuidedTour.EditTourInJSON(this, newTour);
     }
 
-    public void TransferVisitor(Visitor visitor, GuidedTour newTour)
+    public void TransferVisitor(Visitor visitor, GuidedTour currentTour, GuidedTour newTour)
     {
-        if (visitor is Guide guide)
-        {
-            AssignedGuide = guide;
-            newTour.AssignedGuide = (Guide) visitor;
-            //More logic might follow deppends if we leave the guid tour inheritance from visitor
-        }
-        RemoveVisitor(visitor);
-        AddVisitor(visitor);
-
+        // Remove the visitor from the current tour
+        currentTour.RemoveVisitor(visitor);
+        // Add the visitor to the new tour
+        newTour.AddVisitor(visitor);
+        // You might want to add additional logic here if needed
     }
+
 
     public GuidedTour Clone()
     {
