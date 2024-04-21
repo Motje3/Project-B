@@ -241,18 +241,32 @@ public class GuidedTourTesting
         Assert.IsTrue(updatedTours[0].ExpectedVisitors.Count == 0);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
+    [TestMethod]
+    public void TestChangeTime()
+    {
+        // Date to create GuidedTour object
+        DateTime starttime = new DateTime (2025, 4, 22, 9, 00, 00);  
+        // Create Multiple for JSON
+        GuidedTour tour1 = new GuidedTour(starttime); // Monday
+        GuidedTour tour2 = new GuidedTour(starttime.AddDays(1)); // Thueseday
+        GuidedTour tour3 = new GuidedTour(starttime.AddDays(2)); // Wensday
+        GuidedTour tour4 = new GuidedTour(starttime.AddDays(3)); // Thursday
+        GuidedTour tour5 = new GuidedTour(starttime.AddDays(4)); // Friday
+        // Dates to test if it CORRECTLY changes JSON file 
+        // false means is should not change do to holiday or closed time
+        DateTime SinterKlaas = new DateTime (2025, 12, 5, 9, 00, 00); // false
+        DateTime Saturday = starttime.AddDays(5); // false
+        DateTime Sunday = starttime.AddDays(6);  // false
+        DateTime NextMonday = starttime.AddDays(7); // true
+        // add these tours to JSON to test
+        GuidedTour.AddTourToJSON(tour1);
+        GuidedTour.AddTourToJSON(tour2);
+        GuidedTour.AddTourToJSON(tour3);
+        GuidedTour.AddTourToJSON(tour4);
+        GuidedTour.AddTourToJSON(tour5);
+        
+        tour1.ChangeTime(SinterKlaas); // false
+    }
 
 
 
@@ -298,3 +312,5 @@ public class GuidedTourTesting
         }
     }
 }
+
+
