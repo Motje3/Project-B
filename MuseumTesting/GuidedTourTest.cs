@@ -214,7 +214,7 @@ public class GuidedTourTesting
         Assert.IsFalse(guidedTour.ExpectedVisitors.Contains(visitor));
     }
 
-        [TestMethod]
+    [TestMethod]
     public void TestVisitorCancelsReservation()
     {
         // Arrange
@@ -264,12 +264,22 @@ public class GuidedTourTesting
         GuidedTour.AddTourToJSON(tour3);
         GuidedTour.AddTourToJSON(tour4);
         GuidedTour.AddTourToJSON(tour5);
+
+        List<GuidedTour> OldData = _readJSON();
         
         tour1.ChangeTime(SinterKlaas); // false
+        tour2.ChangeTime(Saturday); // false
+        tour3.ChangeTime(Sunday); // false
+        tour5.ChangeTime(NextMonday); // true
+
+        List<GuidedTour> NewData = _readJSON();
+
+        Assert.AreEqual(NewData[0].StartTime, OldData[0].StartTime);
+        Assert.AreEqual(NewData[1].StartTime, OldData[1].StartTime);
+        Assert.AreEqual(NewData[2].StartTime, OldData[2].StartTime);
+        Assert.AreEqual(NewData[3].StartTime, OldData[3].StartTime);  // this is not touched
+        Assert.AreNotEqual(NewData[4].StartTime, OldData[4].StartTime);
     }
-
-
-
 
 
 
@@ -312,5 +322,3 @@ public class GuidedTourTesting
         }
     }
 }
-
-
