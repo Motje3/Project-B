@@ -99,7 +99,7 @@ public static class MenuManager
                         // Perform the transfer
                         if (visitorsTour1 != null)
                         {
-                            visitorsTour1.TransferVisitor(visitor, visitorsTour1, chosenTour);
+                            visitorsTour1.TransferVisitor(visitor, chosenTour);
                             Console.WriteLine($"\nYou have successfully transferred to the new tour: {chosenTour.StartTime}.\n");
                         }
                         else

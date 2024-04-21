@@ -157,7 +157,7 @@ public class GuidedTourTesting
     {
         // Arrange
         var guidedTour = new GuidedTour(DateTime.Now);
-        var guide = new Guide("GUIDE123");
+        var guide = new Guide("GUIDE123",guidedTour.TourId);
 
         // Act
         guidedTour.AddVisitor(guide);
@@ -219,11 +219,12 @@ public class GuidedTourTesting
     {
         // Arrange
         DateTime startTime = new(nowYear, 1, 4, 9, 0, 0);
-        Guide guide = new Guide("GUIDE123");
+        GuidedTour tour = new GuidedTour(startTime);
+        Guide guide = new Guide("GUIDE123", tour.TourId);
         Visitor visitor1 = new Visitor("TICKET456");
         Visitor visitor2 = new Visitor("TICKET789");
 
-        GuidedTour tour = new GuidedTour(startTime);
+        
         tour.AssignedGuide = guide; // Assuming guide is properly set as a Guide object
         tour.ExpectedVisitors.Add(visitor1);
         
@@ -241,7 +242,30 @@ public class GuidedTourTesting
         Assert.IsTrue(updatedTours[0].ExpectedVisitors.Count == 0);
     }
 
+    [TestMethod]
+    public void TestVisitorTransferReservation_succes()
+    {
+        // Arrange
+        DateTime startTime1 = new(nowYear, 12, 30, 9, 0, 0);
+        DateTime startTime2 = new(nowYear, 12, 30, 9, 20, 0);
+        GuidedTour tour1 = new GuidedTour(startTime1);
+        GuidedTour tour2 = new GuidedTour(startTime2);
+        GuidedTour.AddTourToJSON(tour1);
+        GuidedTour.AddTourToJSON(tour2);
+        
+        Visitor visitor1 = new Visitor("TICKET123");
+        tour1.AddVisitor(visitor1);
 
+        // Act
+        tour1.TransferVisitor(visitor1, tour2);
+        List<GuidedTour> tours = _readJSON();
+
+        // Assert
+        Assert.IsTrue(tour1.ExpectedVisitors.Count == 0);
+        Assert.IsTrue(tour2.ExpectedVisitors.Count == 1);
+        Assert.IsTrue(tours[0].ExpectedVisitors.Count == 0);
+        Assert.IsTrue(tours[1].ExpectedVisitors.Count == 1);
+    }
 
 
 
