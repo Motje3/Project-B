@@ -151,10 +151,14 @@ public class GuidedTour
         GuidedTour.EditTourInJSON(this, newTour);
     }
 
-    public void TransferVisitor(Visitor visitor, GuidedTour currentTour, GuidedTour newTour)
+    public void TransferVisitor(Visitor visitor, GuidedTour newTour)
     {
+        if (visitor == null)
+            { return; }
+
         // Remove the visitor from the current tour
-        currentTour.RemoveVisitor(visitor);
+        RemoveVisitor(visitor);
+        ExpectedVisitors.Remove(visitor);
         // Add the visitor to the new tour
         newTour.AddVisitor(visitor);
         // You might want to add additional logic here if needed
