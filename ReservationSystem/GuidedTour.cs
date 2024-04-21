@@ -786,19 +786,21 @@ public class GuidedTour
 
     public void ChangeTime(DateTime newDate)
     {
-        DateOnly newDateOnly = new DateOnly(newDate.Year, newDate.Month, newDate.Day);
+        // split up date and time for seperate the checks
+        DateOnly newDateOnly = new DateOnly(newDate.Year, newDate.Month, newDate.Day); 
         TimeOnly newTimeOnly = new TimeOnly(newDate.Hour, newDate.Minute, newDate.Second);
         if (!_checkIfAllowedDate(newDateOnly))
         {
-            return; // break if false
+            return; // break if false, this prevents changing the GuidedTour object if new date is on closed days or holidays
         }
         if (!_checkIfAllowedTime(newTimeOnly))
         {
-            return; // break if false
+            return; // break if false, this prevents changing the GuidedTour object if new time window is invalid
         }
-        GuidedTour newTour = this.Clone();
-        newTour.StartTime = newDate;
-        newTour.EndTime = newTour.StartTime.AddMinutes(newTour.Duration);
+        GuidedTour newTour = this.Clone();  // clone GuideTour and overwrite it with new dates
+        newTour.StartTime = newDate;  // new start time
+        newTour.EndTime = newTour.StartTime.AddMinutes(newTour.Duration); // new end time
+        EditTourInJSON(this, newTour, true); // this == GuidedTour object
     }
 }
 
