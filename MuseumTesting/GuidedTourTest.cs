@@ -245,7 +245,7 @@ public class GuidedTourTesting
     public void TestChangeTime()
     {
         // Date to create GuidedTour object
-        DateTime starttime = new DateTime (2025, 4, 22, 9, 00, 00);  
+        DateTime starttime = new DateTime (2024, 4, 22, 9, 00, 00);  
         // Create Multiple for JSON
         GuidedTour tour1 = new GuidedTour(starttime); // Monday
         GuidedTour tour2 = new GuidedTour(starttime.AddDays(1)); // Thueseday
@@ -254,7 +254,7 @@ public class GuidedTourTesting
         GuidedTour tour5 = new GuidedTour(starttime.AddDays(4)); // Friday
         // Dates to test if it CORRECTLY changes JSON file 
         // false means is should not change do to holiday or closed time
-        DateTime SinterKlaas = new DateTime (2025, 12, 5, 9, 00, 00); // false
+        DateTime Cristmess = new DateTime (2026, 1, 1, 9, 00, 00); // false
         DateTime Saturday = starttime.AddDays(5); // false
         DateTime Sunday = starttime.AddDays(6);  // false
         DateTime NextMonday = starttime.AddDays(7); // true
@@ -267,18 +267,20 @@ public class GuidedTourTesting
 
         List<GuidedTour> OldData = _readJSON();
         
-        tour1.ChangeTime(SinterKlaas); // false
+        tour1.ChangeTime(Cristmess); // false
         tour2.ChangeTime(Saturday); // false
         tour3.ChangeTime(Sunday); // false
         tour5.ChangeTime(NextMonday); // true
 
         List<GuidedTour> NewData = _readJSON();
 
-        Assert.AreEqual(NewData[0].StartTime, OldData[0].StartTime);
-        Assert.AreEqual(NewData[1].StartTime, OldData[1].StartTime);
-        Assert.AreEqual(NewData[2].StartTime, OldData[2].StartTime);
-        Assert.AreEqual(NewData[3].StartTime, OldData[3].StartTime);  // this is not touched
-        Assert.AreNotEqual(NewData[4].StartTime, OldData[4].StartTime);
+        Assert.IsFalse(NewData.Contains(OldData[0]));  
+        Assert.IsFalse(NewData.Contains(OldData[1]));
+        Assert.IsFalse(NewData.Contains(OldData[2]));
+        Assert.IsFalse(NewData.Contains(OldData[3]));
+        Assert.IsTrue(NewData.Contains(OldData[4]));
+        Assert.AreEqual(NewData.Count, OldData.Count); // should overwrite
+        Assert.AreEqual(OldData, 5); 
     }
 
 
