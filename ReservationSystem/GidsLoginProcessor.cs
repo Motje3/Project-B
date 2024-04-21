@@ -57,7 +57,6 @@ public static class GidsLoginProcessor
 
     private static bool DisplayMainMenu()
     {
-        // Printing next tour of the guide
         if (_myTour.ExpectedVisitors.Count == 0)
             Console.WriteLine($"Your next tour is: {DateOnly.FromDateTime(_myTour.StartTime)} | {TimeOnly.FromDateTime(_myTour.StartTime)} - {TimeOnly.FromDateTime(_myTour.EndTime)} | Nobody has made a reservation\n");
         else if (_myTour.ExpectedVisitors.Count == 1)

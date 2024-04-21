@@ -142,7 +142,7 @@ public static class MenuManager
 
     private static void _printSuccesfullyJoinedTour(GuidedTour chosenTour)
     {
-        Console.WriteLine("Succesfully joined the following tour:");
+        Console.WriteLine("\nSuccesfully joined the following tour:");
         _printTourString(chosenTour);
     }
 
