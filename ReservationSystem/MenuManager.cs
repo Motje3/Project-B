@@ -106,7 +106,7 @@ public static class MenuManager
                         {
                             Console.WriteLine("\nYou are not currently registered on any tour.");
                         }
-
+                        visitorcode =visitor;
                         selectingTour = false;
                     }
                     break;

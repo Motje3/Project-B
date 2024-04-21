@@ -25518,7 +25518,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [
       {
-        "VisitorId": "3dda1898-124a-415f-ac62-cf6e0aad8593",
+        "VisitorId": "df3e02c2-515f-4d58-9fec-0a7e5f33edc5",
         "TicketCode": "111",
         "AssingedTourId": "4b2021f0-a409-44c3-87a0-d04c5296417e"
       }
@@ -25548,7 +25548,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [
       {
-        "VisitorId": "9f39c0b1-e597-4b1c-a2ca-d204b25b492b",
+        "VisitorId": "6499fd3d-9e7f-499c-95b6-f54fddf47eb2",
         "TicketCode": "111",
         "AssingedTourId": "c961d32b-430a-4e7b-8d17-09d24528e8b1"
       }
@@ -25566,7 +25566,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [],
     "PresentVisitors": [],
-    "Completed": false,
+    "Completed": true,
     "Deleted": false,
     "TourId": "488f3249-c2cd-48d0-b66f-91b91853c17e",
     "AssignedGuide": null
@@ -25578,7 +25578,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [],
     "PresentVisitors": [],
-    "Completed": false,
+    "Completed": true,
     "Deleted": false,
     "TourId": "08175f46-acbc-4a12-97a7-9fda4f62f901",
     "AssignedGuide": null
@@ -25590,7 +25590,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [],
     "PresentVisitors": [],
-    "Completed": false,
+    "Completed": true,
     "Deleted": false,
     "TourId": "6d2df98c-8a55-4ada-a821-1f761e83013f",
     "AssignedGuide": null
@@ -25602,7 +25602,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [],
     "PresentVisitors": [],
-    "Completed": false,
+    "Completed": true,
     "Deleted": false,
     "TourId": "c143d845-e3a5-4b49-a80c-226609a6db56",
     "AssignedGuide": null
@@ -25614,7 +25614,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [],
     "PresentVisitors": [],
-    "Completed": false,
+    "Completed": true,
     "Deleted": false,
     "TourId": "769c6b09-9b12-4407-8a00-c752789dbb62",
     "AssignedGuide": null
@@ -25626,7 +25626,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [],
     "PresentVisitors": [],
-    "Completed": false,
+    "Completed": true,
     "Deleted": false,
     "TourId": "576a3474-a949-4994-8e5d-e650c61b43ce",
     "AssignedGuide": null
@@ -25638,7 +25638,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [],
     "PresentVisitors": [],
-    "Completed": false,
+    "Completed": true,
     "Deleted": false,
     "TourId": "e969e88c-f8b7-40dd-9074-23c4222eec55",
     "AssignedGuide": null
@@ -83896,13 +83896,7 @@
     "StartTime": "2024-04-21T16:00:00",
     "EndTime": "2024-04-21T16:20:00",
     "MaxCapacity": 13,
-    "ExpectedVisitors": [
-      {
-        "VisitorId": "9f5e5639-dbac-4e1f-ae1a-af542919ad47",
-        "TicketCode": "111",
-        "AssingedTourId": "1cb422cf-fe7d-4cb2-9ae3-208aafc2cbaf"
-      }
-    ],
+    "ExpectedVisitors": [],
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
@@ -83914,13 +83908,7 @@
     "StartTime": "2024-04-21T15:40:00",
     "EndTime": "2024-04-21T16:00:00",
     "MaxCapacity": 13,
-    "ExpectedVisitors": [
-      {
-        "VisitorId": "d8df9e5f-eb06-45a4-a737-85d27d2b4865",
-        "TicketCode": "111",
-        "AssingedTourId": "36eae8b0-4760-42f5-9487-2da134310057"
-      }
-    ],
+    "ExpectedVisitors": [],
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
