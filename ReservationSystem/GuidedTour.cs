@@ -155,7 +155,7 @@ public class GuidedTour
     public void TransferVisitor(Visitor visitor, GuidedTour newTour)
     {
         if (visitor == null)
-            { return; }
+        { return; }
 
         // Remove the visitor from the current tour
         RemoveVisitor(visitor);
@@ -163,6 +163,38 @@ public class GuidedTour
         // Add the visitor to the new tour
         newTour.AddVisitor(visitor);
         // You might want to add additional logic here if needed
+    }
+    // Changes the start time and end time to the given date
+    //  - Shouldn't check anything about the date as
+    //    as the date should be allowed to be changed
+    //    to any date
+    public void ChangeTime(DateTime newDate)
+    {
+        GuidedTour newTour = this.Clone();  // clone GuideTour and overwrite it with new dates
+        newTour.StartTime = newDate;  // new start time
+        newTour.EndTime = newTour.StartTime.AddMinutes(newTour.Duration); // new end time
+        EditTourInJSON(this, newTour, true); // this == GuidedTour object
+    }
+
+    // Changes the MaxCapacity to given int 
+    //  - If given less than current amount of people than set MaxCapacity to current amount of people
+    public void ChangeCapacity(int newCapacity)
+    {
+        GuidedTour newTour = this.Clone();
+        int currMinCapacity = ExpectedVisitors.Count;
+
+        if (newCapacity < currMinCapacity)
+        {
+            newTour.MaxCapacity = currMinCapacity;
+            MaxCapacity = currMinCapacity;
+        }
+        else
+        {
+            newTour.MaxCapacity = newCapacity;
+            MaxCapacity = newCapacity;
+        }
+
+        GuidedTour.EditTourInJSON(this, newTour);
     }
 
 
@@ -546,7 +578,7 @@ public class GuidedTour
     {
         List<GuidedTour> tours = new();
         DateOnly TodayDate = DateOnly.FromDateTime(DateTime.Today);
-        DateOnly NextDayDate = new(1,1,1);
+        DateOnly NextDayDate = new(1, 1, 1);
 
         for (int tourIndex = 0; tourIndex < CurrentTours.Count; tourIndex++)
         {
@@ -569,7 +601,7 @@ public class GuidedTour
                     tours.Add(currentTour);
                 }
             }
-            
+
             /*DateOnly TommorowDate = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
 
             bool sameYear = TommorowDate.Year == currentTour.StartTime.Year;
@@ -803,14 +835,6 @@ public class GuidedTour
     public static bool CheckIfVisitorInTour(Visitor visitor)
     {
         return CurrentTours.Any(tour => tour.ExpectedVisitors.Any(v => v.VisitorId == visitor.VisitorId));
-    }
-
-    public void ChangeTime(DateTime newDate)
-    {
-        GuidedTour newTour = this.Clone();  // clone GuideTour and overwrite it with new dates
-        newTour.StartTime = newDate;  // new start time
-        newTour.EndTime = newTour.StartTime.AddMinutes(newTour.Duration); // new end time
-        EditTourInJSON(this, newTour, true); // this == GuidedTour object
     }
 }
 
