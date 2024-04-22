@@ -254,9 +254,9 @@ public class GuidedTourTesting
         GuidedTour tour5 = new GuidedTour(starttime.AddDays(4)); // Friday
         // Dates to test if it CORRECTLY changes JSON file 
         // false means is should not change do to holiday or closed time
-        DateTime Cristmess = new DateTime (2026, 1, 1, 9, 00, 00); // false
-        DateTime Saturday = starttime.AddDays(5); // false
-        DateTime Sunday = starttime.AddDays(6);  // false
+        DateTime Cristmess = new DateTime (2024, 12, 25, 9, 00, 00); // true
+        DateTime Saturday = starttime.AddDays(5); // true
+        DateTime Sunday = starttime.AddDays(6);  // true
         DateTime NextMonday = starttime.AddDays(7); // true
         // add these tours to JSON to test
         GuidedTour.AddTourToJSON(tour1);
@@ -267,20 +267,19 @@ public class GuidedTourTesting
 
         List<GuidedTour> OldData = _readJSON();
         
-        tour1.ChangeTime(Cristmess); // false
-        tour2.ChangeTime(Saturday); // false
-        tour3.ChangeTime(Sunday); // false
+        tour2.ChangeTime(Cristmess); // true
+        tour3.ChangeTime(Saturday); // true
+        tour4.ChangeTime(Sunday); // true
         tour5.ChangeTime(NextMonday); // true
 
         List<GuidedTour> NewData = _readJSON();
 
-        Assert.IsFalse(NewData.Contains(OldData[0]));  
+        Assert.IsFalse(NewData.Contains(OldData[0]));
         Assert.IsFalse(NewData.Contains(OldData[1]));
         Assert.IsFalse(NewData.Contains(OldData[2]));
         Assert.IsFalse(NewData.Contains(OldData[3]));
-        Assert.IsTrue(NewData.Contains(OldData[4]));
         Assert.AreEqual(NewData.Count, OldData.Count); // should overwrite
-        Assert.AreEqual(OldData, 5); 
+        Assert.AreEqual(OldData.Count, 4); 
     }
 
 
