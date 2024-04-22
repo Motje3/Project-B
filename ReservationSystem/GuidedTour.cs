@@ -99,7 +99,7 @@ public class GuidedTour
             {
                 return;
             }
-            
+
             // **AddVisitor** voor een gewoone **(niet een gids)** 
             // bezoeker voegt **visitor **aan **newTour.ExpectedVisitor**
             visitor.AssingedTourId = this.TourId;
@@ -139,7 +139,7 @@ public class GuidedTour
         GuidedTour newTour = this.Clone();
 
         // Remove the visitor from ExpectedVisitors
-        for(int visitorIndex = 0; visitorIndex<newTour.ExpectedVisitors.Count; visitorIndex++)
+        for (int visitorIndex = 0; visitorIndex < newTour.ExpectedVisitors.Count; visitorIndex++)
         {
             Visitor currentVisitor = newTour.ExpectedVisitors[visitorIndex];
             if (currentVisitor.TicketCode == visitor.TicketCode)
@@ -154,16 +154,17 @@ public class GuidedTour
 
     public void TransferVisitor(Visitor visitor, GuidedTour newTour)
     {
-        if (visitor is Guide guide)
-        {
-            AssignedGuide = guide;
-            newTour.AssignedGuide = (Guide) visitor;
-            //More logic might follow deppends if we leave the guid tour inheritance from visitor
-        }
-        RemoveVisitor(visitor);
-        AddVisitor(visitor);
+        if (visitor == null)
+            { return; }
 
+        // Remove the visitor from the current tour
+        RemoveVisitor(visitor);
+        ExpectedVisitors.Remove(visitor);
+        // Add the visitor to the new tour
+        newTour.AddVisitor(visitor);
+        // You might want to add additional logic here if needed
     }
+
 
     public GuidedTour Clone()
     {
@@ -541,15 +542,35 @@ public class GuidedTour
         return tours;
     }
 
-    public static List<GuidedTour> ReturnAllCurrentToursFromTommorow()
+    public static List<GuidedTour> ReturnToursFromNextDay()
     {
         List<GuidedTour> tours = new();
+        DateOnly TodayDate = DateOnly.FromDateTime(DateTime.Today);
+        DateOnly NextDayDate = new(1,1,1);
 
         for (int tourIndex = 0; tourIndex < CurrentTours.Count; tourIndex++)
         {
             GuidedTour currentTour = CurrentTours[tourIndex];
-            DateOnly TommorowDate = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
-            DateTime TommorowDateTime = new(TommorowDate.Year, TommorowDate.Month, TommorowDate.Day);
+            DateOnly currTourDate = DateOnly.FromDateTime(currentTour.StartTime);
+            bool tourIsToday = currTourDate == TodayDate;
+            if (tourIsToday || currTourDate.DayOfWeek == DayOfWeek.Monday)
+            {
+                continue;
+            }
+            else if (NextDayDate.Year == 1)
+            {
+                NextDayDate = currTourDate;
+                tours.Add(currentTour);
+            }
+            else
+            {
+                if (currTourDate == NextDayDate)
+                {
+                    tours.Add(currentTour);
+                }
+            }
+            
+            /*DateOnly TommorowDate = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
 
             bool sameYear = TommorowDate.Year == currentTour.StartTime.Year;
             bool sameMonth = TommorowDate.Month == currentTour.StartTime.Month;
@@ -557,7 +578,7 @@ public class GuidedTour
             if (tourIsTommorow)
             {
                 tours.Add(currentTour);
-            }
+            }*/
         }
 
         // sort list using linq
@@ -594,7 +615,7 @@ public class GuidedTour
             }
         }
 
-        List<GuidedTour> toursTommorow = GuidedTour.ReturnAllCurrentToursFromTommorow();
+        List<GuidedTour> toursTommorow = GuidedTour.ReturnToursFromNextDay();
         int tommorowTourIndex = 0;
         // if they are less than 10 allowedTours present, add tours from tommorow until 10 
         while (allowedTours.Count < 10)

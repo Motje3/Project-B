@@ -13,4 +13,9 @@
     CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include= "JSON-Files/*.*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include= "Interface/*.*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

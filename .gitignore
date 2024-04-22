@@ -223,6 +223,9 @@ AppPackages/
 
 # Ignore obj folder
 obj/
+#sln file
+Project-B.sln
+
 
 #####
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)

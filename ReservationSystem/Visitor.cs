@@ -2,8 +2,8 @@ public class Visitor
 {
     public Guid VisitorId { get; private set; }
     public string TicketCode { get; set; } // Add ticket code property
-    public Guid AssingedTourId { get; set;}
-    
+    public Guid AssingedTourId { get; set; }
+
     public Visitor(string ticketCode)
     {
         VisitorId = Guid.NewGuid();
@@ -27,18 +27,20 @@ public class Visitor
             {
                 if (currentVisitor == null)
                 {
-                    
+                    continue; // Skip to the next visitor if the current one is null
                 }
                 if (currentVisitor.TicketCode == ticketCode)
                 {
                     foundVisitor = currentVisitor;
-                    break;
+                    break; // Exit the inner loop as we found the visitor
                 }
             }
             if (foundVisitor != null)
-                break;
+            {
+                break; // Exit the outer loop as we found the visitor
+            }
         }
-
         return foundVisitor;
     }
+
 }

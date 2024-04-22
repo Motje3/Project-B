@@ -55,19 +55,19 @@ public static class MenuManager
     }
 
 
-    public static void ShowFullMenu(Visitor visitor)
+    public static void ShowFullMenu(Visitor visitorcode)
     {
         bool choosingOption = true;
         while (choosingOption)
         {
-            Console.WriteLine("Your current tour reservation is:");
-            _printTourString(GuidedTour.FindTourById(visitor.AssingedTourId));
+
+
             Console.WriteLine("Please choose an option:");
             Console.WriteLine("1. Join a different tour");
             Console.WriteLine("2. Cancel my tour reservation");
             Console.WriteLine("3. Exit");
 
-            Console.Write("\nEnter your choice: ");
+            Console.Write("\nEnter your choice: \n");
             string choice = Console.ReadLine();
 
             switch (choice)
@@ -76,37 +76,44 @@ public static class MenuManager
                     bool selectingTour = true;
                     while (selectingTour)
                     {
-                        // Print all avaible tours
+                        Console.WriteLine("\nYour current tour reservation is:");
+                        _printTourString(GuidedTour.FindTourById(visitorcode.AssingedTourId));
+
                         List<GuidedTour> allowedTours = GuidedTour.PrintToursOpenToday();
 
                         Console.WriteLine($"\nPlease choose a number next to the tour you wish to join");
 
                         // Visitor has to choose a tour
                         string chosenTourNumber = Console.ReadLine();
-                        int tourNumber;
-                        int.TryParse(chosenTourNumber, out tourNumber);
-                        bool outSideOfAllowedRange = tourNumber <= 0 || tourNumber > allowedTours.Count;
-                        while (outSideOfAllowedRange)
+                        int.TryParse(chosenTourNumber, out int tourNumber);
+                        while (tourNumber <= 0 || tourNumber > allowedTours.Count)
                         {
                             Console.WriteLine("Invalid choice, please choose a number next to the tour you wish to join");
                             chosenTourNumber = Console.ReadLine();
                             int.TryParse(chosenTourNumber, out tourNumber);
-                            outSideOfAllowedRange = tourNumber <= 0 || tourNumber > allowedTours.Count;
                         }
                         GuidedTour chosenTour = allowedTours[tourNumber - 1];
+                        GuidedTour visitorsTour1 = GuidedTour.FindTourById(visitorcode.AssingedTourId);
+                        Visitor visitor = Visitor.FindVisitorByTicketCode(visitorcode.TicketCode);
 
-                        // Transfer visitor from currentTour to chosenTour
-                        //visitorsTour = GuidedTour.FindTourById(visitor.ReservedTourId);
-                        //visitorsTour.TransferVisitor(visitor, chosenTour);
-
-                        _printSuccesfullyJoinedTour(chosenTour);
+                        // Perform the transfer
+                        if (visitorsTour1 != null)
+                        {
+                            visitorsTour1.TransferVisitor(visitor, chosenTour);
+                            Console.WriteLine($"\nYou have successfully transferred to the new tour: {chosenTour.StartTime}.\n");
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nYou are not currently registered on any tour.");
+                        }
+                        visitorcode =visitor;
                         selectingTour = false;
                     }
                     break;
 
+
                 case "2":
-                    // Find the tour the visitor is reserved for using the AssingedTourId
-                    GuidedTour visitorsTour = GuidedTour.FindTourById(visitor.AssingedTourId);
+                    GuidedTour visitorsTour = GuidedTour.FindTourById(visitorcode.AssingedTourId);
 
                     if (visitorsTour == null)
                     {
@@ -115,12 +122,12 @@ public static class MenuManager
                     }
 
                     // Remove the visitor from the tour
-                    visitorsTour.RemoveVisitor(visitor);
+                    visitorsTour.RemoveVisitor(visitorcode);
 
                     Console.WriteLine("Tour reservation canceled successfully.");
 
                     // Show the restricted menu to the visitor after canceling the reservation
-                    MenuManager.ShowRestrictedMenu(visitor.TicketCode);
+                    MenuManager.ShowRestrictedMenu(visitorcode.TicketCode);
                     return;
 
                 case "3":
@@ -135,7 +142,7 @@ public static class MenuManager
 
     private static void _printSuccesfullyJoinedTour(GuidedTour chosenTour)
     {
-        Console.WriteLine("Succesfully joined the following tour:");
+        Console.WriteLine("\nSuccesfully joined the following tour:");
         _printTourString(chosenTour);
     }
 
@@ -149,5 +156,4 @@ public static class MenuManager
 
         Console.WriteLine($"{hour}:{minute} {tourDate} | duration: {tour.Duration} minutes\n");
     }
-
 }

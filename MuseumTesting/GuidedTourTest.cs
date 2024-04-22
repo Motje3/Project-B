@@ -224,6 +224,7 @@ public class GuidedTourTesting
 
         GuidedTour tour = new GuidedTour(startTime);
         Guide guide = new Guide("GUIDE123", tour.TourId);
+
         tour.AssignedGuide = guide; // Assuming guide is properly set as a Guide object
         tour.ExpectedVisitors.Add(visitor1);
         
@@ -281,6 +282,7 @@ public class GuidedTourTesting
         Assert.AreEqual(NewData.Count, OldData.Count); // should overwrite
         Assert.AreEqual(OldData.Count, 4); 
     }
+
 
 
 
