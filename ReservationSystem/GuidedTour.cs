@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
 public class GuidedTour
@@ -259,18 +260,21 @@ public class GuidedTour
     //  - Checks if the tour is already in the file, based on the _tourId
     //  - Adds the given tour to the list of tours in the static class
     //  - Updates the Json file with the list of tours in the static class
-    public static void AddTourToJSON(GuidedTour tour)
+    public static void AddTourToJSON(GuidedTour tour, bool ignoreDateChecks = false)
     {
         GuidedTour._updateCurrentTours();
         TimeOnly tourTime = TimeOnly.FromDateTime(tour.StartTime);
         DateOnly tourDate = DateOnly.FromDateTime(tour.StartTime);
         bool tourAlreadyInFile = _checkIfInFile(tour);
         bool forbiddenId = CheckTourId(tour.TourId);
-        bool allowedTime = _checkIfAllowedTime(tourTime);
-        bool allowedDate = _checkIfAllowedDate(tourDate);
-        if (!allowedTime || !allowedDate || tourAlreadyInFile || forbiddenId)
+        if (ignoreDateChecks == false)
         {
-            return;
+            bool allowedTime = _checkIfAllowedTime(tourTime);
+            bool allowedDate = _checkIfAllowedDate(tourDate);
+            if (!allowedTime || !allowedDate || tourAlreadyInFile || forbiddenId)
+            {
+                return;
+            }
         }
 
         bool tourIsInThePast = DateTime.Compare(DateTime.Now, tour.StartTime) == 1;
@@ -448,7 +452,7 @@ public class GuidedTour
     //  - Checks if the newTour and oldTour have the same _tourId
     //  - Uses the static method DeleteTourFromJson with oldTour
     //  - Uses the static method AddTourToJSON with newTour
-    public static void EditTourInJSON(GuidedTour oldTour, GuidedTour newTour)
+    public static void EditTourInJSON(GuidedTour oldTour, GuidedTour newTour, bool ignoreDateChecks = false)
     {
         GuidedTour._updateCurrentTours();
         bool oldTourExsists = GuidedTour.CurrentTours.Contains(oldTour);
@@ -460,7 +464,7 @@ public class GuidedTour
         }
 
         GuidedTour.RemoveTourFromJSON(oldTour);
-        GuidedTour.AddTourToJSON(newTour);
+        GuidedTour.AddTourToJSON(newTour, ignoreDateChecks);
     }
 
     // Updates the list of tours in the static class, based on the json file, 
@@ -800,4 +804,25 @@ public class GuidedTour
     {
         return CurrentTours.Any(tour => tour.ExpectedVisitors.Any(v => v.VisitorId == visitor.VisitorId));
     }
+
+    public void ChangeTime(DateTime newDate)
+    {
+        GuidedTour newTour = this.Clone();  // clone GuideTour and overwrite it with new dates
+        newTour.StartTime = newDate;  // new start time
+        newTour.EndTime = newTour.StartTime.AddMinutes(newTour.Duration); // new end time
+        EditTourInJSON(this, newTour, true); // this == GuidedTour object
+    }
 }
+
+//     private bool _checkIfAllowedTime(TimeOnly time)
+//     {
+//         if (time.Hour >= 9 && time.Hour <= 16)
+//         {
+//             // if bellow 40Min on the 16th hour return true
+//             if (Time.Hour == 16) { return time.Minute < 40; }
+//             // if between 9th and 15th hour return true
+//             else { return true;}
+//         }
+//         return false;
+//     }
+// }

@@ -214,17 +214,17 @@ public class GuidedTourTesting
         Assert.IsFalse(guidedTour.ExpectedVisitors.Contains(visitor));
     }
 
-        [TestMethod]
+    [TestMethod]
     public void TestVisitorCancelsReservation()
     {
         // Arrange
         DateTime startTime = new(nowYear, 1, 4, 9, 0, 0);
-        GuidedTour tour = new GuidedTour(startTime);
-        Guide guide = new Guide("GUIDE123", tour.TourId);
         Visitor visitor1 = new Visitor("TICKET456");
         Visitor visitor2 = new Visitor("TICKET789");
 
-        
+        GuidedTour tour = new GuidedTour(startTime);
+        Guide guide = new Guide("GUIDE123", tour.TourId);
+
         tour.AssignedGuide = guide; // Assuming guide is properly set as a Guide object
         tour.ExpectedVisitors.Add(visitor1);
         
@@ -243,42 +243,45 @@ public class GuidedTourTesting
     }
 
     [TestMethod]
-    public void TestVisitorTransferReservation_succes()
+    public void TestChangeTime()
     {
-        // Arrange
-        DateTime startTime1 = new(nowYear, 12, 30, 9, 0, 0);
-        DateTime startTime2 = new(nowYear, 12, 30, 9, 20, 0);
-        GuidedTour tour1 = new GuidedTour(startTime1);
-        GuidedTour tour2 = new GuidedTour(startTime2);
+        // Date to create GuidedTour object
+        DateTime starttime = new DateTime (2024, 4, 22, 9, 00, 00);  
+        // Create Multiple for JSON
+        GuidedTour tour1 = new GuidedTour(starttime); // Monday
+        GuidedTour tour2 = new GuidedTour(starttime.AddDays(1)); // Thueseday
+        GuidedTour tour3 = new GuidedTour(starttime.AddDays(2)); // Wensday
+        GuidedTour tour4 = new GuidedTour(starttime.AddDays(3)); // Thursday
+        GuidedTour tour5 = new GuidedTour(starttime.AddDays(4)); // Friday
+        // Dates to test if it CORRECTLY changes JSON file 
+        // false means is should not change do to holiday or closed time
+        DateTime Cristmess = new DateTime (2024, 12, 25, 9, 00, 00); // true
+        DateTime Saturday = starttime.AddDays(5); // true
+        DateTime Sunday = starttime.AddDays(6);  // true
+        DateTime NextMonday = starttime.AddDays(7); // true
+        // add these tours to JSON to test
         GuidedTour.AddTourToJSON(tour1);
         GuidedTour.AddTourToJSON(tour2);
+        GuidedTour.AddTourToJSON(tour3);
+        GuidedTour.AddTourToJSON(tour4);
+        GuidedTour.AddTourToJSON(tour5);
+
+        List<GuidedTour> OldData = _readJSON();
         
-        Visitor visitor1 = new Visitor("TICKET123");
-        tour1.AddVisitor(visitor1);
+        tour2.ChangeTime(Cristmess); // true
+        tour3.ChangeTime(Saturday); // true
+        tour4.ChangeTime(Sunday); // true
+        tour5.ChangeTime(NextMonday); // true
 
-        // Act
-        tour1.TransferVisitor(visitor1, tour2);
-        List<GuidedTour> tours = _readJSON();
+        List<GuidedTour> NewData = _readJSON();
 
-        // Assert
-        Assert.IsTrue(tour1.ExpectedVisitors.Count == 0);
-        Assert.IsTrue(tour2.ExpectedVisitors.Count == 1);
-        Assert.IsTrue(tours[0].ExpectedVisitors.Count == 0);
-        Assert.IsTrue(tours[1].ExpectedVisitors.Count == 1);
+        Assert.IsFalse(NewData.Contains(OldData[0]));
+        Assert.IsFalse(NewData.Contains(OldData[1]));
+        Assert.IsFalse(NewData.Contains(OldData[2]));
+        Assert.IsFalse(NewData.Contains(OldData[3]));
+        Assert.AreEqual(NewData.Count, OldData.Count); // should overwrite
+        Assert.AreEqual(OldData.Count, 4); 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
