@@ -91,20 +91,20 @@ public class GuidedTourTesting
     [TestMethod]
     public void TestAddTwoToursSameTime()
     {
-    // Arrange
+        // Arrange
         DateTime startTime1 = new(nowYear, 1, 4, 9, 0, 0);
         GuidedTour toBeAdded1 = new(startTime1);
         toBeAdded1.Completed = true;
         GuidedTour toBeAdded2 = new(startTime1);
         toBeAdded2.Completed = true;
-        List<GuidedTour> bothTours = new List<GuidedTour>(){toBeAdded1,toBeAdded2};
+        List<GuidedTour> bothTours = new List<GuidedTour>() { toBeAdded1, toBeAdded2 };
         string bothToursAsString = JsonConvert.SerializeObject(bothTours);
 
-    // Act
+        // Act
         GuidedTour.AddTourToJSON(toBeAdded1);
         GuidedTour.AddTourToJSON(toBeAdded2);
 
-    // Assert
+        // Assert
         List<GuidedTour> currentTours = _readJSON();
         bool actual = currentTours.Count == 2;
         Assert.IsTrue(actual);
@@ -116,15 +116,15 @@ public class GuidedTourTesting
     [TestMethod]
     public void TestDeleteTour()
     {
-    // Arrange
+        // Arrange
         DateTime startTime = new(nowYear, 1, 4, 9, 0, 0);
         GuidedTour toBeAdded = new(startTime);
         GuidedTour.AddTourToJSON(toBeAdded);
 
-    // Act
+        // Act
         GuidedTour.DeleteTourFromJSON(toBeAdded);
         List<GuidedTour> currentTours = _readJSON();
-    // Assert
+        // Assert
         Assert.IsTrue(currentTours[0].Deleted == true);
         Assert.IsTrue(GuidedTour.CurrentTours.Count == 0);
         Assert.IsTrue(GuidedTour.CompletedTours.Count == 0);
@@ -134,7 +134,7 @@ public class GuidedTourTesting
     [TestMethod]
     public void TestEditTour()
     {
-    // Arrange
+        // Arrange
         DateTime startTime = new(nowYear, 1, 4, 9, 0, 0);
         GuidedTour toBeEditted = new(startTime);
         GuidedTour.AddTourToJSON(toBeEditted);
@@ -142,10 +142,10 @@ public class GuidedTourTesting
         GuidedTour editted = toBeEditted.Clone();
         editted.Deleted = true;
 
-    // Act
+        // Act
         GuidedTour.EditTourInJSON(toBeEditted, editted);
         List<GuidedTour> currentTours = _readJSON();
-    // Assert
+        // Assert
         Assert.IsTrue(currentTours.Count == 1);
         string savedTour = JsonConvert.SerializeObject(currentTours[0]);
         string beforeSavedTour = JsonConvert.SerializeObject(editted);
@@ -157,7 +157,7 @@ public class GuidedTourTesting
     {
         // Arrange
         var guidedTour = new GuidedTour(DateTime.Now);
-        var guide = new Guide("GUIDE123",guidedTour.TourId);
+        var guide = new Guide("GUIDE123", guidedTour.TourId);
 
         // Act
         guidedTour.AddVisitor(guide);
@@ -227,7 +227,7 @@ public class GuidedTourTesting
 
         tour.AssignedGuide = guide; // Assuming guide is properly set as a Guide object
         tour.ExpectedVisitors.Add(visitor1);
-        
+
         GuidedTour.AddTourToJSON(tour);
 
         // Act
@@ -246,7 +246,7 @@ public class GuidedTourTesting
     public void TestChangeTime()
     {
         // Date to create GuidedTour object
-        DateTime starttime = new DateTime (2024, 4, 22, 9, 00, 00);  
+        DateTime starttime = new DateTime(2024, 4, 22, 9, 00, 00);
         // Create Multiple for JSON
         GuidedTour tour1 = new GuidedTour(starttime); // Monday
         GuidedTour tour2 = new GuidedTour(starttime.AddDays(1)); // Thueseday
@@ -255,7 +255,7 @@ public class GuidedTourTesting
         GuidedTour tour5 = new GuidedTour(starttime.AddDays(4)); // Friday
         // Dates to test if it CORRECTLY changes JSON file 
         // false means is should not change do to holiday or closed time
-        DateTime Cristmess = new DateTime (2024, 12, 25, 9, 00, 00); // true
+        DateTime Cristmess = new DateTime(2024, 12, 25, 9, 00, 00); // true
         DateTime Saturday = starttime.AddDays(5); // true
         DateTime Sunday = starttime.AddDays(6);  // true
         DateTime NextMonday = starttime.AddDays(7); // true
@@ -267,7 +267,7 @@ public class GuidedTourTesting
         GuidedTour.AddTourToJSON(tour5);
 
         List<GuidedTour> OldData = _readJSON();
-        
+
         tour2.ChangeTime(Cristmess); // true
         tour3.ChangeTime(Saturday); // true
         tour4.ChangeTime(Sunday); // true
@@ -280,8 +280,95 @@ public class GuidedTourTesting
         Assert.IsFalse(NewData.Contains(OldData[2]));
         Assert.IsFalse(NewData.Contains(OldData[3]));
         Assert.AreEqual(NewData.Count, OldData.Count); // should overwrite
-        Assert.AreEqual(OldData.Count, 4); 
+        Assert.AreEqual(OldData.Count, 4);
     }
+
+    [TestMethod]
+    public void TestChangeCapacity()
+    {
+        // Arrange
+        // Date to create GuidedTour object
+        DateTime starttime = new DateTime(2024, 4, 23, 9, 00, 00);
+        // Create Multiple for JSON
+        GuidedTour tour1 = new GuidedTour(starttime); // Tuesday
+        GuidedTour.AddTourToJSON(tour1);
+
+        // Act
+        tour1.ChangeCapacity(10);
+        List<GuidedTour> tours = _readJSON();
+
+        // Assert
+        Assert.IsTrue(tours[0].MaxCapacity == 10);
+    }
+
+    [TestMethod]
+    public void TestChangeCapacityAndAddPeopleUpToLimit()
+    {
+        // Arrange
+        // Date to create GuidedTour object
+        DateTime starttime = new DateTime(2024, 4, 23, 9, 00, 00);
+        // Create Multiple for JSON
+        GuidedTour tour1 = new GuidedTour(starttime); // Tuesday
+        GuidedTour.AddTourToJSON(tour1);
+
+        Visitor v1 = new("1111");
+        Visitor v2 = new("2222");
+        Visitor v3 = new("3333");
+        Visitor v4 = new("4444");
+
+        // Act
+        tour1.ChangeCapacity(3);
+        tour1.AddVisitor(v1);
+        tour1.AddVisitor(v2);
+        tour1.AddVisitor(v3);
+        tour1.AddVisitor(v4);
+        List<GuidedTour> tours = _readJSON();
+
+        // Assert
+        Assert.IsTrue(tours[0].ExpectedVisitors.Count == 3);
+    }
+
+    [TestMethod]
+    public void TestChangeCapacityUnderAmountPeople()
+    {
+        // Arrange
+        // Date to create GuidedTour object
+        DateTime starttime = new DateTime(2024, 4, 23, 9, 00, 00);
+        // Create Multiple for JSON
+        GuidedTour tour1 = new GuidedTour(starttime); // Tuesday
+        GuidedTour.AddTourToJSON(tour1);
+
+        Visitor v1 = new("1111");
+        Visitor v2 = new("2222");
+        Visitor v3 = new("3333");
+        Visitor v4 = new("4444");
+        tour1.AddVisitor(v1);
+        tour1.AddVisitor(v2);
+        tour1.AddVisitor(v3);
+        tour1.AddVisitor(v4);
+
+        // Act
+        tour1.ChangeCapacity(3);
+        List<GuidedTour> tours = _readJSON();
+
+        // Assert
+        Assert.IsTrue(tours[0].MaxCapacity == 4);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -291,7 +378,7 @@ public class GuidedTourTesting
     {
         using (StreamWriter writer = new StreamWriter(JSONPath))
         {
-            string List2Json = JsonConvert.SerializeObject(_toursAtTheStart,Formatting.Indented);
+            string List2Json = JsonConvert.SerializeObject(_toursAtTheStart, Formatting.Indented);
             writer.Write(List2Json);
         }
     }
@@ -311,7 +398,7 @@ public class GuidedTourTesting
         using (StreamWriter writer = new StreamWriter(JSONPath))
         {
             List<GuidedTour> empty = new();
-            string List2Json = JsonConvert.SerializeObject(empty,Formatting.Indented);
+            string List2Json = JsonConvert.SerializeObject(empty, Formatting.Indented);
             writer.Write(List2Json);
         }
     }
