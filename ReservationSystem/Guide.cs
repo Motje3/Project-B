@@ -2,42 +2,35 @@
 
 public class Guide : Visitor
 {
-    public Guide(string ticketcode, Guid tourId) : base(ticketcode) 
-    { /* Name , TicketCode */ 
-        GuidedTour myTour = GuidedTour.FindTourById(tourId);
-        base.AssingedTourId = tourId;
+
+    public Guide(string ticketcode) : base(ticketcode) {}
+    public override string ToString()
+    {
+        return $"Ticket code: {TicketCode}";
     }
 
-    public void CheckInVisitor(Visitor visitor)
+
+    public void CompleteTour() 
     {
-        GuidedTour tour = GuidedTour.FindTourById(base.AssingedTourId);
-        GuidedTour NewTour = tour.Clone();  // this will overwrite the old tour, Clone prefence changes to oldtour.
-
-        if (tour == null)
+        var newTour = GuidedTour.FindTourById(base.AssingedTourId);
+        var oldTour = GuidedTour.FindTourById(base.AssingedTourId);
+        if (base.AssingedTourId == null)
         {
-            Console.WriteLine("\nNo matching tour not found");
+            return;
         }
-        else if (tour.ExpectedVisitors.Contains(visitor))
+        if (newTour == null)
         {
-            if (!tour.PresentVisitors.Contains(visitor))
-            {
-                NewTour.PresentVisitors.Add(visitor);
-                GuidedTour.EditTourInJSON(tour, NewTour);    
-                return;
-            }
+            return;
         }
-        else if (!tour.ExpectedVisitors.Contains(visitor))  
+        if (newTour.Deleted == true)
         {
-            // fail save message
-            Console.WriteLine("\nNo matching tour not found");
-        }       
-    }  
-}
+            return;
+        }
+        newTour.Completed = true;
+        GuidedTour.EditTourInJSON(oldTour, newTour);
+    }
 
-    // public void CompleteTour() 
-    // {
-
-    // }
+    
     // public void TourInProgress()
     // {
 
@@ -49,3 +42,4 @@ public class Guide : Visitor
     //         Console.WriteLine(visitor);
     //     }
     // }
+}

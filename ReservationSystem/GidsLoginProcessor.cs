@@ -117,7 +117,7 @@ public static class GidsLoginProcessor
             if (visitorCode != "stop" && !addedCodes.Contains(visitorCode))
             {
                 addedCodes.Add(visitorCode);
-                _myGuide.CheckInVisitor(visitor);
+                //_myGuide.CheckInVisitor(visitor);
             }
         }
         while (visitorCode != "stop");

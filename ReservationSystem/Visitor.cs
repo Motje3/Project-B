@@ -36,11 +36,9 @@ public class Visitor
                 }
             }
             if (foundVisitor != null)
-            {
-                break; // Exit the outer loop as we found the visitor
-            }
+                break;
         }
+
         return foundVisitor;
     }
-
 }
