@@ -39,6 +39,9 @@ public class GuidedTour
         AssignedGuide = assignedGuide;
     }
 
+
+
+    //can be alot shorter
     public void AddVisitor(Visitor visitor)
     {
 
@@ -93,6 +96,9 @@ public class GuidedTour
         GuidedTour.EditTourInJSON(this, newTour);
     }
 
+
+
+    //can be alot shorter
     public void RemoveVisitor(Visitor visitor)
     {
         // Check if the visitor is a guide
@@ -133,36 +139,35 @@ public class GuidedTour
         // Update the tour
         GuidedTour.EditTourInJSON(this, newTour);
     }
+    
+
 
     public void TransferVisitor(Visitor visitor, GuidedTour newTour)
     {
         if (visitor == null)
         { return; }
 
-        // Remove the visitor from the current tour
         RemoveVisitor(visitor);
         ExpectedVisitors.Remove(visitor);
-        // Add the visitor to the new tour
         newTour.AddVisitor(visitor);
-        // You might want to add additional logic here if needed
     }
-    // Changes the start time and end time to the given date
-    //  - Shouldn't check anything about the date as
-    //    as the date should be allowed to be changed
-    //    to any date
+
+
+
     public void ChangeTime(DateTime newDate)
     {
-        GuidedTour newTour = this.Clone();  // clone GuideTour and overwrite it with new dates
+        GuidedTour newTour = Clone();  // clone GuideTour and overwrite it with new dates
         newTour.StartTime = newDate;  // new start time
         newTour.EndTime = newTour.StartTime.AddMinutes(newTour.Duration); // new end time
         EditTourInJSON(this, newTour, true); // this == GuidedTour object
     }
 
-    // Changes the MaxCapacity to given int 
-    //  - If given less than current amount of people than set MaxCapacity to current amount of people
+
+
+    //Needs to be adjusted to allow only changes to upcoming tours and never tours in the same day, so no need to check for expected visitors
     public void ChangeCapacity(int newCapacity)
     {
-        GuidedTour newTour = this.Clone();
+        GuidedTour newTour = Clone();
         int currMinCapacity = ExpectedVisitors.Count;
 
         if (newCapacity < currMinCapacity)
@@ -180,6 +185,7 @@ public class GuidedTour
     }
 
 
+
     public GuidedTour Clone()
     {
         var jsonString = JsonConvert.SerializeObject(this);
@@ -187,7 +193,7 @@ public class GuidedTour
         return JsonConvert.DeserializeObject<GuidedTour>(jsonString);
     }
 
-    // Static class
+
 
     public static string tourJSONpath = "./JSON-Files/GuidedTours.json";
     private Visitor visitor;
@@ -228,7 +234,9 @@ public class GuidedTour
         this.visitors = visitors;
     }
 
-    // 
+
+
+    //Can be written alot shorter
     public static GuidedTour FindTourById(Guid id)
     {
         GuidedTour foundTour = null;
@@ -268,12 +276,10 @@ public class GuidedTour
         return foundTour;
     }
 
-    // Adds the given tour to the Json file :
-    //  - Checks if the tour has correct format
-    //  - Checks if the tour is in the future or in the past
-    //  - Checks if the tour is already in the file, based on the _tourId
-    //  - Adds the given tour to the list of tours in the static class
-    //  - Updates the Json file with the list of tours in the static class
+
+
+
+    //Probably needs to go in a different class/layer, can also be written shorter
     public static void AddTourToJSON(GuidedTour tour, bool ignoreDateChecks = false)
     {
         GuidedTour._updateCurrentTours();
@@ -319,11 +325,9 @@ public class GuidedTour
         GuidedTour._updateCurrentTours();
     }
 
-    // Soft deletes the given tour from json file
-    //  - Checks if the the given tour is actually in the json file
-    //  - Checks if the the given tour is in the future or in the past
-    //  - Soft delete the given tour from the list of tours in the static class
-    //  - Updates the Json file with the list of tours in the static class
+
+
+    //Probably needs to go in a different class/layer, can also be written shorter
     public static void DeleteTourFromJSON(GuidedTour tour)
     {
         GuidedTour._updateCurrentTours();
@@ -389,11 +393,7 @@ public class GuidedTour
         }
     }
 
-    // Hard deletes the given tour from json file
-    //  - Checks if the the given tour is actually in the json file
-    //  - Checks if the the given tour is in the future or in the past
-    //  - Hard deletes the given tour from the list of tours in the static class
-    //  - Updates the Json file with the list of tours in the static class
+    //Remove and delete tour from json methodes? difference ?? 
     public static void RemoveTourFromJSON(GuidedTour tour)
     {
         GuidedTour._updateCurrentTours();
@@ -656,7 +656,7 @@ public class GuidedTour
         return allowedTours;
     }
 
-    // Returns if the given Guid is already a TourId in a different tour
+    //Not needed as Guid can never be the same, the chances of aliens bringing us a gift tomorrow is higher
     private static bool CheckTourId(Guid id)
     {
         bool foundId = false;
@@ -683,6 +683,7 @@ public class GuidedTour
         return foundId;
     }
 
+    //ig we might need it later
     private static List<DateOnly> returnHolidays(int year)
     {
         DateOnly Nieuwjaarsdag = new(year, 1, 1); // Nieuwjaarsdag: maandag 1 januari 2024
@@ -701,6 +702,7 @@ public class GuidedTour
         return new() { Nieuwjaarsdag, GoedeVrijdag, DagTussen, Pasen1, Pasen2, Koningsdag, Bevrijdingsdag, Hemelvaartsdag, Pinksteren1, Pinksteren2, Kerstmis1, Kerstmis2 };
     }
 
+    //no idea why
     private static List<DateOnly> returnEveryMondayThisYear()
     {
         List<DateOnly> mondays = new();
@@ -717,6 +719,7 @@ public class GuidedTour
         return mondays;
     }
 
+    //not sure if needed and what for? as visitor should only see the tour they are able to join. any tour joining logic should be in addvisitor methode
     private static bool _checkIfAllowedTime(TimeOnly time)
     {
         List<int> allowedHours = new List<int>() { 9, 10, 11, 12, 13, 14, 15, };
@@ -737,7 +740,6 @@ public class GuidedTour
 
         return allowed;
     }
-
     private static bool _checkIfAllowedDate(DateOnly date)
     {
         List<DateOnly> mondays = returnEveryMondayThisYear();
@@ -756,7 +758,7 @@ public class GuidedTour
         return allowed;
     }
 
-    // Checks if a given tour is already in the json, based on the TourId
+    // Checks if a given tour is already in the json, based on the TourID. (Can be written in one line)
     private static bool _checkIfInFile(GuidedTour tour)
     {
         GuidedTour._updateCurrentTours();
@@ -772,7 +774,7 @@ public class GuidedTour
         return false;
     }
 
-    // Returns all tours from this year
+    // Returns all tours from this year (Why? )
     public static List<GuidedTour> ReturnAllToursFromThisYear()
     {
         int thisYear = DateTime.Today.Year;
@@ -790,7 +792,8 @@ public class GuidedTour
         }
         return tours;
     }
-    // makes all possible tour for a given date
+
+    // makes all possible tour for a given date (might be needed for admin to make tours)
     private static List<GuidedTour> _makeToursForDay(DateOnly date)
     {
         int year = date.Year;
@@ -813,22 +816,9 @@ public class GuidedTour
     }
 
     // Check if given visitor is in any tour
-    //updated methode to use linq to be faster and more efficent. 
+    //updated methode to use linq to be faster and more efficent. / Probably not needed as visitor has similiar methode.  
     public static bool CheckIfVisitorInTour(Visitor visitor)
     {
         return CurrentTours.Any(tour => tour.ExpectedVisitors.Any(v => v.VisitorId == visitor.VisitorId));
     }
 }
-
-//     private bool _checkIfAllowedTime(TimeOnly time)
-//     {
-//         if (time.Hour >= 9 && time.Hour <= 16)
-//         {
-//             // if bellow 40Min on the 16th hour return true
-//             if (Time.Hour == 16) { return time.Minute < 40; }
-//             // if between 9th and 15th hour return true
-//             else { return true;}
-//         }
-//         return false;
-//     }
-// }
