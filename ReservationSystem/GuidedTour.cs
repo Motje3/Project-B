@@ -3,33 +3,26 @@ using Newtonsoft.Json;
 
 public class GuidedTour
 {
-    // Non-static class
     public int Duration { get; }
     public DateTime StartTime { get; private set; }
     public DateTime EndTime { get; private set; }
-    //public TimeSpan TourInterval { get; private set; } // To be removed
     public int MaxCapacity { get; private set; }
     public List<Visitor> ExpectedVisitors { get; set; } = new List<Visitor>();
     public List<Visitor> PresentVisitors { get; set; } = new List<Visitor>();
-    // Has to be completely public or JsonConvert.DeserializeObject refuses to set it properly
     public bool Completed { get; set; }
-    // Has to be completely public or JsonConvert.DeserializeObject refuses to set it properly
     public bool Deleted { get; set; }
-
-    //public Dictionary<DateTime, List<Visitor>> TourSlots { get; private set; } // To be removed
     public Guid TourId { get; set; }
     public Guide AssignedGuide { get; set; }
 
     public GuidedTour(DateTime startTime)
     {
         StartTime = startTime;
-        Duration = 20; // 20 minutes
-        EndTime = startTime.AddMinutes(Duration);
-        MaxCapacity = 13;
+        Duration = 20; // Default duration
+        EndTime = StartTime.AddMinutes(Duration);
+        MaxCapacity = 13; // Default capacity
         TourId = Guid.NewGuid();
         Completed = false;
         Deleted = false;
-
     }
 
     // constructor for json serializer DO NOT USE IT WILL PROBABLY BREAK SOMETHING
@@ -44,16 +37,12 @@ public class GuidedTour
         Completed = complete;
         Deleted = deleted;
         AssignedGuide = assignedGuide;
-
     }
 
     public void AddVisitor(Visitor visitor)
     {
 
-        // **AddVisitor** voor een gewoone **(niet een gids)** 
-        // bezoeker maakt een variabel **newTour **= **this.Clone()**
         var newTour = this.Clone();
-        // Check if it is a guide
         if (visitor is Guide guide)
         {
             newTour.AssignedGuide = guide;
@@ -64,7 +53,6 @@ public class GuidedTour
         }
         else
         {
-            //  foundvisitor standard on false, when found will be set to true
             bool foundVisitor = false;
             foreach (Visitor currentVisitor in ExpectedVisitors)
             {
@@ -74,34 +62,28 @@ public class GuidedTour
                     break;
                 }
             }
-            // **AddVisitor** voor een gewoone **(niet een gids)** 
-            // bezoeker moet checken dat visitor staat niet in ExpectedVisitors, if true return;
+            
             if (foundVisitor)
             {
                 return;
             }
-            // **AddVisitor** voor een gewoone **(niet een gids)** 
-            // bezoeker moet checken of de rondleiding nog niet vol is, if true return;
+            
             int currentCapacity = ExpectedVisitors.Count;
             if (currentCapacity == MaxCapacity)
             {
                 return;
             }
-            // **AddVisitor** voor een gewoone **(niet een gids)** 
-            // bezoeker moet checken dat property Deleted == false, if Deleted == true return;
+          
             if (Deleted == true)
             {
                 return;
             }
-            // **AddVisitor** voor een gewoone **(niet een gids)** 
-            // bezoeker moet checken dat property **Completed **== false, if **Complete **== true return;
+           
             if (Completed == true)
             {
                 return;
             }
 
-            // **AddVisitor** voor een gewoone **(niet een gids)** 
-            // bezoeker voegt **visitor **aan **newTour.ExpectedVisitor**
             visitor.AssingedTourId = this.TourId;
             newTour.ExpectedVisitors.Add(visitor);
             this.ExpectedVisitors.Add(visitor);
