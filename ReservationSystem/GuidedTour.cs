@@ -42,14 +42,14 @@ public class GuidedTour
     public void AddVisitor(Visitor visitor)
     {
 
-        var newTour = this.Clone();
+        var newTour = Clone();
         if (visitor is Guide guide)
         {
             newTour.AssignedGuide = guide;
-            newTour.AssignedGuide.AssingedTourId = this.TourId;
+            newTour.AssignedGuide.AssingedTourId = TourId;
 
-            this.AssignedGuide = guide;
-            this.AssignedGuide.AssingedTourId = this.TourId;
+            AssignedGuide = guide;
+            AssignedGuide.AssingedTourId = TourId;
         }
         else
         {
