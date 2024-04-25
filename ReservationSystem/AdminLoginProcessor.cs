@@ -92,41 +92,11 @@ public static class AdminLoginProcessor
     {
         // To be implemented, currently low priority in Trello so leave as is until told otherwise
         throw new NotImplementedException();
-        /*Console.Write("Enter new capacity: ");
-        if (int.TryParse(Console.ReadLine(), out int newCapacity))
-        {
-            if (guidedTour.UpdateMaxCapacity(newCapacity))
-            {
-                Console.WriteLine($"Capacity updated to {newCapacity}.");
-            }
-            else
-            {
-                Console.WriteLine("Failed to update capacity. Make sure the new capacity is valid and does not conflict with existing tours.");
-            }
-        }
-        else
-        {
-            Console.WriteLine("Invalid input. Please enter a valid number.");
-        }*/
+        
     }
 
     private static void ChangeTourTime()
     {
-        // To be implemented, currently low priority in Trello so leave as is until told otherwise
         throw new NotImplementedException();
-        /*
-        Console.Write("Enter the tour hour you would like to cancel: ");
-        int oldTourHour = int.Parse(Console.ReadLine());
-
-
-        if (guidedTour.ChangeTourTime(oldTourHour))
-        {
-            Console.WriteLine($"Tour at {oldTourHour} ockock has been cancelled");
-        }
-        else
-        {
-            Console.WriteLine("Failed to cancel tour.");
-        }
-        */
     }
 }
