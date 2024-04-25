@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 public static class Ticket
 {
     public static List<string> Tickets { get; set; } = new List<string>();
-    public static string OnlineTicketsFilePath = "./JSON-Files/OnlineTickets.json"; // Adjust the path as necessary
+    public static string OnlineTicketsFilePath = "./DataLayer/JSON-Files/OnlineTickets.json"; // Adjust the path as necessary
 
     static Ticket()
     {

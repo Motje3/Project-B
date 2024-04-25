@@ -180,7 +180,7 @@ public static class GidsLoginProcessor
 
     private static List<Credential> LoadUserCredentials()
     {
-        string filePath = "./JSON-Files/GidsCredentials.json";
+        string filePath = "./DataLayer/JSON-Files/GidsCredentials.json";
         if (File.Exists(filePath))
         {
             string jsonData = File.ReadAllText(filePath);

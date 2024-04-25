@@ -25518,7 +25518,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [
       {
-        "VisitorId": "454907c3-db1f-4894-8cbb-40ea2ad02528",
+        "VisitorId": "b1f44583-e589-41d0-9519-898090e5a87d",
         "TicketCode": "111",
         "AssingedTourId": "4b2021f0-a409-44c3-87a0-d04c5296417e"
       }
@@ -25548,7 +25548,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [
       {
-        "VisitorId": "e955e3ee-020c-467d-8767-a593c55751f8",
+        "VisitorId": "1b542f2f-72cc-4242-a60e-cd922d97d94f",
         "TicketCode": "111",
         "AssingedTourId": "c961d32b-430a-4e7b-8d17-09d24528e8b1"
       }
@@ -26478,9 +26478,45 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [],
     "PresentVisitors": [],
-    "Completed": false,
+    "Completed": true,
     "Deleted": false,
     "TourId": "548b0451-0a07-4f66-8bf7-5268c1667ec5",
+    "AssignedGuide": null
+  },
+  {
+    "Duration": 20,
+    "StartTime": "2024-04-25T16:00:00",
+    "EndTime": "2024-04-25T16:20:00",
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [
+      {
+        "VisitorId": "a86efbb1-c0c8-4361-a56a-e4ccf79db2d3",
+        "TicketCode": "111",
+        "AssingedTourId": "32136393-7339-417f-9ecb-6e0b02debef7"
+      }
+    ],
+    "PresentVisitors": [],
+    "Completed": true,
+    "Deleted": false,
+    "TourId": "32136393-7339-417f-9ecb-6e0b02debef7",
+    "AssignedGuide": null
+  },
+  {
+    "Duration": 20,
+    "StartTime": "2024-04-25T15:40:00",
+    "EndTime": "2024-04-25T16:00:00",
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [
+      {
+        "VisitorId": "f1fe53df-7bfe-440f-86b1-be381e36de56",
+        "TicketCode": "111",
+        "AssingedTourId": "3a85ba9c-969d-4521-be9c-89a280ac6875"
+      }
+    ],
+    "PresentVisitors": [],
+    "Completed": true,
+    "Deleted": false,
+    "TourId": "3a85ba9c-969d-4521-be9c-89a280ac6875",
     "AssignedGuide": null
   },
   {
@@ -26493,30 +26529,6 @@
     "Completed": false,
     "Deleted": false,
     "TourId": "668843b6-006d-44b3-9fef-42564d9180b5",
-    "AssignedGuide": null
-  },
-  {
-    "Duration": 20,
-    "StartTime": "2024-04-26T09:20:00",
-    "EndTime": "2024-04-26T09:40:00",
-    "MaxCapacity": 13,
-    "ExpectedVisitors": [],
-    "PresentVisitors": [],
-    "Completed": false,
-    "Deleted": false,
-    "TourId": "6ff4abae-a287-46f0-a91d-1525fa503e8a",
-    "AssignedGuide": null
-  },
-  {
-    "Duration": 20,
-    "StartTime": "2024-04-26T09:40:00",
-    "EndTime": "2024-04-26T10:00:00",
-    "MaxCapacity": 13,
-    "ExpectedVisitors": [],
-    "PresentVisitors": [],
-    "Completed": false,
-    "Deleted": false,
-    "TourId": "793cc86a-ef76-46d0-acb2-3b161cd40ee9",
     "AssignedGuide": null
   },
   {
@@ -83893,38 +83905,26 @@
   },
   {
     "Duration": 20,
-    "StartTime": "2024-04-25T16:00:00",
-    "EndTime": "2024-04-25T16:20:00",
+    "StartTime": "2024-04-26T09:40:00",
+    "EndTime": "2024-04-26T10:00:00",
     "MaxCapacity": 13,
-    "ExpectedVisitors": [
-      {
-        "VisitorId": "efbdf3ce-36ed-4057-a376-1109f5b30db3",
-        "TicketCode": "111",
-        "AssingedTourId": "32136393-7339-417f-9ecb-6e0b02debef7"
-      }
-    ],
+    "ExpectedVisitors": [],
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "TourId": "32136393-7339-417f-9ecb-6e0b02debef7",
+    "TourId": "793cc86a-ef76-46d0-acb2-3b161cd40ee9",
     "AssignedGuide": null
   },
   {
     "Duration": 20,
-    "StartTime": "2024-04-25T15:40:00",
-    "EndTime": "2024-04-25T16:00:00",
+    "StartTime": "2024-04-26T09:20:00",
+    "EndTime": "2024-04-26T09:40:00",
     "MaxCapacity": 13,
-    "ExpectedVisitors": [
-      {
-        "VisitorId": "0d3ca357-2e28-4f43-9681-a34ac18b31c3",
-        "TicketCode": "111",
-        "AssingedTourId": "3a85ba9c-969d-4521-be9c-89a280ac6875"
-      }
-    ],
+    "ExpectedVisitors": [],
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "TourId": "3a85ba9c-969d-4521-be9c-89a280ac6875",
+    "TourId": "6ff4abae-a287-46f0-a91d-1525fa503e8a",
     "AssignedGuide": null
   }
 ]

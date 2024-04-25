@@ -155,7 +155,7 @@ public class GuidedTour
     }
 
 
-    public static string tourJSONpath = "./JSON-Files/GuidedTours.json";
+    public static string tourJSONpath = "./DataLayer/JSON-Files/GuidedTours.json";
     private Visitor visitor;
     private List<Visitor> visitors;
 
