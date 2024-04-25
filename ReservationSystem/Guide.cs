@@ -49,6 +49,7 @@ public class Guide : Visitor
             Console.WriteLine("\nNo matching tour not found");
         }       
     }  
+    
     public void CompleteTour() 
     {
         var newTour = GuidedTour.FindTourById(base.AssingedTourId);

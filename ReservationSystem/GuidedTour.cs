@@ -85,23 +85,42 @@ public class GuidedTour
 
     public void RemoveVisitor(Visitor visitor)
     {
+        // Check if the visitor is a guide
         if (visitor is Guide)
         {
+            // If the visitor is a guide, remove their assignment
             AssignedGuide = null;
             return;
         }
 
-        // Use LINQ to find the visitor directly, which simplifies the code
-        var visitorToRemove = ExpectedVisitors.FirstOrDefault(v => v.TicketCode == visitor.TicketCode);
-        if (visitorToRemove == null)
+        // Check if the visitor is found
+        bool foundVisitor = false;
+        foreach (Visitor currentVisitor in ExpectedVisitors)
+        {
+            if (visitor.TicketCode == currentVisitor.TicketCode)
+            {
+                foundVisitor = true;
+                break;
+            }
+        }
+        if (!foundVisitor)
         {
             return;
         }
+        // Create a new tour to modify
+        GuidedTour newTour = this.Clone();
 
-        var newTour = Clone();
-        newTour.ExpectedVisitors.Remove(visitorToRemove);
-        ExpectedVisitors.Remove(visitorToRemove);
+        // Remove the visitor from ExpectedVisitors
+        for (int visitorIndex = 0; visitorIndex < newTour.ExpectedVisitors.Count; visitorIndex++)
+        {
+            Visitor currentVisitor = newTour.ExpectedVisitors[visitorIndex];
+            if (currentVisitor.TicketCode == visitor.TicketCode)
+            {
+                newTour.ExpectedVisitors.Remove(currentVisitor);
+            }
+        }
 
+        // Update the tour
         GuidedTour.EditTourInJSON(this, newTour);
     }
 
@@ -508,29 +527,10 @@ public class GuidedTour
     //Not needed as Guid can never be the same, the chances of aliens bringing us a gift tomorrow is higher
     private static bool CheckTourId(Guid id)
     {
-        bool foundId = false;
-        List<Guid> ids = new();
-
-        foreach (GuidedTour tour in GuidedTour.CurrentTours)
-        {
-            ids.Add(tour.TourId);
-        }
-        foreach (GuidedTour tour in GuidedTour.CompletedTours)
-        {
-            ids.Add(tour.TourId);
-        }
-        foreach (GuidedTour tour in GuidedTour.DeletedTours)
-        {
-            ids.Add(tour.TourId);
-        }
-
-        if (ids.Contains(id))
-        {
-            foundId = true;
-        }
-
-        return foundId;
+        // Combine all lists and check if any tour has the specified ID.
+        return CurrentTours.Concat(CompletedTours).Concat(DeletedTours).Any(tour => tour.TourId == id);
     }
+
 
     //ig we might need it later
     private static List<DateOnly> returnHolidays(int year)
@@ -589,6 +589,7 @@ public class GuidedTour
 
         return allowed;
     }
+
     private static bool _checkIfAllowedDate(DateOnly date)
     {
         List<DateOnly> mondays = returnEveryMondayThisYear();
