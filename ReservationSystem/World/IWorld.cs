@@ -6,7 +6,7 @@ public interface IWorld
 
     void WriteLine(string line);
 
-    string ReadLine();
+    string ReadLine(); // GRAPS AND REMOVES LAST WRITEN LINE
 
     string ReadAllText(string path);
 
