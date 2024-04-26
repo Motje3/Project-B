@@ -6,7 +6,6 @@ public class GidsLoginMenu : View
     {
         WriteLine("\nGuide login");
         WriteLine("Enter password: ");
-        return Console.ReadLine();
+        return ReadLine();
     }
 }
-

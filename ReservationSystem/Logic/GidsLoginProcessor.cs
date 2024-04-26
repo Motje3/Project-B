@@ -14,27 +14,30 @@ public static class GidsLoginProcessor
     public static void ProcessLoginForm(string guideCode)
     {
         GidsLoginMenu GLM = new GidsLoginMenu();
+        GidsAccessPassed GAP = new GidsAccessPassed();
+        GidsAccessFailed GAF = new GidsAccessFailed();
+        GidsNoTour GNT = new GidsNoTour();
+        
         _loadMyGuide(guideCode);
         bool isAuthenticated = false;
 
         // Login loop
         while (!isAuthenticated)
         {
-            Console.WriteLine("\nGuide login");
-            Console.WriteLine("Enter password: ");
             string password = GLM.Show();
 
             isAuthenticated = AuthenticateUser(password);
 
             if (isAuthenticated)
             {
-                Console.WriteLine("\nAccess Granted!\n");
+                GAP.Show();
+                
                 Thread.Sleep(1000 * 1);
                 try{Console.Clear();}catch{} 
             }
             else
             {
-                Console.WriteLine("\nAccess Denied, invalid password. Returning to start menu in 3 seconds\n");
+                GAF.Show();
                 // Go back to start menu
                 Thread.Sleep(1000*3);
                 ReservationManager.ValidateCodeAndProcessReservations();
@@ -44,8 +47,7 @@ public static class GidsLoginProcessor
         // Go back to start menu if the guide doesn't have any tours
         if (_myGuide == null)
         {
-            Console.WriteLine("You currently don't have any tours");
-            Console.WriteLine("You will be redirected to start menu in 3 seconds");
+            GNT.Show();
             Thread.Sleep(1000*3);
             ReservationManager.ValidateCodeAndProcessReservations();
         }
@@ -58,22 +60,24 @@ public static class GidsLoginProcessor
         }
     }
 
+
     private static bool DisplayMainMenu()
     {
+    // DateOnly.FromDateTime(_myTour.StartTime)
+    // TimeOnly.FromDateTime(_myTour.StartTime)}
+    // TimeOnly.FromDateTime(_myTour.EndTime)}
+    GidsDisplayTourInfo DTI = new GidsDisplayTourInfo();
+    {
         if (_myTour.ExpectedVisitors.Count == 0)
-            Console.WriteLine($"Your next tour is: {DateOnly.FromDateTime(_myTour.StartTime)} | {TimeOnly.FromDateTime(_myTour.StartTime)} - {TimeOnly.FromDateTime(_myTour.EndTime)} | Nobody has made a reservation\n");
+            DTI.ShowEmpty(DateOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.EndTime), _myTour.ExpectedVisitors.Count);
         else if (_myTour.ExpectedVisitors.Count == 1)
-            Console.WriteLine($"Your next tour is: {DateOnly.FromDateTime(_myTour.StartTime)} | {TimeOnly.FromDateTime(_myTour.StartTime)} - {TimeOnly.FromDateTime(_myTour.EndTime)} | {_myTour.ExpectedVisitors.Count} visitor has made a resevertaion\n");
+            DTI.ShowOne(DateOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.EndTime), _myTour.ExpectedVisitors.Count);
         else
-            Console.WriteLine($"Your next tour is: {DateOnly.FromDateTime(_myTour.StartTime)} | {TimeOnly.FromDateTime(_myTour.StartTime)} - {TimeOnly.FromDateTime(_myTour.EndTime)} | {_myTour.ExpectedVisitors.Count} visitors have made a resevertaion\n");
+            DTI.ShowMany(DateOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.EndTime), _myTour.ExpectedVisitors.Count);
         
-        // Printing menu options
-        Console.WriteLine("What would you like to do?\n");
-        Console.WriteLine("1. See personal tours");
-        Console.WriteLine("2. Check in attending visitors for your next tour");
-        Console.WriteLine("3. Log out");
-
-        string guideChoice = Console.ReadLine();
+        // Printing menu options'
+        GidsMainMenu GMM = new GidsMainMenu();
+        string guideChoice = GMM.Show();
         Console.WriteLine("");
 
         switch (guideChoice)
@@ -227,5 +231,6 @@ public static class GidsLoginProcessor
         }
         retStr = retStr.Remove(retStr.Length - 2);
         return retStr;
+    }
     }
 }

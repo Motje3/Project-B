@@ -2,7 +2,7 @@ namespace ReservationSystem;
 
 public class NewClass : View
 {
-    public string Show()
+    public void/string Show()
     {
         // your logic here
     }
