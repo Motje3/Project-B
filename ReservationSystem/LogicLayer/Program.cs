@@ -3,6 +3,6 @@
     public static void Main()
 
     {
-        ReservationManager.ValidateCodeAndProcessReservations();
+        ReservationManager.ValidateCodeAndShowMenu();
     }
 }

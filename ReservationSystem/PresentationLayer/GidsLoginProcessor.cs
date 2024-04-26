@@ -27,14 +27,14 @@ public static class GidsLoginProcessor
             {
                 Console.WriteLine("\nAccess Granted!\n");
                 Thread.Sleep(1000 * 1);
-                try{Console.Clear();}catch{} 
+                try { Console.Clear(); } catch { }
             }
             else
             {
                 Console.WriteLine("\nAccess Denied, invalid password. Returning to start menu in 3 seconds\n");
                 // Go back to start menu
-                Thread.Sleep(1000*3);
-                ReservationManager.ValidateCodeAndProcessReservations();
+                Thread.Sleep(1000 * 3);
+                ReservationManager.ValidateCodeAndShowMenu();
             }
         }
 
@@ -43,8 +43,8 @@ public static class GidsLoginProcessor
         {
             Console.WriteLine("You currently don't have any tours");
             Console.WriteLine("You will be redirected to start menu in 3 seconds");
-            Thread.Sleep(1000*3);
-            ReservationManager.ValidateCodeAndProcessReservations();
+            Thread.Sleep(1000 * 3);
+            ReservationManager.ValidateCodeAndShowMenu();
         }
 
         // After successful login
@@ -63,7 +63,7 @@ public static class GidsLoginProcessor
             Console.WriteLine($"Your next tour is: {DateOnly.FromDateTime(_myTour.StartTime)} | {TimeOnly.FromDateTime(_myTour.StartTime)} - {TimeOnly.FromDateTime(_myTour.EndTime)} | {_myTour.ExpectedVisitors.Count} visitor has made a resevertaion\n");
         else
             Console.WriteLine($"Your next tour is: {DateOnly.FromDateTime(_myTour.StartTime)} | {TimeOnly.FromDateTime(_myTour.StartTime)} - {TimeOnly.FromDateTime(_myTour.EndTime)} | {_myTour.ExpectedVisitors.Count} visitors have made a resevertaion\n");
-        
+
         // Printing menu options
         Console.WriteLine("What would you like to do?\n");
         Console.WriteLine("1. See personal tours");
@@ -122,7 +122,7 @@ public static class GidsLoginProcessor
         }
         while (visitorCode != "stop");
 
-        try{Console.Clear();}catch{} 
+        try { Console.Clear(); } catch { }
     }
 
     // Asks the guide for a visitor code and checks if the code is in expectedVisitors
@@ -145,7 +145,7 @@ public static class GidsLoginProcessor
             Console.WriteLine("\nThis visitor doesn't have reservation for this tour,");
             Console.WriteLine("Try again or try another visitor");
             visitorTicket = Console.ReadLine();
-        } 
+        }
         while (!(allowedCodes.Contains(visitorTicket) || (visitorTicket == "stop")));
 
         return visitorTicket;
@@ -154,9 +154,9 @@ public static class GidsLoginProcessor
     // Displays all tours where _myGuide is the guide
     private static void ShowGuideTours()
     {
-        try{Console.Clear();}catch{} 
+        try { Console.Clear(); } catch { }
         int guideToursIndex = 1;
-        foreach(GuidedTour tour in GuidedTour.CurrentTours)
+        foreach (GuidedTour tour in GuidedTour.CurrentTours)
         {
             if (tour.AssignedGuide == null)
             {
@@ -170,7 +170,7 @@ public static class GidsLoginProcessor
         }
         Console.WriteLine("");
     }
-    
+
 
     private static bool AuthenticateUser(string password)
     {
@@ -198,9 +198,9 @@ public static class GidsLoginProcessor
     {
         Guide returnGuide = null;
 
-        foreach (GuidedTour tour in GuidedTour.CurrentTours) 
+        foreach (GuidedTour tour in GuidedTour.CurrentTours)
         {
-            if (tour.AssignedGuide == null){}                
+            if (tour.AssignedGuide == null) { }
             else if (tour.AssignedGuide.TicketCode == guideCode)
             {
                 returnGuide = tour.AssignedGuide;

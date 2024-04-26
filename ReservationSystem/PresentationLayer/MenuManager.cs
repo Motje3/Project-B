@@ -21,7 +21,7 @@
 
                         Console.WriteLine($"\nPlease choose a number next to the tour you wish to join");
                         string chosenTourNumber = Console.ReadLine();
-                        
+
                         int tourNumber;
                         int.TryParse(chosenTourNumber, out tourNumber);
                         bool outSideOfAllowedRange = tourNumber <= 0 || tourNumber > allowedTours.Count;
@@ -125,12 +125,11 @@
 
                         Console.WriteLine("Tour reservation canceled successfully.");
 
-                        // Show the restricted menu to the visitor after canceling the reservation
                         MenuManager.ShowRestrictedMenu(visitorcode.TicketCode);
                         return;
 
                     case "3":
-                        choosingOption = false; // Exit the main menu loop.
+                        choosingOption = false;
                         break;
                     default:
                         Console.WriteLine("Invalid choice. Please try again.");

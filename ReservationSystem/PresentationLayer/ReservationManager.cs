@@ -1,10 +1,10 @@
 public static class ReservationManager
 {
-    public static void ValidateCodeAndProcessReservations()
+    public static void ValidateCodeAndShowMenu()
     {
         // Clear console if not debugging
-        try{Console.Clear();}catch{} 
-        
+        try { Console.Clear(); } catch { }
+
         bool isValidCode = false;
         while (!isValidCode)
         {
@@ -15,21 +15,17 @@ public static class ReservationManager
             if (userCode == "123")
             {
                 AdminLoginProcessor.ProcessLoginForm();
-                
-                // Repeat this method until app closed
-                ValidateCodeAndProcessReservations();
+                ValidateCodeAndShowMenu();
             }
             else if (userCode == "456")
             {
                 GidsLoginProcessor.ProcessLoginForm(userCode);
-                
-                // Repeat this method until app closed
-                ValidateCodeAndProcessReservations();
+                ValidateCodeAndShowMenu();
             }
             else if (Ticket.IsCodeValid(userCode))
             {
                 Visitor currentVisitor = Visitor.FindVisitorByTicketCode(userCode);
-                
+
                 if (currentVisitor != null)
                 {
                     Console.WriteLine("Welcome, your ticket is confirmed!\n");
@@ -40,15 +36,12 @@ public static class ReservationManager
                         MenuManager.ShowFullMenu(currentVisitor);
                     }
                 }
-                //Else visitor was not found == methode returned null...
                 else
                 {
-                    MenuManager.ShowRestrictedMenu(userCode); // Ensure your ShowRestrictedMenu can handle null
-                    isValidCode = true; // Consider whether you want to set this to true if no visitor is found
+                    MenuManager.ShowRestrictedMenu(userCode);
+                    isValidCode = true;
                 }
-
-                // Repeat this method until app closed
-                ValidateCodeAndProcessReservations();
+                ValidateCodeAndShowMenu();
             }
             else
             {
