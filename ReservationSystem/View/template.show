@@ -1,0 +1,9 @@
+namespace ReservationSystem;
+
+public class NewClass : View
+{
+    public string Show()
+    {
+        // your logic here
+    }
+}
