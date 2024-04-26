@@ -1,5 +1,9 @@
 namespace ReservationSystem;
 
+// ALWAYS MAKE SURE EVRY CLASS IN VIEW (PRESENTATION LAYER) HAS INHERTECNCE OF VIEW
+
+// FROM NOW ON ONLY USE WriteLine() INSTEAD OF Console.WriteLine() for evrything!
+
 public class View
 {
     public static void WriteLine(string line)
@@ -12,3 +16,7 @@ public class View
         return Program.World.ReadLine();
     }
 }
+
+// ALWAYS MAKE SURE EVRY CLASS IN VIEW (PRESENTATION LAYER) HAS INHERTECNCE OF VIEW
+
+// FROM NOW ON ONLY USE WriteLine() INSTEAD OF Console.WriteLine() for evrything!
