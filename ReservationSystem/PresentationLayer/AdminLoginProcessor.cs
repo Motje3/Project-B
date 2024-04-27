@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-public static class AdminLoginProcessor
+public static class AdminLoginMenu
 {
     public class Credential
     {
@@ -59,7 +59,7 @@ public static class AdminLoginProcessor
             Console.WriteLine("\nAdmin Menu:");
             Console.WriteLine("1. Change capacity of a tour");
             Console.WriteLine("2. Change time of a tour");
-            Console.WriteLine("3. View Tours");;
+            Console.WriteLine("3. View Tours"); ;
             Console.WriteLine("4. Exit");
 
             Console.Write("\nEnter your choice: ");
@@ -92,7 +92,7 @@ public static class AdminLoginProcessor
     {
         // To be implemented, currently low priority in Trello so leave as is until told otherwise
         throw new NotImplementedException();
-        
+
     }
 
     private static void ChangeTourTime()

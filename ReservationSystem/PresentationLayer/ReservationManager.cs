@@ -14,7 +14,7 @@ public static class ReservationManager
 
             if (userCode == "123")
             {
-                AdminLoginProcessor.ProcessLoginForm();
+                AdminLoginMenu.ProcessLoginForm();
                 ValidateCodeAndShowMenu();
             }
             else if (userCode == "456")
