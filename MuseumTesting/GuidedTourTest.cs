@@ -18,7 +18,7 @@ public class GuidedTourTesting
     }
 
     private List<GuidedTour> _toursAtTheStart = new() { };
-    private const string JSONPath = "./JSON-Files/GuidedTours.json";
+    private const string JSONPath = "./DataLayer/JSON-Files/GuidedTours.json";
     private int nowYear;
 
 
