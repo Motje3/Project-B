@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ReservationSystem\ReservationSystem.csproj" />
+    <Content Include= "../DataLayer/*.*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   
