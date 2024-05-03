@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 public class EntryCodeTest
 {
     private List<string> _EntryCodesAtTheStart = new() { };
-    private const string JSONPath = "./JSON-Files/sample_codes.json";
+    private const string JSONPath = "./DataLayer/JSON-Files/sample_codes.json";
 
     [TestInitialize]
     public void Setup()

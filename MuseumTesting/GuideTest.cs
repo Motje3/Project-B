@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 [TestClass]
 public class GuideTest
 {
-    private const string JSONPath = "./JSON-Files/GuidedTours.json";
+    private const string JSONPath = "./DataLayer/JSON-Files/GuidedTours.json";
     private List<GuidedTour> _toursAtTheStart = new();
 
     [TestInitialize]
