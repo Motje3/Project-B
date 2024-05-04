@@ -5,8 +5,8 @@ public static class ReservationPresentation
         // Clear console if not debugging
         try { Console.Clear(); } catch { }
 
-        bool isValidCode = false;
-        while (!isValidCode)
+        bool LoopOption = true;
+        while (LoopOption)
         {
             Console.WriteLine("Enter your unique ticket code:");
             string userCode = Console.ReadLine();
@@ -28,8 +28,8 @@ public static class ReservationPresentation
 
                 if (currentVisitor != null)
                 {
-                    Console.WriteLine("Welcome, your ticket is confirmed!\n");
-                    isValidCode = true;
+                    Console.WriteLine("\nWelcome, your ticket is confirmed!\n");
+                    LoopOption = false;
 
                     if (currentVisitor.HasReservation(currentVisitor))
                     {
@@ -38,9 +38,9 @@ public static class ReservationPresentation
                 }
                 else
                 {
-                    Visitor visitor = Visitor.FindVisitorByTicketCode(userCode);
-                    MenuPresentation.ShowRestrictedMenu(visitor);
-                    isValidCode = true;
+                    currentVisitor = new Visitor (userCode);
+                    MenuPresentation.ShowRestrictedMenu(currentVisitor);
+                    LoopOption = false;
                 }
                 ValidateCodeAndShowMenu();
             }

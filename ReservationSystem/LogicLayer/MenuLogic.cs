@@ -5,7 +5,6 @@ public class MenuLogic
         switch (choice)
         {
             case "1":
-                GuidedTour.PrintToursOpenToday();
                 JoinTour(visitor);
                 return true;
             case "2":
@@ -36,8 +35,9 @@ public class MenuLogic
 
     public static void JoinTour(Visitor visitor)
     {
+        
         List<GuidedTour> allowedTours = GuidedTour.PrintToursOpenToday();
-        Console.WriteLine("\nPlease choose a number next to the tour you wish to join");
+        Console.WriteLine("\nPlease choose a number next to the tour you wish to join\n");
         foreach (var tour in allowedTours)
         {
             Console.WriteLine($"{allowedTours.IndexOf(tour) + 1}. Tour at {tour.StartTime} with {tour.MaxCapacity - tour.ExpectedVisitors.Count} available spots.");
