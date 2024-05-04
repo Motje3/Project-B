@@ -12,6 +12,8 @@ public class MenuPresentation
             Console.WriteLine("\nEnter your choice: ");
             string choice = Console.ReadLine();
             loopOption = logic.HandleRestrictedMenuChoice(choice, visitor);
+
+
         }
     }
 
@@ -21,15 +23,22 @@ public class MenuPresentation
         bool choosingOption = true;
         while (choosingOption)
         {
-            Console.WriteLine("Please choose an option:");
-            Console.WriteLine("1. Join a different tour");
+            Console.WriteLine("\nPlease choose an option:");
+            Console.WriteLine("1. Change a tour");
             Console.WriteLine("2. Cancel my tour reservation");
             Console.WriteLine("3. Exit");
-            Console.Write("\nEnter your choice: \n");
+            Console.Write("\nEnter your choice: ");
             string choice = Console.ReadLine();
             choosingOption = logic.HandleFullMenuChoice(choice, visitor);
+
+            if (choice == "2" && !choosingOption) // Check if the tour cancellation was chosen and confirmed.
+            {
+                ShowRestrictedMenu(visitor); // Transition back to the restricted menu after cancellation.
+                break; // Break the loop after transitioning to ensure we don't run this menu again immediately.
+            }
         }
     }
+
 
     public static void PrintSuccessfullyJoinedTour(GuidedTour chosenTour)
     {

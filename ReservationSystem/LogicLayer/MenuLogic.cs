@@ -23,19 +23,19 @@ public class MenuLogic
                 ChangeTour(visitor);
                 return true;
             case "2":
-                CancelTour(visitor);
-                return true;
+                return CancelTour(visitor); // Use the return value to determine whether to exit.
             case "3":
-                return false; // Exit the loop
+                return false; // Exit the loop.
             default:
                 Console.WriteLine("Invalid choice. Please try again.");
                 return true;
         }
     }
 
+
     public static void JoinTour(Visitor visitor)
     {
-        
+
         List<GuidedTour> allowedTours = GuidedTour.PrintToursOpenToday();
         Console.WriteLine("\nPlease choose a number next to the tour you wish to join\n");
         foreach (var tour in allowedTours)
@@ -85,18 +85,20 @@ public class MenuLogic
         }
     }
 
-    private static void CancelTour(Visitor visitor)
+    private static bool CancelTour(Visitor visitor)
     {
         GuidedTour visitorsTour = GuidedTour.FindTourById(visitor.AssingedTourId);
         if (visitorsTour == null)
         {
             Console.WriteLine("Error: Unable to find the tour.");
-            return;
+            return true; // Continue showing the menu.
         }
 
         visitorsTour.RemoveVisitor(visitor);
         Console.WriteLine("Tour reservation canceled successfully.");
+        return false; // Exit the loop.
     }
+
 
     private static void _printTourString(GuidedTour tour)
     {

@@ -2,47 +2,41 @@ public static class ReservationPresentation
 {
     public static void ValidateCodeAndShowMenu()
     {
-        // Clear console if not debugging
         try { Console.Clear(); } catch { }
 
-        bool LoopOption = true;
-        while (LoopOption)
+        while (true)
         {
             Console.WriteLine("Enter your unique ticket code:");
             string userCode = Console.ReadLine();
 
-
             if (userCode == "123")
             {
                 AdminLoginMenu.ProcessLoginForm();
-                ValidateCodeAndShowMenu();
+                continue;
             }
             else if (userCode == "456")
             {
                 GidsLoginProcessor.ProcessLoginForm(userCode);
-                ValidateCodeAndShowMenu();
+                continue;
             }
             else if (Ticket.IsCodeValid(userCode))
             {
                 Visitor currentVisitor = Visitor.FindVisitorByTicketCode(userCode);
-
-                if (currentVisitor != null)
+                if (currentVisitor == null)
                 {
-                    Console.WriteLine("\nWelcome, your ticket is confirmed!\n");
-                    LoopOption = false;
+                    currentVisitor = new Visitor(userCode);
+                }
 
-                    if (currentVisitor.HasReservation(currentVisitor))
-                    {
-                        MenuPresentation.ShowFullMenu(currentVisitor);
-                    }
+                Console.WriteLine("\nWelcome, your ticket is confirmed!\n");
+                if (currentVisitor.HasReservation(currentVisitor))
+                {
+                    MenuPresentation.ShowFullMenu(currentVisitor);
                 }
                 else
                 {
-                    currentVisitor = new Visitor (userCode);
                     MenuPresentation.ShowRestrictedMenu(currentVisitor);
-                    LoopOption = false;
                 }
-                ValidateCodeAndShowMenu();
+                continue; // Continue will start the loop from the beginning
             }
             else
             {
@@ -50,4 +44,5 @@ public static class ReservationPresentation
             }
         }
     }
+
 }
