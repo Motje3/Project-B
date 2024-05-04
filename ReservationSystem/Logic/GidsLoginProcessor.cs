@@ -201,7 +201,8 @@ public static class GidsLoginProcessor
         }
         else
         {
-            Console.WriteLine("Credential file not found.");
+            JSON_NotFound  JSON_NF = new JSON_NotFound();
+            JSON_NF.Show("GidsCredentials.json");
             return new List<Credential>();
         }
     }
