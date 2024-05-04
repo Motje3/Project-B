@@ -34,7 +34,7 @@ public static class GidsLoginProcessor
                 Console.WriteLine("\nAccess Denied, invalid password. Returning to start menu in 3 seconds\n");
                 // Go back to start menu
                 Thread.Sleep(1000 * 3);
-                ReservationManager.ValidateCodeAndShowMenu();
+                ReservationPresentation.ValidateCodeAndShowMenu();
             }
         }
 
@@ -44,7 +44,7 @@ public static class GidsLoginProcessor
             Console.WriteLine("You currently don't have any tours");
             Console.WriteLine("You will be redirected to start menu in 3 seconds");
             Thread.Sleep(1000 * 3);
-            ReservationManager.ValidateCodeAndShowMenu();
+            ReservationPresentation.ValidateCodeAndShowMenu();
         }
 
         // After successful login

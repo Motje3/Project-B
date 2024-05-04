@@ -1,4 +1,4 @@
-public static class ReservationManager
+public static class ReservationPresentation
 {
     public static void ValidateCodeAndShowMenu()
     {
@@ -33,12 +33,12 @@ public static class ReservationManager
 
                     if (currentVisitor.HasReservation())
                     {
-                        MenuManager.ShowFullMenu(currentVisitor);
+                        MenuPresentation.ShowFullMenu(currentVisitor);
                     }
                 }
                 else
                 {
-                    MenuManager.ShowRestrictedMenu(userCode);
+                    MenuPresentation.ShowRestrictedMenu(userCode);
                     isValidCode = true;
                 }
                 ValidateCodeAndShowMenu();
