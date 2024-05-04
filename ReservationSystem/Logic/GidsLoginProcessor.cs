@@ -60,48 +60,54 @@ public static class GidsLoginProcessor
         }
     }
 
-
     private static bool DisplayMainMenu()
     {
-    // DateOnly.FromDateTime(_myTour.StartTime)
-    // TimeOnly.FromDateTime(_myTour.StartTime)}
-    // TimeOnly.FromDateTime(_myTour.EndTime)}
-    GidsDisplayTourInfo DTI = new GidsDisplayTourInfo();
-    {
-        if (_myTour.ExpectedVisitors.Count == 0)
-            DTI.ShowEmpty(DateOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.EndTime), _myTour.ExpectedVisitors.Count);
-        else if (_myTour.ExpectedVisitors.Count == 1)
-            DTI.ShowOne(DateOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.EndTime), _myTour.ExpectedVisitors.Count);
-        else
-            DTI.ShowMany(DateOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.EndTime), _myTour.ExpectedVisitors.Count);
+        GidsDisplayTourInfo DTI = new GidsDisplayTourInfo();
+        // DTI requires felllowing parameters:
+        // DateOnly.FromDateTime(_myTour.StartTime)
+        // TimeOnly.FromDateTime(_myTour.StartTime)}
+        // TimeOnly.FromDateTime(_myTour.EndTime)}
+        // _myTour.ExpectedVisitors.Count
+        LogOut LO = new LogOut();
         
-        // Printing menu options'
-        GidsMainMenu GMM = new GidsMainMenu();
-        string guideChoice = GMM.Show();
-        Console.WriteLine("");
-
-        switch (guideChoice)
         {
-            case "1":
-                ShowGuideTours();
-                break;
-            case "2":
-                NoteVisitors();
-                break;
-            case "3":
-                Console.WriteLine("Logging out...");
-                Thread.Sleep(1000 * 2);
-                return false; // Stops the main menu loop and logs out
-            default:
-                Console.WriteLine("Invalid choice. Please enter a valid option.");
-                break;
-        }
+            if (_myTour.ExpectedVisitors.Count == 0)
+                DTI.ShowEmpty(DateOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.EndTime), _myTour.ExpectedVisitors.Count);
+            else if (_myTour.ExpectedVisitors.Count == 1)
+                DTI.ShowOne(DateOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.EndTime), _myTour.ExpectedVisitors.Count);
+            else
+                DTI.ShowMany(DateOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.StartTime), TimeOnly.FromDateTime(_myTour.EndTime), _myTour.ExpectedVisitors.Count);
+            
+            // Printing menu options'
+            GidsMainMenu GMM = new GidsMainMenu();
+            string guideChoice = GMM.Show();
+            Console.WriteLine("");
+            
 
-        return true; // Continues the main menu loop
+            switch (guideChoice)
+            {
+                case "1":
+                    ShowGuideTours();
+                    break;
+                case "2":
+                    NoteVisitors();
+                    break;
+                case "3":
+                    LO.Show();
+                    Thread.Sleep(1000 * 2);
+                    return false; // Stops the main menu loop and logs out
+                default:
+                    
+                    break;
+            }
+
+            return true; // Continues the main menu loop
+        }
     }
 
     private static void NoteVisitors()
     {
+        CheckIn CI = new CheckIn();
         List<string> addedCodes = new();
         // Add visitor code already checked in to list
         foreach (Visitor currentVisitor in _myTour.PresentVisitors)
@@ -117,7 +123,8 @@ public static class GidsLoginProcessor
         string visitorCode;
         do
         {
-            Console.WriteLine($"Currently checked in tickets: [{_returnListAsString(addedCodes)}]");
+            string Code = _returnListAsString(addedCodes);
+            CI.Show(Code);
             // Guide has to scan a ticket of a visitor (Already checks if code is in expected visitors)
             visitorCode = _askVisitorCode();
             Visitor visitor = Visitor.FindVisitorByTicketCode(visitorCode);
@@ -135,23 +142,22 @@ public static class GidsLoginProcessor
     // Asks the guide for a visitor code and checks if the code is in expectedVisitors
     public static string _askVisitorCode()
     {
+        ScanTicket ST = new ScanTicket();
+        ScanTicketFailed ST_F = new ScanTicketFailed();
+
         List<string> allowedCodes = new();
         foreach (Visitor currentVisitor in _myTour.ExpectedVisitors)
         {
             allowedCodes.Add(currentVisitor.TicketCode);
         }
-
-        Console.WriteLine("Please scan the ticket of a visitor or type in \"stop\" to stop checking in visitors");
-        string visitorTicket = Console.ReadLine();
+        string visitorTicket = ST.Show();
         if (visitorTicket == "stop")
             return "stop";
         else if (allowedCodes.Contains(visitorTicket))
             return visitorTicket;
         do
         {
-            Console.WriteLine("\nThis visitor doesn't have reservation for this tour,");
-            Console.WriteLine("Try again or try another visitor");
-            visitorTicket = Console.ReadLine();
+            visitorTicket = ST_F.Show();
         } 
         while (!(allowedCodes.Contains(visitorTicket) || (visitorTicket == "stop")));
 
@@ -231,6 +237,5 @@ public static class GidsLoginProcessor
         }
         retStr = retStr.Remove(retStr.Length - 2);
         return retStr;
-    }
     }
 }

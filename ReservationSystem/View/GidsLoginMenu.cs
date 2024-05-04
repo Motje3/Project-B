@@ -6,6 +6,6 @@ public class GidsLoginMenu : View
     {
         WriteLine("\nGuide login");
         WriteLine("Enter password: ");
-        return ReadLine();
+        return ReadLine();  // return password
     }
 }
