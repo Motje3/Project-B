@@ -30,7 +30,7 @@ public class GuideTest
     {
         DateTime starttime = new DateTime(2024, 5, 4, 9, 00, 00);
         GuidedTour tour1 = new GuidedTour(starttime);
-        GuidedTour.AddTourToJSON(tour1);
+        //JsonHelper.AddTour(tour1);
         Guide John = new Guide("111", tour1.TourId);
 
         tour1.AddVisitor(John);
@@ -65,7 +65,7 @@ public class GuideTest
         guide.AssingedTourId = existingTour.TourId;
         existingTour.AddVisitor(guide);
 
-        GuidedTour.AddTourToJSON(existingTour);
+        //GuidedTour.AddTourToJSON(existingTour);
 
         // Act
         guide.CompleteTour();

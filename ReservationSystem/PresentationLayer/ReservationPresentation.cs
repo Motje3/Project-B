@@ -31,14 +31,15 @@ public static class ReservationPresentation
                     Console.WriteLine("Welcome, your ticket is confirmed!\n");
                     isValidCode = true;
 
-                    if (currentVisitor.HasReservation())
+                    if (currentVisitor.HasReservation(currentVisitor))
                     {
                         MenuPresentation.ShowFullMenu(currentVisitor);
                     }
                 }
                 else
                 {
-                    MenuPresentation.ShowRestrictedMenu(userCode);
+                    Visitor visitor = Visitor.FindVisitorByTicketCode(userCode);
+                    MenuPresentation.ShowRestrictedMenu(visitor);
                     isValidCode = true;
                 }
                 ValidateCodeAndShowMenu();

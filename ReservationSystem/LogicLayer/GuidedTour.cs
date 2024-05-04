@@ -51,7 +51,7 @@ public class GuidedTour
         return JsonConvert.DeserializeObject<GuidedTour>(jsonString);
     }
 
-
+    public static string JsonFilePath = "./DataLayer/JSON-Files/GuidedTours.json";
 
     public void AddVisitor(Visitor visitor)
     {
@@ -80,8 +80,9 @@ public class GuidedTour
             newTour.ExpectedVisitors.Add(visitor);
             ExpectedVisitors.Add(visitor);
         }
-        GuidedTour.EditTourInJSON(this, newTour);
+        JsonHelper.EditTour(newTour, TourId, GuidedTour.JsonFilePath);
     }
+
 
     public void RemoveVisitor(Visitor visitor)
     {
@@ -117,12 +118,14 @@ public class GuidedTour
             if (currentVisitor.TicketCode == visitor.TicketCode)
             {
                 newTour.ExpectedVisitors.Remove(currentVisitor);
+                break; // Ensure to break after removal to avoid InvalidOperationException
             }
         }
 
         // Update the tour
-        GuidedTour.EditTourInJSON(this, newTour);
+        JsonHelper.EditTour(newTour, TourId, GuidedTour.JsonFilePath);
     }
+
 
     public void TransferVisitor(Visitor visitor, GuidedTour newTour)
     {
@@ -134,31 +137,61 @@ public class GuidedTour
         newTour.AddVisitor(visitor);
     }
 
+    public static void _updateCurrentTours()
+    {
+        var allTours = JsonHelper.LoadFromJson<List<GuidedTour>>(JsonFilePath);
+        CurrentTours = new List<GuidedTour>();
+        CompletedTours = new List<GuidedTour>();
+        DeletedTours = new List<GuidedTour>();
+
+        foreach (var tour in allTours)
+        {
+            if (tour.Deleted)
+                DeletedTours.Add(tour);
+            else if (tour.Completed)
+                CompletedTours.Add(tour);
+            else
+                CurrentTours.Add(tour);
+        }
+    }
+
     //Needs to be adjusted to allow only changes to upcoming tours and never tours in the same day, so no need to check for expected visitors
     public void ChangeCapacity(int newCapacity)
     {
+        // Cloning the current state of the tour to modify
         GuidedTour newTour = Clone();
-        int currMinCapacity = ExpectedVisitors.Count;
+        int currentMinimumCapacity = ExpectedVisitors.Count;
 
-        if (newCapacity < currMinCapacity)
+        // Check and set the new capacity based on the number of expected visitors
+        if (newCapacity < currentMinimumCapacity)
         {
-            newTour.MaxCapacity = currMinCapacity;
-            MaxCapacity = currMinCapacity;
+            newTour.MaxCapacity = currentMinimumCapacity; // Set to the minimum needed to accommodate all expected visitors
         }
         else
         {
-            newTour.MaxCapacity = newCapacity;
-            MaxCapacity = newCapacity;
+            newTour.MaxCapacity = newCapacity; // Set to the new desired capacity
         }
 
-        EditTourInJSON(this, newTour);
+        // Ensuring the current tour's maximum capacity is also updated
+        MaxCapacity = newTour.MaxCapacity;
+
+        // Assuming GuidedTour.JsonFilePath holds the path to the JSON file for tours
+        if (GuidedTour.JsonFilePath == null || TourId == Guid.Empty)
+        {
+            Console.WriteLine("Invalid file path or tour ID.");
+            return;
+        }
+
+        // Update the tour in the JSON file using JsonHelper
+        JsonHelper.EditTour(newTour, TourId, GuidedTour.JsonFilePath);
+        Console.WriteLine($"Tour capacity changed to {newTour.MaxCapacity}.");
     }
 
 
-    public static string tourJSONpath = "./DataLayer/JSON-Files/GuidedTours.json";
+
+
     private Visitor visitor;
     private List<Visitor> visitors;
-
     static GuidedTour()
     {
         Holidays = returnHolidays(DateTime.Today.Year);
@@ -186,138 +219,6 @@ public class GuidedTour
 
 
 
-    //Probably needs to go in a different class/layer, can also be written shorter
-    public static void AddTourToJSON(GuidedTour tour, bool ignoreDateChecks = false)
-    {
-        _updateCurrentTours();
-        TimeOnly tourTime = TimeOnly.FromDateTime(tour.StartTime);
-        DateOnly tourDate = DateOnly.FromDateTime(tour.StartTime);
-        bool tourAlreadyInFile = _checkIfInFile(tour);
-        bool forbiddenId = CheckTourId(tour.TourId);
-        if (ignoreDateChecks == false)
-        {
-            bool allowedTime = _checkIfAllowedTime(tourTime);
-            bool allowedDate = _checkIfAllowedDate(tourDate);
-            if (!allowedTime || !allowedDate || tourAlreadyInFile || forbiddenId)
-            {
-                return;
-            }
-        }
-
-        bool tourIsInThePast = DateTime.Compare(DateTime.Now, tour.StartTime) == 1;
-        bool tourIsInTheFuture = DateTime.Compare(DateTime.Now, tour.StartTime) == -1;
-        bool tourIsHappeningRightNow = DateTime.Compare(DateTime.Now, tour.StartTime) == 0;
-        if (tourIsInTheFuture)
-        {
-            CurrentTours.Add(tour);
-        }
-        else if (tourIsInThePast)
-        {
-            tour.Completed = true;
-            CompletedTours.Add(tour);
-        }
-        else if (tourIsHappeningRightNow)
-        {
-        }
-
-
-        using (StreamWriter writer = new StreamWriter(GuidedTour.tourJSONpath))
-        {
-            List<GuidedTour> ListOfAllTourTypes = CompletedTours.Concat(CurrentTours).ToList().Concat(DeletedTours).ToList();
-            string List2json = JsonConvert.SerializeObject(ListOfAllTourTypes, Formatting.Indented);
-            writer.Write(List2json);
-
-        }
-
-        _updateCurrentTours();
-    }
-
-
-
-    //Probably needs to go in a different class/layer, can also be written shorter
-    public static void DeleteTourFromJSON(GuidedTour tour)
-    {
-        GuidedTour._updateCurrentTours();
-        bool foundTour = false;
-        foreach (GuidedTour currentTour in CurrentTours)
-        {
-            if (currentTour.TourId == tour.TourId)
-            {
-                foundTour = true;
-                break;
-            }
-        }
-        foreach (GuidedTour currentTour in GuidedTour.CompletedTours)
-        {
-            if (currentTour.TourId == tour.TourId)
-            {
-                foundTour = true;
-                break;
-            }
-        }
-
-        if (foundTour == false)
-        {
-            return;
-        }
-
-        bool tourIsInThePast = DateTime.Compare(DateTime.Now, tour.StartTime) == 1;
-        bool tourIsInTheFuture = DateTime.Compare(DateTime.Now, tour.StartTime) == -1;
-        if (tourIsInTheFuture)
-        {
-            for (int tourIndex = 0; tourIndex < GuidedTour.CurrentTours.Count; tourIndex++)
-            {
-                GuidedTour currentTour = GuidedTour.CurrentTours[tourIndex];
-                if (currentTour.TourId == tour.TourId)
-                {
-                    currentTour.Deleted = true;
-                    GuidedTour.CurrentTours.Remove(currentTour);
-                    GuidedTour.DeletedTours.Add(currentTour);
-                    break;
-                }
-            }
-        }
-        else if (tourIsInThePast)
-        {
-            for (int tourIndex = 0; tourIndex < GuidedTour.CompletedTours.Count; tourIndex++)
-            {
-                GuidedTour currentTour = GuidedTour.CompletedTours[tourIndex];
-                if (currentTour.TourId == tour.TourId)
-                {
-                    currentTour.Deleted = true;
-                    GuidedTour.CompletedTours.Remove(currentTour);
-                    GuidedTour.DeletedTours.Add(currentTour);
-                    break;
-                }
-            }
-        }
-
-        using (StreamWriter writer = new StreamWriter(GuidedTour.tourJSONpath))
-        {
-            List<GuidedTour> ListOfAllTourTypes = CompletedTours.Concat(CurrentTours).ToList().Concat(DeletedTours).ToList();
-            string List2json = JsonConvert.SerializeObject(ListOfAllTourTypes, Formatting.Indented);
-            writer.Write(List2json);
-        }
-    }
-
-    //Remove and delete tour from json methodes? difference ?? 
-    public static void RemoveTourFromJSON(GuidedTour tour)
-    {
-        _updateCurrentTours();
-
-        // Consolidate the search across all tour lists and remove the tour.
-        bool removed = RemoveTourFromList(CurrentTours, tour) ||
-                       RemoveTourFromList(CompletedTours, tour) ||
-                       RemoveTourFromList(DeletedTours, tour);
-
-        // Only update the JSON file if a tour was actually removed.
-        if (removed)
-        {
-            List<GuidedTour> allTours = CompletedTours.Concat(CurrentTours).Concat(DeletedTours).ToList();
-            string jsonContent = JsonConvert.SerializeObject(allTours, Formatting.Indented);
-            File.WriteAllText(tourJSONpath, jsonContent);
-        }
-    }
 
     private static bool RemoveTourFromList(List<GuidedTour> tours, GuidedTour tour)
     {
@@ -330,70 +231,6 @@ public class GuidedTour
         return false;
     }
 
-
-    // Replaces the oldTour parameter in the json file with the newTour parameter
-    //  - Checks if the oldTour is in the json File
-    //  - Checks if the newTour and oldTour have the same _tourId
-    //  - Uses the static method DeleteTourFromJson with oldTour
-    //  - Uses the static method AddTourToJSON with newTour
-    public static void EditTourInJSON(GuidedTour oldTour, GuidedTour newTour, bool ignoreDateChecks = false)
-    {
-        GuidedTour._updateCurrentTours();
-        bool oldTourExsists = GuidedTour.CurrentTours.Contains(oldTour);
-        bool bothToursSameId = oldTour.TourId == newTour.TourId;
-
-        if (oldTourExsists || !bothToursSameId)
-        {
-            return;
-        }
-
-        GuidedTour.RemoveTourFromJSON(oldTour);
-        GuidedTour.AddTourToJSON(newTour, ignoreDateChecks);
-    }
-
-
-    //  - Reads the GuidedTours.json file and sets variable tours to its deserialized contents
-    //  - Goes through content of tours and based on properties Deleted and Completed properties add the tour to:
-    //     - CurrentTours (if tour.Completed == false and tour.Deleted == false)
-    //     - CompletedTours (if tour.Completed == true and tour.Deleted == false)
-    //     - DeletedTours (tour.Deleted == true)
-    private static void _updateCurrentTours()
-    {
-        DeletedTours = new();
-        CurrentTours = new();
-        CompletedTours = new();
-        using (StreamReader reader = new(GuidedTour.tourJSONpath))
-        {
-            string jsonContent = reader.ReadToEnd();
-            List<GuidedTour> tours = JsonConvert.DeserializeObject<List<GuidedTour>>(jsonContent);
-            //GuidedTour.CurrentTours = tours;
-            for (int tourIndex = 0; tourIndex < tours.Count; tourIndex++)
-            {
-                GuidedTour currentTour = tours[tourIndex];
-                bool currentTourIsInThePast = DateTime.Compare(DateTime.Now, currentTour.StartTime) == 1;
-                if (currentTourIsInThePast && currentTour.Completed != true)
-                {
-                    currentTour.Completed = true;
-                }
-
-                if (currentTour.Deleted == true)
-                {
-                    DeletedTours.Add(currentTour);
-                    continue;
-                }
-                else if (currentTour.Deleted == false && currentTour.Completed == false)
-                {
-                    CurrentTours.Add(currentTour);
-                    continue;
-                }
-                else if (currentTour.Deleted == false && currentTour.Completed == true)
-                {
-                    CompletedTours.Add(currentTour);
-                    continue;
-                }
-            }
-        }
-    }
 
     // Returns all tours from today that have not yet taken place
     //  - checks which tours have already started
@@ -611,18 +448,10 @@ public class GuidedTour
     // Checks if a given tour is already in the json, based on the TourID. (Can be written in one line)
     private static bool _checkIfInFile(GuidedTour tour)
     {
-        GuidedTour._updateCurrentTours();
-        foreach (GuidedTour currentTour in GuidedTour.CurrentTours)
-        {
-            bool sameId = currentTour.TourId == tour.TourId;
-            //bool sameDateTime = currentTour.StartTime == tour.StartTime;
-            if (/*sameDateTime ||*/ sameId)
-            {
-                return true;
-            }
-        }
-        return false;
+        _updateCurrentTours();
+        return CurrentTours.Any(currentTour => currentTour.TourId == tour.TourId);
     }
+
 
     // Returns all tours from this year (Why? )
     public static List<GuidedTour> ReturnAllToursFromThisYear()
@@ -665,18 +494,11 @@ public class GuidedTour
         return tours;
     }
 
-    // Check if given visitor is in any tour
-    //updated methode to use linq to be faster and more efficent. / Probably not needed as visitor has similiar methode.  
-    public static bool CheckIfVisitorInTour(Visitor visitor)
-    {
-        return CurrentTours.Any(tour => tour.ExpectedVisitors.Any(v => v.VisitorId == visitor.VisitorId));
-    }
-
     public void ChangeTime(DateTime newDate)
     {
         GuidedTour newTour = Clone();
         newTour.StartTime = newDate;
         newTour.EndTime = newTour.StartTime.AddMinutes(newTour.Duration);
-        EditTourInJSON(this, newTour, true);
+        JsonHelper.EditTour(newTour, TourId, JsonFilePath);
     }
 }

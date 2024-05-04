@@ -1,70 +1,76 @@
 public class Guide : Visitor
 {
-    public Guide(string ticketcode, Guid tourId) : base(ticketcode) 
-    { /* Name , TicketCode */ 
+    public Guide(string ticketcode, Guid tourId) : base(ticketcode)
+    { /* Name , TicketCode */
         GuidedTour myTour = GuidedTour.FindTourById(tourId);
         base.AssingedTourId = tourId;
     }
 
     public void CheckInVisitor(Visitor visitor)
     {
+        // Retrieve the tour using the visitor's assigned tour ID
         GuidedTour tour = GuidedTour.FindTourById(base.AssingedTourId);
-        GuidedTour NewTour = tour.Clone();  // this will overwrite the old tour, Clone prefence changes to oldtour.
 
         if (tour == null)
         {
-            Console.WriteLine("\nNo matching tour not found");
+            Console.WriteLine("\nNo matching tour found.");
+            return;
         }
 
-        bool ExpectedVisitorsContainsParameter = false;
-        foreach (Visitor currencVisitor in tour.ExpectedVisitors)
-        {
-            if (currencVisitor.TicketCode == visitor.TicketCode)
-            {
-                ExpectedVisitorsContainsParameter = true;
-            }
-        }
-        bool PresentVisitorsContainsParameter = false;
-        foreach (Visitor currencVisitor in tour.PresentVisitors)
-        {
-            if (currencVisitor.TicketCode == visitor.TicketCode)
-            {
-                PresentVisitorsContainsParameter = true;
-            }
-        }
+        GuidedTour newTour = tour.Clone();  // Clone the tour to create a modifiable copy
 
-        // 
-        if (ExpectedVisitorsContainsParameter)
+        // Check if visitor is expected and not yet present
+        bool isExpected = tour.ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode);
+        bool isPresent = tour.PresentVisitors.Any(v => v.TicketCode == visitor.TicketCode);
+
+        if (isExpected && !isPresent)
         {
-            if (!PresentVisitorsContainsParameter)
-            {
-                NewTour.PresentVisitors.Add(visitor);
-                GuidedTour.EditTourInJSON(tour, NewTour);    
-                return;
-            }
+            newTour.PresentVisitors.Add(visitor);  // Add visitor to the present list
+            JsonHelper.EditTour(newTour, tour.TourId, GuidedTour.JsonFilePath);  // Update the tour in JSON
+            Console.WriteLine("\nVisitor checked in successfully.");
         }
-        else
+        else if (!isExpected)
         {
-            // fail save message
-            Console.WriteLine("\nNo matching tour not found");
-        }       
-    }  
-    
-    public void CompleteTour() 
+            Console.WriteLine("\nVisitor not expected on this tour.");
+        }
+        else if (isPresent)
+        {
+            Console.WriteLine("\nVisitor already checked in.");
+        }
+    }
+
+
+    public void CompleteTour()
     {
-        var newTour = GuidedTour.FindTourById(base.AssingedTourId);
-        var oldTour = GuidedTour.FindTourById(base.AssingedTourId);
         if (base.AssingedTourId == null)
         {
+            Console.WriteLine("No assigned tour ID.");
             return;
         }
-        if (newTour == null)
-            return;
-        if (newTour.Deleted == true)
+
+        GuidedTour tour = GuidedTour.FindTourById(base.AssingedTourId);
+        if (tour == null)
         {
+            Console.WriteLine("Tour not found.");
             return;
         }
-        newTour.Completed = true;
-        GuidedTour.EditTourInJSON(oldTour, newTour);
+
+        if (tour.Deleted)
+        {
+            Console.WriteLine("Cannot complete a deleted tour.");
+            return;
+        }
+
+        if (tour.Completed)
+        {
+            Console.WriteLine("Tour already completed.");
+            return;
+        }
+
+        tour.Completed = true;
+        // Assuming you have refactored JsonHelper.EditTour to handle updates
+        JsonHelper.EditTour(tour, tour.TourId, GuidedTour.JsonFilePath);
+        Console.WriteLine("Tour marked as completed.");
     }
+
 }

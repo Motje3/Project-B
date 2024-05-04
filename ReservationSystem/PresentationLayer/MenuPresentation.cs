@@ -1,6 +1,6 @@
 public class MenuPresentation
 {
-    public static void ShowRestrictedMenu(string visitorCode)
+    public static void ShowRestrictedMenu(Visitor visitor)
     {
         MenuLogic logic = new MenuLogic();
         bool loopOption = true;
@@ -11,7 +11,7 @@ public class MenuPresentation
             Console.WriteLine("2. Exit");
             Console.WriteLine("\nEnter your choice: ");
             string choice = Console.ReadLine();
-            loopOption = logic.HandleRestrictedMenuChoice(choice, visitorCode);
+            loopOption = logic.HandleRestrictedMenuChoice(choice, visitor);
         }
     }
 

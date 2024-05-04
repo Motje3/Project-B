@@ -25518,7 +25518,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [
       {
-        "VisitorId": "165ad55b-2b87-4c8a-ac28-5d952fa14512",
+        "VisitorId": "53215fc7-a9f4-4451-a9a6-7ab8a8edf1ab",
         "TicketCode": "111",
         "AssingedTourId": "4b2021f0-a409-44c3-87a0-d04c5296417e"
       }
@@ -25548,7 +25548,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [
       {
-        "VisitorId": "f9590ef7-60f4-4286-bf9e-1d0e79fe18cf",
+        "VisitorId": "d91ef2dd-1d64-4d07-af33-5bd561254966",
         "TicketCode": "111",
         "AssingedTourId": "c961d32b-430a-4e7b-8d17-09d24528e8b1"
       }
@@ -26490,7 +26490,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [
       {
-        "VisitorId": "8466bbf1-9bf0-413d-952d-502d6d4c7bdb",
+        "VisitorId": "afa34ebf-e8ec-48b4-9040-b1a2270974e8",
         "TicketCode": "111",
         "AssingedTourId": "32136393-7339-417f-9ecb-6e0b02debef7"
       }
@@ -26508,7 +26508,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [
       {
-        "VisitorId": "8966bdac-492e-461f-b07c-2f48ee73ea3f",
+        "VisitorId": "0189a7bc-bbe8-46e0-8b6d-44b3177368f1",
         "TicketCode": "111",
         "AssingedTourId": "3a85ba9c-969d-4521-be9c-89a280ac6875"
       }
@@ -83920,13 +83920,7 @@
     "StartTime": "2024-05-03T09:00:00",
     "EndTime": "2024-05-03T09:20:00",
     "MaxCapacity": 13,
-    "ExpectedVisitors": [
-      {
-        "VisitorId": "37b8a1a2-0165-492a-a5e2-25b29215b8d9",
-        "TicketCode": "111",
-        "AssingedTourId": "ccf8c630-0414-4dc2-9683-302e84b5713d"
-      }
-    ],
+    "ExpectedVisitors": [],
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
