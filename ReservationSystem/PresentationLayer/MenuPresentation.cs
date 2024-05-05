@@ -29,13 +29,11 @@ public class MenuPresentation
             Console.WriteLine("3. Exit");
             Console.Write("\nEnter your choice: ");
             string choice = Console.ReadLine();
-            choosingOption = logic.HandleFullMenuChoice(choice, visitor);
 
-            if (choice == "2" && !choosingOption) // Check if the tour cancellation was chosen and confirmed.
-            {
-                ShowRestrictedMenu(visitor); // Transition back to the restricted menu after cancellation.
-                break; // Break the loop after transitioning to ensure we don't run this menu again immediately.
-            }
+            choosingOption = logic.HandleFullMenuChoice(choice, visitor);
+            
+
+        
         }
     }
 

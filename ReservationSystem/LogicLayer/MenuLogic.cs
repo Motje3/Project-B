@@ -1,3 +1,5 @@
+using System.Net;
+
 public class MenuLogic
 {
     public bool HandleRestrictedMenuChoice(string choice, Visitor visitor)
@@ -5,8 +7,8 @@ public class MenuLogic
         switch (choice)
         {
             case "1":
-                JoinTour(visitor);
-                return true;
+                return JoinTour(visitor);
+                
             case "2":
                 return false; // Exit the loop
             default:
@@ -33,26 +35,25 @@ public class MenuLogic
     }
 
 
-    public static void JoinTour(Visitor visitor)
+    public static bool JoinTour(Visitor visitor)
     {
 
         List<GuidedTour> allowedTours = GuidedTour.PrintToursOpenToday();
         Console.WriteLine("\nPlease choose a number next to the tour you wish to join\n");
-        foreach (var tour in allowedTours)
-        {
-            Console.WriteLine($"{allowedTours.IndexOf(tour) + 1}. Tour at {tour.StartTime} with {tour.MaxCapacity - tour.ExpectedVisitors.Count} available spots.");
-        }
-
+        
         string chosenTourNumber = Console.ReadLine();
         if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= allowedTours.Count)
         {
             GuidedTour chosenTour = allowedTours[tourNumber - 1];
             chosenTour.AddVisitor(visitor);
-            Console.WriteLine("\nYou have successfully joined the tour.");
+            Console.WriteLine("\nYou have successfully joined the chosen tour.\n");
+            return false;
         }
         else
         {
-            Console.WriteLine("Invalid choice, please choose a valid tour number.");
+            //need to change this into a do while loop so user is forced to enter a valid tour number.
+            Console.WriteLine("Invalid choice, please choose a valid tour number.\n");
+            return true;
         }
     }
 

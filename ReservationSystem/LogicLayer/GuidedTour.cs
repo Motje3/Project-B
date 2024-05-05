@@ -217,21 +217,6 @@ public class GuidedTour
         return allTours.FirstOrDefault(tour => tour.TourId == id);
     }
 
-
-
-
-    private static bool RemoveTourFromList(List<GuidedTour> tours, GuidedTour tour)
-    {
-        var foundTour = tours.FirstOrDefault(t => t.TourId == tour.TourId);
-        if (foundTour != null)
-        {
-            tours.Remove(foundTour);
-            return true;
-        }
-        return false;
-    }
-
-
     // Returns all tours from today that have not yet taken place
     //  - checks which tours have already started
     //  - checks which tours are today
@@ -288,21 +273,9 @@ public class GuidedTour
                     tours.Add(currentTour);
                 }
             }
-
-            /*DateOnly TommorowDate = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
-
-            bool sameYear = TommorowDate.Year == currentTour.StartTime.Year;
-            bool sameMonth = TommorowDate.Month == currentTour.StartTime.Month;
-            bool tourIsTommorow = TommorowDate.Day == currentTour.StartTime.Day && sameMonth && sameYear;
-            if (tourIsTommorow)
-            {
-                tours.Add(currentTour);
-            }*/
         }
 
-        // sort list using linq
         tours = tours.OrderBy(tour => tour.StartTime).ToList();
-
         return tours;
     }
 
@@ -405,45 +378,6 @@ public class GuidedTour
         return mondays;
     }
 
-    //not sure if needed and what for? as visitor should only see the tour they are able to join. any tour joining logic should be in addvisitor methode
-    private static bool _checkIfAllowedTime(TimeOnly time)
-    {
-        List<int> allowedHours = new List<int>() { 9, 10, 11, 12, 13, 14, 15, };
-        bool allowed = true;
-
-        if (time.Minute != 0 && time.Minute != 20 && time.Minute != 40)
-        {
-            allowed = false;
-        }
-        if (!allowedHours.Contains(time.Hour))
-        {
-            allowed = false;
-        }
-        if (time.Hour == 16 && (time.Minute == 20 || time.Minute == 0))
-        {
-            allowed = true;
-        }
-
-        return allowed;
-    }
-
-    private static bool _checkIfAllowedDate(DateOnly date)
-    {
-        List<DateOnly> mondays = returnEveryMondayThisYear();
-        bool allowed = true;
-
-        if (Holidays.Contains(date))
-        {
-            allowed = false;
-        }
-
-        if (mondays.Contains(date))
-        {
-            allowed = false;
-        }
-
-        return allowed;
-    }
 
     // Checks if a given tour is already in the json, based on the TourID. (Can be written in one line)
     private static bool _checkIfInFile(GuidedTour tour)
