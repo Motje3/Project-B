@@ -1,3 +1,5 @@
+using ReservationSystem;
+
 public static class ReservationManager
 {
     public static void ValidateCodeAndProcessReservations()

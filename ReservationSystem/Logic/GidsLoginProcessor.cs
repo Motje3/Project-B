@@ -13,6 +13,7 @@ public static class GidsLoginProcessor
 
     public static void ProcessLoginForm(string guideCode)
     {
+        // Presentation(view) Initalization
         GidsLoginMenu GLM = new GidsLoginMenu();
         GidsAccessPassed GAP = new GidsAccessPassed();
         GidsAccessFailed GAF = new GidsAccessFailed();
@@ -62,6 +63,7 @@ public static class GidsLoginProcessor
 
     private static bool DisplayMainMenu()
     {
+        // Presentation(view) Initalization
         GidsDisplayTourInfo DTI = new GidsDisplayTourInfo();
         // DTI requires felllowing parameters:
         // DateOnly.FromDateTime(_myTour.StartTime)
@@ -107,7 +109,10 @@ public static class GidsLoginProcessor
 
     private static void NoteVisitors()
     {
+        // Presentation(view) Initalization
         CheckIn CI = new CheckIn();
+
+
         List<string> addedCodes = new();
         // Add visitor code already checked in to list
         foreach (Visitor currentVisitor in _myTour.PresentVisitors)
@@ -142,6 +147,7 @@ public static class GidsLoginProcessor
     // Asks the guide for a visitor code and checks if the code is in expectedVisitors
     public static string _askVisitorCode()
     {
+        // Presentation(view) Initalization
         ScanTicket ST = new ScanTicket();
         ScanTicketFailed ST_F = new ScanTicketFailed();
 
