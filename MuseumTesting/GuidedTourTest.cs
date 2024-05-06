@@ -254,7 +254,7 @@ public class GuidedTourTesting
         tour.AssignedGuide = guide;
         tour.ExpectedVisitors.Add(visitor);
 
-        GuidedTour.AddTourToJSON(tour);
+        JsonHelper.AddTour(tour, JSONPath);
 
         // Act
         // Guide removes a visitor
