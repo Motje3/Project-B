@@ -158,40 +158,32 @@ public class GuidedTour
     //Needs to be adjusted to allow only changes to upcoming tours and never tours in the same day, so no need to check for expected visitors
     public void ChangeCapacity(int newCapacity)
     {
-        // Cloning the current state of the tour to modify
-        GuidedTour newTour = Clone();
-        int currentMinimumCapacity = ExpectedVisitors.Count;
+        GuidedTour newTour = this.Clone();
+        int currMinCapacity = ExpectedVisitors.Count;
 
-        // Check and set the new capacity based on the number of expected visitors
-        if (newCapacity < currentMinimumCapacity)
+        if (newCapacity < currMinCapacity)
         {
-            newTour.MaxCapacity = currentMinimumCapacity; // Set to the minimum needed to accommodate all expected visitors
+            newTour.MaxCapacity = currMinCapacity;
+            MaxCapacity = currMinCapacity;
         }
         else
         {
-            newTour.MaxCapacity = newCapacity; // Set to the new desired capacity
+            newTour.MaxCapacity = newCapacity;
+            MaxCapacity = newCapacity;
         }
 
-        // Ensuring the current tour's maximum capacity is also updated
-        MaxCapacity = newTour.MaxCapacity;
+        JsonHelper.EditTour(this, newTour.TourId, JsonFilePath);
+    }
 
-        // Assuming GuidedTour.JsonFilePath holds the path to the JSON file for tours
-        if (GuidedTour.JsonFilePath == null || TourId == Guid.Empty)
-        {
-            Console.WriteLine("Invalid file path or tour ID.");
-            return;
-        }
-
-        // Update the tour in the JSON file using JsonHelper
-        JsonHelper.EditTour(newTour, TourId, GuidedTour.JsonFilePath);
-        Console.WriteLine($"Tour capacity changed to {newTour.MaxCapacity}.");
+    public void ChangeTime(DateTime newDate)
+    {
+        GuidedTour newTour = Clone();
+        newTour.StartTime = newDate;
+        newTour.EndTime = newTour.StartTime.AddMinutes(newTour.Duration);
+        JsonHelper.EditTour(newTour, TourId, JsonFilePath);
     }
 
 
-
-
-    private Visitor visitor;
-    private List<Visitor> visitors;
     static GuidedTour()
     {
         Holidays = returnHolidays(DateTime.Today.Year);
@@ -199,21 +191,12 @@ public class GuidedTour
         _updateCurrentTours();
     }
 
-    public GuidedTour(DateTime startTime, Visitor visitor, List<Visitor> visitors) : this(startTime)
-    {
-        this.visitor = visitor;
-        this.visitors = visitors;
-    }
 
 
-
-    //Can be written alot shorter
     public static GuidedTour FindTourById(Guid id)
     {
-        // Concatenate all lists of tours into a single sequence for searching
         var allTours = CurrentTours.Concat(GuidedTour.CompletedTours).Concat(GuidedTour.DeletedTours);
 
-        // Use LINQ to find the first tour matching the given ID
         return allTours.FirstOrDefault(tour => tour.TourId == id);
     }
 
@@ -380,11 +363,11 @@ public class GuidedTour
 
 
     // Checks if a given tour is already in the json, based on the TourID. (Can be written in one line)
-    private static bool _checkIfInFile(GuidedTour tour)
-    {
-        _updateCurrentTours();
-        return CurrentTours.Any(currentTour => currentTour.TourId == tour.TourId);
-    }
+    // private static bool _checkIfInFile(GuidedTour tour)
+    // {
+    //     _updateCurrentTours();
+    //     return CurrentTours.Any(currentTour => currentTour.TourId == tour.TourId);
+    // }
 
 
     // Returns all tours from this year (Why? )
@@ -428,11 +411,5 @@ public class GuidedTour
         return tours;
     }
 
-    public void ChangeTime(DateTime newDate)
-    {
-        GuidedTour newTour = Clone();
-        newTour.StartTime = newDate;
-        newTour.EndTime = newTour.StartTime.AddMinutes(newTour.Duration);
-        JsonHelper.EditTour(newTour, TourId, JsonFilePath);
-    }
+    
 }

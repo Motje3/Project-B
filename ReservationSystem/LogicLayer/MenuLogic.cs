@@ -8,7 +8,7 @@ public class MenuLogic
         {
             case "1":
                 return JoinTour(visitor);
-                
+
             case "2":
                 return false; // Exit the loop
             default:
@@ -27,6 +27,7 @@ public class MenuLogic
             case "2":
                 return CancelTour(visitor); // Use the return value to determine whether to exit.
             case "3":
+                try { Console.Clear(); } catch { }
                 return false; // Exit the loop.
             default:
                 Console.WriteLine("Invalid choice. Please try again.");
@@ -40,13 +41,14 @@ public class MenuLogic
 
         List<GuidedTour> allowedTours = GuidedTour.PrintToursOpenToday();
         Console.WriteLine("\nPlease choose a number next to the tour you wish to join\n");
-        
+
         string chosenTourNumber = Console.ReadLine();
         if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= allowedTours.Count)
         {
             GuidedTour chosenTour = allowedTours[tourNumber - 1];
             chosenTour.AddVisitor(visitor);
-            Console.WriteLine("\nYou have successfully joined the chosen tour.\n");
+            try { Console.Clear(); } catch { }
+            MenuPresentation.ShowFullMenu(visitor);
             return false;
         }
         else
@@ -73,6 +75,7 @@ public class MenuLogic
             if (visitorsTour != null)
             {
                 visitorsTour.TransferVisitor(visitor, chosenTour);
+                try { Console.Clear(); } catch { }
                 Console.WriteLine($"\nYou have successfully transferred to the new tour: {chosenTour.StartTime}.\n");
             }
             else
@@ -96,12 +99,16 @@ public class MenuLogic
         }
 
         visitorsTour.RemoveVisitor(visitor);
-        Console.WriteLine("Tour reservation canceled successfully.");
+
+        Console.WriteLine("\nReservation has been canceled successfully.");
+        Thread.Sleep(1500 * 1);
+        try { Console.Clear(); } catch { }
+        
         return false; // Exit the loop.
     }
 
 
-    private static void _printTourString(GuidedTour tour)
+    public static void _printTourString(GuidedTour tour)
     {
         if (tour == null) return;
         DateOnly tourDate = DateOnly.FromDateTime(tour.StartTime);

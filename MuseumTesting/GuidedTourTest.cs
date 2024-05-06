@@ -291,7 +291,7 @@ public class GuidedTourTesting
         DateTime starttime = new DateTime(2024, 4, 23, 9, 00, 00);
         // Create Multiple for JSON
         GuidedTour tour1 = new GuidedTour(starttime); // Tuesday
-        GuidedTour.AddTourToJSON(tour1);
+        //GuidedTour.AddTourToJSON(tour1);
 
         // Act
         tour1.ChangeCapacity(10);
@@ -309,7 +309,7 @@ public class GuidedTourTesting
         DateTime starttime = new DateTime(2024, 4, 23, 9, 00, 00);
         // Create Multiple for JSON
         GuidedTour tour1 = new GuidedTour(starttime); // Tuesday
-        GuidedTour.AddTourToJSON(tour1);
+        //GuidedTour.AddTourToJSON(tour1);
 
         Visitor v1 = new("1111");
         Visitor v2 = new("2222");
@@ -352,7 +352,7 @@ public class GuidedTourTesting
         List<GuidedTour> tours = _readJSON();
 
         // Assert
-        //Assert.IsTrue(tours[0].MaxCapacity == 4);
+        Assert.IsTrue(tours[0].MaxCapacity == 4);
     }
 
 
