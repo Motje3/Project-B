@@ -16,7 +16,7 @@ public static class ReservationPresentation
             }
             else if (userCode == "456")
             {
-                GidsLoginProcessor.ProcessLoginForm(userCode);
+                GuideLoginMenu.ProcessLoginForm(userCode);
                 continue;
             }
             else if (Ticket.IsCodeValid(userCode))
