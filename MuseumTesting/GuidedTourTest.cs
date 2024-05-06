@@ -243,6 +243,30 @@ public class GuidedTourTesting
     }
 
     [TestMethod]
+    public void TestGuideRemovesVisitor()
+    {
+        // Arrange
+        DateTime startTime = new DateTime(nowYear, 1, 4, 9, 0, 0);
+        Visitor visitor = new Visitor("TICKET456");
+
+        GuidedTour tour = new GuidedTour(startTime);
+        Guide guide = new Guide("GUIDE123", tour.TourId);
+        tour.AssignedGuide = guide;
+        tour.ExpectedVisitors.Add(visitor);
+
+        GuidedTour.AddTourToJSON(tour);
+
+        // Act
+        // Guide removes a visitor
+        tour.RemoveVisitor(visitor);
+
+        // Assert
+        List<GuidedTour> updatedTours = _readJSON();
+        Assert.IsFalse(updatedTours[0].ExpectedVisitors.Contains(visitor), "Guide should be able to remove the visitor.");
+    }
+
+
+    [TestMethod]
     public void TestChangeTime()
     {
         // Date to create GuidedTour object
