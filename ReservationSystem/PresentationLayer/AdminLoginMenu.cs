@@ -33,7 +33,7 @@ public class AdminLoginMenu : View
             WriteLine("3. View Tours");
             WriteLine("4. Exit");
 
-            Console.Write("\nEnter your choice: ");
+            Write("\nEnter your choice: ");
             string choice = ReadLine();
 
             switch (choice)
