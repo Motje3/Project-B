@@ -6,9 +6,9 @@ public class AdminLoginMenu : View
     {
         WriteLine("\nAdmin login\n");
 
-        Console.Write("Enter username: ");
+        Write("Enter username: ");
         string username = ReadLine();
-        Console.Write("Enter password: ");
+        Write("Enter password: ");
         string password = ReadLine();
 
         if (Authenticator.AuthenticateUser(username, password))
