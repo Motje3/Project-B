@@ -1,22 +1,24 @@
-public static class AdminLoginMenu
+using ReservationSystem;
+
+public class AdminLoginMenu : View
 {
     public static void ProcessLoginForm()
     {
-        Console.WriteLine("\nAdmin login\n");
+        WriteLine("\nAdmin login\n");
 
         Console.Write("Enter username: ");
-        string username = Console.ReadLine();
+        string username = ReadLine();
         Console.Write("Enter password: ");
-        string password = Console.ReadLine();
+        string password = ReadLine();
 
         if (Authenticator.AuthenticateUser(username, password))
         {
-            Console.WriteLine("\nAccess Granted!\n");
+            WriteLine("\nAccess Granted!\n");
             ShowAdminMenu();
         }
         else
         {
-            Console.WriteLine("\nAccess Denied. Invalid username or password.\n");
+            WriteLine("\nAccess Denied. Invalid username or password.\n");
         }
     }
 
@@ -25,14 +27,14 @@ public static class AdminLoginMenu
         bool continueRunning = true;
         while (continueRunning)
         {
-            Console.WriteLine("\nAdmin Menu:");
-            Console.WriteLine("1. Change capacity of a tour");
-            Console.WriteLine("2. Change time of a tour");
-            Console.WriteLine("3. View Tours");
-            Console.WriteLine("4. Exit");
+            WriteLine("\nAdmin Menu:");
+            WriteLine("1. Change capacity of a tour");
+            WriteLine("2. Change time of a tour");
+            WriteLine("3. View Tours");
+            WriteLine("4. Exit");
 
             Console.Write("\nEnter your choice: ");
-            string choice = Console.ReadLine();
+            string choice = ReadLine();
 
             switch (choice)
             {
@@ -49,7 +51,7 @@ public static class AdminLoginMenu
                     continueRunning = false;
                     break;
                 default:
-                    Console.WriteLine("Invalid choice. Please try again.");
+                    WriteLine("Invalid choice. Please try again.");
                     break;
             }
         }
