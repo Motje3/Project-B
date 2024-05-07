@@ -19,7 +19,7 @@ public class RealWorld : IWorld
 
     public string ReadLine()
     {
-        return ReadLine();
+        return Console.ReadLine();
     }
 
     public string ReadAllText(string path)
