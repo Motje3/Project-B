@@ -9,8 +9,7 @@ public class AdminLoginMenu : View
         Write("Enter username: ");
         string username = ReadLine();
         Write("Enter password: ");
-        string password = ReadLine();
-
+        string password = AdminBackEnd.ReadPassword();
         if (Authenticator.AuthenticateUser(username, password))
         {
             WriteLine("\nAccess Granted!\n");
@@ -56,5 +55,7 @@ public class AdminLoginMenu : View
             }
         }
     }
+
+    
 
 }

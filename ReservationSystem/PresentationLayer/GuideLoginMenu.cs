@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using ReservationSystem;
 
 public class GuideLoginMenu : View
@@ -9,7 +8,7 @@ public class GuideLoginMenu : View
         Write("Enter guide code: ");
         string guideCode = ReadLine();
         Write("Enter password: ");
-        string password = ReadLine();
+        string password = AdminBackEnd.ReadPassword();
 
         GuideBackEnd.LoadMyGuide(guideCode);
 
@@ -66,4 +65,6 @@ public class GuideLoginMenu : View
             WriteLine("No tours currently assigned.");
         }
     }
+
+
 }
