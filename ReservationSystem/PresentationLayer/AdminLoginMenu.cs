@@ -30,7 +30,9 @@ public class AdminLoginMenu : View
             WriteLine("1. Change capacity of a tour");
             WriteLine("2. Change time of a tour");
             WriteLine("3. View Tours");
-            WriteLine("4. Exit");
+            WriteLine("4. Get advice for upcoming days");
+
+            WriteLine("5. Exit");
 
             Write("\nEnter your choice: ");
             string choice = ReadLine();

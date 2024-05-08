@@ -30,7 +30,9 @@ public class GuideLoginMenu : View
         {
             WriteLine("\nGuide Menu:");
             WriteLine("1. View personal tours");
-            WriteLine("2. Exit");
+            WriteLine("2. Start a tour and check attendings");
+            
+            WriteLine("3. Exit");
 
             Write("\nEnter your choice: ");
             string choice = ReadLine();
