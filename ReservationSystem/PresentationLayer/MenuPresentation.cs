@@ -18,7 +18,7 @@ public class MenuPresentation : View
             WriteLine("\nPlease choose an option:");
             WriteLine("1. Change my reservation time");
             WriteLine("2. Cancel my tour reservation");
-            WriteLine("3. Back to Main Menu");
+            WriteLine("3. Continue to next visitor");
             Write("\nEnter your choice: ");
             string choice = ReadLine();
 
