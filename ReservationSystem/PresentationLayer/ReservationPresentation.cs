@@ -1,4 +1,6 @@
-public static class ReservationPresentation
+using ReservationSystem;
+
+public class ReservationPresentation : View 
 {
     public static void ValidateCodeAndShowMenu()
     {
@@ -6,8 +8,8 @@ public static class ReservationPresentation
 
         while (true)
         {
-            Console.WriteLine("Enter your unique ticket code:");
-            string userCode = Console.ReadLine();
+            WriteLine("Enter your unique ticket code:");
+            string userCode = ReadLine();
 
             if (userCode == "123")
             {
@@ -27,7 +29,7 @@ public static class ReservationPresentation
                     currentVisitor = new Visitor(userCode);
                 }
 
-                Console.WriteLine("\nWelcome, your ticket is confirmed!\n");
+                WriteLine("\nWelcome, your ticket is confirmed!\n");
                 if (currentVisitor.HasReservation(currentVisitor))
                 {
                     MenuPresentation.ShowFullMenu(currentVisitor);
@@ -40,7 +42,7 @@ public static class ReservationPresentation
             }
             else
             {
-                Console.WriteLine("Sorry, your ticket is not valid. Please try again.");
+                WriteLine("Sorry, your ticket is not valid. Please try again.");
             }
         }
     }

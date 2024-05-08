@@ -1,25 +1,26 @@
 using Newtonsoft.Json;
+using ReservationSystem;
 
-public static class GuideLoginMenu
+public class GuideLoginMenu : View
 {
     public static void ProcessLoginForm(string userCode)
     {
-        Console.WriteLine("\nGuide login\n");
-        Console.Write("Enter guide code: ");
-        string guideCode = Console.ReadLine();
-        Console.Write("Enter password: ");
-        string password = Console.ReadLine();
+        WriteLine("\nGuide login\n");
+        Write("Enter guide code: ");
+        string guideCode = ReadLine();
+        Write("Enter password: ");
+        string password = ReadLine();
 
         GuideBackEnd.LoadMyGuide(guideCode);
 
         if (GuideBackEnd.AuthenticateGuide(password))
         {
-            Console.WriteLine("\nAccess Granted!\n");
+            WriteLine("\nAccess Granted!\n");
             ShowGuideMenu();
         }
         else
         {
-            Console.WriteLine("\nAccess Denied. Invalid password.\n");
+            WriteLine("\nAccess Denied. Invalid password.\n");
         }
     }
 
@@ -28,12 +29,12 @@ public static class GuideLoginMenu
         bool continueRunning = true;
         while (continueRunning)
         {
-            Console.WriteLine("\nGuide Menu:");
-            Console.WriteLine("1. View personal tours");
-            Console.WriteLine("2. Exit");
+            WriteLine("\nGuide Menu:");
+            WriteLine("1. View personal tours");
+            WriteLine("2. Exit");
 
-            Console.Write("\nEnter your choice: ");
-            string choice = Console.ReadLine();
+            Write("\nEnter your choice: ");
+            string choice = ReadLine();
 
             switch (choice)
             {
@@ -44,7 +45,7 @@ public static class GuideLoginMenu
                     continueRunning = false;
                     break;
                 default:
-                    Console.WriteLine("Invalid choice. Please try again.");
+                    WriteLine("Invalid choice. Please try again.");
                     break;
             }
         }
@@ -57,12 +58,12 @@ public static class GuideLoginMenu
         {
             foreach (var tour in tours)
             {
-                Console.WriteLine($"Tour on {tour.StartTime.ToShortDateString()} from {tour.StartTime.ToShortTimeString()} to {tour.EndTime.ToShortTimeString()} with {tour.ExpectedVisitors.Count} visitors expected.");
+                WriteLine($"Tour on {tour.StartTime.ToShortDateString()} from {tour.StartTime.ToShortTimeString()} to {tour.EndTime.ToShortTimeString()} with {tour.ExpectedVisitors.Count} visitors expected.");
             }
         }
         else
         {
-            Console.WriteLine("No tours currently assigned.");
+            WriteLine("No tours currently assigned.");
         }
     }
 }

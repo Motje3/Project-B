@@ -1,4 +1,6 @@
-public class MenuPresentation
+using ReservationSystem;
+
+public class MenuPresentation : View
 {
     public static void ShowRestrictedMenu(Visitor visitor)
     {
@@ -11,14 +13,14 @@ public class MenuPresentation
         bool choosingOption = true;
         while (choosingOption)
         {
-            Console.WriteLine("Your current tour reservation is:");
+            WriteLine("Your current tour reservation is:");
             MenuLogic._printTourString(GuidedTour.FindTourById(visitor.AssingedTourId));
-            Console.WriteLine("\nPlease choose an option:");
-            Console.WriteLine("1. Change my reservation time");
-            Console.WriteLine("2. Cancel my tour reservation");
-            Console.WriteLine("3. Exit");
-            Console.Write("\nEnter your choice: ");
-            string choice = Console.ReadLine();
+            WriteLine("\nPlease choose an option:");
+            WriteLine("1. Change my reservation time");
+            WriteLine("2. Cancel my tour reservation");
+            WriteLine("3. Exit");
+            Write("\nEnter your choice: ");
+            string choice = ReadLine();
 
             choosingOption = logic.HandleFullMenuChoice(choice, visitor);
             
