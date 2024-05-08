@@ -23,7 +23,6 @@ public static class Ticket
         catch (FileNotFoundException fnfe)
         {
             Console.WriteLine("File not found: " + fnfe.Message);
-            // Handle the case where the file is not found - e.g., log the error, alert the user, etc.
         }
     }
 
@@ -37,8 +36,7 @@ public static class Ticket
         catch (Exception ex)
         {
             Console.WriteLine("An error occurred while checking the ticket code: " + ex.Message);
-            // Optionally handle errors when checking for the code
-            return false; // Or handle this scenario differently based on your application's needs
+            return false;
         }
     }
 }

@@ -12,14 +12,14 @@ public class Visitor
 
     public bool HasReservation(Visitor visitor)
     {
-        
-        return GuidedTour.CurrentTours.Any(tour => tour.ExpectedVisitors.Any(v => v.VisitorId == visitor.VisitorId));
+
+        return Tour.CurrentTours.Any(tour => tour.ExpectedVisitors.Any(v => v.VisitorId == visitor.VisitorId));
     }
 
     public static Visitor FindVisitorByTicketCode(string ticketCode)
     {
         Visitor foundVisitor = null;
-        foreach (GuidedTour currentTour in GuidedTour.CurrentTours)
+        foreach (Tour currentTour in Tour.CurrentTours)
         {
             foreach (Visitor currentVisitor in currentTour.ExpectedVisitors)
             {

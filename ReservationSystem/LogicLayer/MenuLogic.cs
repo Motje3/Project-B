@@ -39,13 +39,13 @@ public class MenuLogic
     public static bool JoinTour(Visitor visitor)
     {
 
-        List<GuidedTour> allowedTours = GuidedTour.PrintToursOpenToday();
+        List<Tour> allowedTours = Tour.PrintToursOpenToday();
         Console.WriteLine("\nPlease choose a number next to the tour you wish to join\n");
 
         string chosenTourNumber = Console.ReadLine();
         if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= allowedTours.Count)
         {
-            GuidedTour chosenTour = allowedTours[tourNumber - 1];
+            Tour chosenTour = allowedTours[tourNumber - 1];
             chosenTour.AddVisitor(visitor);
             try { Console.Clear(); } catch { }
             MenuPresentation.ShowFullMenu(visitor);
@@ -62,16 +62,16 @@ public class MenuLogic
     public static void ChangeTour(Visitor visitor)
     {
         Console.WriteLine("\nYour current tour reservation is:");
-        _printTourString(GuidedTour.FindTourById(visitor.AssingedTourId));
+        _printTourString(Tour.FindTourById(visitor.AssingedTourId));
 
-        List<GuidedTour> allowedTours = GuidedTour.PrintToursOpenToday();
+        List<Tour> allowedTours = Tour.PrintToursOpenToday();
         Console.WriteLine("\nPlease choose a number next to the tour you wish to join");
 
         string chosenTourNumber = Console.ReadLine();
         if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= allowedTours.Count)
         {
-            GuidedTour chosenTour = allowedTours[tourNumber - 1];
-            GuidedTour visitorsTour = GuidedTour.FindTourById(visitor.AssingedTourId);
+            Tour chosenTour = allowedTours[tourNumber - 1];
+            Tour visitorsTour = Tour.FindTourById(visitor.AssingedTourId);
             if (visitorsTour != null)
             {
                 visitorsTour.TransferVisitor(visitor, chosenTour);
@@ -91,7 +91,7 @@ public class MenuLogic
 
     private static bool CancelTour(Visitor visitor)
     {
-        GuidedTour visitorsTour = GuidedTour.FindTourById(visitor.AssingedTourId);
+        Tour visitorsTour = Tour.FindTourById(visitor.AssingedTourId);
         if (visitorsTour == null)
         {
             Console.WriteLine("Error: Unable to find the tour.");
@@ -103,12 +103,12 @@ public class MenuLogic
         Console.WriteLine("\nReservation has been canceled successfully.");
         Thread.Sleep(1500 * 1);
         try { Console.Clear(); } catch { }
-        
+
         return false; // Exit the loop.
     }
 
 
-    public static void _printTourString(GuidedTour tour)
+    public static void _printTourString(Tour tour)
     {
         if (tour == null) return;
         DateOnly tourDate = DateOnly.FromDateTime(tour.StartTime);

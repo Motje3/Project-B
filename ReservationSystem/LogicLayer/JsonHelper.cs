@@ -15,22 +15,22 @@ public static class JsonHelper
     }
 
     // Specialized method to handle list operations like add, delete, and update for GuidedTour
-    public static List<GuidedTour> LoadTours(string filePath)
+    public static List<Tour> LoadTours(string filePath)
     {
-        return LoadFromJson<List<GuidedTour>>(filePath);
+        return LoadFromJson<List<Tour>>(filePath);
     }
 
-    public static void UpdateTourList(List<GuidedTour> tours, string filePath)
+    public static void UpdateTourList(List<Tour> tours, string filePath)
     {
         SaveToJson(tours, filePath);
     }
 
 
 
-    public static void AddTour(GuidedTour tour, string filePath)
+    public static void AddTour(Tour tour, string filePath)
     {
-        List<GuidedTour> tours = GuidedTour.CompletedTours.Concat(GuidedTour.CurrentTours).ToList().Concat(GuidedTour.DeletedTours).ToList();
-        GuidedTour.CurrentTours.Add(tour);
+        List<Tour> tours = Tour.CompletedTours.Concat(Tour.CurrentTours).ToList().Concat(Tour.DeletedTours).ToList();
+        Tour.CurrentTours.Add(tour);
         UpdateTourList(tours, filePath);
     }
 
@@ -40,35 +40,35 @@ public static class JsonHelper
         var tourToRemove = tours.Find(t => t.TourId == tourId);
         if (tourToRemove != null)
         {
-            bool foundInCurrent = GuidedTour.CurrentTours.Find(t => t.TourId == tourId) != null;
+            bool foundInCurrent = Tour.CurrentTours.Find(t => t.TourId == tourId) != null;
             if (foundInCurrent)
-                {
-                    GuidedTour.CurrentTours.Remove(tourToRemove);
-                    GuidedTour.DeletedTours.Add(tourToRemove);
-                }
+            {
+                Tour.CurrentTours.Remove(tourToRemove);
+                Tour.DeletedTours.Add(tourToRemove);
+            }
             else
-                {
-                    GuidedTour.CompletedTours.Remove(tourToRemove);
-                    GuidedTour.DeletedTours.Add(tourToRemove);
-                }
+            {
+                Tour.CompletedTours.Remove(tourToRemove);
+                Tour.DeletedTours.Add(tourToRemove);
+            }
 
-            tours = GuidedTour.CompletedTours.Concat(GuidedTour.CurrentTours).ToList().Concat(GuidedTour.DeletedTours).ToList();
+            tours = Tour.CompletedTours.Concat(Tour.CurrentTours).ToList().Concat(Tour.DeletedTours).ToList();
             UpdateTourList(tours, filePath);
         }
     }
 
-    public static void EditTour(GuidedTour newTour, Guid tourId, string filePath)
+    public static void EditTour(Tour newTour, Guid tourId, string filePath)
     {
         var tours = LoadTours(filePath);
-        var CompletedTourIndex = GuidedTour.CompletedTours.FindIndex(t => t.TourId == tourId);
-        var CurrentTourIndex = GuidedTour.CurrentTours.FindIndex(t => t.TourId == tourId);
-        
-        if (CompletedTourIndex != -1)
-            GuidedTour.CompletedTours[CompletedTourIndex] = newTour;
-        else if (CurrentTourIndex != -1)
-            GuidedTour.CurrentTours[CurrentTourIndex] = newTour;
+        var CompletedTourIndex = Tour.CompletedTours.FindIndex(t => t.TourId == tourId);
+        var CurrentTourIndex = Tour.CurrentTours.FindIndex(t => t.TourId == tourId);
 
-        tours = GuidedTour.CompletedTours.Concat(GuidedTour.CurrentTours).ToList().Concat(GuidedTour.DeletedTours).ToList();
+        if (CompletedTourIndex != -1)
+            Tour.CompletedTours[CompletedTourIndex] = newTour;
+        else if (CurrentTourIndex != -1)
+            Tour.CurrentTours[CurrentTourIndex] = newTour;
+
+        tours = Tour.CompletedTours.Concat(Tour.CurrentTours).ToList().Concat(Tour.DeletedTours).ToList();
         UpdateTourList(tours, filePath);
     }
 }

@@ -1,7 +1,6 @@
-using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
-public class GuidedTour
+public class Tour
 {
     public int Duration { get; }
     public DateTime StartTime { get; private set; }
@@ -15,11 +14,11 @@ public class GuidedTour
     public Guide AssignedGuide { get; set; }
 
     public static List<DateOnly> Holidays { get; private set; }
-    public static List<GuidedTour> CurrentTours { get; private set; }
-    public static List<GuidedTour> DeletedTours { get; private set; }
-    public static List<GuidedTour> CompletedTours { get; private set; }
+    public static List<Tour> CurrentTours { get; private set; }
+    public static List<Tour> DeletedTours { get; private set; }
+    public static List<Tour> CompletedTours { get; private set; }
 
-    public GuidedTour(DateTime startTime)
+    public Tour(DateTime startTime)
     {
         StartTime = startTime;
         Duration = 20;
@@ -32,7 +31,7 @@ public class GuidedTour
 
     // constructor for json serializer DO NOT USE IT WILL PROBABLY BREAK SOMETHING
     [JsonConstructor]
-    public GuidedTour(int duration, DateTime startTime, DateTime endTime, int maxCapacity, Guid tourId, bool complete, bool deleted, Guide assignedGuide)
+    public Tour(int duration, DateTime startTime, DateTime endTime, int maxCapacity, Guid tourId, bool complete, bool deleted, Guide assignedGuide)
     {
         Duration = duration;
         StartTime = startTime;
@@ -44,11 +43,11 @@ public class GuidedTour
         AssignedGuide = assignedGuide;
     }
 
-    public GuidedTour Clone()
+    public Tour Clone()
     {
         var jsonString = JsonConvert.SerializeObject(this);
 
-        return JsonConvert.DeserializeObject<GuidedTour>(jsonString);
+        return JsonConvert.DeserializeObject<Tour>(jsonString);
     }
 
     public static string JsonFilePath = "./DataLayer/JSON-Files/GuidedTours.json";
@@ -57,44 +56,28 @@ public class GuidedTour
     {
         var newTour = Clone();
 
-        if (visitor is Guide guide)
+        // Check if visitor already exists, or if the tour cannot accept more visitors
+        if (ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode) ||
+            ExpectedVisitors.Count >= MaxCapacity ||
+            Deleted ||
+            Completed)
         {
-            newTour.AssignedGuide = guide;
-            newTour.AssignedGuide.AssingedTourId = TourId;
-            AssignedGuide = guide;
-            AssignedGuide.AssingedTourId = TourId;
+            return; // Exit early if any condition is met that prevents adding a new visitor
         }
-        else
-        {
-            // Check if visitor already exists, or if the tour cannot accept more visitors
-            if (ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode) ||
-                ExpectedVisitors.Count >= MaxCapacity ||
-                Deleted ||
-                Completed)
-            {
-                return; // Exit early if any condition is met that prevents adding a new visitor
-            }
 
-            // Set the tour ID for the visitor and add them to both the current and the new cloned tour lists
-            visitor.AssingedTourId = TourId;
-            newTour.ExpectedVisitors.Add(visitor);
-            ExpectedVisitors.Add(visitor);
-        }
-        JsonHelper.EditTour(newTour, TourId, GuidedTour.JsonFilePath);
+        // Set the tour ID for the visitor and add them to both the current and the new cloned tour lists
+        visitor.AssingedTourId = TourId;
+        newTour.ExpectedVisitors.Add(visitor);
+        ExpectedVisitors.Add(visitor);
+
+        JsonHelper.EditTour(newTour, TourId, JsonFilePath);
     }
+
 
 
     public void RemoveVisitor(Visitor visitor)
     {
-        // Check if the visitor is a guide
-        if (visitor is Guide)
-        {
-            // If the visitor is a guide, remove their assignment
-            AssignedGuide = null;
-            return;
-        }
 
-        // Check if the visitor is found
         bool foundVisitor = false;
         foreach (Visitor currentVisitor in ExpectedVisitors)
         {
@@ -109,7 +92,7 @@ public class GuidedTour
             return;
         }
         // Create a new tour to modify
-        GuidedTour newTour = this.Clone();
+        Tour newTour = Clone();
 
         // Remove the visitor from ExpectedVisitors
         for (int visitorIndex = 0; visitorIndex < newTour.ExpectedVisitors.Count; visitorIndex++)
@@ -122,12 +105,11 @@ public class GuidedTour
             }
         }
 
-        // Update the tour
-        JsonHelper.EditTour(newTour, TourId, GuidedTour.JsonFilePath);
+        JsonHelper.EditTour(newTour, TourId, JsonFilePath);
     }
 
 
-    public void TransferVisitor(Visitor visitor, GuidedTour newTour)
+    public void TransferVisitor(Visitor visitor, Tour newTour)
     {
         if (visitor == null)
         { return; }
@@ -139,10 +121,10 @@ public class GuidedTour
 
     public static void _updateCurrentTours()
     {
-        var allTours = JsonHelper.LoadFromJson<List<GuidedTour>>(JsonFilePath);
-        CurrentTours = new List<GuidedTour>();
-        CompletedTours = new List<GuidedTour>();
-        DeletedTours = new List<GuidedTour>();
+        var allTours = JsonHelper.LoadFromJson<List<Tour>>(JsonFilePath);
+        CurrentTours = new List<Tour>();
+        CompletedTours = new List<Tour>();
+        DeletedTours = new List<Tour>();
 
         foreach (var tour in allTours)
         {
@@ -158,7 +140,7 @@ public class GuidedTour
     //Needs to be adjusted to allow only changes to upcoming tours and never tours in the same day, so no need to check for expected visitors
     public void ChangeCapacity(int newCapacity)
     {
-        GuidedTour newTour = this.Clone();
+        Tour newTour = Clone();
         int currMinCapacity = ExpectedVisitors.Count;
 
         if (newCapacity < currMinCapacity)
@@ -177,25 +159,24 @@ public class GuidedTour
 
     public void ChangeTime(DateTime newDate)
     {
-        GuidedTour newTour = Clone();
+        Tour newTour = Clone();
         newTour.StartTime = newDate;
         newTour.EndTime = newTour.StartTime.AddMinutes(newTour.Duration);
         JsonHelper.EditTour(newTour, TourId, JsonFilePath);
     }
 
 
-    static GuidedTour()
+    static Tour()
     {
-        Holidays = returnHolidays(DateTime.Today.Year);
         CurrentTours = new() { };
         _updateCurrentTours();
     }
 
 
 
-    public static GuidedTour FindTourById(Guid id)
+    public static Tour FindTourById(Guid id)
     {
-        var allTours = CurrentTours.Concat(GuidedTour.CompletedTours).Concat(GuidedTour.DeletedTours);
+        var allTours = CurrentTours.Concat(CompletedTours).Concat(DeletedTours);
 
         return allTours.FirstOrDefault(tour => tour.TourId == id);
     }
@@ -204,13 +185,13 @@ public class GuidedTour
     //  - checks which tours have already started
     //  - checks which tours are today
     //  - at the end sorts starting from the earliest tour
-    public static List<GuidedTour> ReturnAllCurrentToursFromToday()
+    public static List<Tour> ReturnAllCurrentToursFromToday()
     {
-        List<GuidedTour> tours = new();
+        List<Tour> tours = new();
 
         for (int tourIndex = 0; tourIndex < CurrentTours.Count; tourIndex++)
         {
-            GuidedTour currentTour = CurrentTours[tourIndex];
+            Tour currentTour = CurrentTours[tourIndex];
             DateOnly TommorowDate = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
             DateTime TommorowDateTime = new(TommorowDate.Year, TommorowDate.Month, TommorowDate.Day);
 
@@ -229,15 +210,15 @@ public class GuidedTour
         return tours;
     }
 
-    public static List<GuidedTour> ReturnToursFromNextDay()
+    public static List<Tour> ReturnToursFromNextDay()
     {
-        List<GuidedTour> tours = new();
+        List<Tour> tours = new();
         DateOnly TodayDate = DateOnly.FromDateTime(DateTime.Today);
         DateOnly NextDayDate = new(1, 1, 1);
 
         for (int tourIndex = 0; tourIndex < CurrentTours.Count; tourIndex++)
         {
-            GuidedTour currentTour = CurrentTours[tourIndex];
+            Tour currentTour = CurrentTours[tourIndex];
             DateOnly currTourDate = DateOnly.FromDateTime(currentTour.StartTime);
             bool tourIsToday = currTourDate == TodayDate;
             if (tourIsToday || currTourDate.DayOfWeek == DayOfWeek.Monday)
@@ -265,15 +246,15 @@ public class GuidedTour
     // Prints all tours from today that are not full yet
     //  - Also returns a list of tours that are not full yet
     //  - Also prints tours from tommorw until 10 allowedTours if less than 10 are present
-    public static List<GuidedTour> PrintToursOpenToday()
+    public static List<Tour> PrintToursOpenToday()
     {
         // Print all avaible tours could be simplified in a methode that is in guidedtour. 
-        List<GuidedTour> allowedTours = new();
-        List<GuidedTour> todayTours = GuidedTour.ReturnAllCurrentToursFromToday();
+        List<Tour> allowedTours = new();
+        List<Tour> todayTours = Tour.ReturnAllCurrentToursFromToday();
         int allowedTourIndex = 0;
         for (int tourIndex = 0; tourIndex < todayTours.Count; tourIndex++)
         {
-            GuidedTour currentTour = todayTours[tourIndex];
+            Tour currentTour = todayTours[tourIndex];
 
             int spacesLeftInTour = currentTour.MaxCapacity - currentTour.ExpectedVisitors.Count;
             if (spacesLeftInTour >= 0)
@@ -290,12 +271,12 @@ public class GuidedTour
             }
         }
 
-        List<GuidedTour> toursTommorow = GuidedTour.ReturnToursFromNextDay();
+        List<Tour> toursTommorow =   ReturnToursFromNextDay();
         int tommorowTourIndex = 0;
         // if they are less than 10 allowedTours present, add tours from tommorow until 10 
         while (allowedTours.Count < 10)
         {
-            GuidedTour currentTour = toursTommorow[tommorowTourIndex];
+            Tour currentTour = toursTommorow[tommorowTourIndex];
 
             int spacesLeftInTour = currentTour.MaxCapacity - currentTour.ExpectedVisitors.Count;
             if (spacesLeftInTour >= 0)
@@ -318,98 +299,11 @@ public class GuidedTour
     }
 
     //Not needed as Guid can never be the same, the chances of aliens bringing us a gift tomorrow is higher
-    private static bool CheckTourId(Guid id)
+    private static bool ReturnTourFromID(Guid id)
     {
         // Combine all lists and check if any tour has the specified ID.
         return CurrentTours.Concat(CompletedTours).Concat(DeletedTours).Any(tour => tour.TourId == id);
     }
 
 
-    //ig we might need it later
-    private static List<DateOnly> returnHolidays(int year)
-    {
-        DateOnly Nieuwjaarsdag = new(year, 1, 1); // Nieuwjaarsdag: maandag 1 januari 2024
-        DateOnly GoedeVrijdag = new(year, 3, 29); // Goede Vrijdag: vrijdag 29 maart 2024
-        DateOnly DagTussen = new(year, 3, 30); // Pasen (eerste en tweede paasdag): zondag 31 maart en maandag 1 april 2024
-        DateOnly Pasen1 = new(year, 3, 31); // Pasen (eerste en tweede paasdag): zondag 31 maart en maandag 1 april 2024
-        DateOnly Pasen2 = new(year, 4, 1); // Pasen (eerste en tweede paasdag): zondag 31 maart en maandag 1 april 2024
-        DateOnly Koningsdag = new(year, 4, 27); // Koningsdag: zaterdag 27 april 2024
-        DateOnly Bevrijdingsdag = new(year, 5, 5); // Bevrijdingsdag: zondag 5 mei 2024
-        DateOnly Hemelvaartsdag = new(year, 5, 9); // Hemelvaartsdag: donderdag 9 mei 2024
-        DateOnly Pinksteren1 = new(year, 5, 19); // Pinksteren (eerste en tweede pinksterdag): zondag 19 en maandag 20 mei 2024
-        DateOnly Pinksteren2 = new(year, 5, 20); // Pinksteren (eerste en tweede pinksterdag): zondag 19 en maandag 20 mei 2024
-        DateOnly Kerstmis1 = new(year, 12, 25); // Kerstmis (eerste en tweede kerstdag): woensdag 25 en donderdag 26 december 2024
-        DateOnly Kerstmis2 = new(year, 12, 26); // Kerstmis (eerste en tweede kerstdag): woensdag 25 en donderdag 26 december 2024
-
-        return new() { Nieuwjaarsdag, GoedeVrijdag, DagTussen, Pasen1, Pasen2, Koningsdag, Bevrijdingsdag, Hemelvaartsdag, Pinksteren1, Pinksteren2, Kerstmis1, Kerstmis2 };
-    }
-
-    //no idea why
-    private static List<DateOnly> returnEveryMondayThisYear()
-    {
-        List<DateOnly> mondays = new();
-        for (int dayIndex = 0; dayIndex < 365; dayIndex++)
-        {
-            DateOnly day = new(DateTime.Today.Year, 1, 1);
-            day = day.AddDays(dayIndex - 1);
-
-            if (day.DayOfWeek == DayOfWeek.Monday)
-            {
-                mondays.Add(day);
-            }
-        }
-        return mondays;
-    }
-
-
-    // Checks if a given tour is already in the json, based on the TourID. (Can be written in one line)
-    // private static bool _checkIfInFile(GuidedTour tour)
-    // {
-    //     _updateCurrentTours();
-    //     return CurrentTours.Any(currentTour => currentTour.TourId == tour.TourId);
-    // }
-
-
-    // Returns all tours from this year (Why? )
-    public static List<GuidedTour> ReturnAllToursFromThisYear()
-    {
-        int thisYear = DateTime.Today.Year;
-        DateOnly yearStart = new(thisYear, 1, 1);
-        List<GuidedTour> tours = new();
-
-        for (int dayIndex = 0; dayIndex < 365; dayIndex++)
-        {
-            DateOnly day = yearStart.AddDays(dayIndex);
-            List<GuidedTour> toursToday = _makeToursForDay(day);
-            foreach (GuidedTour tour in toursToday)
-            {
-                tours.Add(tour);
-            }
-        }
-        return tours;
-    }
-
-    // makes all possible tour for a given date (might be needed for admin to make tours)
-    private static List<GuidedTour> _makeToursForDay(DateOnly date)
-    {
-        int year = date.Year;
-        int month = date.Month;
-        int day = date.Day;
-        List<GuidedTour> tours = new();
-        List<int> hours = new() { 9, 10, 11, 12, 13, 14, 15, 16, 17 };
-        for (int hourIndex = 0; hourIndex < hours.Count; hourIndex++)
-        {
-            int hour = hours[hourIndex];
-            GuidedTour Tour1 = new GuidedTour(new(year, month, day, hour, 0, 0));
-            GuidedTour Tour2 = new GuidedTour(new(year, month, day, hour, 20, 0));
-            GuidedTour Tour3 = new GuidedTour(new(year, month, day, hour, 40, 0));
-            tours.Add(Tour1);
-            tours.Add(Tour2);
-            tours.Add(Tour3);
-        }
-
-        return tours;
-    }
-
-    
 }

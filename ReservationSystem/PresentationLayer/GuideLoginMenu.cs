@@ -10,9 +10,8 @@ public static class GuideLoginMenu
         Console.Write("Enter password: ");
         string password = Console.ReadLine();
 
-        GuideBackEnd.LoadMyGuide(guideCode);
 
-        if (GuideBackEnd.AuthenticateGuide(password))
+        if (GuideMenuBackEnd.AuthenticateGuide(password))
         {
             Console.WriteLine("\nAccess Granted!\n");
             ShowGuideMenu();
@@ -38,7 +37,7 @@ public static class GuideLoginMenu
             switch (choice)
             {
                 case "1":
-                    DisplayGuideTours();
+                    //show guidedtours
                     break;
                 case "2":
                     continueRunning = false;
@@ -50,19 +49,5 @@ public static class GuideLoginMenu
         }
     }
 
-    private static void DisplayGuideTours()
-    {
-        var tours = GuideBackEnd.GetGuideTours();
-        if (tours.Any())
-        {
-            foreach (var tour in tours)
-            {
-                Console.WriteLine($"Tour on {tour.StartTime.ToShortDateString()} from {tour.StartTime.ToShortTimeString()} to {tour.EndTime.ToShortTimeString()} with {tour.ExpectedVisitors.Count} visitors expected.");
-            }
-        }
-        else
-        {
-            Console.WriteLine("No tours currently assigned.");
-        }
-    }
+    
 }

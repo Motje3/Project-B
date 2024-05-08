@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 public class GuideTest
 {
     private const string JSONPath = "./DataLayer/JSON-Files/GuidedTours.json";
-    private List<GuidedTour> _toursAtTheStart = new();
+    private List<Tour> _toursAtTheStart = new();
 
     [TestInitialize]
     public void Setup()
@@ -29,11 +29,11 @@ public class GuideTest
     public void TestJoinTour()
     {
         DateTime starttime = new DateTime(2024, 5, 4, 9, 00, 00);
-        GuidedTour tour1 = new GuidedTour(starttime);
+        Tour tour1 = new Tour(starttime);
         //JsonHelper.AddTour(tour1);
         Guide John = new Guide("111", tour1.TourId);
 
-        tour1.AddVisitor(John);
+        //tour1.AddVisitor(John);
         Visitor Alica = new Visitor("222");
         Visitor Ben = new("333");
         tour1.AddVisitor(Alica);
@@ -42,7 +42,7 @@ public class GuideTest
         John.CheckInVisitor(Alica);  // do twice to check if it is NOT creating dublicate expected visitor
         John.CheckInVisitor(Ben);
 
-        List<GuidedTour> currTours = _readJSON();
+        List<Tour> currTours = _readJSON();
         var currTour = currTours[0]; // JSON[0] 
         var PresentVisitors = currTour.PresentVisitors; // JSON[0] => PresentVisitors
         //var visitor = PresentVisitors[0]; // access visitor object by index
@@ -57,19 +57,20 @@ public class GuideTest
     {
         // Arrange
         DateTime startTime = new(2030, 1, 4, 9, 0, 0);
-        GuidedTour existingTour = new GuidedTour(startTime)
-        { 
-            TourId = Guid.NewGuid(), Deleted = true 
+        Tour existingTour = new Tour(startTime)
+        {
+            TourId = Guid.NewGuid(),
+            Deleted = true
         };
-        Guide guide = new Guide("456",existingTour.TourId);
-        guide.AssingedTourId = existingTour.TourId;
-        existingTour.AddVisitor(guide);
+        Guide guide = new Guide("456", existingTour.TourId);
+        guide.AssignedTourId = existingTour.TourId;
+        //existingTour.AddVisitor(guide);
 
         //GuidedTour.AddTourToJSON(existingTour);
 
         // Act
         guide.CompleteTour();
-        List<GuidedTour> tours = _readJSON();
+        List<Tour> tours = _readJSON();
 
         // Assert
         Assert.IsTrue(existingTour.Completed == false);
@@ -81,17 +82,18 @@ public class GuideTest
     {
         // Arrange
         DateTime startTime = new(2030, 1, 4, 9, 0, 0);
-        GuidedTour existingTour = new GuidedTour(startTime)
+        Tour existingTour = new Tour(startTime)
         {
-            TourId = Guid.NewGuid(), Deleted = false 
+            TourId = Guid.NewGuid(),
+            Deleted = false
         };
-        Guide guide = new Guide("789",existingTour.TourId);
-        guide.AssingedTourId = existingTour.TourId;
-        existingTour.AddVisitor(guide);
+        Guide guide = new Guide("789", existingTour.TourId);
+        guide.AssignedTourId = existingTour.TourId;
+        //existingTour.AddVisitor(guide);
 
         // Act
         guide.CompleteTour();
-        List<GuidedTour> tours = _readJSON();
+        List<Tour> tours = _readJSON();
 
         // Assert
         // Verify that the tour is marked as completed
@@ -119,25 +121,25 @@ public class GuideTest
         using (StreamReader reader = new StreamReader(JSONPath))
         {
             string jsonData = reader.ReadToEnd();
-            _toursAtTheStart = JsonConvert.DeserializeObject<List<GuidedTour>>(jsonData);
+            _toursAtTheStart = JsonConvert.DeserializeObject<List<Tour>>(jsonData);
         }
     }
     private void _emptyJSON()
     {
         using (StreamWriter writer = new StreamWriter(JSONPath))
         {
-            List<GuidedTour> empty = new();
+            List<Tour> empty = new();
             string List2Json = JsonConvert.SerializeObject(empty, Formatting.Indented);
             writer.Write(List2Json);
         }
     }
 
-    private List<GuidedTour> _readJSON()
+    private List<Tour> _readJSON()
     {
         using (StreamReader reader = new StreamReader(JSONPath))
         {
             string jsonData = reader.ReadToEnd();
-            return JsonConvert.DeserializeObject<List<GuidedTour>>(jsonData);
+            return JsonConvert.DeserializeObject<List<Tour>>(jsonData);
         }
     }
 }

@@ -43,7 +43,7 @@ public static class AdminLoginMenu
                     AdminBackEnd.ChangeTourTime();
                     break;
                 case "3":
-                    GuidedTour.PrintToursOpenToday();
+                    Tour.PrintToursOpenToday();
                     break;
                 case "4":
                     continueRunning = false;

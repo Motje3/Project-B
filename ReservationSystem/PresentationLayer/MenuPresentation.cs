@@ -12,7 +12,7 @@ public class MenuPresentation
         while (choosingOption)
         {
             Console.WriteLine("Your current tour reservation is:");
-            MenuLogic._printTourString(GuidedTour.FindTourById(visitor.AssingedTourId));
+            MenuLogic._printTourString(Tour.FindTourById(visitor.AssingedTourId));
             Console.WriteLine("\nPlease choose an option:");
             Console.WriteLine("1. Change my reservation time");
             Console.WriteLine("2. Cancel my tour reservation");
@@ -21,9 +21,9 @@ public class MenuPresentation
             string choice = Console.ReadLine();
 
             choosingOption = logic.HandleFullMenuChoice(choice, visitor);
-            
 
-        
+
+
         }
     }
 }
