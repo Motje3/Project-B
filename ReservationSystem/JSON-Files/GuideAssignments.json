@@ -1,0 +1,14 @@
+{
+    "Guides": [
+      {
+        "GuideId": "guid-1",
+        "Name": "John Doe",
+        "AssignedTourIds": ["tour-guid-1", "tour-guid-2"]
+      },
+      {
+        "GuideId": "guid-2",
+        "Name": "Jane Smith",
+        "AssignedTourIds": ["tour-guid-3"]
+      }
+    ]
+}

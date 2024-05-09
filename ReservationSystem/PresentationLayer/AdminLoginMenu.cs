@@ -37,7 +37,7 @@ public static class AdminLoginMenu
             switch (choice)
             {
                 case "1":
-                    Tour.AssignGuideToTour();
+                    Guide.AssignGuideToTour();
                     break;
                 case "2":
                     AdminBackEnd.ChangeTourTime();

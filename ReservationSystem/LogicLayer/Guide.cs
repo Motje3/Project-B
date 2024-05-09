@@ -64,4 +64,33 @@ public class Guide
         Tour.SaveTours(); // Save all tours, reflecting the completed state
         Console.WriteLine("Tour marked as completed.");
     }
+
+    public static void AssignGuideToTour()
+    {
+        var unassignedTours = Tour.TodaysTours.Where(t => t.AssignedGuide == null).ToList();
+        if (!unassignedTours.Any())
+        {
+            Console.WriteLine("All tours today have been assigned guides.");
+            return;
+        }
+
+        Console.WriteLine("Available Tours for Assignment:");
+        for (int i = 0; i < unassignedTours.Count; i++)
+        {
+            Console.WriteLine($"{i + 1}: {unassignedTours[i].StartTime} - {unassignedTours[i].EndTime}");
+        }
+
+        Console.Write("\nSelect a tour number to assign a guide: ");
+        int tourChoice = Convert.ToInt32(Console.ReadLine()) - 1;
+
+        Console.Write("Enter Guide Name: ");
+        string guideName = Console.ReadLine();
+
+        // Creating a new Guide (assuming no guide exists with this name, otherwise fetch existing)
+        Guide newGuide = new Guide(guideName, unassignedTours[tourChoice].TourId);
+        unassignedTours[tourChoice].AssignedGuide = newGuide;
+        Tour.SaveTours(); // Ensure all changes are saved
+
+        Console.WriteLine($"Guide {newGuide.Name} assigned to tour starting at {unassignedTours[tourChoice].StartTime}");
+    }
 }
