@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
 public static class Authenticator
 {
     private class Credential
@@ -19,7 +14,7 @@ public static class Authenticator
 
     private static List<Credential> LoadUserCredentials()
     {
-        string filePath = "./DataLayer/JSON-Files/AdminCredentials.json";
+        string filePath = "./JSON-Files/AdminCredentials.json";
         if (File.Exists(filePath))
         {
             return JsonHelper.LoadFromJson<List<Credential>>(filePath);

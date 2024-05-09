@@ -17,7 +17,12 @@
     "EndTime": "2024-05-09T09:40:00+02:00",
     "Duration": 20,
     "MaxCapacity": 13,
-    "ExpectedVisitors": [],
+    "ExpectedVisitors": [
+      {
+        "VisitorId": "134eda76-d335-4076-8052-d820bce96cfa",
+        "TicketCode": "111"
+      }
+    ],
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
@@ -31,7 +36,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [
       {
-        "VisitorId": "a6681dd4-6ee5-4d5e-b018-42db7b3bd871",
+        "VisitorId": "bbc01a2b-e6fe-4990-b8fe-fce605114b2e",
         "TicketCode": "222"
       }
     ],

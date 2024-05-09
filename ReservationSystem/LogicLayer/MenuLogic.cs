@@ -37,8 +37,11 @@ public class MenuLogic
         {
             Tour chosenTour = availableTours[tourNumber - 1];
             chosenTour.AddVisitor(visitor);
-            Tour.SaveTours(); // Ensure to save changes to the JSON or data source
+            Tour.SaveTours();
+            try { Console.Clear(); } catch { }
             Console.WriteLine("Tour joined successfully!");
+            Thread.Sleep(2000);
+            try { Console.Clear(); } catch { }
             return true;
         }
         else
@@ -53,7 +56,7 @@ public class MenuLogic
         // Show current reservation details
         string reservationDetails = Visitor.GetCurrentReservation(visitor);
         Console.WriteLine(reservationDetails);
-
+        
         // Display available tours and allow user to choose
         Tour.ShowAvailableTours();
         Console.WriteLine("\nPlease choose a number next to the new tour you wish to join");
@@ -92,9 +95,9 @@ public class MenuLogic
         }
 
         visitorsTour.RemoveVisitor(visitor);
-
+        try { Console.Clear(); } catch { }
         Console.WriteLine("\nReservation has been canceled successfully.");
-        Thread.Sleep(1500);
+        Thread.Sleep(2000);
         try { Console.Clear(); } catch { }
 
         return false;

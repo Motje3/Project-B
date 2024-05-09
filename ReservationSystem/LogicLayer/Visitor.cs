@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-
 public class Visitor
 {
     public Guid VisitorId { get; private set; }
@@ -35,12 +32,12 @@ public class Visitor
         {
             // If the tour is found, return formatted reservation details
             string formattedStartTime = assignedTour.StartTime.ToString("h:mm tt");
-            return $"Your current reservation is at {formattedStartTime}.";
+            return $"\nYour current reservation is at {formattedStartTime}.\n";
         }
         else
         {
             // If no reservation is found, return this message
-            return "You currently have no reservation.";
+            return "\nYou currently have no reservation.\n";
         }
     }
 

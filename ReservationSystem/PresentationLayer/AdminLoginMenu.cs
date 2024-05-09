@@ -47,6 +47,7 @@ public static class AdminLoginMenu
                     break;
                 case "4":
                     continueRunning = false;
+                    try { Console.Clear(); } catch { }
                     break;
                 default:
                     Console.WriteLine("Invalid choice. Please try again.");

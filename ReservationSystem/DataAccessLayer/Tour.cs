@@ -1,8 +1,4 @@
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 public class Tour
 {
@@ -17,8 +13,8 @@ public class Tour
     public bool Deleted { get; set; }
     public Guide AssignedGuide { get; set; }
 
-    public static string JsonFilePath => $"./DataLayer/JSON-Files/Tours-{DateTime.Today:yyyyMMdd}.json";
-    public static string JsonTourSettingsPath => $"./DataLayer/JSON-Files/TourSettings.json";
+    public static string JsonFilePath => $"./JSON-Files/Tours-{DateTime.Today:yyyyMMdd}.json";
+    public static string JsonTourSettingsPath => $"./JSON-Files/TourSettings.json";
 
     public static List<Tour> TodaysTours { get; private set; } = new List<Tour>();
 
@@ -33,7 +29,6 @@ public class Tour
         Deleted = deleted;
         AssignedGuide = assignedGuide;
     }
-
 
 
     public static void InitializeTours()

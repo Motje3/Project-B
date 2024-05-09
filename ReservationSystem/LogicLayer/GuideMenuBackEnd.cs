@@ -25,7 +25,7 @@ public static class GuideMenuBackEnd
 
     private static List<Credential> LoadUserCredentials()
     {
-        string filePath = "./DataLayer/JSON-Files/GidsCredentials.json";
+        string filePath = "./JSON-Files/GidsCredentials.json";
         try
         {
             if (File.Exists(filePath))

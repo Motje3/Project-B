@@ -41,6 +41,7 @@ public static class GuideLoginMenu
                     break;
                 case "2":
                     continueRunning = false;
+                    try { Console.Clear(); } catch { }
                     break;
                 default:
                     Console.WriteLine("Invalid choice. Please try again.");
