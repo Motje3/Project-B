@@ -4,12 +4,11 @@ public static class AdminLoginMenu
     {
         Console.WriteLine("\nAdmin login\n");
 
-        Console.Write("Enter username: ");
-        string username = Console.ReadLine();
+        
         Console.Write("Enter password: ");
         string password = Console.ReadLine();
 
-        if (Authenticator.AuthenticateUser(username, password))
+        if (Authenticator.AuthenticateUser( password))
         {
             Console.WriteLine("\nAccess Granted!\n");
             ShowAdminMenu();
@@ -26,7 +25,8 @@ public static class AdminLoginMenu
         while (continueRunning)
         {
             Console.WriteLine("\nAdmin Menu:");
-            Console.WriteLine("1. Change capacity of a tour");
+            Console.WriteLine("1. Assign a guide to today's tours");
+            Console.WriteLine("2. Assign guides for all upcoming tours.");
             Console.WriteLine("2. Change time of a tour");
             Console.WriteLine("3. View Tours");
             Console.WriteLine("4. Exit");
@@ -37,7 +37,7 @@ public static class AdminLoginMenu
             switch (choice)
             {
                 case "1":
-                    AdminBackEnd.ChangeTourCapacity();
+                    Tour.AssignGuideToTour();
                     break;
                 case "2":
                     AdminBackEnd.ChangeTourTime();

@@ -9,7 +9,11 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "ede7e186-103d-4277-80eb-dfc6449481aa",
+      "Name": "Motje",
+      "AssignedTourId": "970505df-e5fb-446f-af3d-a81a0d0a4089"
+    }
   },
   {
     "TourId": "9c8a5974-86e9-43eb-87d6-1b585f678258",
@@ -19,7 +23,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [
       {
-        "VisitorId": "134eda76-d335-4076-8052-d820bce96cfa",
+        "VisitorId": "e591d811-19ce-4b41-bdb8-33278b7d3dce",
         "TicketCode": "111"
       }
     ],
@@ -36,7 +40,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [
       {
-        "VisitorId": "bbc01a2b-e6fe-4990-b8fe-fce605114b2e",
+        "VisitorId": "2b7d02fb-b23f-464b-98e0-0e0ec1418bf1",
         "TicketCode": "222"
       }
     ],

@@ -6,10 +6,10 @@ public static class Authenticator
         public string Password { get; set; }
     }
 
-    public static bool AuthenticateUser(string username, string password)
+    public static bool AuthenticateUser( string password)
     {
         List<Credential> credentials = LoadUserCredentials();
-        return credentials.Any(cred => cred.Username == username && cred.Password == password);
+        return credentials.Any(cred => cred.Password == password);
     }
 
     private static List<Credential> LoadUserCredentials()

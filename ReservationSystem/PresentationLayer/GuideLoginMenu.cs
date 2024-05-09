@@ -5,8 +5,7 @@ public static class GuideLoginMenu
     public static void ProcessLoginForm(string userCode)
     {
         Console.WriteLine("\nGuide login\n");
-        Console.Write("Enter guide code: ");
-        string guideCode = Console.ReadLine();
+        
         Console.Write("Enter password: ");
         string password = Console.ReadLine();
 

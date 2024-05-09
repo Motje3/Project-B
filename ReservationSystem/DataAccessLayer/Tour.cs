@@ -139,4 +139,34 @@ public class Tour
     {
         TodaysTours = JsonConvert.DeserializeObject<List<Tour>>(File.ReadAllText(JsonFilePath));
     }
+
+
+    public static void AssignGuideToTour()
+    {
+        var unassignedTours = TodaysTours.Where(t => t.AssignedGuide == null).ToList();
+        if (!unassignedTours.Any())
+        {
+            Console.WriteLine("All tours today have been assigned guides.");
+            return;
+        }
+
+        Console.WriteLine("Available Tours for Assignment:");
+        for (int i = 0; i < unassignedTours.Count; i++)
+        {
+            Console.WriteLine($"{i + 1}: {unassignedTours[i].StartTime} - {unassignedTours[i].EndTime}");
+        }
+
+        Console.Write("\nSelect a tour number to assign a guide: ");
+        int tourChoice = Convert.ToInt32(Console.ReadLine()) - 1;
+
+        Console.Write("Enter Guide Name: ");
+        string guideName = Console.ReadLine();
+
+        // Creating a new Guide (assuming no guide exists with this name, otherwise fetch existing)
+        Guide newGuide = new Guide(guideName, unassignedTours[tourChoice].TourId);
+        unassignedTours[tourChoice].AssignedGuide = newGuide;
+        SaveTours(); // Ensure all changes are saved
+
+        Console.WriteLine($"Guide {newGuide.Name} assigned to tour starting at {unassignedTours[tourChoice].StartTime}");
+    }
 }
