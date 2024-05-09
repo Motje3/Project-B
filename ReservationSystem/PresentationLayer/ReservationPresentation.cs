@@ -30,13 +30,14 @@ public static class ReservationPresentation
                 Console.WriteLine("\nWelcome, your ticket is confirmed!\n");
                 if (currentVisitor.HasReservation(currentVisitor))
                 {
+                    
                     MenuPresentation.ShowFullMenu(currentVisitor);
                 }
                 else
                 {
                     MenuPresentation.ShowRestrictedMenu(currentVisitor);
                 }
-                continue; // Continue will start the loop from the beginning
+                continue;
             }
             else
             {

@@ -1,42 +1,48 @@
+using System;
+using System.Linq;
+
 public class Visitor
 {
     public Guid VisitorId { get; private set; }
-    public string TicketCode { get; set; } // Add ticket code property
-    public Guid AssingedTourId { get; set; }
+    public string TicketCode { get; private set; } // Make TicketCode immutable from outside
 
+    // Constructor with ticket code parameter to ensure all visitors have a ticket code when created
     public Visitor(string ticketCode)
     {
         VisitorId = Guid.NewGuid();
-        TicketCode = ticketCode; // Store the ticket code
+        TicketCode = ticketCode; // Initialize ticket code upon creation
     }
 
+    // Checks if the visitor has a reservation in any of the current tours
     public bool HasReservation(Visitor visitor)
     {
-
-        return Tour.CurrentTours.Any(tour => tour.ExpectedVisitors.Any(v => v.VisitorId == visitor.VisitorId));
+        return Tour.TodaysTours.Any(tour => tour.ExpectedVisitors.Contains(this));
     }
 
+    // Static method to find a visitor by ticket code in the list of current tours
     public static Visitor FindVisitorByTicketCode(string ticketCode)
     {
-        Visitor foundVisitor = null;
-        foreach (Tour currentTour in Tour.CurrentTours)
-        {
-            foreach (Visitor currentVisitor in currentTour.ExpectedVisitors)
-            {
-                if (currentVisitor == null)
-                {
-                    continue; // Skip to the next visitor if the current one is null
-                }
-                if (currentVisitor.TicketCode == ticketCode)
-                {
-                    foundVisitor = currentVisitor;
-                    break; // Exit the inner loop as we found the visitor
-                }
-            }
-            if (foundVisitor != null)
-                break;
-        }
-
-        return foundVisitor;
+        return Tour.TodaysTours.SelectMany(tour => tour.ExpectedVisitors).FirstOrDefault(visitor => visitor?.TicketCode == ticketCode);
     }
+
+    public static string GetCurrentReservation(Visitor visitor)
+    {
+        // Find the tour that this visitor is part of by searching for the ticket code
+        var assignedTour = Tour.TodaysTours
+                               .FirstOrDefault(tour => tour.ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode));
+
+        if (assignedTour != null)
+        {
+            // If the tour is found, return formatted reservation details
+            string formattedStartTime = assignedTour.StartTime.ToString("h:mm tt");
+            return $"Your current reservation is at {formattedStartTime}.";
+        }
+        else
+        {
+            // If no reservation is found, return this message
+            return "You currently have no reservation.";
+        }
+    }
+
+
 }

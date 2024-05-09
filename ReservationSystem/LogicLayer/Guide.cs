@@ -13,46 +13,34 @@ public class Guide
 
     public void CheckInVisitor(Visitor visitor)
     {
-        // Retrieve the tour using the visitor's assigned tour ID
-        Tour Mytour = Tour.FindTourById(this.AssignedTourId);
+        Tour myTour = Tour.FindTourById(this.AssignedTourId);
 
-        if (Mytour == null)
+        if (myTour == null)
         {
             Console.WriteLine("\nNo matching tour found.");
             return;
         }
 
-        Tour newTour = Mytour.Clone();  // Clone the tour to create a modifiable copy
-
-        // Check if visitor is expected and not yet present
-        bool isExpected = Mytour.ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode);
-        bool isPresent = Mytour.PresentVisitors.Any(v => v.TicketCode == visitor.TicketCode);
-
-        if (isExpected && !isPresent)
-        {
-            newTour.PresentVisitors.Add(visitor);  // Add visitor to the present list
-            JsonHelper.EditTour(newTour, Mytour.TourId, Tour.JsonFilePath);  // Update the tour in JSON
-            Console.WriteLine("\nVisitor checked in successfully.");
-        }
-        else if (!isExpected)
+        // Check if the visitor is expected and not yet checked in
+        if (!myTour.ExpectedVisitors.Contains(visitor))
         {
             Console.WriteLine("\nVisitor not expected on this tour.");
-        }
-        else if (isPresent)
-        {
-            Console.WriteLine("\nVisitor already checked in.");
-        }
-    }
-
-
-    public void CompleteTour()
-    {
-        if (AssignedTourId == null)
-        {
-            Console.WriteLine("No assigned tour ID.");
             return;
         }
 
+        if (myTour.PresentVisitors.Contains(visitor))
+        {
+            Console.WriteLine("\nVisitor already checked in.");
+            return;
+        }
+
+        myTour.PresentVisitors.Add(visitor);
+        Tour.SaveTours(); // Assuming there's a SaveTours method handling all tour updates
+        Console.WriteLine("\nVisitor checked in successfully.");
+    }
+
+    public void CompleteTour()
+    {
         Tour tour = Tour.FindTourById(this.AssignedTourId);
         if (tour == null)
         {
@@ -73,9 +61,7 @@ public class Guide
         }
 
         tour.Completed = true;
-        // Assuming you have refactored JsonHelper.EditTour to handle updates
-        JsonHelper.EditTour(tour, tour.TourId, Tour.JsonFilePath);
+        Tour.SaveTours(); // Save all tours, reflecting the completed state
         Console.WriteLine("Tour marked as completed.");
     }
-
 }

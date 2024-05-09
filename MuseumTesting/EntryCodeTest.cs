@@ -80,12 +80,4 @@ public class EntryCodeTest
         }
     }
 
-    private List<string> _readJSON()
-    {
-        using (StreamReader reader = new StreamReader(JSONPath))
-        {
-            string jsonData = reader.ReadToEnd();
-            return JsonConvert.DeserializeObject<List<string>>(jsonData);
-        }
-    }
 }
