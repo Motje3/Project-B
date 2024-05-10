@@ -1,22 +1,27 @@
 [
   {
-    "TourId": "343a2ec1-ffd2-4eff-a4ed-4c163b6b7829",
+    "TourId": "cfa21c55-b55e-40bc-bc88-ec31f8088528",
     "StartTime": "2024-05-10T09:00:00+02:00",
     "EndTime": "2024-05-10T09:20:00+02:00",
     "Duration": 20,
     "MaxCapacity": 13,
-    "ExpectedVisitors": [],
+    "ExpectedVisitors": [
+      {
+        "VisitorId": "884bbef6-4513-47a3-9824-6573f3d6cf30",
+        "TicketCode": "111"
+      }
+    ],
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
     "AssignedGuide": {
-      "GuideId": "9832b0f3-e3c0-4c56-9158-0b7c64444cd4",
-      "Name": "motjeeee",
-      "AssignedTourId": "343a2ec1-ffd2-4eff-a4ed-4c163b6b7829"
+      "GuideId": "34c9c21d-2c7e-4762-8736-5b35856cd054",
+      "Name": "John Doe",
+      "AssignedTourId": "cfa21c55-b55e-40bc-bc88-ec31f8088528"
     }
   },
   {
-    "TourId": "e3e9c1d0-5b04-49d0-8422-e4e70310fc93",
+    "TourId": "a7bcab89-b85d-4260-b5c2-dfc8fa0787bc",
     "StartTime": "2024-05-10T09:20:00+02:00",
     "EndTime": "2024-05-10T09:40:00+02:00",
     "Duration": 20,
@@ -25,10 +30,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "db8cf6f1-4168-413f-bbe8-0dfc0ee460d8",
+      "Name": "Alice Johnson",
+      "AssignedTourId": "a7bcab89-b85d-4260-b5c2-dfc8fa0787bc"
+    }
   },
   {
-    "TourId": "ae818b9b-d1eb-4d70-8246-641c81837ad4",
+    "TourId": "3b4d92f8-4b45-4030-b3af-53074124ee5e",
     "StartTime": "2024-05-10T09:40:00+02:00",
     "EndTime": "2024-05-10T10:00:00+02:00",
     "Duration": 20,
@@ -37,10 +46,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "e9b6fe19-0190-4b0a-ab8e-fb8097f886da",
+      "Name": "Steve Brown",
+      "AssignedTourId": "3b4d92f8-4b45-4030-b3af-53074124ee5e"
+    }
   },
   {
-    "TourId": "0b55744d-e540-49ca-9032-c3ece580581b",
+    "TourId": "1fbe9933-aeae-4ddd-b0c0-8b0836df04f0",
     "StartTime": "2024-05-10T10:00:00+02:00",
     "EndTime": "2024-05-10T10:20:00+02:00",
     "Duration": 20,
@@ -49,10 +62,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "9620221a-2b2d-46af-b961-7e1e80928a6a",
+      "Name": "Mary Lee",
+      "AssignedTourId": "1fbe9933-aeae-4ddd-b0c0-8b0836df04f0"
+    }
   },
   {
-    "TourId": "fa79401d-de15-4699-8ca6-fe89fd620c3f",
+    "TourId": "d350d388-528e-4c61-9b17-44e3eadc29ad",
     "StartTime": "2024-05-10T10:20:00+02:00",
     "EndTime": "2024-05-10T10:40:00+02:00",
     "Duration": 20,
@@ -61,10 +78,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "0cc821ed-51fb-462f-8f08-0ae1cdb5276a",
+      "Name": "Tom Clark",
+      "AssignedTourId": "d350d388-528e-4c61-9b17-44e3eadc29ad"
+    }
   },
   {
-    "TourId": "d549d646-eb78-442d-99dc-762ef670603a",
+    "TourId": "5eef26bd-33c0-4d34-871e-a567e99e2ef6",
     "StartTime": "2024-05-10T10:40:00+02:00",
     "EndTime": "2024-05-10T11:00:00+02:00",
     "Duration": 20,
@@ -73,10 +94,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "c7b1e3ec-f023-4563-bc63-277bd0da34eb",
+      "Name": "Jessica Smith",
+      "AssignedTourId": "5eef26bd-33c0-4d34-871e-a567e99e2ef6"
+    }
   },
   {
-    "TourId": "1e29b3c2-5a5a-4ddd-a340-1a2a8c84d79b",
+    "TourId": "84c04648-4c72-4b1d-85b7-baaca38936d7",
     "StartTime": "2024-05-10T11:00:00+02:00",
     "EndTime": "2024-05-10T11:20:00+02:00",
     "Duration": 20,
@@ -85,10 +110,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "5a19f6a0-c99d-4b4e-b574-79c78d2f7e92",
+      "Name": "Robert White",
+      "AssignedTourId": "84c04648-4c72-4b1d-85b7-baaca38936d7"
+    }
   },
   {
-    "TourId": "1cdd83f6-e168-4add-80a2-4fcadbf79c58",
+    "TourId": "11000430-368a-492b-8664-969f0ddce833",
     "StartTime": "2024-05-10T11:20:00+02:00",
     "EndTime": "2024-05-10T11:40:00+02:00",
     "Duration": 20,
@@ -97,10 +126,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "1a645419-948b-4fca-a604-9bd73181866f",
+      "Name": "Patricia Taylor",
+      "AssignedTourId": "11000430-368a-492b-8664-969f0ddce833"
+    }
   },
   {
-    "TourId": "908c2562-bf2b-4ed1-9a82-654313813af1",
+    "TourId": "dfc66ae5-038e-409e-8dae-f3ca88d68f03",
     "StartTime": "2024-05-10T11:40:00+02:00",
     "EndTime": "2024-05-10T12:00:00+02:00",
     "Duration": 20,
@@ -109,10 +142,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "ce10a826-e821-4da0-ae44-941814f52964",
+      "Name": "Michael Harris",
+      "AssignedTourId": "dfc66ae5-038e-409e-8dae-f3ca88d68f03"
+    }
   },
   {
-    "TourId": "7df17aff-7c5d-4f4e-90d0-7a14fbe13fd9",
+    "TourId": "b0dd3611-b6c4-4bc0-a0fd-aac5dfb0f5ac",
     "StartTime": "2024-05-10T12:00:00+02:00",
     "EndTime": "2024-05-10T12:20:00+02:00",
     "Duration": 20,
@@ -121,10 +158,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "b2795947-e494-4742-bfa7-cb0d2c6fe012",
+      "Name": "Laura Young",
+      "AssignedTourId": "b0dd3611-b6c4-4bc0-a0fd-aac5dfb0f5ac"
+    }
   },
   {
-    "TourId": "1e441200-2bbb-4801-bc70-de199761e935",
+    "TourId": "516999f9-345a-4c17-b40e-42dddc1b4cb1",
     "StartTime": "2024-05-10T12:20:00+02:00",
     "EndTime": "2024-05-10T12:40:00+02:00",
     "Duration": 20,
@@ -133,10 +174,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "261eb784-84a4-495e-a627-e14ddcc35dcf",
+      "Name": "James Allen",
+      "AssignedTourId": "516999f9-345a-4c17-b40e-42dddc1b4cb1"
+    }
   },
   {
-    "TourId": "0ecc0478-7785-49aa-9280-5d13f98ed525",
+    "TourId": "930e11c0-cddd-4c23-b6dd-0ba4df4ea11b",
     "StartTime": "2024-05-10T12:40:00+02:00",
     "EndTime": "2024-05-10T13:00:00+02:00",
     "Duration": 20,
@@ -145,10 +190,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "a8318f39-85ff-45ea-b94d-acd062bae4ef",
+      "Name": "Linda Walker",
+      "AssignedTourId": "930e11c0-cddd-4c23-b6dd-0ba4df4ea11b"
+    }
   },
   {
-    "TourId": "7c183577-f411-40b1-b88b-146ed82d8588",
+    "TourId": "6298aa43-15bc-4271-9ae4-1af21ff7b231",
     "StartTime": "2024-05-10T13:00:00+02:00",
     "EndTime": "2024-05-10T13:20:00+02:00",
     "Duration": 20,
@@ -157,10 +206,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "b0cfd1c9-d6fc-4b84-90c9-d856898e57d9",
+      "Name": "Brian Scott",
+      "AssignedTourId": "6298aa43-15bc-4271-9ae4-1af21ff7b231"
+    }
   },
   {
-    "TourId": "b3d15a39-4e58-4e6c-b02c-8dc8ac8049e4",
+    "TourId": "6c2853a9-d01d-4b0d-ab6a-be0129044150",
     "StartTime": "2024-05-10T13:20:00+02:00",
     "EndTime": "2024-05-10T13:40:00+02:00",
     "Duration": 20,
@@ -169,10 +222,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "09c89d1b-dc77-4cab-91e4-a5153b643463",
+      "Name": "Nancy Martinez",
+      "AssignedTourId": "6c2853a9-d01d-4b0d-ab6a-be0129044150"
+    }
   },
   {
-    "TourId": "2e45b409-2916-4b1e-ba33-3306006d8b48",
+    "TourId": "f6efb5ec-8359-4915-8ffb-c2e07320970d",
     "StartTime": "2024-05-10T13:40:00+02:00",
     "EndTime": "2024-05-10T14:00:00+02:00",
     "Duration": 20,
@@ -181,10 +238,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "aa3ff150-63e0-4916-960b-f18bf3c07a65",
+      "Name": "Karen Lewis",
+      "AssignedTourId": "f6efb5ec-8359-4915-8ffb-c2e07320970d"
+    }
   },
   {
-    "TourId": "d36e06de-5a26-4f08-860d-69e77edd472e",
+    "TourId": "468e4d63-0846-4e45-a1a7-6ed6a343aa6b",
     "StartTime": "2024-05-10T14:00:00+02:00",
     "EndTime": "2024-05-10T14:20:00+02:00",
     "Duration": 20,
@@ -193,10 +254,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "5e8d0320-6240-4d24-a8b3-c294e4aa4ece",
+      "Name": "Daniel Young",
+      "AssignedTourId": "468e4d63-0846-4e45-a1a7-6ed6a343aa6b"
+    }
   },
   {
-    "TourId": "ec582888-bfc8-4290-ae04-d58b66b1be13",
+    "TourId": "75c203da-3c33-4fc7-b5e8-7c309b523180",
     "StartTime": "2024-05-10T14:20:00+02:00",
     "EndTime": "2024-05-10T14:40:00+02:00",
     "Duration": 20,
@@ -205,10 +270,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "b98b0508-dcda-45ed-a509-ff9f5953b76f",
+      "Name": "Sandra Wilson",
+      "AssignedTourId": "75c203da-3c33-4fc7-b5e8-7c309b523180"
+    }
   },
   {
-    "TourId": "672cc770-accb-4369-a2e5-3e6844b05df5",
+    "TourId": "c10a24fa-5c69-490a-8c6a-6155542f6e00",
     "StartTime": "2024-05-10T14:40:00+02:00",
     "EndTime": "2024-05-10T15:00:00+02:00",
     "Duration": 20,
@@ -217,10 +286,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "687aae4f-4490-443c-a4f8-640f96c2888a",
+      "Name": "Donald King",
+      "AssignedTourId": "c10a24fa-5c69-490a-8c6a-6155542f6e00"
+    }
   },
   {
-    "TourId": "ec0201d6-fb47-482f-85ac-19f765cf8a60",
+    "TourId": "e6e76bb9-bf22-4154-ba3d-a163e1e5ad14",
     "StartTime": "2024-05-10T15:00:00+02:00",
     "EndTime": "2024-05-10T15:20:00+02:00",
     "Duration": 20,
@@ -229,10 +302,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "0e16689f-aaf9-4298-b9e1-b3a9cdf72bef",
+      "Name": "lala Wilson",
+      "AssignedTourId": "e6e76bb9-bf22-4154-ba3d-a163e1e5ad14"
+    }
   },
   {
-    "TourId": "086abbe0-f541-4545-87ba-762ff7f28c3b",
+    "TourId": "6b4a9837-629c-4911-ab89-bb2910064c9e",
     "StartTime": "2024-05-10T15:20:00+02:00",
     "EndTime": "2024-05-10T15:40:00+02:00",
     "Duration": 20,
@@ -241,10 +318,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "7aff67f6-ec8c-4550-91a1-730dfa9971c9",
+      "Name": "islam Wilson",
+      "AssignedTourId": "6b4a9837-629c-4911-ab89-bb2910064c9e"
+    }
   },
   {
-    "TourId": "1c54b94f-f10d-4ea9-b555-da66f2f6280f",
+    "TourId": "90e1786b-8396-4983-a266-2ea911e06c5c",
     "StartTime": "2024-05-10T15:40:00+02:00",
     "EndTime": "2024-05-10T16:00:00+02:00",
     "Duration": 20,
@@ -253,10 +334,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "82776dc0-7d4e-41ce-b0cd-bfa0cd04cf88",
+      "Name": "khabib Wilson",
+      "AssignedTourId": "90e1786b-8396-4983-a266-2ea911e06c5c"
+    }
   },
   {
-    "TourId": "0831a7d4-89f0-47f7-9d0b-986a7905b2c9",
+    "TourId": "f9babe15-0d04-4984-aa43-e69ac3724564",
     "StartTime": "2024-05-10T16:00:00+02:00",
     "EndTime": "2024-05-10T16:20:00+02:00",
     "Duration": 20,
@@ -265,10 +350,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "6dbe49e5-5e80-497c-a516-229115045c76",
+      "Name": "mo Wilson",
+      "AssignedTourId": "f9babe15-0d04-4984-aa43-e69ac3724564"
+    }
   },
   {
-    "TourId": "27ef657f-3484-4fc2-9d38-821fe4560097",
+    "TourId": "6fa2fab6-1512-4ad0-a336-ed378e43a729",
     "StartTime": "2024-05-10T16:20:00+02:00",
     "EndTime": "2024-05-10T16:40:00+02:00",
     "Duration": 20,
@@ -277,10 +366,14 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "842c8e49-97a4-4376-a4ed-0a6fddd3e7fc",
+      "Name": "ali Wilson",
+      "AssignedTourId": "6fa2fab6-1512-4ad0-a336-ed378e43a729"
+    }
   },
   {
-    "TourId": "54169b96-0e89-4a93-b6bb-f44cb038e6e9",
+    "TourId": "6fd08400-82cf-450a-a5b3-e5b3dc6100b9",
     "StartTime": "2024-05-10T16:40:00+02:00",
     "EndTime": "2024-05-10T17:00:00+02:00",
     "Duration": 20,
@@ -289,6 +382,10 @@
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
-    "AssignedGuide": null
+    "AssignedGuide": {
+      "GuideId": "a1e90938-19dc-4309-939b-2858acf9ffaf",
+      "Name": "lolo Wilson",
+      "AssignedTourId": "6fd08400-82cf-450a-a5b3-e5b3dc6100b9"
+    }
   }
 ]

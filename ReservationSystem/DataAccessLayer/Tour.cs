@@ -15,6 +15,8 @@ public class Tour
 
     public static string JsonFilePath => $"./JSON-Files/Tours-{DateTime.Today:yyyyMMdd}.json";
     public static string JsonTourSettingsPath => $"./JSON-Files/TourSettings.json";
+    public static string JsonGuideAssignmentsPath => $"./JSON-Files/GuideAssignments.json";
+
 
     public static List<Tour> TodaysTours { get; private set; } = new List<Tour>();
 
@@ -46,6 +48,8 @@ public class Tour
     private static void CreateToursForToday()
     {
         dynamic settings = JsonConvert.DeserializeObject<dynamic>(File.ReadAllText(JsonTourSettingsPath));
+        List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(JsonGuideAssignmentsPath));
+
         DateTime startTime = DateTime.Today.Add(TimeSpan.Parse((string)settings.StartTime));
         DateTime endTime = DateTime.Today.Add(TimeSpan.Parse((string)settings.EndTime));
         int duration = (int)settings.Duration;
@@ -53,12 +57,30 @@ public class Tour
 
         while (startTime < endTime)
         {
-            TodaysTours.Add(new Tour(Guid.NewGuid(), startTime, duration, maxCapacity, false, false, null));
+            string formattedStartTime = startTime.ToString("hh:mm tt");
+            var guideEntry = guideAssignments.FirstOrDefault(g => (string)g.StartTime == formattedStartTime);
+
+            // Create the tour with a new GUID
+            var tourId = Guid.NewGuid();
+            Tour newTour = new Tour(tourId, startTime, duration, maxCapacity, false, false, null);
+
+            if (guideEntry != null)
+            {
+                var guideName = (string)guideEntry.GuideName;
+                // Assign the newly created tour's ID to the guide
+                Guide assignedGuide = new Guide(guideName, tourId);
+                newTour.AssignedGuide = assignedGuide;
+            }
+
+            TodaysTours.Add(newTour);
             startTime = startTime.AddMinutes(duration);
         }
 
         SaveTours();
     }
+
+
+
 
     public static void ShowAvailableTours()
     {
@@ -141,6 +163,6 @@ public class Tour
     }
 
 
-    
+
 
 }

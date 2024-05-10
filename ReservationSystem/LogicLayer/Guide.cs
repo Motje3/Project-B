@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 public class Guide
 {
     public Guid GuideId { get; private set; }
@@ -9,6 +11,20 @@ public class Guide
         GuideId = Guid.NewGuid();
         Name = name;
         AssignedTourId = tourId;
+    }
+
+    public Guide(string name)
+    {
+        GuideId = Guid.NewGuid();
+        Name = name;
+    }
+
+    [JsonConstructor]
+    public Guide(Guid guideId, string name, Guid assignedTourId)
+    {
+        GuideId = guideId;
+        Name = name;
+        AssignedTourId = assignedTourId;
     }
 
     public void CheckInVisitor(Visitor visitor)
