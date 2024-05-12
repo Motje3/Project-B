@@ -4,109 +4,109 @@ public class Guide
 {
     public Guid GuideId { get; private set; }
     public string Name { get; set; }
-    public Guid AssignedTourId { get; set; }
+    [JsonIgnore]
+    public List<Guid> AssignedTourIds { get; set; } = new List<Guid>();
+    public static List<Guide> AllGuides = new List<Guide>();
+    
 
     public Guide(string name, Guid tourId)
     {
         GuideId = Guid.NewGuid();
         Name = name;
-        AssignedTourId = tourId;
+        AssignedTourIds = new List<Guid>(); // Initialize the list
+        AssignedTourIds.Add(tourId); // Add the tourId to the list
     }
+
 
     public Guide(string name)
     {
         GuideId = Guid.NewGuid();
         Name = name;
+        AllGuides.Add(this);
     }
+
+    public void AssignTour(Guid tourId)
+    {
+        if (!AssignedTourIds.Contains(tourId))
+        {
+            AssignedTourIds.Add(tourId);
+        }
+    }
+
+
 
     [JsonConstructor]
     public Guide(Guid guideId, string name, Guid assignedTourId)
     {
         GuideId = guideId;
         Name = name;
-        AssignedTourId = assignedTourId;
+        AssignedTourIds = AssignedTourIds;
     }
+
+    public static void LoadGuides()
+    {
+        List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(Tour.JsonGuideAssignmentsPath));
+        foreach (var guideEntry in guideAssignments)
+        {
+            string guideName = guideEntry.GuideName;
+            if (!Guide.AllGuides.Any(g => g.Name == guideName))
+            {
+                new Guide(guideName);  // This will automatically add the guide to the AllGuides list due to the constructor logic
+            }
+        }
+    }
+
 
     public void CheckInVisitor(Visitor visitor)
     {
-        Tour myTour = Tour.FindTourById(this.AssignedTourId);
-
-        if (myTour == null)
-        {
-            Console.WriteLine("\nNo matching tour found.");
-            return;
-        }
-
-        // Check if the visitor is expected and not yet checked in
-        if (!myTour.ExpectedVisitors.Contains(visitor))
-        {
-            Console.WriteLine("\nVisitor not expected on this tour.");
-            return;
-        }
-
-        if (myTour.PresentVisitors.Contains(visitor))
-        {
-            Console.WriteLine("\nVisitor already checked in.");
-            return;
-        }
-
-        myTour.PresentVisitors.Add(visitor);
-        Tour.SaveTours(); // Assuming there's a SaveTours method handling all tour updates
-        Console.WriteLine("\nVisitor checked in successfully.");
+        //to be implemented
     }
 
     public void CompleteTour()
     {
-        Tour tour = Tour.FindTourById(this.AssignedTourId);
-        if (tour == null)
-        {
-            Console.WriteLine("Tour not found.");
-            return;
-        }
-
-        if (tour.Deleted)
-        {
-            Console.WriteLine("Cannot complete a deleted tour.");
-            return;
-        }
-
-        if (tour.Completed)
-        {
-            Console.WriteLine("Tour already completed.");
-            return;
-        }
-
-        tour.Completed = true;
-        Tour.SaveTours(); // Save all tours, reflecting the completed state
-        Console.WriteLine("Tour marked as completed.");
+        //to be implemented
     }
 
-    public static void AssignGuideToTour()
+    public static void ReassignGuideToTour()
     {
-        var unassignedTours = Tour.TodaysTours.Where(t => t.AssignedGuide == null).ToList();
-        if (!unassignedTours.Any())
+        Console.WriteLine("Select a tour to reassign a guide:");
+        for (int i = 0; i < Tour.TodaysTours.Count; i++)
         {
-            Console.WriteLine("All tours today have been assigned guides.");
+            Console.WriteLine($"{i + 1}. Tour at {Tour.TodaysTours[i].StartTime} currently assigned to {Tour.TodaysTours[i].AssignedGuide?.Name ?? "No Guide"}");
+        }
+
+        Console.Write("Enter the number of the tour to reassign: ");
+        int tourIndex = Convert.ToInt32(Console.ReadLine()) - 1;
+
+        if (tourIndex < 0 || tourIndex >= Tour.TodaysTours.Count)
+        {
+            Console.WriteLine("Invalid tour selection.");
             return;
         }
 
-        Console.WriteLine("Available Tours for Assignment:");
-        for (int i = 0; i < unassignedTours.Count; i++)
+        // Display guides for selection from the static list in Guide class
+        Console.WriteLine("Select a guide to assign:");
+        for (int i = 0; i < Guide.AllGuides.Count; i++)
         {
-            Console.WriteLine($"{i + 1}: {unassignedTours[i].StartTime} - {unassignedTours[i].EndTime}");
+            Console.WriteLine($"{i + 1}. {Guide.AllGuides[i].Name}");
         }
 
-        Console.Write("\nSelect a tour number to assign a guide: ");
-        int tourChoice = Convert.ToInt32(Console.ReadLine()) - 1;
+        Console.Write("Enter the number of the guide to assign: ");
+        int guideIndex = Convert.ToInt32(Console.ReadLine()) - 1;
 
-        Console.Write("Enter Guide Name: ");
-        string guideName = Console.ReadLine();
+        if (guideIndex < 0 || guideIndex >= Guide.AllGuides.Count)
+        {
+            Console.WriteLine("Invalid guide selection.");
+            return;
+        }
 
-        // Creating a new Guide (assuming no guide exists with this name, otherwise fetch existing)
-        Guide newGuide = new Guide(guideName, unassignedTours[tourChoice].TourId);
-        unassignedTours[tourChoice].AssignedGuide = newGuide;
-        Tour.SaveTours(); // Ensure all changes are saved
+        // Assign the selected guide from the existing list
+        Tour.TodaysTours[tourIndex].AssignedGuide = Guide.AllGuides[guideIndex];
 
-        Console.WriteLine($"Guide {newGuide.Name} assigned to tour starting at {unassignedTours[tourChoice].StartTime}");
+        // Save changes
+        Tour.SaveTours();
+
+        // Confirmation message
+        Console.WriteLine($"Guide {Guide.AllGuides[guideIndex].Name} has been successfully assigned to the tour at {Tour.TodaysTours[tourIndex].StartTime:hh:mm tt} o'clock.");
     }
 }

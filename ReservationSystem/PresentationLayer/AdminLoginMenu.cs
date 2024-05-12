@@ -4,11 +4,11 @@ public static class AdminLoginMenu
     {
         Console.WriteLine("\nAdmin login\n");
 
-        
+
         Console.Write("Enter password: ");
         string password = Console.ReadLine();
 
-        if (Authenticator.AuthenticateUser( password))
+        if (Authenticator.AuthenticateUser(password))
         {
             Console.WriteLine("\nAccess Granted!\n");
             ShowAdminMenu();
@@ -37,7 +37,7 @@ public static class AdminLoginMenu
             switch (choice)
             {
                 case "1":
-                    Guide.AssignGuideToTour();
+                    Guide.ReassignGuideToTour();
                     break;
                 case "2":
                     AdminBackEnd.ChangeTourTime();

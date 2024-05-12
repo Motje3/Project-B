@@ -1,98 +1,51 @@
 [
   {
-      "GuideName": "John Doe",
-      "StartTime": "09:00 AM"
+    "GuideName": "John Doe",
+    "Tours": [
+      {"StartTime": "09:00 AM"},
+      {"StartTime": "11:00 AM"},
+      {"StartTime": "01:00 PM"},
+      {"StartTime": "03:00 PM"},
+      {"StartTime": "05:00 PM"}
+    ]
   },
   {
-      "GuideName": "Alice Johnson",
-      "StartTime": "09:20 AM"
+    "GuideName": "Alice Johnson",
+    "Tours": [
+      {"StartTime": "09:20 AM"},
+      {"StartTime": "11:20 AM"},
+      {"StartTime": "01:20 PM"},
+      {"StartTime": "03:20 PM"},
+      {"StartTime": "05:20 PM"}
+    ]
   },
   {
-      "GuideName": "Steve Brown",
-      "StartTime": "09:40 AM"
+    "GuideName": "Steve Brown",
+    "Tours": [
+      {"StartTime": "09:40 AM"},
+      {"StartTime": "11:40 AM"},
+      {"StartTime": "01:40 PM"},
+      {"StartTime": "03:40 PM"},
+      {"StartTime": "05:40 PM"}
+    ]
   },
   {
-      "GuideName": "Mary Lee",
-      "StartTime": "10:00 AM"
+    "GuideName": "Mary Lee",
+    "Tours": [
+      {"StartTime": "10:00 AM"},
+      {"StartTime": "12:00 PM"},
+      {"StartTime": "02:00 PM"},
+      {"StartTime": "04:00 PM"}
+    ]
   },
   {
-      "GuideName": "Tom Clark",
-      "StartTime": "10:20 AM"
-  },
-  {
-      "GuideName": "Jessica Smith",
-      "StartTime": "10:40 AM"
-  },
-  {
-      "GuideName": "Robert White",
-      "StartTime": "11:00 AM"
-  },
-  {
-      "GuideName": "Patricia Taylor",
-      "StartTime": "11:20 AM"
-  },
-  {
-      "GuideName": "Michael Harris",
-      "StartTime": "11:40 AM"
-  },
-  {
-      "GuideName": "Laura Young",
-      "StartTime": "12:00 PM"
-  },
-  {
-      "GuideName": "James Allen",
-      "StartTime": "12:20 PM"
-  },
-  {
-      "GuideName": "Linda Walker",
-      "StartTime": "12:40 PM"
-  },
-  {
-      "GuideName": "Brian Scott",
-      "StartTime": "01:00 PM"
-  },
-  {
-      "GuideName": "Nancy Martinez",
-      "StartTime": "01:20 PM"
-  },
-  {
-      "GuideName": "Karen Lewis",
-      "StartTime": "01:40 PM"
-  },
-  {
-      "GuideName": "Daniel Young",
-      "StartTime": "02:00 PM"
-  },
-  {
-      "GuideName": "Sandra Wilson",
-      "StartTime": "02:20 PM"
-  },
-  {
-      "GuideName": "Donald King",
-      "StartTime": "02:40 PM"
-  },
-  {
-    "GuideName": "lala Wilson",
-    "StartTime": "03:00 PM"
-  },
-  {
-    "GuideName": "islam Wilson",
-    "StartTime": "03:20 PM"
-  },
-  {
-    "GuideName": "khabib Wilson",
-    "StartTime": "03:40 PM"
-  },
-  {
-    "GuideName": "mo Wilson",
-    "StartTime": "04:00 PM"
-  },
-  {
-    "GuideName": "ali Wilson",
-    "StartTime": "04:20 PM"
-  },
-  {
-    "GuideName": "lolo Wilson",
-    "StartTime": "04:40 PM"
+    "GuideName": "Tom Clark",
+    "Tours": [
+      {"StartTime": "10:20 AM"},
+      {"StartTime": "12:20 PM"},
+      {"StartTime": "12:40 PM"},
+      {"StartTime": "02:20 PM"},
+      {"StartTime": "04:20 PM"}
+    ]
   }
 ]
