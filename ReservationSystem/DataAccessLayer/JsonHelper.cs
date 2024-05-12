@@ -24,8 +24,4 @@ public static class JsonHelper
     {
         SaveToJson(tours, filePath);
     }
-
-
-
-    
 }

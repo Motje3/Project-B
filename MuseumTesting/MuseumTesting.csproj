@@ -11,14 +11,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.1" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
+    <PackageReference Include="Moq" Version="4.20.70" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.3.1" />
     <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
+    <PackageReference Include="System.IO.Abstractions" Version="21.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ReservationSystem\ReservationSystem.csproj" />
-    <Content Include= "../DataAccessLayer/*.*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../DataAccessLayer/*.*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   

@@ -1,18 +1,18 @@
 public static class Authenticator
 {
-    private class Credential
+    public class Credential
     {
         public string Username { get; set; }
         public string Password { get; set; }
     }
 
-    public static bool AuthenticateUser( string password)
+    public static bool AuthenticateUser(string password)
     {
         List<Credential> credentials = LoadUserCredentials();
         return credentials.Any(cred => cred.Password == password);
     }
 
-    private static List<Credential> LoadUserCredentials()
+    public static List<Credential> LoadUserCredentials()
     {
         string filePath = "./JSON-Files/AdminCredentials.json";
         if (File.Exists(filePath))
