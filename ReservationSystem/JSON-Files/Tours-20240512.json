@@ -22,11 +22,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [
       {
-        "VisitorId": "bf149309-9cd0-4239-b14d-e44ae416258e",
-        "TicketCode": "111"
-      },
-      {
-        "VisitorId": "c7ebb341-c0d0-46d3-bdb3-21572759d2b5",
+        "VisitorId": "53051de5-75c3-4212-87b3-d87076a844c6",
         "TicketCode": "222"
       }
     ],

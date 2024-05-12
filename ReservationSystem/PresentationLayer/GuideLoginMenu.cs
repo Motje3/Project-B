@@ -7,7 +7,7 @@ public static class GuideLoginMenu
         Console.WriteLine("\nGuide login\n");
         
         Console.Write("Enter password: ");
-        string password = Console.ReadLine();
+        string password = AdminBackEnd.ReadPassword();
 
 
         if (GuideMenuBackEnd.AuthenticateGuide(password))
@@ -36,7 +36,7 @@ public static class GuideLoginMenu
             switch (choice)
             {
                 case "1":
-                    //show guidedtours
+                    //To be implemented
                     break;
                 case "2":
                     continueRunning = false;

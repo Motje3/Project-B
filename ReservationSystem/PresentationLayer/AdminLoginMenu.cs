@@ -6,7 +6,7 @@ public static class AdminLoginMenu
 
 
         Console.Write("Enter password: ");
-        string password = Console.ReadLine();
+        string password = AdminBackEnd.ReadPassword();
 
         if (Authenticator.AuthenticateUser(password))
         {
@@ -25,10 +25,8 @@ public static class AdminLoginMenu
         while (continueRunning)
         {
             Console.WriteLine("\nAdmin Menu:");
-            Console.WriteLine("1. Assign a guide to today's tours");
-            Console.WriteLine("2. Assign guides for all upcoming tours.");
-            Console.WriteLine("2. Change time of a tour");
-            Console.WriteLine("3. View Tours");
+            Console.WriteLine("1. Assign a Different Guide to today's tours");
+            Console.WriteLine("2. Change the default guide roaster");
             Console.WriteLine("4. Exit");
 
             Console.Write("\nEnter your choice: ");

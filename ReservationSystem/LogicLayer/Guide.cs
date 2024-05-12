@@ -13,7 +13,6 @@ public class Guide
     {
         GuideId = Guid.NewGuid();
         Name = name;
-        AssignedTourIds = new List<Guid>(); // Initialize the list
         AssignedTourIds.Add(tourId); // Add the tourId to the list
     }
 
