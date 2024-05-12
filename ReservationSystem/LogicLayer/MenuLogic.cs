@@ -84,7 +84,7 @@ public class MenuLogic
     }
 
 
-    private static bool CancelTour(Visitor visitor)
+    public static bool CancelTour(Visitor visitor)
     {
         Tour visitorsTour = Tour.FindTourByVisitorTicketCode(visitor.TicketCode);
 
