@@ -47,8 +47,8 @@ public class Tour
 
     private static void CreateToursForToday()
     {
-        dynamic settings = JsonConvert.DeserializeObject<dynamic>(File.ReadAllText(JsonTourSettingsPath));
-        List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(JsonGuideAssignmentsPath));
+        dynamic settings = JsonConvert.DeserializeObject<dynamic>(File.ReadAllText(Tour.JsonTourSettingsPath));
+        List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(Tour.JsonGuideAssignmentsPath));
 
         DateTime startTime = DateTime.Today.Add(TimeSpan.Parse((string)settings.StartTime));
         DateTime endTime = DateTime.Today.Add(TimeSpan.Parse((string)settings.EndTime));
@@ -57,29 +57,36 @@ public class Tour
 
         while (startTime < endTime)
         {
-            string formattedStartTime = startTime.ToString("hh:mm tt");
-            var guideEntry = guideAssignments.FirstOrDefault(g => (string)g.StartTime == formattedStartTime);
+            var formattedStartTime = startTime.ToString("hh:mm tt");
 
-            // Create the tour with a new GUID
-            var tourId = Guid.NewGuid();
-            Tour newTour = new Tour(tourId, startTime, duration, maxCapacity, false, false, null);
-
-            if (guideEntry != null)
+            // Iterate through each guide assignment entry
+            foreach (var guideEntry in guideAssignments)
             {
                 var guideName = (string)guideEntry.GuideName;
-                // Assign the newly created tour's ID to the guide
-                Guide assignedGuide = new Guide(guideName, tourId);
-                newTour.AssignedGuide = assignedGuide;
+                var guide = Guide.AllGuides.FirstOrDefault(g => g.Name == guideName);
+                if (guide != null)
+                {
+                    // Check if the current guide has a tour at the current startTime
+                    var tours = guideEntry.Tours;
+                    foreach (var tour in tours)
+                    {
+                        if ((string)tour.StartTime == formattedStartTime)
+                        {
+                            var tourId = Guid.NewGuid();
+                            guide.AssignTour(tourId);  // Assign tour to guide
+
+                            Tour newTour = new Tour(tourId, startTime, duration, maxCapacity, false, false, guide);
+                            Tour.TodaysTours.Add(newTour);
+                        }
+                    }
+                }
             }
 
-            TodaysTours.Add(newTour);
             startTime = startTime.AddMinutes(duration);
         }
 
-        SaveTours();
+        Tour.SaveTours();
     }
-
-
 
 
     public static void ShowAvailableTours()
@@ -161,8 +168,5 @@ public class Tour
     {
         TodaysTours = JsonConvert.DeserializeObject<List<Tour>>(File.ReadAllText(JsonFilePath));
     }
-
-
-
 
 }
