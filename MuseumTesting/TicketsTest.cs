@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
-namespace MuseumTesting.Tests
+namespace MuseumTesting
 {
     [TestClass]
     public class TicketTests
