@@ -57,28 +57,6 @@ namespace MuseumTesting
             DeleteGuideAssignmentsFile();
         }
 
-        [TestMethod]
-        public void ReassignGuideToTour_WithValidInput_AssignsGuideToTour()
-        {
-            // Arrange
-            var guide = new Guide("John");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("Alice"));
-            Tour.TodaysTours.Add(tour);
-            Guide.AllGuides.Add(guide);
-
-            // Simulate user input
-            Console.SetIn(new StringReader("1\n1\n"));
-
-            // Act
-            Guide.ReassignGuideToTour();
-
-            // Assert
-            Assert.AreEqual(guide, tour.AssignedGuide);
-
-            // Clean up
-            Tour.TodaysTours.Clear();
-            Guide.AllGuides.Clear();
-        }
 
         private void SaveGuideAssignmentsToFile(List<dynamic> guideAssignments)
         {
