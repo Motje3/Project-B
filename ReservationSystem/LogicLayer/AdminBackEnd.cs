@@ -1,3 +1,5 @@
+using ReservationSystem;
+
 public static class AdminBackEnd
 {
     public static void ChangeTourCapacity()
@@ -12,13 +14,16 @@ public static class AdminBackEnd
 
     public static string ReadPassword()
     {
+        PasswordChar PC = new PasswordChar();
+        Space space = new Space();
+
         string password = "";
         ConsoleKeyInfo info = Console.ReadKey(true);
         while (info.Key != ConsoleKey.Enter)
         {
             if (info.Key != ConsoleKey.Backspace)
             {
-                Console.Write("*");
+                PC.Show();
                 password += info.KeyChar;
             }
             else if (info.Key == ConsoleKey.Backspace && password.Length > 0)
@@ -28,7 +33,7 @@ public static class AdminBackEnd
             }
             info = Console.ReadKey(true);
         }
-        Console.WriteLine(); // Ensure the cursor moves to the next line after Enter is pressed
+        space.Show(); // Console.WriteLine(); // Ensure the cursor moves to the next line after Enter is pressed
         return password;
     }
 
