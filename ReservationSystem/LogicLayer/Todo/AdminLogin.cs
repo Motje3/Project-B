@@ -1,13 +1,12 @@
-using ReservationSystem;
+namespace ReservationSystem;
 
 public class AdminLoginMenu : View
 {
     public static void ProcessLoginForm()
     {
-        Console.WriteLine("\nAdmin login\n");
+        AdminLoginMenu ALM = new AdminLoginMenu();
 
-
-        Console.Write("Enter password: ");
+        ALM.Show();
         string password = AdminBackEnd.ReadPassword();
 
         if (Authenticator.AuthenticateUser(password))

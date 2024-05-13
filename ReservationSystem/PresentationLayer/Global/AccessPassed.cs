@@ -1,6 +1,6 @@
 namespace ReservationSystem;
 
-public class AdminLogIn : View
+public class NewClass : View
 {
     public void Show()
     {
