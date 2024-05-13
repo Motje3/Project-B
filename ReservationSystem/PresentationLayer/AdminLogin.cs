@@ -31,8 +31,6 @@ public class AdminLoginMenu : View
             Console.WriteLine("2. Change the default guide's roaster (To be implemented)");
             Console.WriteLine("4. Exit");
 
-            WriteLine("5. Exit");
-
             Write("\nEnter your choice: ");
             string choice = ReadLine();
 
