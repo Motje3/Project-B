@@ -4,36 +4,41 @@ public class AdminLoginMenu : View
 {
     public static void ProcessLoginForm()
     {
-        AdminLoginMenu ALM = new AdminLoginMenu();
+        AdminLogin AL = new AdminLogin();
+        AccessPassed AP = new AccessPassed();
+        AccessFailed AF = new AccessFailed();
 
-        ALM.Show();
+        AL.Show();
         string password = AdminBackEnd.ReadPassword();
 
         if (Authenticator.AuthenticateUser(password))
         {
-            WriteLine("\nAccess Granted!\n");
+            AP.Show();
             ShowAdminMenu();
         }
         else
         {
-            WriteLine("\nAccess Denied. Invalid username or password.\n");
+            AF.Show();
         }
     }
 
     public static void ShowAdminMenu()
     {
+        StartMenu SM = new StartMenu();
+        InvalidRL I_RL = new InvalidRL();
+
         bool continueRunning = true;
         while (continueRunning)
         {
-            Console.WriteLine("\nAdmin Menu:");
-            Console.WriteLine("1. Assign a Different Guide to today's tours");
-            Console.WriteLine("2. Change the default guide's roaster (To be implemented)");
-            Console.WriteLine("4. Exit");
+            // Console.WriteLine("\nAdmin Menu:");
+            // Console.WriteLine("1. Assign a Different Guide to today's tours");
+            // Console.WriteLine("2. Change the default guide's roaster (To be implemented)");
+            // Console.WriteLine("4. Exit");
 
-            WriteLine("5. Exit");
+            // WriteLine("5. Exit");
 
-            Write("\nEnter your choice: ");
-            string choice = ReadLine();
+            // Write("\nEnter your choice: ");
+            string choice = SM.Show;
 
             switch (choice)
             {
@@ -51,7 +56,7 @@ public class AdminLoginMenu : View
                     try { Console.Clear(); } catch { }
                     break;
                 default:
-                    WriteLine("Invalid choice. Please try again.");
+                    I_RL.Show()
                     break;
             }
         }

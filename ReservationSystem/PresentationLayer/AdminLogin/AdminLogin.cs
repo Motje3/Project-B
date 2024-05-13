@@ -1,7 +1,7 @@
 namespace ReservationSystem;
 
 
-public class AdminLoginMenu : View
+public class AdminLogin : View
 {
     public void Show()
     {
