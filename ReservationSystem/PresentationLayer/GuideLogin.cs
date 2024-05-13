@@ -27,7 +27,7 @@ public static class GuideLoginMenu
         while (continueRunning)
         {
             Console.WriteLine("\nGuide Menu:");
-            Console.WriteLine("1. View personal tours");
+            Console.WriteLine("1. View personal tours(To Be Implemented)");
             Console.WriteLine("2. Exit");
 
             Console.Write("\nEnter your choice: ");

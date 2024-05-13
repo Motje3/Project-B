@@ -16,7 +16,7 @@ public class MenuPresentation
             Console.WriteLine("\nPlease choose an option:");
             Console.WriteLine("1. Change my reservation time");
             Console.WriteLine("2. Cancel my tour reservation");
-            Console.WriteLine("3. Exit");
+            Console.WriteLine("3. Return to main menu");
             Console.Write("\nEnter your choice: ");
             string choice = Console.ReadLine();
 

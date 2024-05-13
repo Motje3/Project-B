@@ -27,7 +27,7 @@ public static class ReservationPresentation
                     currentVisitor = new Visitor(userCode);
                 }
 
-                Console.WriteLine("\nWelcome, your ticket is confirmed!\n");
+                Console.WriteLine("\nWelcome! Your ticket is confirmed\n");
                 if (currentVisitor.HasReservation(currentVisitor))
                 {
                     

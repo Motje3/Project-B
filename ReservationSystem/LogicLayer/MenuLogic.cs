@@ -71,6 +71,9 @@ public class MenuLogic
                 visitorsTour.TransferVisitor(visitor, chosenTour);
                 try { Console.Clear(); } catch { }
                 Console.WriteLine($"\nYou have successfully transferred to the new tour: {chosenTour.StartTime.ToString("h:mm tt")}.\n");
+                Thread.Sleep(2000);
+                try { Console.Clear(); } catch { }
+
             }
             else
             {
