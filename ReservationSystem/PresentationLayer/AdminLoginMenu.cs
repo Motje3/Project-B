@@ -26,7 +26,7 @@ public static class AdminLoginMenu
         {
             Console.WriteLine("\nAdmin Menu:");
             Console.WriteLine("1. Assign a Different Guide to today's tours");
-            Console.WriteLine("2. Change the default guide roaster");
+            Console.WriteLine("2. Change the default guide's roaster (To be implemented)");
             Console.WriteLine("4. Exit");
 
             Console.Write("\nEnter your choice: ");
