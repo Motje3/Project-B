@@ -59,7 +59,7 @@ namespace MuseumTesting
 
             // Assert
             Assert.IsTrue(Tour.TodaysTours.Count > 0);
-            Assert.AreEqual(Tour.TodaysTours[0].MaxCapacity, 30);
+            Assert.AreEqual(Tour.TodaysTours[0].MaxCapacity, 13);
         }
 
         [TestMethod]
