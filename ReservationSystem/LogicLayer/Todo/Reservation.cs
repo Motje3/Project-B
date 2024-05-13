@@ -32,11 +32,11 @@ public class ReservationPresentation : View
                 Console.WriteLine("\nWelcome! Your ticket is confirmed\n");
                 if (currentVisitor.HasReservation(currentVisitor))
                 {
-                    MenuLogic.ShowFullMenu(currentVisitor);
+                    ShowFullMenu(currentVisitor);
                 }
                 else
                 {
-                    MenuLogic.ShowRestrictedMenu(currentVisitor);
+                    ShowRestrictedMenu(currentVisitor);
                 }
                 continue;
             }
@@ -47,6 +47,9 @@ public class ReservationPresentation : View
         }
     }
 
+    // MenuLogic:
+    // "Bora" moved it here because he thought it was more suited here.
+    // And yes i speak from 3th-Person
     public static void ShowRestrictedMenu(Visitor visitor)
     {
         MenuLogic.JoinTour(visitor);

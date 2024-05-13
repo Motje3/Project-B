@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using ReservationSystem;
 
 public class Guide
 {
@@ -68,34 +69,33 @@ public class Guide
 
     public static void ReassignGuideToTour()
     {
-        Console.WriteLine("Select a tour to reassign a guide:");
+        ReasingedTourMenu.ShowStartMess();
         for (int i = 0; i < Tour.TodaysTours.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. Tour at {Tour.TodaysTours[i].StartTime} currently assigned to {Tour.TodaysTours[i].AssignedGuide?.Name ?? "No Guide"}");
+            ReasingedTourMenu.ShowAvailbleTour(i, Tour.TodaysTours[i]);
         }
-
-        Console.Write("Enter the number of the tour to reassign: ");
-        int tourIndex = Convert.ToInt32(Console.ReadLine()) - 1;
+        ReasingedTourMenu.ShowSelectMess();
+        int tourIndex = Convert.ToInt32(RL.ReadLine()) - 1;
 
         if (tourIndex < 0 || tourIndex >= Tour.TodaysTours.Count)
         {
-            Console.WriteLine("Invalid tour selection.");
+            InvalidTour.Show();
             return;
         }
 
         // Display guides for selection from the static list in Guide class
-        Console.WriteLine("Select a guide to assign:");
+        AdminAssingGuideMenu.ShowStartMess();
         for (int i = 0; i < Guide.AllGuides.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. {Guide.AllGuides[i].Name}");
+            AdminAssingGuideMenu.ShowAvailbleGuide(i, AllGuides[i]);
         }
 
-        Console.Write("Enter the number of the guide to assign: ");
-        int guideIndex = Convert.ToInt32(Console.ReadLine()) - 1;
+        AdminAssingGuideMenu.ShowSelectMess();
+        int guideIndex = Convert.ToInt32(RL.ReadLine()) - 1;
 
         if (guideIndex < 0 || guideIndex >= Guide.AllGuides.Count)
         {
-            Console.WriteLine("Invalid guide selection.");
+            InvalidGuide.Show();
             return;
         }
 
@@ -106,7 +106,8 @@ public class Guide
         Tour.SaveTours();
 
         try { Console.Clear(); } catch { }
-        Console.WriteLine($"Guide {Guide.AllGuides[guideIndex].Name} has been successfully assigned to the tour at {Tour.TodaysTours[tourIndex].StartTime:hh:mm tt} o'clock.");
+        // Console.WriteLine($"Guide {Guide.AllGuides[guideIndex].Name} has been successfully assigned to the tour at {Tour.TodaysTours[tourIndex].StartTime:hh:mm tt} o'clock.");
+        AssignedGuideToTourSucces.Show(guideIndex, tourIndex);
         Thread.Sleep(2000);
         try { Console.Clear(); } catch { }
     }
