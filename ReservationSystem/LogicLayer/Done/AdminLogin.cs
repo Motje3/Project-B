@@ -8,25 +8,22 @@ public class AdminLoginMenu : View
         AccessPassed AP = new AccessPassed();
         AccessFailed AF = new AccessFailed();
 
-        AL.Show();
+        AdminLogin.Show();
         string password = AdminBackEnd.ReadPassword();
 
         if (Authenticator.AuthenticateUser(password))
         {
-            AP.Show();
+            AccessPassed.Show();
             ShowAdminMenu();
         }
         else
         {
-            AF.Show();
+            AccessFailed.Show();
         }
     }
 
     public static void ShowAdminMenu()
     {
-        StartMenu SM = new StartMenu();
-        InvalidRL I_RL = new InvalidRL();
-
         bool continueRunning = true;
         while (continueRunning)
         {
@@ -38,7 +35,7 @@ public class AdminLoginMenu : View
             // WriteLine("5. Exit");
 
             // Write("\nEnter your choice: ");
-            string choice = SM.Show;
+            string choice = StartMenu.Show();
 
             switch (choice)
             {
@@ -56,7 +53,7 @@ public class AdminLoginMenu : View
                     try { Console.Clear(); } catch { }
                     break;
                 default:
-                    I_RL.Show()
+                    InvalidRL.Show();
                     break;
             }
         }

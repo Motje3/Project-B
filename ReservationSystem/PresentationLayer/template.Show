@@ -2,7 +2,7 @@ namespace ReservationSystem;
 
 public class NewClass : View
 {
-    public void/string Show()
+    public static void/string Show()
     {
         // your logic here
         // Use string if you return a Readline()

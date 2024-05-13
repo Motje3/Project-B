@@ -3,7 +3,7 @@ namespace ReservationSystem;
 
 public class InvalidRL : View
 {
-    public void Show()
+    public static void Show()
     {
         WriteLine("Invalid choice. Please enter a valid option.");
     }

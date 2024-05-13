@@ -2,7 +2,7 @@ namespace ReservationSystem;
 
 public class StartMenu : View
 {
-    public void/string Show()
+    public static string Show()
     {
         WriteLine("\nAdmin Menu:");
         WriteLine("1. Assign a Different Guide to today's tours");

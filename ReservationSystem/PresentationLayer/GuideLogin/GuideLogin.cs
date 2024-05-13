@@ -1,11 +1,10 @@
 namespace ReservationSystem;
 
-
-public class AdminLogin : View
+public class GuideLogin : View
 {
     public static void Show()
     {
-        WriteLine("\nAdmin login\n");
+        WriteLine("\nGuide login\n");
         Write("Enter password: ");
     }
 }

@@ -2,7 +2,7 @@ namespace ReservationSystem;
 
 public class AccessPassed : View
 {
-    public void Show()
+    public static void Show()
     {
         WriteLine("\nAccess Granted!\n");
     }

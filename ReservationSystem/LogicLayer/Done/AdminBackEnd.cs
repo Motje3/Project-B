@@ -14,8 +14,6 @@ public static class AdminBackEnd
 
     public static string ReadPassword()
     {
-        PasswordChar PC = new PasswordChar();
-        Space space = new Space();
 
         string password = "";
         ConsoleKeyInfo info = Console.ReadKey(true);
@@ -23,7 +21,7 @@ public static class AdminBackEnd
         {
             if (info.Key != ConsoleKey.Backspace)
             {
-                PC.Show();
+                PasswordChar.Show();
                 password += info.KeyChar;
             }
             else if (info.Key == ConsoleKey.Backspace && password.Length > 0)
@@ -33,7 +31,7 @@ public static class AdminBackEnd
             }
             info = Console.ReadKey(true);
         }
-        space.Show(); // Console.WriteLine(); // Ensure the cursor moves to the next line after Enter is pressed
+        Space.Show(); // Console.WriteLine(); // Ensure the cursor moves to the next line after Enter is pressed
         return password;
     }
 

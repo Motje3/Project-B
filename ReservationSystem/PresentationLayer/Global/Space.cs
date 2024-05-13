@@ -4,7 +4,7 @@ namespace ReservationSystem;
 
 public class Space : View  
 {
-    public void Show()
+    public static void Show()
     {
         WriteLine("");  // ensures it also saves this as line for test in FakeWorld
     }

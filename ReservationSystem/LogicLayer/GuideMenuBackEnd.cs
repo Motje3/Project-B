@@ -26,10 +26,6 @@ public static class GuideMenuBackEnd
 
     private static List<Credential> LoadUserCredentials()
     {
-        JSON_NotFound JSON_NF = new JSON_NotFound();
-        JSON_Exception JSON_EX = new JSON_Exception();
-
-
         string filePath = "./JSON-Files/GidsCredentials.json";
         try
         {
@@ -40,13 +36,13 @@ public static class GuideMenuBackEnd
             }
             else
             {
-                JSON_NF.Show("Credentials");  // JSON Title
+                JSON_NotFound.Show("Credentials");  // JSON Title
                 return new List<Credential>();
             }
         }
         catch (Exception ex)
         {
-            JSON_EX.Show(ex, "Credentials");  // JSON Title
+            JSON_Exception.Show(ex, "Credentials");  // JSON Title
             return new List<Credential>();
         }
     }
