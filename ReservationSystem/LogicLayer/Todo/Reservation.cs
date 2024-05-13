@@ -32,12 +32,11 @@ public class ReservationPresentation : View
                 Console.WriteLine("\nWelcome! Your ticket is confirmed\n");
                 if (currentVisitor.HasReservation(currentVisitor))
                 {
-                    
-                    MenuPresentation.ShowFullMenu(currentVisitor);
+                    MenuLogic.ShowFullMenu(currentVisitor);
                 }
                 else
                 {
-                    MenuPresentation.ShowRestrictedMenu(currentVisitor);
+                    MenuLogic.ShowRestrictedMenu(currentVisitor);
                 }
                 continue;
             }
