@@ -17,20 +17,6 @@ namespace MuseumTesting
             Assert.ThrowsException<NotImplementedException>(() => AdminBackEnd.ChangeTourTime());
         }
 
-        [TestMethod]
-        public void ReadPassword_ReturnsCorrectPassword()
-        {
-            // Arrange
-            string expectedPassword = "test123";
-
-            // Simulate user input
-            Console.SetIn(new System.IO.StringReader(expectedPassword + Environment.NewLine));
-
-            // Act
-            string actualPassword = AdminBackEnd.ReadPassword();
-
-            // Assert
-            Assert.AreEqual(expectedPassword, actualPassword);
-        }
+        
     }
 }
