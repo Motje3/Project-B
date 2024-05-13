@@ -14,9 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include= "DataLayer/JSON-Files/*.*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include= "DataAccessLayer/*.*" CopyToOutputDirectory="PreserveNewest" />
     <Content Include= "PresentationLayer/*.*" CopyToOutputDirectory="PreserveNewest" />
     <Content Include= "LogicLayer/*.*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include= "JSON-Files/*.*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

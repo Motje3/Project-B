@@ -4,13 +4,13 @@ public class AdminLoginMenu : View
 {
     public static void ProcessLoginForm()
     {
-        WriteLine("\nAdmin login\n");
+        Console.WriteLine("\nAdmin login\n");
 
-        Write("Enter username: ");
-        string username = ReadLine();
-        Write("Enter password: ");
+
+        Console.Write("Enter password: ");
         string password = AdminBackEnd.ReadPassword();
-        if (Authenticator.AuthenticateUser(username, password))
+
+        if (Authenticator.AuthenticateUser(password))
         {
             WriteLine("\nAccess Granted!\n");
             ShowAdminMenu();
@@ -26,11 +26,10 @@ public class AdminLoginMenu : View
         bool continueRunning = true;
         while (continueRunning)
         {
-            WriteLine("\nAdmin Menu:");
-            WriteLine("1. Change capacity of a tour");
-            WriteLine("2. Change time of a tour");
-            WriteLine("3. View Tours");
-            WriteLine("4. Get advice for upcoming days");
+            Console.WriteLine("\nAdmin Menu:");
+            Console.WriteLine("1. Assign a Different Guide to today's tours");
+            Console.WriteLine("2. Change the default guide's roaster (To be implemented)");
+            Console.WriteLine("4. Exit");
 
             WriteLine("5. Exit");
 
@@ -40,16 +39,17 @@ public class AdminLoginMenu : View
             switch (choice)
             {
                 case "1":
-                    AdminBackEnd.ChangeTourCapacity();
+                    Guide.ReassignGuideToTour();
                     break;
                 case "2":
                     AdminBackEnd.ChangeTourTime();
                     break;
                 case "3":
-                    GuidedTour.PrintToursOpenToday();
+                    //Tour.PrintToursOpenToday();
                     break;
                 case "4":
                     continueRunning = false;
+                    try { Console.Clear(); } catch { }
                     break;
                 default:
                     WriteLine("Invalid choice. Please try again.");

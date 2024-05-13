@@ -29,16 +29,17 @@ public class ReservationPresentation : View
                     currentVisitor = new Visitor(userCode);
                 }
 
-                WriteLine("\nWelcome, your ticket is confirmed!\n");
+                Console.WriteLine("\nWelcome! Your ticket is confirmed\n");
                 if (currentVisitor.HasReservation(currentVisitor))
                 {
+                    
                     MenuPresentation.ShowFullMenu(currentVisitor);
                 }
                 else
                 {
                     MenuPresentation.ShowRestrictedMenu(currentVisitor);
                 }
-                continue; // Continue will start the loop from the beginning
+                continue;
             }
             else
             {

@@ -13,27 +13,23 @@ public static class AdminBackEnd
     public static string ReadPassword()
     {
         string password = "";
-        while (true)
+        ConsoleKeyInfo info = Console.ReadKey(true);
+        while (info.Key != ConsoleKey.Enter)
         {
-            ConsoleKeyInfo info = Console.ReadKey(true);
-            if (info.Key == ConsoleKey.Enter)
+            if (info.Key != ConsoleKey.Backspace)
             {
-                break;
-            }
-            else if (info.Key == ConsoleKey.Backspace)
-            {
-                if (password.Length > 0)
-                {
-                    password = password.Substring(0, password.Length - 1);
-                    Console.Write("\b \b"); // Moves the cursor back, writes a space to erase the asterisk, then moves back again
-                }
-            }
-            else
-            {
-                password += info.KeyChar;
                 Console.Write("*");
+                password += info.KeyChar;
             }
+            else if (info.Key == ConsoleKey.Backspace && password.Length > 0)
+            {
+                Console.Write("\b \b"); // Moves the cursor back, writes a space to erase the star, and moves back again.
+                password = password[..^1]; // Removes the last character from the password string
+            }
+            info = Console.ReadKey(true);
         }
+        Console.WriteLine(); // Ensure the cursor moves to the next line after Enter is pressed
         return password;
     }
+
 }

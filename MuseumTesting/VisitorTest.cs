@@ -1,68 +1,107 @@
-namespace MuseumTesting;
-
-[TestClass]
-public class VisitorTest
+namespace MuseumTesting
 {
-    /*[TestMethod]
-    public void VisitorConstructor_SetsPropertiesCorrectly()
+    [TestClass]
+    public class VisitorTests
     {
-        // Arrange
-        string name = "John Doe";
-        int rondleidingChoice = 1;
-        string ticketCode = "12345678901";
+        [TestMethod]
+        public void Constructor_CreatesVisitorWithTicketCode()
+        {
+            // Arrange
+            string ticketCode = "ABC123";
 
-        // Act
-        Visitor visitor = new Visitor(name, rondleidingChoice, ticketCode);
+            // Act
+            var visitor = new Visitor(ticketCode);
 
-        // Assert
-        Assert.AreEqual(name, visitor.Name);
-        Assert.AreEqual(rondleidingChoice, visitor.RondleidingChoice);
-        Assert.AreEqual(ticketCode, visitor.TicketCode);
-        Assert.AreNotEqual(Guid.Empty, visitor.VisitorId);
-    }*/
+            // Assert
+            Assert.AreEqual(ticketCode, visitor.TicketCode);
+        }
 
-    /*[TestMethod]
-    public void VisitorConstructor_GeneratesUniqueId()
-    {
-        // Arrange
-        string name = "Jane Smith";
-        int rondleidingChoice = 2;
-        string ticketCode = "12345678901";
+        [TestMethod]
+        public void HasReservation_WithReservation_ReturnsTrue()
+        {
+            // Arrange
+            var visitor = new Visitor("ABC123");
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"));
+            tour.AddVisitor(visitor);
 
-        // Act
-        Visitor visitor1 = new Visitor(name, rondleidingChoice, ticketCode);
-        Visitor visitor2 = new Visitor(name, rondleidingChoice, ticketCode);
+            // Act
+            bool hasReservation = visitor.HasReservation(visitor);
 
-        // Assert
-        Assert.AreNotEqual(visitor1.VisitorId, visitor2.VisitorId);
-    }*/
+            // Assert
+            Assert.IsTrue(hasReservation);
+        }
 
-    [TestMethod]
-    public void RondleidingChoiceSetter_UpdatesRondleidingChoiceCorrectly()
-    {
-        // Arrange
-        string name = "JAne";
-        Visitor visitor = new Visitor("12345678901");
+        [TestMethod]
+        public void HasReservation_WithoutReservation_ReturnsFalse()
+        {
+            // Arrange
+            var visitor = new Visitor("XYZ789");
 
-        // Act
-        // .RondleidingChoice has been removed
-        //visitor.RondleidingChoice = 2;
+            // Act
+            bool hasReservation = visitor.HasReservation(visitor);
 
-        // Assert
-        //Assert.AreEqual(2, visitor.RondleidingChoice);
-    }
+            // Assert
+            Assert.IsFalse(hasReservation);
+        }
 
-    [TestMethod]
-    public void TicketCodeSetter_UpdatesTicketCodeCorrectly()
-    {
-        // Arrange
-        string name = "John Doe";
-        Visitor visitor = new Visitor("12345678901");
+        [TestMethod]
+        public void FindVisitorByTicketCode_WithExistingVisitor_ReturnsVisitor()
+        {
+            // Arrange
+            string ticketCode = "DEF456";
+            var visitor = new Visitor(ticketCode);
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"));
+            tour.AddVisitor(visitor);
 
-        // Act
-        visitor.TicketCode = "12345678901";
+            // Act
+            var foundVisitor = Visitor.FindVisitorByTicketCode(ticketCode);
 
-        // Assert
-        Assert.AreEqual("12345678901", visitor.TicketCode);
+            // Assert
+            Assert.IsNotNull(foundVisitor);
+            Assert.AreEqual(ticketCode, foundVisitor.TicketCode);
+        }
+
+        [TestMethod]
+        public void FindVisitorByTicketCode_WithNonExistingVisitor_ReturnsNull()
+        {
+            // Arrange
+            string ticketCode = "GHI789";
+
+            // Act
+            var foundVisitor = Visitor.FindVisitorByTicketCode(ticketCode);
+
+            // Assert
+            Assert.IsNull(foundVisitor);
+        }
+
+        [TestMethod]
+        public void GetCurrentReservation_WithExistingReservation_ReturnsReservationDetails()
+        {
+            // Arrange
+            string ticketCode = "JKL012";
+            var visitor = new Visitor(ticketCode);
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now.AddHours(1), 60, 30, false, false, new Guide("John"));
+            tour.AddVisitor(visitor);
+
+            // Act
+            string reservationDetails = Visitor.GetCurrentReservation(visitor);
+
+            // Assert
+            Assert.IsTrue(reservationDetails.Contains("Your current reservation is at"));
+        }
+
+        [TestMethod]
+        public void GetCurrentReservation_WithoutReservation_ReturnsNoReservationMessage()
+        {
+            // Arrange
+            string ticketCode = "MNO345";
+            var visitor = new Visitor(ticketCode);
+
+            // Act
+            string reservationDetails = Visitor.GetCurrentReservation(visitor);
+
+            // Assert
+            Assert.IsTrue(reservationDetails.Contains("You currently have no reservation"));
+        }
     }
 }

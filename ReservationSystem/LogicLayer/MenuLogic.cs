@@ -2,20 +2,6 @@ using System.Net;
 
 public class MenuLogic
 {
-    public bool HandleRestrictedMenuChoice(string choice, Visitor visitor)
-    {
-        switch (choice)
-        {
-            case "1":
-                return JoinTour(visitor);
-
-            case "2":
-                return false; // Exit the loop
-            default:
-                Console.WriteLine("Invalid choice. Please try again.");
-                return true;
-        }
-    }
 
     public bool HandleFullMenuChoice(string choice, Visitor visitor)
     {
@@ -38,45 +24,56 @@ public class MenuLogic
 
     public static bool JoinTour(Visitor visitor)
     {
+        // Display available tours
+        Tour.ShowAvailableTours();
 
-        List<GuidedTour> allowedTours = GuidedTour.PrintToursOpenToday();
-        Console.WriteLine("\nPlease choose a number next to the tour you wish to join\n");
-
+        // Prompt the user to choose a tour
+        Console.WriteLine("\nPlease choose a number next to the tour you wish to join:");
         string chosenTourNumber = Console.ReadLine();
-        if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= allowedTours.Count)
+        List<Tour> availableTours = Tour.TodaysTours.Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity).ToList();
+
+        // Validate user input and attempt to join the selected tour
+        if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= availableTours.Count)
         {
-            GuidedTour chosenTour = allowedTours[tourNumber - 1];
+            Tour chosenTour = availableTours[tourNumber - 1];
             chosenTour.AddVisitor(visitor);
+            Tour.SaveTours();
             try { Console.Clear(); } catch { }
-            MenuPresentation.ShowFullMenu(visitor);
-            return false;
+            Console.WriteLine("Tour joined successfully!");
+            Thread.Sleep(2000);
+            try { Console.Clear(); } catch { }
+            return true;
         }
         else
         {
-            //need to change this into a do while loop so user is forced to enter a valid tour number.
             Console.WriteLine("Invalid choice, please choose a valid tour number.\n");
-            return true;
+            return false; // Return false to indicate failure to join a tour
         }
     }
 
     public static void ChangeTour(Visitor visitor)
     {
-        Console.WriteLine("\nYour current tour reservation is:");
-        _printTourString(GuidedTour.FindTourById(visitor.AssingedTourId));
-
-        List<GuidedTour> allowedTours = GuidedTour.PrintToursOpenToday();
-        Console.WriteLine("\nPlease choose a number next to the tour you wish to join");
+        // Show current reservation details
+        string reservationDetails = Visitor.GetCurrentReservation(visitor);
+        Console.WriteLine(reservationDetails);
+        
+        // Display available tours and allow user to choose
+        Tour.ShowAvailableTours();
+        Console.WriteLine("\nPlease choose a number next to the new tour you wish to join");
 
         string chosenTourNumber = Console.ReadLine();
-        if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= allowedTours.Count)
+        if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= Tour.TodaysTours.Count)
         {
-            GuidedTour chosenTour = allowedTours[tourNumber - 1];
-            GuidedTour visitorsTour = GuidedTour.FindTourById(visitor.AssingedTourId);
+            Tour chosenTour = Tour.TodaysTours[tourNumber - 1];
+            Tour visitorsTour = Tour.FindTourByVisitorTicketCode(visitor.TicketCode);
             if (visitorsTour != null)
             {
                 visitorsTour.TransferVisitor(visitor, chosenTour);
                 try { Console.Clear(); } catch { }
-                Console.WriteLine($"\nYou have successfully transferred to the new tour: {chosenTour.StartTime}.\n");
+                Console.WriteLine($"\nYou have successfully transferred to the new tour: {chosenTour.StartTime.ToString("h:mm tt")}.\n");
+                Thread.Sleep(2000);
+                try { Console.Clear(); } catch { }
+
             }
             else
             {
@@ -89,32 +86,25 @@ public class MenuLogic
         }
     }
 
-    private static bool CancelTour(Visitor visitor)
+
+    public static bool CancelTour(Visitor visitor)
     {
-        GuidedTour visitorsTour = GuidedTour.FindTourById(visitor.AssingedTourId);
+        Tour visitorsTour = Tour.FindTourByVisitorTicketCode(visitor.TicketCode);
+
         if (visitorsTour == null)
         {
             Console.WriteLine("Error: Unable to find the tour.");
-            return true; // Continue showing the menu.
+            return true;
         }
 
         visitorsTour.RemoveVisitor(visitor);
-
-        Console.WriteLine("\nReservation has been canceled successfully.");
-        Thread.Sleep(1500 * 1);
         try { Console.Clear(); } catch { }
-        
-        return false; // Exit the loop.
+        Console.WriteLine("\nReservation has been canceled successfully.");
+        Thread.Sleep(2000);
+        try { Console.Clear(); } catch { }
+
+        return false;
     }
 
 
-    public static void _printTourString(GuidedTour tour)
-    {
-        if (tour == null) return;
-        DateOnly tourDate = DateOnly.FromDateTime(tour.StartTime);
-        string hour = tour.StartTime.Hour.ToString("D2");
-        string minute = tour.StartTime.Minute.ToString("D2");
-
-        Console.WriteLine($"{hour}:{minute} {tourDate} | Duration: {tour.Duration} minutes\n");
-    }
 }
