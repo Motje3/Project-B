@@ -5,12 +5,7 @@
     "EndTime": "2024-05-13T11:15:00+02:00",
     "Duration": 15,
     "MaxCapacity": 13,
-    "ExpectedVisitors": [
-      {
-        "VisitorId": "92420b3b-c7f2-4757-8a2a-a8ae2cd7c264",
-        "TicketCode": "111"
-      }
-    ],
+    "ExpectedVisitors": [],
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
@@ -40,7 +35,12 @@
     "EndTime": "2024-05-13T11:45:00+02:00",
     "Duration": 15,
     "MaxCapacity": 13,
-    "ExpectedVisitors": [],
+    "ExpectedVisitors": [
+      {
+        "VisitorId": "62a86747-5413-4dfc-9946-9cc93e4ffe4a",
+        "TicketCode": "333"
+      }
+    ],
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,

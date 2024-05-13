@@ -91,7 +91,9 @@ public class Tour
 
     public static void ShowAvailableTours()
     {
-        var availableTours = TodaysTours.Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity).ToList();
+        var availableTours = TodaysTours.Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && 
+        tour.StartTime > DateTime.Now ).ToList();
+        
         if (availableTours.Any())
         {
 
