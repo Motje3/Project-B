@@ -20,8 +20,8 @@ namespace MuseumTesting
             {
                 StartTime = "09:00 AM",
                 EndTime = "05:00 PM",
-                Duration = 60, // Duration in minutes
-                MaxCapacity = 30
+                Duration = 40, // Duration in minutes
+                MaxCapacity = 13
             });
             File.WriteAllText(tourSettingsPath, settingsJson);
 
@@ -84,7 +84,7 @@ namespace MuseumTesting
         {
             // Setup
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("John"));
 
             // Act
             tour.AddVisitor(visitor);
@@ -98,7 +98,7 @@ namespace MuseumTesting
         {
             // Setup
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("John"));
             tour.AddVisitor(visitor);
 
             // Act
@@ -113,7 +113,7 @@ namespace MuseumTesting
         {
             // Setup
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("John"));
             tour.AddVisitor(visitor);
             Tour.TodaysTours.Add(tour);
 
