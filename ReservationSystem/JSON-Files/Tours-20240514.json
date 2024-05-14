@@ -1,0 +1,317 @@
+[
+  {
+    "TourId": "7181ea81-859b-422f-867d-47a2920f508f",
+    "StartTime": "2024-05-14T11:00:00+02:00",
+    "EndTime": "2024-05-14T11:15:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "656ae90f-f2b0-4bbc-b427-0df068559b89",
+      "Name": "John Doe"
+    }
+  },
+  {
+    "TourId": "d2dd2c24-00b7-4bad-9294-15407929ce69",
+    "StartTime": "2024-05-14T11:15:00+02:00",
+    "EndTime": "2024-05-14T11:30:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "ea4c2f37-a9ba-40e5-b874-5d0411691362",
+      "Name": "Alice Johnson"
+    }
+  },
+  {
+    "TourId": "ed0ac625-6a25-4f64-b7a8-889c736098c4",
+    "StartTime": "2024-05-14T11:30:00+02:00",
+    "EndTime": "2024-05-14T11:45:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "12eeb4fa-b2e9-4ae0-8806-f38d88851711",
+      "Name": "Steve Brown"
+    }
+  },
+  {
+    "TourId": "1cf18905-b742-4578-9510-98ec58cb9aa3",
+    "StartTime": "2024-05-14T11:45:00+02:00",
+    "EndTime": "2024-05-14T12:00:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "db8ee3a9-920c-4c34-806c-3b5f2b14c52b",
+      "Name": "Mary Lee"
+    }
+  },
+  {
+    "TourId": "95b69ec5-145e-4b09-ad6a-c406be7b14a9",
+    "StartTime": "2024-05-14T12:00:00+02:00",
+    "EndTime": "2024-05-14T12:15:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "1a9fb940-00b9-4fe9-8e62-bd9260c67984",
+      "Name": "Tom Clark"
+    }
+  },
+  {
+    "TourId": "aaafd6fe-27a0-4437-a47e-9c7fb133bbce",
+    "StartTime": "2024-05-14T12:15:00+02:00",
+    "EndTime": "2024-05-14T12:30:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "656ae90f-f2b0-4bbc-b427-0df068559b89",
+      "Name": "John Doe"
+    }
+  },
+  {
+    "TourId": "6111cb77-7d50-4485-8c80-f5e1fa8fb6d8",
+    "StartTime": "2024-05-14T12:30:00+02:00",
+    "EndTime": "2024-05-14T12:45:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "ea4c2f37-a9ba-40e5-b874-5d0411691362",
+      "Name": "Alice Johnson"
+    }
+  },
+  {
+    "TourId": "a277c963-88e7-4813-a178-976e37504291",
+    "StartTime": "2024-05-14T12:45:00+02:00",
+    "EndTime": "2024-05-14T13:00:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "12eeb4fa-b2e9-4ae0-8806-f38d88851711",
+      "Name": "Steve Brown"
+    }
+  },
+  {
+    "TourId": "11e99fb8-6b8a-4932-a45f-e5155351e6f8",
+    "StartTime": "2024-05-14T13:00:00+02:00",
+    "EndTime": "2024-05-14T13:15:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "db8ee3a9-920c-4c34-806c-3b5f2b14c52b",
+      "Name": "Mary Lee"
+    }
+  },
+  {
+    "TourId": "4119b1f6-0f6f-4d96-92fe-fde312b4202d",
+    "StartTime": "2024-05-14T13:15:00+02:00",
+    "EndTime": "2024-05-14T13:30:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "1a9fb940-00b9-4fe9-8e62-bd9260c67984",
+      "Name": "Tom Clark"
+    }
+  },
+  {
+    "TourId": "ba70a2d7-e0a8-4d70-9e3c-c394305f539b",
+    "StartTime": "2024-05-14T13:30:00+02:00",
+    "EndTime": "2024-05-14T13:45:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "656ae90f-f2b0-4bbc-b427-0df068559b89",
+      "Name": "John Doe"
+    }
+  },
+  {
+    "TourId": "a585ca74-a34d-4358-ba11-596b20a08f35",
+    "StartTime": "2024-05-14T13:45:00+02:00",
+    "EndTime": "2024-05-14T14:00:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "ea4c2f37-a9ba-40e5-b874-5d0411691362",
+      "Name": "Alice Johnson"
+    }
+  },
+  {
+    "TourId": "2b6b4458-df5b-43c7-9286-cbe277a2c079",
+    "StartTime": "2024-05-14T14:00:00+02:00",
+    "EndTime": "2024-05-14T14:15:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "12eeb4fa-b2e9-4ae0-8806-f38d88851711",
+      "Name": "Steve Brown"
+    }
+  },
+  {
+    "TourId": "e64e4a15-de45-41b3-9717-f357132e6940",
+    "StartTime": "2024-05-14T14:15:00+02:00",
+    "EndTime": "2024-05-14T14:30:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "db8ee3a9-920c-4c34-806c-3b5f2b14c52b",
+      "Name": "Mary Lee"
+    }
+  },
+  {
+    "TourId": "84dd5531-f4aa-4172-ade9-d40dc9ecce85",
+    "StartTime": "2024-05-14T14:30:00+02:00",
+    "EndTime": "2024-05-14T14:45:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "1a9fb940-00b9-4fe9-8e62-bd9260c67984",
+      "Name": "Tom Clark"
+    }
+  },
+  {
+    "TourId": "a2c2e0c4-74bc-4f53-8e08-d8c709d122c2",
+    "StartTime": "2024-05-14T14:45:00+02:00",
+    "EndTime": "2024-05-14T15:00:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "656ae90f-f2b0-4bbc-b427-0df068559b89",
+      "Name": "John Doe"
+    }
+  },
+  {
+    "TourId": "8291a285-f4b9-42d2-8a28-2d36dedb3f9a",
+    "StartTime": "2024-05-14T15:00:00+02:00",
+    "EndTime": "2024-05-14T15:15:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "ea4c2f37-a9ba-40e5-b874-5d0411691362",
+      "Name": "Alice Johnson"
+    }
+  },
+  {
+    "TourId": "64c5ffaa-d8d9-404e-b594-637466971fc3",
+    "StartTime": "2024-05-14T15:15:00+02:00",
+    "EndTime": "2024-05-14T15:30:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "12eeb4fa-b2e9-4ae0-8806-f38d88851711",
+      "Name": "Steve Brown"
+    }
+  },
+  {
+    "TourId": "06443e4e-5bcb-48d8-a845-79f603f6d3da",
+    "StartTime": "2024-05-14T15:30:00+02:00",
+    "EndTime": "2024-05-14T15:45:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "db8ee3a9-920c-4c34-806c-3b5f2b14c52b",
+      "Name": "Mary Lee"
+    }
+  },
+  {
+    "TourId": "831569b5-fb5c-42a7-8d67-2fbaeee49eec",
+    "StartTime": "2024-05-14T15:45:00+02:00",
+    "EndTime": "2024-05-14T16:00:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "1a9fb940-00b9-4fe9-8e62-bd9260c67984",
+      "Name": "Tom Clark"
+    }
+  },
+  {
+    "TourId": "344b2fc1-d798-42a2-871d-feabe33a5fa9",
+    "StartTime": "2024-05-14T16:00:00+02:00",
+    "EndTime": "2024-05-14T16:15:00+02:00",
+    "Duration": 15,
+    "MaxCapacity": 13,
+    "ExpectedVisitors": [],
+    "PresentVisitors": [],
+    "Completed": false,
+    "Deleted": false,
+    "AssignedGuide": {
+      "GuideId": "656ae90f-f2b0-4bbc-b427-0df068559b89",
+      "Name": "John Doe"
+    }
+  }
+]
