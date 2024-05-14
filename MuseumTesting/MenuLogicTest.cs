@@ -24,26 +24,24 @@ namespace MuseumTesting
         {
             // Arrange
             var visitor = new Visitor("ABC123");
-            var menuLogic = new MenuLogic();
-            var mockTour = new Mock<Tour>();
-            mockTour.Setup(tour => tour.Completed).Returns(false);
-            mockTour.Setup(tour => tour.Deleted).Returns(false);
-            mockTour.Setup(tour => tour.ExpectedVisitors.Count).Returns(0);
-            mockTour.Setup(tour => tour.MaxCapacity).Returns(30);
-            Tour.TodaysTours.Add(mockTour.Object);
+            Tour.TodaysTours.Add(new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"))); // Ensure there is at least one tour to join
 
-            // Simulate user input
-            Console.SetIn(new StringReader("1\n"));
+            var input = new StringReader("1\n"); // Simulate choosing the first tour
+            Console.SetIn(input);
+            var output = new StringWriter();
+            Console.SetOut(output);
 
             // Act
             bool result = MenuLogic.JoinTour(visitor);
 
             // Assert
             Assert.IsTrue(result);
-            Assert.AreEqual(1, mockTour.Object.ExpectedVisitors.Count);
+            Assert.AreEqual(1, Tour.TodaysTours[0].ExpectedVisitors.Count); // Check if visitor was added
 
-            // Clean up
+            // Cleanup
             Tour.TodaysTours.Clear();
+            Console.SetIn(Console.In);
+            Console.SetOut(Console.Out);
         }
 
         [TestMethod]
@@ -77,29 +75,27 @@ namespace MuseumTesting
         {
             // Arrange
             var visitor = new Visitor("ABC123");
-            var menuLogic = new MenuLogic();
-            var mockCurrentTour = new Mock<Tour>();
-            var mockNewTour = new Mock<Tour>();
-            mockCurrentTour.Setup(tour => tour.StartTime).Returns(DateTime.Now);
-            mockCurrentTour.Setup(tour => tour.ExpectedVisitors.Contains(visitor)).Returns(true);
-            mockNewTour.Setup(tour => tour.StartTime).Returns(DateTime.Now.AddHours(1));
-            mockNewTour.Setup(tour => tour.ExpectedVisitors.Count).Returns(0);
-            mockNewTour.Setup(tour => tour.MaxCapacity).Returns(30);
-            Tour.TodaysTours.Add(mockCurrentTour.Object);
-            Tour.TodaysTours.Add(mockNewTour.Object);
+            var initialTour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"));
+            var newTour = new Tour(Guid.NewGuid(), DateTime.Now.AddHours(2), 60, 30, false, false, new Guide("Jane"));
+            initialTour.AddVisitor(visitor);
+            Tour.TodaysTours.AddRange(new List<Tour> { initialTour, newTour });
 
-            // Simulate user input
-            Console.SetIn(new StringReader("1\n"));
+            var input = new StringReader("2\n"); // Simulate choosing the second tour to change to
+            Console.SetIn(input);
+            var output = new StringWriter();
+            Console.SetOut(output);
 
             // Act
             MenuLogic.ChangeTour(visitor);
 
             // Assert
-            Assert.AreEqual(0, mockCurrentTour.Object.ExpectedVisitors.Count);
-            Assert.AreEqual(1, mockNewTour.Object.ExpectedVisitors.Count);
+            Assert.IsTrue(newTour.ExpectedVisitors.Contains(visitor));
+            Assert.IsFalse(initialTour.ExpectedVisitors.Contains(visitor));
 
-            // Clean up
+            // Cleanup
             Tour.TodaysTours.Clear();
+            Console.SetIn(Console.In);
+            Console.SetOut(Console.Out);
         }
 
         [TestMethod]
@@ -107,20 +103,26 @@ namespace MuseumTesting
         {
             // Arrange
             var visitor = new Visitor("ABC123");
-            var menuLogic = new MenuLogic();
-            var mockTour = new Mock<Tour>();
-            mockTour.Setup(tour => Tour.FindTourByVisitorTicketCode(visitor.TicketCode)).Returns(mockTour.Object);
-            Tour.TodaysTours.Add(mockTour.Object);
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"));
+            tour.AddVisitor(visitor);
+            Tour.TodaysTours.Add(tour);
+
+            var input = new StringReader(""); // No input needed for cancellation
+            Console.SetIn(input);
+            var output = new StringWriter();
+            Console.SetOut(output);
 
             // Act
             bool result = MenuLogic.CancelTour(visitor);
 
             // Assert
             Assert.IsFalse(result);
-            Assert.AreEqual(0, mockTour.Object.ExpectedVisitors.Count);
+            Assert.IsFalse(tour.ExpectedVisitors.Contains(visitor)); // Ensure visitor was removed
 
-            // Clean up
+            // Cleanup
             Tour.TodaysTours.Clear();
+            Console.SetIn(Console.In);
+            Console.SetOut(Console.Out);
         }
 
         [TestMethod]
