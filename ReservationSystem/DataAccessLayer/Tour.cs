@@ -68,9 +68,9 @@ public class Tour
                 {
                     // Check if the current guide has a tour at the current startTime
                     var tours = guideEntry.Tours;
-                    foreach (var tour in tours)
+                    foreach (var tour in tours) 
                     {
-                        if ((string)tour.StartTime == formattedStartTime)
+                        if (TimeOnly.Parse((string)tour.StartTime) == TimeOnly.FromDateTime(startTime))
                         {
                             var tourId = Guid.NewGuid();
                             guide.AssignTour(tourId);  // Assign tour to guide
