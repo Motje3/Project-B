@@ -4,9 +4,6 @@ public class AdminLoginMenu : View
 {
     public static void ProcessLoginForm()
     {
-        AdminLogin AL = new AdminLogin();
-        AccessPassed AP = new AccessPassed();
-        AccessFailed AF = new AccessFailed();
 
         AdminLogin.Show();
         string password = AdminBackEnd.ReadPassword();
