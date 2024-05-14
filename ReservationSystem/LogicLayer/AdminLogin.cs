@@ -32,7 +32,7 @@ public class AdminLoginMenu : View
             // WriteLine("5. Exit");
 
             // Write("\nEnter your choice: ");
-            string choice = StartMenu.Show();
+            string choice = StartMenuRL.Show();
 
             switch (choice)
             {

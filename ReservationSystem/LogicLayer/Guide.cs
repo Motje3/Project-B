@@ -75,7 +75,7 @@ public class Guide
             ReasingedTourMenu.ShowAvailbleTour(i, Tour.TodaysTours[i]);
         }
         ReasingedTourMenu.ShowSelectMess();
-        int tourIndex = Convert.ToInt32(RL.ReadLine()) - 1;
+        int tourIndex = Convert.ToInt32(RL.Show()) - 1;
 
         if (tourIndex < 0 || tourIndex >= Tour.TodaysTours.Count)
         {
@@ -91,7 +91,7 @@ public class Guide
         }
 
         AdminAssingGuideMenu.ShowSelectMess();
-        int guideIndex = Convert.ToInt32(RL.ReadLine()) - 1;
+        int guideIndex = Convert.ToInt32(RL.Show()) - 1;
 
         if (guideIndex < 0 || guideIndex >= Guide.AllGuides.Count)
         {
