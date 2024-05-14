@@ -1,6 +1,6 @@
 namespace ReservationSystem;
 
-public class EditCurrTourMenu : View
+public class EditCurrTourMenuRL : View
 {
     public static string Show(string reservationDetails)
     {

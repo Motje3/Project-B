@@ -1,6 +1,6 @@
 namespace ReservationSystem;
 
-public class GuideMenu : View
+public class GuideMenuRL : View
 {
     public static string Show()
     {

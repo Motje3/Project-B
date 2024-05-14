@@ -28,7 +28,7 @@ public class MenuLogic
         Tour.ShowAvailableTours();
 
         // Prompt the user to choose a tour
-        string chosenTourNumber = PickTour.Show();
+        string chosenTourNumber = PickTourRL.Show();
 
         List<Tour> availableTours = Tour.TodaysTours.Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity).ToList();
 

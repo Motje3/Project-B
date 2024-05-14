@@ -8,7 +8,7 @@ public class ReservationPresentation : View
 
         while (true)
         {
-            string userCode = TicketInput.Show();
+            string userCode = TicketInputRL.Show();
             if (userCode == "123")
             {
                 AdminLoginMenu.ProcessLoginForm();
@@ -69,7 +69,7 @@ public class ReservationPresentation : View
             // Console.WriteLine("3. Return to main menu");
             // Console.Write("\nEnter your choice: ");
             // string choice = Console.ReadLine();
-            string choice = EditCurrTourMenu.Show(reservationDetails);
+            string choice = EditCurrTourMenuRL.Show(reservationDetails);
 
             choosingOption = logic.HandleFullMenuChoice(choice, visitor);
 

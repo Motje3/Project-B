@@ -29,7 +29,7 @@ public class GuideLoginMenu : View
             // Console.WriteLine("2. Exit");
 
             // Write("\nEnter your choice: ");
-            string choice = GuideMenu.Show();
+            string choice = GuideMenuRL.Show();
 
             switch (choice)
             {

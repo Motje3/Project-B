@@ -1,6 +1,6 @@
 namespace ReservationSystem;
 
-public class PickTour : View
+public class PickTourRL : View
 {
     public static string Show()
     {

@@ -1,6 +1,6 @@
 namespace ReservationSystem;
 
-public class TicketInput : View
+public class TicketInputRL : View
 {
     public static string Show()
     {
