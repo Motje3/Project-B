@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using ReservationSystem;
 
 public static class GuideMenuBackEnd
 {
@@ -17,7 +18,7 @@ public static class GuideMenuBackEnd
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error authenticating guide: {ex.Message}");
+            JSON_Exception.Show(ex, "Credentials");  // JSON Title
             return false;
         }
     }
@@ -25,7 +26,7 @@ public static class GuideMenuBackEnd
 
     private static List<Credential> LoadUserCredentials()
     {
-        string filePath = "./JSON-Files/GidsCredentials.json";
+        string filePath = JSON_Path.Show("./JSON-Files/GidsCredentials.json");
         try
         {
             if (File.Exists(filePath))
@@ -35,13 +36,13 @@ public static class GuideMenuBackEnd
             }
             else
             {
-                Console.WriteLine("Credential file not found.");
+                JSON_NotFound.Show("Credentials");  // JSON Title
                 return new List<Credential>();
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Failed to load credentials: {ex.Message}");
+            JSON_Exception.Show(ex, "Credentials");  // JSON Title
             return new List<Credential>();
         }
     }

@@ -4,20 +4,18 @@ public class GuideLoginMenu : View
 {
     public static void ProcessLoginForm(string userCode)
     {
-        Console.WriteLine("\nGuide login\n");
-        
-        Console.Write("Enter password: ");
+        GuideLogin.Show();
         string password = AdminBackEnd.ReadPassword();
 
 
         if (GuideMenuBackEnd.AuthenticateGuide(password))
         {
-            WriteLine("\nAccess Granted!\n");
+            AccessPassed.Show();
             ShowGuideMenu();
         }
         else
         {
-            WriteLine("\nAccess Denied. Invalid password.\n");
+            AccessFailed.Show();
         }
     }
 
@@ -26,12 +24,12 @@ public class GuideLoginMenu : View
         bool continueRunning = true;
         while (continueRunning)
         {
-            Console.WriteLine("\nGuide Menu:");
-            Console.WriteLine("1. View personal tours(To Be Implemented)");
-            Console.WriteLine("2. Exit");
+            // Console.WriteLine("\nGuide Menu:");
+            // Console.WriteLine("1. View personal tours(To Be Implemented)");
+            // Console.WriteLine("2. Exit");
 
-            Write("\nEnter your choice: ");
-            string choice = ReadLine();
+            // Write("\nEnter your choice: ");
+            string choice = GuideMenuRL.Show();
 
             switch (choice)
             {
@@ -43,7 +41,7 @@ public class GuideLoginMenu : View
                     try { Console.Clear(); } catch { }
                     break;
                 default:
-                    WriteLine("Invalid choice. Please try again.");
+                    InvalidRL.Show();
                     break;
             }
         }

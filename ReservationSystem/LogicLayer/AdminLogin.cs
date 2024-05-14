@@ -4,20 +4,18 @@ public class AdminLoginMenu : View
 {
     public static void ProcessLoginForm()
     {
-        Console.WriteLine("\nAdmin login\n");
 
-
-        Console.Write("Enter password: ");
+        AdminLogin.Show();
         string password = AdminBackEnd.ReadPassword();
 
         if (Authenticator.AuthenticateUser(password))
         {
-            WriteLine("\nAccess Granted!\n");
+            AccessPassed.Show();
             ShowAdminMenu();
         }
         else
         {
-            WriteLine("\nAccess Denied. Invalid username or password.\n");
+            AccessFailed.Show();
         }
     }
 
@@ -26,13 +24,15 @@ public class AdminLoginMenu : View
         bool continueRunning = true;
         while (continueRunning)
         {
-            Console.WriteLine("\nAdmin Menu:");
-            Console.WriteLine("1. Assign a Different Guide to today's tours");
-            Console.WriteLine("2. Change the default guide's roaster (To be implemented)");
-            Console.WriteLine("4. Exit");
+            // Console.WriteLine("\nAdmin Menu:");
+            // Console.WriteLine("1. Assign a Different Guide to today's tours");
+            // Console.WriteLine("2. Change the default guide's roaster (To be implemented)");
+            // Console.WriteLine("4. Exit");
 
-            Write("\nEnter your choice: ");
-            string choice = ReadLine();
+            // WriteLine("5. Exit");
+
+            // Write("\nEnter your choice: ");
+            string choice = StartMenuRL.Show();
 
             switch (choice)
             {
@@ -50,7 +50,7 @@ public class AdminLoginMenu : View
                     try { Console.Clear(); } catch { }
                     break;
                 default:
-                    WriteLine("Invalid choice. Please try again.");
+                    InvalidRL.Show();
                     break;
             }
         }

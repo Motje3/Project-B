@@ -1,8 +1,8 @@
 using System.Net;
+using ReservationSystem;
 
 public class MenuLogic
 {
-
     public bool HandleFullMenuChoice(string choice, Visitor visitor)
     {
         switch (choice)
@@ -16,7 +16,7 @@ public class MenuLogic
                 try { Console.Clear(); } catch { }
                 return false; // Exit the loop.
             default:
-                Console.WriteLine("Invalid choice. Please try again.");
+                InvalidRL.Show();
                 return true;
         }
     }
@@ -28,8 +28,8 @@ public class MenuLogic
         Tour.ShowAvailableTours();
 
         // Prompt the user to choose a tour
-        Console.WriteLine("\nPlease choose a number next to the tour you wish to join:");
-        string chosenTourNumber = Console.ReadLine();
+        string chosenTourNumber = PickTourRL.Show();
+
         List<Tour> availableTours = Tour.TodaysTours.Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity).ToList();
 
         // Validate user input and attempt to join the selected tour
@@ -39,14 +39,14 @@ public class MenuLogic
             chosenTour.AddVisitor(visitor);
             Tour.SaveTours();
             try { Console.Clear(); } catch { }
-            Console.WriteLine("Tour joined successfully!");
+            JoinTourSuccesMessage.Show();
             Thread.Sleep(2000);
             try { Console.Clear(); } catch { }
             return true;
         }
         else
         {
-            Console.WriteLine("Invalid choice, please choose a valid tour number.\n");
+            InvalidRL.Show("please choose a valid tour number.\n");  // "Invalid choice." + subMessage          
             return false; // Return false to indicate failure to join a tour
         }
     }
@@ -59,9 +59,8 @@ public class MenuLogic
         
         // Display available tours and allow user to choose
         Tour.ShowAvailableTours();
-        Console.WriteLine("\nPlease choose a number next to the new tour you wish to join");
-
-        string chosenTourNumber = Console.ReadLine();
+        
+        string chosenTourNumber = ChangeTourRL.Show();
         if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= Tour.TodaysTours.Count)
         {
             Tour chosenTour = Tour.TodaysTours[tourNumber - 1];
@@ -70,19 +69,19 @@ public class MenuLogic
             {
                 visitorsTour.TransferVisitor(visitor, chosenTour);
                 try { Console.Clear(); } catch { }
-                Console.WriteLine($"\nYou have successfully transferred to the new tour: {chosenTour.StartTime.ToString("h:mm tt")}.\n");
+                ChangeTourSucces.Show(chosenTour);
                 Thread.Sleep(2000);
                 try { Console.Clear(); } catch { }
 
             }
             else
             {
-                Console.WriteLine("\nYou are not currently registered on any tour.");
+                NoTourRegistrationMessage.Show();
             }
         }
         else
         {
-            Console.WriteLine("Invalid choice, please choose a number next to the tour you wish to join");
+            InvalidRL.Show("please choose a number next to the tour you wish to join");  // "Invalid choice, " + subMessage
         }
     }
 
@@ -93,18 +92,16 @@ public class MenuLogic
 
         if (visitorsTour == null)
         {
-            Console.WriteLine("Error: Unable to find the tour.");
+            ErrorTourNotFound.Show();
             return true;
         }
 
         visitorsTour.RemoveVisitor(visitor);
         try { Console.Clear(); } catch { }
-        Console.WriteLine("\nReservation has been canceled successfully.");
+        ReservationCancelSucces.Show();
         Thread.Sleep(2000);
         try { Console.Clear(); } catch { }
 
         return false;
     }
-
-
 }

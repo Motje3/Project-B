@@ -68,7 +68,7 @@ public class Tour
                 {
                     // Check if the current guide has a tour at the current startTime
                     var tours = guideEntry.Tours;
-                    foreach (var tour in tours)
+                    foreach (var tour in tours) 
                     {
                         if (TimeOnly.Parse((string)tour.StartTime) == TimeOnly.FromDateTime(startTime))
                         {

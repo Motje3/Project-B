@@ -1,0 +1,10 @@
+namespace ReservationSystem;
+
+public class NewClass : View
+{
+    public static void/string Show()
+    {
+        // your logic here
+        // Use string if you return a Readline()
+    }
+}
