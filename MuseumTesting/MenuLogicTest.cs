@@ -51,27 +51,26 @@ namespace MuseumTesting
         {
             // Arrange
             var visitor = new Visitor("ABC123");
-            var menuLogic = new MenuLogic();
-            var mockTour = new Mock<Tour>();
-            mockTour.Setup(tour => tour.Completed).Returns(false);
-            mockTour.Setup(tour => tour.Deleted).Returns(false);
-            mockTour.Setup(tour => tour.ExpectedVisitors.Count).Returns(0);
-            mockTour.Setup(tour => tour.MaxCapacity).Returns(30);
-            Tour.TodaysTours.Add(mockTour.Object);
+            var input = new StringReader("invalid\n");
+            Console.SetIn(input);
+            var output = new StringWriter();
+            Console.SetOut(output);
 
-            // Simulate user input
-            Console.SetIn(new StringReader("invalid\n"));
+            Tour.TodaysTours.Add(new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"))); // Adding a sample tour
 
             // Act
             bool result = MenuLogic.JoinTour(visitor);
 
             // Assert
             Assert.IsFalse(result);
-            Assert.AreEqual(0, mockTour.Object.ExpectedVisitors.Count);
+            Assert.IsTrue(output.ToString().Contains("Invalid choice, please choose a valid tour number"));
 
-            // Clean up
-            Tour.TodaysTours.Clear();
+            // Cleanup
+            Tour.TodaysTours.Clear(); // Resetting global state
+            Console.SetIn(Console.In); // Reset Console In
+            Console.SetOut(Console.Out); // Reset Console Out
         }
+
 
         [TestMethod]
         public void ChangeTour_ValidTourChoice_SuccessfullyChangesTour()
@@ -129,13 +128,18 @@ namespace MuseumTesting
         {
             // Arrange
             var visitor = new Visitor("ABC123");
-            var menuLogic = new MenuLogic();
+            var output = new StringWriter();
+            Console.SetOut(output);
 
             // Act
             bool result = MenuLogic.CancelTour(visitor);
 
             // Assert
             Assert.IsTrue(result);
+            Assert.IsTrue(output.ToString().Contains("Error: Unable to find the tour"));
+
+            // Cleanup
+            Console.SetOut(Console.Out); // Reset Console Out
         }
     }
 }
