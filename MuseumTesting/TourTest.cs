@@ -20,8 +20,8 @@ namespace MuseumTesting
             {
                 StartTime = "09:00 AM",
                 EndTime = "05:00 PM",
-                Duration = 60, // Duration in minutes
-                MaxCapacity = 30
+                Duration = 40, // Duration in minutes
+                MaxCapacity = 13
             });
             File.WriteAllText(tourSettingsPath, settingsJson);
 
@@ -52,14 +52,31 @@ namespace MuseumTesting
         }
 
         [TestMethod]
-        public void InitializeTours_WithSettingsAndAssignments_CreatesTours()
+        public void InitializeTours_WithExistingFile_LoadsTours()
         {
-            // Act
-            Tour.InitializeTours();
+            // Arrange
+            string filePath = Tour.JsonFilePath;
+            // Prepare test data that matches the expected format
+            string testData = "[{\"TourId\":\"" + Guid.NewGuid().ToString() + "\",\"StartTime\":\"" + DateTime.Now.ToString("s") + "\",\"Duration\":60,\"MaxCapacity\":30,\"Completed\":false,\"Deleted\":false,\"AssignedGuide\":{\"Name\":\"John Doe\"}}]";
+            File.WriteAllText(filePath, testData);
 
-            // Assert
-            Assert.IsTrue(Tour.TodaysTours.Count > 0);
-            Assert.AreEqual(Tour.TodaysTours[0].MaxCapacity, 30);
+            try
+            {
+                // Act
+                Tour.InitializeTours();
+
+                // Assert
+                Assert.IsTrue(Tour.TodaysTours.Count > 0);
+                Assert.AreEqual(30, Tour.TodaysTours[0].MaxCapacity);
+            }
+            finally
+            {
+                // Cleanup: Remove test data file
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
         }
 
         [TestMethod]
@@ -67,7 +84,7 @@ namespace MuseumTesting
         {
             // Setup
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("John"));
 
             // Act
             tour.AddVisitor(visitor);
@@ -81,7 +98,7 @@ namespace MuseumTesting
         {
             // Setup
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("John"));
             tour.AddVisitor(visitor);
 
             // Act
@@ -96,7 +113,7 @@ namespace MuseumTesting
         {
             // Setup
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("John"));
             tour.AddVisitor(visitor);
             Tour.TodaysTours.Add(tour);
 
