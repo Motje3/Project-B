@@ -8,9 +8,7 @@ public class ReservationPresentation : View
 
         while (true)
         {
-            WriteLine("Enter your unique ticket code:");
-            string userCode = ReadLine();
-
+            string userCode = TicketInput.Show();
             if (userCode == "123")
             {
                 AdminLoginMenu.ProcessLoginForm();
@@ -29,7 +27,7 @@ public class ReservationPresentation : View
                     currentVisitor = new Visitor(userCode);
                 }
 
-                Console.WriteLine("\nWelcome! Your ticket is confirmed\n");
+                WelcomeMessage.Show();
                 if (currentVisitor.HasReservation(currentVisitor))
                 {
                     ShowFullMenu(currentVisitor);
@@ -42,33 +40,36 @@ public class ReservationPresentation : View
             }
             else
             {
-                WriteLine("Sorry, your ticket is not valid. Please try again.");
+                TicketCodeFailed.Show();
             }
         }
     }
 
-    // MenuLogic:
+
+    // The fellowing 2 methods are from MenuLogic:
     // "Bora" moved it here because he thought it was more suited here.
     // And yes i speak from 3th-Person
-    public static void ShowRestrictedMenu(Visitor visitor)
+
+    private static void ShowRestrictedMenu(Visitor visitor)
     {
         MenuLogic.JoinTour(visitor);
     }
 
-    public static void ShowFullMenu(Visitor visitor)
+    private static void ShowFullMenu(Visitor visitor)
     {
         MenuLogic logic = new MenuLogic();
         bool choosingOption = true;
         while (choosingOption)
         {
             string reservationDetails = Visitor.GetCurrentReservation(visitor);
-            Console.WriteLine(reservationDetails);
-            Console.WriteLine("\nPlease choose an option:");
-            Console.WriteLine("1. Change my reservation time");
-            Console.WriteLine("2. Cancel my tour reservation");
-            Console.WriteLine("3. Return to main menu");
-            Console.Write("\nEnter your choice: ");
-            string choice = Console.ReadLine();
+            // Console.WriteLine(reservationDetails);
+            // Console.WriteLine("\nPlease choose an option:");
+            // Console.WriteLine("1. Change my reservation time");
+            // Console.WriteLine("2. Cancel my tour reservation");
+            // Console.WriteLine("3. Return to main menu");
+            // Console.Write("\nEnter your choice: ");
+            // string choice = Console.ReadLine();
+            string choice = EditCurrTourMenu.Show(reservationDetails);
 
             choosingOption = logic.HandleFullMenuChoice(choice, visitor);
 

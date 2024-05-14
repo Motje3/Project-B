@@ -1,10 +1,8 @@
 using System.Net;
+using ReservationSystem;
 
 public class MenuLogic
 {
-
-
-
     public bool HandleFullMenuChoice(string choice, Visitor visitor)
     {
         switch (choice)
@@ -18,7 +16,7 @@ public class MenuLogic
                 try { Console.Clear(); } catch { }
                 return false; // Exit the loop.
             default:
-                Console.WriteLine("Invalid choice. Please try again.");
+                InvalidRL.Show();
                 return true;
         }
     }

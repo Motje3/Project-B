@@ -18,7 +18,7 @@ public static class GuideMenuBackEnd
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error authenticating guide: {ex.Message}");
+            JSON_Exception.Show(ex, "Credentials");  // JSON Title
             return false;
         }
     }
@@ -26,7 +26,7 @@ public static class GuideMenuBackEnd
 
     private static List<Credential> LoadUserCredentials()
     {
-        string filePath = "./JSON-Files/GidsCredentials.json";
+        string filePath = JSON_Path.Show("./JSON-Files/GidsCredentials.json");
         try
         {
             if (File.Exists(filePath))
