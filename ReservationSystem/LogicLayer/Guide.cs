@@ -17,7 +17,7 @@ public class Guide
         AssignedTourIds.Add(tourId); // Add the tourId to the list
     }
 
-
+    
     public Guide(string name)
     {
         GuideId = Guid.NewGuid();

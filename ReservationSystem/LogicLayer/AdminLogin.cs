@@ -1,4 +1,4 @@
-namespace ReservationSystem;
+using ReservationSystem;
 
 public class AdminLoginMenu : View
 {
