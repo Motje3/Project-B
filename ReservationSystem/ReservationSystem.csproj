@@ -19,6 +19,14 @@
     <Content Include= "LogicLayer/*.*" CopyToOutputDirectory="PreserveNewest" />
     <Content Include= "JSON-Files/*.*" CopyToOutputDirectory="PreserveNewest" />
     <Content Include= "PresentationLayer/Reservation/*.*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include= "PresentationLayer/AdminLogin/*.*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include= "PresentationLayer/Global/*.*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include= "PresentationLayer/Guide/*.*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include= "PresentationLayer/Interface/*.*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include= "PresentationLayer/MenuLogic/*.*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include= "PresentationLayer/GuideLogin/*.*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include= "PresentationLayer/GuideLogin/*.*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include= "World/*.*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
