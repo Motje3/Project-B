@@ -97,12 +97,13 @@ public class Tour
 
     public static void ShowAvailableTours()
     {
-        var availableTours = TodaysTours.Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity &&
-        tour.StartTime > DateTime.Now).ToList();
+        var availableTours = TodaysTours
+            .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > DateTime.Now)
+            .OrderBy(tour => tour.StartTime)
+            .ToList();
 
         if (availableTours.Any())
         {
-
             for (int i = 0; i < availableTours.Count; i++)
             {
                 string formattedStartTime = availableTours[i].StartTime.ToString("h:mm tt");
@@ -114,6 +115,8 @@ public class Tour
             Console.WriteLine("No available tours at the moment.");
         }
     }
+
+
 
 
 

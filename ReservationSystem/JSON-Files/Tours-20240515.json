@@ -245,7 +245,12 @@
     "EndTime": "2024-05-15T15:00:00+02:00",
     "Duration": 40,
     "MaxCapacity": 13,
-    "ExpectedVisitors": [],
+    "ExpectedVisitors": [
+      {
+        "VisitorId": "1572864e-43ac-41a1-9bee-4457062f098f",
+        "TicketCode": "111"
+      }
+    ],
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,

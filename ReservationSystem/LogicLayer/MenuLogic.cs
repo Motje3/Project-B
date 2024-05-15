@@ -26,41 +26,53 @@ public class MenuLogic
     {
         // Display available tours
         Tour.ShowAvailableTours();
+        
 
         // Prompt the user to choose a tour
         string chosenTourNumber = PickTourRL.Show();
 
-        List<Tour> availableTours = Tour.TodaysTours.Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity).ToList();
+        // Get the list of available tours, ordered by StartTime
+        List<Tour> availableTours = Tour.TodaysTours
+            .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > DateTime.Now)
+            .OrderBy(tour => tour.StartTime)
+            .ToList();
+
 
         // Validate user input and attempt to join the selected tour
         if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= availableTours.Count)
         {
+
             Tour chosenTour = availableTours[tourNumber - 1];
             chosenTour.AddVisitor(visitor);
             Tour.SaveTours();
-            try { Console.Clear(); } catch { }
+
+            //try { Console.Clear(); } catch { }
+
             JoinTourSuccesMessage.Show(chosenTour);
             Thread.Sleep(2000);
             JoinTourSuccesMessage.Show2();
+
             try { Console.Clear(); } catch { }
+
             return true;
         }
         else
         {
-            InvalidRL.Show("please choose a valid tour number.\n");  // "Invalid choice." + subMessage          
+            InvalidRL.Show("Please choose a valid tour number.\n"); // "Invalid choice." + subMessage
             return false; // Return false to indicate failure to join a tour
         }
     }
+
 
     public static void ChangeTour(Visitor visitor)
     {
         // Show current reservation details
         string reservationDetails = Visitor.GetCurrentReservation(visitor);
         Console.WriteLine(reservationDetails);
-        
+
         // Display available tours and allow user to choose
         Tour.ShowAvailableTours();
-        
+
         string chosenTourNumber = ChangeTourRL.Show();
         if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= Tour.TodaysTours.Count)
         {
