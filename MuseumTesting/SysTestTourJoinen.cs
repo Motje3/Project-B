@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using ReservationSystem;
 
 namespace MuseumTesting
@@ -15,6 +16,8 @@ namespace MuseumTesting
         public void TestVisitorJoinTourMenuSucceful()
         {
             // Arrange
+            string tourChoice = "1";
+            string visitorTicketCode = "1234567890";
             FakeWorld world = new()
             {
                 Now = new DateTime(2024, 6, 1),
@@ -26,7 +29,7 @@ namespace MuseumTesting
                 },
                 LinesToRead = new()
                 {
-                    "1234567890","1","GETMEOUT"
+                    visitorTicketCode,tourChoice,"GETMEOUT"
                 }
             };
             Program.World = world;
@@ -36,6 +39,9 @@ namespace MuseumTesting
 
             // Assert
             Assert.IsTrue(world.LinesWritten.Contains("Tour joined successfully!"));
+            List<Tour> actualTours = JsonConvert.DeserializeObject<List<Tour>>(world.Files[Tour.JsonFilePath]);
+
+            Assert.IsTrue(Visitor.FindVisitorByTicketCode(visitorTicketCode) != null);
         }
 
 
