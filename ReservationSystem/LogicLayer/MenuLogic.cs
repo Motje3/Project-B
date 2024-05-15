@@ -46,7 +46,7 @@ public class MenuLogic
             chosenTour.AddVisitor(visitor);
             Tour.SaveTours();
 
-            //try { Console.Clear(); } catch { }
+            try { Console.Clear(); } catch { }
 
             JoinTourSuccesMessage.Show(chosenTour);
             Thread.Sleep(2000);
