@@ -9,6 +9,7 @@ public interface IWorld
     void Write(string line);
 
     string ReadLine();
+    ConsoleKeyInfo ReadKey(bool intercept);
 
     string ReadAllText(string path);
 
