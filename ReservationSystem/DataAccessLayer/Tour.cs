@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using ReservationSystem;
 
 public class Tour
 {
@@ -13,7 +14,7 @@ public class Tour
     public bool Deleted { get; set; }
     public Guide AssignedGuide { get; set; }
 
-    public static string JsonFilePath => $"./JSON-Files/Tours-{DateTime.Today:yyyyMMdd}.json";
+    public static string JsonFilePath => $"./JSON-Files/Tours-{Program.World.Now:yyyyMMdd}.json";
     public static string JsonTourSettingsPath => $"./JSON-Files/TourSettings.json";
     public static string JsonGuideAssignmentsPath => $"./JSON-Files/GuideAssignments.json";
 
@@ -35,11 +36,11 @@ public class Tour
 
     public static void InitializeTours()
     {
-        if (File.Exists(JsonFilePath))
+        try
         {
             LoadTours();
         }
-        else
+        catch (Exception DirectoryNotFoundException)
         {
             CreateToursForToday();
         }
@@ -47,11 +48,11 @@ public class Tour
 
     private static void CreateToursForToday()
     {
-        dynamic settings = JsonConvert.DeserializeObject<dynamic>(File.ReadAllText(Tour.JsonTourSettingsPath));
-        List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(Tour.JsonGuideAssignmentsPath));
+        dynamic settings = JsonConvert.DeserializeObject<dynamic>(Program.World.ReadAllText(Tour.JsonTourSettingsPath));
+        List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(Program.World.ReadAllText(Tour.JsonGuideAssignmentsPath));
 
-        DateTime startTime = DateTime.Today.Add(TimeSpan.Parse((string)settings.StartTime));
-        DateTime endTime = DateTime.Today.Add(TimeSpan.Parse((string)settings.EndTime));
+        DateTime startTime = Program.World.Now.Add(TimeSpan.Parse((string)settings.StartTime));
+        DateTime endTime = Program.World.Now.Add(TimeSpan.Parse((string)settings.EndTime));
         int duration = (int)settings.Duration;
         int maxCapacity = (int)settings.MaxCapacity;
 
@@ -68,7 +69,7 @@ public class Tour
                 {
                     // Check if the current guide has a tour at the current startTime
                     var tours = guideEntry.Tours;
-                    foreach (var tour in tours) 
+                    foreach (var tour in tours)
                     {
                         if (TimeOnly.Parse((string)tour.StartTime) == TimeOnly.FromDateTime(startTime))
                         {
@@ -100,12 +101,12 @@ public class Tour
             for (int i = 0; i < availableTours.Count; i++)
             {
                 string formattedStartTime = availableTours[i].StartTime.ToString("h:mm tt");
-                Console.WriteLine($"{i + 1} | Start Time: {formattedStartTime} | Duration: {availableTours[i].Duration} minutes | Remaining Spots: {availableTours[i].MaxCapacity - availableTours[i].ExpectedVisitors.Count}");
+                Program.World.WriteLine($"{i + 1} | Start Time: {formattedStartTime} | Duration: {availableTours[i].Duration} minutes | Remaining Spots: {availableTours[i].MaxCapacity - availableTours[i].ExpectedVisitors.Count}");
             }
         }
         else
         {
-            Console.WriteLine("No available tours at the moment.");
+            Program.World.WriteLine("No available tours at the moment.");
         }
     }
 
@@ -160,12 +161,12 @@ public class Tour
 
     public static void SaveTours()
     {
-        File.WriteAllText(JsonFilePath, JsonConvert.SerializeObject(TodaysTours, Formatting.Indented));
+        Program.World.WriteAllText(JsonFilePath, JsonConvert.SerializeObject(TodaysTours, Formatting.Indented));
     }
 
     private static void LoadTours()
     {
-        TodaysTours = JsonConvert.DeserializeObject<List<Tour>>(File.ReadAllText(JsonFilePath));
+        TodaysTours = JsonConvert.DeserializeObject<List<Tour>>(Program.World.ReadAllText(JsonFilePath));
     }
 
 }
