@@ -52,13 +52,12 @@ public class Tour
 
         DateTime startTime = DateTime.Today.Add(TimeSpan.Parse((string)settings.StartTime));
         DateTime endTime = DateTime.Today.Add(TimeSpan.Parse((string)settings.EndTime));
-        int duration = (int)settings.Duration;
+        int duration = (int)settings.Duration; // This remains 40 minutes
         int maxCapacity = (int)settings.MaxCapacity;
+        int tourInterval = 20; // Interval between tour start times
 
         while (startTime < endTime)
         {
-            var formattedStartTime = startTime.ToString("hh:mm tt");
-
             // Iterate through each guide assignment entry
             foreach (var guideEntry in guideAssignments)
             {
@@ -66,27 +65,34 @@ public class Tour
                 var guide = Guide.AllGuides.FirstOrDefault(g => g.Name == guideName);
                 if (guide != null)
                 {
-                    // Check if the current guide has a tour at the current startTime
-                    var tours = guideEntry.Tours;
-                    foreach (var tour in tours) 
-                    {
-                        if (TimeOnly.Parse((string)tour.StartTime) == TimeOnly.FromDateTime(startTime))
-                        {
-                            var tourId = Guid.NewGuid();
-                            guide.AssignTour(tourId);  // Assign tour to guide
+                    // Assign a tour to this guide at the current start time
+                    var tourId = Guid.NewGuid();
+                    guide.AssignTour(tourId);  // Assign tour to guide
 
-                            Tour newTour = new Tour(tourId, startTime, duration, maxCapacity, false, false, guide);
-                            Tour.TodaysTours.Add(newTour);
-                        }
+                    Tour newTour = new Tour(tourId, startTime, duration, maxCapacity, false, false, guide);
+                    Tour.TodaysTours.Add(newTour);
+
+                    // Increment the start time for the next tour
+                    startTime = startTime.AddMinutes(tourInterval);
+
+                    // Check if the next start time is within the end time
+                    if (startTime >= endTime)
+                    {
+                        break;
                     }
                 }
             }
 
-            startTime = startTime.AddMinutes(duration);
+            // Reset start time if it exceeds end time in the inner loop
+            if (startTime >= endTime)
+            {
+                break;
+            }
         }
 
         Tour.SaveTours();
     }
+
 
 
     public static void ShowAvailableTours()
