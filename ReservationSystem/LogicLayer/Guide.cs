@@ -8,14 +8,12 @@ public class Guide
     public List<Guid> AssignedTourIds { get; set; } = new List<Guid>();
     public static List<Guide> AllGuides = new List<Guide>();
 
-
-    public Guide(string name, Guid tourId)
+    public Guide(string name, Guid guideId)
     {
-        GuideId = Guid.NewGuid();
+        GuideId = guideId;
         Name = name;
-        AssignedTourIds.Add(tourId); // Add the tourId to the list
+        AllGuides.Add(this);
     }
-
 
     public Guide(string name)
     {
@@ -35,24 +33,52 @@ public class Guide
 
 
     [JsonConstructor]
-    public Guide(Guid guideId, string name, Guid assignedTourId)
+    public Guide(Guid guideId, string name, List<Guid> assignedTourIds)
     {
         GuideId = guideId;
         Name = name;
-        AssignedTourIds = AssignedTourIds;
+        AssignedTourIds = assignedTourIds ?? new List<Guid>();
+        AllGuides.Add(this);
     }
 
     public static void LoadGuides()
     {
-        List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(Tour.JsonGuideAssignmentsPath));
+        string jsonGuideAssignmentsPath = Tour.JsonGuideAssignmentsPath;
+        string jsonContent = File.ReadAllText(jsonGuideAssignmentsPath);
+        List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(jsonContent);
+
         foreach (var guideEntry in guideAssignments)
         {
             string guideName = guideEntry.GuideName;
+            string guideIdStr = guideEntry.GuideId;
+            Guid guideId;
+
+            // Generate a new GUID if GuideId is empty or whitespace
+            if (string.IsNullOrWhiteSpace(guideIdStr))
+            {
+                guideId = Guid.NewGuid();
+                guideEntry.GuideId = guideId.ToString();
+            }
+            else
+            {
+                guideId = Guid.Parse(guideIdStr);
+            }
+
+            // Check if the guide already exists in the AllGuides list
             if (!Guide.AllGuides.Any(g => g.Name == guideName))
             {
-                new Guide(guideName);  // This will automatically add the guide to the AllGuides list due to the constructor logic
+                new Guide(guideName, guideId);
+            }
+            else
+            {
+                var existingGuide = Guide.AllGuides.First(g => g.Name == guideName);
+                existingGuide.GuideId = guideId;
             }
         }
+
+        // Serialize the updated guide assignments back to the JSON file
+        string updatedJsonContent = JsonConvert.SerializeObject(guideAssignments, Formatting.Indented);
+        File.WriteAllText(jsonGuideAssignmentsPath, updatedJsonContent);
     }
 
 

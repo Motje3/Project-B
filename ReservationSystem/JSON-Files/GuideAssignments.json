@@ -1,83 +1,205 @@
 [
   {
     "GuideName": "John Doe",
+    "GuideId": "de7715e2-fe98-4bf0-b413-09ff2f556d50",
+    "Password": "11",
     "Tours": [
-      {"StartTime": "09:00 AM"},
-      {"StartTime": "09:40 AM"},
-      {"StartTime": "10:20 AM"},
-      {"StartTime": "11:00 AM"},
-      {"StartTime": "11:40 AM"},
-      {"StartTime": "12:20 PM"},
-      {"StartTime": "01:00 PM"},
-      {"StartTime": "01:40 PM"},
-      {"StartTime": "02:20 PM"},
-      {"StartTime": "03:00 PM"},
-      {"StartTime": "03:40 PM"},
-      {"StartTime": "04:20 PM"}
+      {
+        "StartTime": "09:00 AM"
+      },
+      {
+        "StartTime": "09:40 AM"
+      },
+      {
+        "StartTime": "10:20 AM"
+      },
+      {
+        "StartTime": "11:00 AM"
+      },
+      {
+        "StartTime": "11:40 AM"
+      },
+      {
+        "StartTime": "12:20 PM"
+      },
+      {
+        "StartTime": "01:00 PM"
+      },
+      {
+        "StartTime": "01:40 PM"
+      },
+      {
+        "StartTime": "02:20 PM"
+      },
+      {
+        "StartTime": "03:00 PM"
+      },
+      {
+        "StartTime": "03:40 PM"
+      },
+      {
+        "StartTime": "04:20 PM"
+      }
     ]
   },
   {
     "GuideName": "Alice Johnson",
+    "GuideId": "8d49d335-5ac2-47ce-9d1d-a8e147d0e0e7",
+    "Password": "22",
     "Tours": [
-      {"StartTime": "09:20 AM"},
-      {"StartTime": "10:00 AM"},
-      {"StartTime": "10:40 AM"},
-      {"StartTime": "11:20 AM"},
-      {"StartTime": "12:00 PM"},
-      {"StartTime": "12:40 PM"},
-      {"StartTime": "01:20 PM"},
-      {"StartTime": "02:00 PM"},
-      {"StartTime": "02:40 PM"},
-      {"StartTime": "03:20 PM"},
-      {"StartTime": "04:00 PM"},
-      {"StartTime": "04:40 PM"}
+      {
+        "StartTime": "09:20 AM"
+      },
+      {
+        "StartTime": "10:00 AM"
+      },
+      {
+        "StartTime": "10:40 AM"
+      },
+      {
+        "StartTime": "11:20 AM"
+      },
+      {
+        "StartTime": "12:00 PM"
+      },
+      {
+        "StartTime": "12:40 PM"
+      },
+      {
+        "StartTime": "01:20 PM"
+      },
+      {
+        "StartTime": "02:00 PM"
+      },
+      {
+        "StartTime": "02:40 PM"
+      },
+      {
+        "StartTime": "03:20 PM"
+      },
+      {
+        "StartTime": "04:00 PM"
+      },
+      {
+        "StartTime": "04:40 PM"
+      }
     ]
   },
   {
     "GuideName": "Steve Brown",
+    "GuideId": "327b1a7b-7a08-4369-a3e9-3e93a4ff7e18",
+    "Password": "33",
     "Tours": [
-      {"StartTime": "09:40 AM"},
-      {"StartTime": "10:20 AM"},
-      {"StartTime": "11:00 AM"},
-      {"StartTime": "11:40 AM"},
-      {"StartTime": "12:20 PM"},
-      {"StartTime": "01:00 PM"},
-      {"StartTime": "01:40 PM"},
-      {"StartTime": "02:20 PM"},
-      {"StartTime": "03:00 PM"},
-      {"StartTime": "03:40 PM"},
-      {"StartTime": "04:20 PM"}
+      {
+        "StartTime": "09:40 AM"
+      },
+      {
+        "StartTime": "10:20 AM"
+      },
+      {
+        "StartTime": "11:00 AM"
+      },
+      {
+        "StartTime": "11:40 AM"
+      },
+      {
+        "StartTime": "12:20 PM"
+      },
+      {
+        "StartTime": "01:00 PM"
+      },
+      {
+        "StartTime": "01:40 PM"
+      },
+      {
+        "StartTime": "02:20 PM"
+      },
+      {
+        "StartTime": "03:00 PM"
+      },
+      {
+        "StartTime": "03:40 PM"
+      },
+      {
+        "StartTime": "04:20 PM"
+      }
     ]
   },
   {
     "GuideName": "Mary Lee",
+    "GuideId": "1c0d23c8-6ac5-4fcb-9e10-358a81648521",
+    "Password": "44",
     "Tours": [
-      {"StartTime": "10:00 AM"},
-      {"StartTime": "10:40 AM"},
-      {"StartTime": "11:20 AM"},
-      {"StartTime": "12:00 PM"},
-      {"StartTime": "12:40 PM"},
-      {"StartTime": "01:20 PM"},
-      {"StartTime": "02:00 PM"},
-      {"StartTime": "02:40 PM"},
-      {"StartTime": "03:20 PM"},
-      {"StartTime": "04:00 PM"},
-      {"StartTime": "04:40 PM"}
+      {
+        "StartTime": "10:00 AM"
+      },
+      {
+        "StartTime": "10:40 AM"
+      },
+      {
+        "StartTime": "11:20 AM"
+      },
+      {
+        "StartTime": "12:00 PM"
+      },
+      {
+        "StartTime": "12:40 PM"
+      },
+      {
+        "StartTime": "01:20 PM"
+      },
+      {
+        "StartTime": "02:00 PM"
+      },
+      {
+        "StartTime": "02:40 PM"
+      },
+      {
+        "StartTime": "03:20 PM"
+      },
+      {
+        "StartTime": "04:00 PM"
+      },
+      {
+        "StartTime": "04:40 PM"
+      }
     ]
   },
   {
     "GuideName": "Tom Clark",
+    "GuideId": "21fa3c8b-1bb1-4b07-88a3-6b511babbae6",
+    "Password": "55",
     "Tours": [
-      {"StartTime": "10:20 AM"},
-      {"StartTime": "11:00 AM"},
-      {"StartTime": "11:40 AM"},
-      {"StartTime": "12:20 PM"},
-      {"StartTime": "01:00 PM"},
-      {"StartTime": "01:40 PM"},
-      {"StartTime": "02:20 PM"},
-      {"StartTime": "03:00 PM"},
-      {"StartTime": "03:40 PM"},
-      {"StartTime": "04:20 PM"}
+      {
+        "StartTime": "10:20 AM"
+      },
+      {
+        "StartTime": "11:00 AM"
+      },
+      {
+        "StartTime": "11:40 AM"
+      },
+      {
+        "StartTime": "12:20 PM"
+      },
+      {
+        "StartTime": "01:00 PM"
+      },
+      {
+        "StartTime": "01:40 PM"
+      },
+      {
+        "StartTime": "02:20 PM"
+      },
+      {
+        "StartTime": "03:00 PM"
+      },
+      {
+        "StartTime": "03:40 PM"
+      },
+      {
+        "StartTime": "04:20 PM"
+      }
     ]
   }
 ]

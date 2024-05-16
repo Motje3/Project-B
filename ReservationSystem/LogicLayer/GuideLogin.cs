@@ -24,17 +24,13 @@ public class GuideLoginMenu : View
         bool continueRunning = true;
         while (continueRunning)
         {
-            // Console.WriteLine("\nGuide Menu:");
-            // Console.WriteLine("1. View personal tours(To Be Implemented)");
-            // Console.WriteLine("2. Exit");
 
-            // Write("\nEnter your choice: ");
             string choice = GuideMenuRL.Show();
 
             switch (choice)
             {
                 case "1":
-                    //To be implemented
+                    //option to show this guides own guided tours for today. 
                     break;
                 case "2":
                     continueRunning = false;
