@@ -27,29 +27,42 @@ public class MenuLogic
         // Display available tours
         Tour.ShowAvailableTours();
 
+
         // Prompt the user to choose a tour
         string chosenTourNumber = PickTourRL.Show();
 
-        List<Tour> availableTours = Tour.TodaysTours.Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity).ToList();
+        // Get the list of available tours, ordered by StartTime
+        List<Tour> availableTours = Tour.TodaysTours
+            .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > DateTime.Now)
+            .OrderBy(tour => tour.StartTime)
+            .ToList();
+
 
         // Validate user input and attempt to join the selected tour
         if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= availableTours.Count)
         {
+
             Tour chosenTour = availableTours[tourNumber - 1];
             chosenTour.AddVisitor(visitor);
             Tour.SaveTours();
+
             try { Console.Clear(); } catch { }
-            JoinTourSuccesMessage.Show();
+
+            JoinTourSuccesMessage.Show(chosenTour);
             Thread.Sleep(2000);
+            JoinTourSuccesMessage.Show2();
+
             try { Console.Clear(); } catch { }
+
             return true;
         }
         else
         {
-            InvalidRL.Show("please choose a valid tour number.\n");  // "Invalid choice." + subMessage          
+            InvalidRL.Show("Please choose a valid tour number.\n"); // "Invalid choice." + subMessage
             return false; // Return false to indicate failure to join a tour
         }
     }
+
 
     public static void ChangeTour(Visitor visitor)
     {
@@ -59,12 +72,22 @@ public class MenuLogic
         
         // Display available tours and allow user to choose
         Tour.ShowAvailableTours();
-        
+
+        // Prompt the user to choose a tour
         string chosenTourNumber = ChangeTourRL.Show();
-        if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= Tour.TodaysTours.Count)
+
+        // Get the list of available tours, ordered by StartTime and only future tours
+        List<Tour> availableTours = Tour.TodaysTours
+            .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > DateTime.Now)
+            .OrderBy(tour => tour.StartTime)
+            .ToList();
+
+        // Validate user input and attempt to change to the selected tour
+        if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= availableTours.Count)
         {
-            Tour chosenTour = Tour.TodaysTours[tourNumber - 1];
+            Tour chosenTour = availableTours[tourNumber - 1];
             Tour visitorsTour = Tour.FindTourByVisitorTicketCode(visitor.TicketCode);
+
             if (visitorsTour != null)
             {
                 visitorsTour.TransferVisitor(visitor, chosenTour);
@@ -72,7 +95,6 @@ public class MenuLogic
                 ChangeTourSucces.Show(chosenTour);
                 Thread.Sleep(2000);
                 try { Console.Clear(); } catch { }
-
             }
             else
             {
@@ -81,9 +103,10 @@ public class MenuLogic
         }
         else
         {
-            InvalidRL.Show("please choose a number next to the tour you wish to join");  // "Invalid choice, " + subMessage
+            InvalidRL.Show("Please choose a number next to the tour you wish to join."); // "Invalid choice." + subMessage
         }
     }
+
 
 
     public static bool CancelTour(Visitor visitor)

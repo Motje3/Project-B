@@ -10,8 +10,6 @@ public class StartMenuRL : View
 
         WriteLine("4. Exit");
 
-        WriteLine("5. Exit");
-
         Write("\nEnter your choice: ");
         return ReadLine();
     }

@@ -61,7 +61,7 @@ namespace MuseumTesting
 
             // Assert
             Assert.IsFalse(result);
-            Assert.IsTrue(output.ToString().Contains("Invalid choice, please choose a valid tour number"));
+            Assert.IsTrue(output.ToString().Contains("Invalid choice. please choose a valid tour number"));
 
             // Cleanup
             Tour.TodaysTours.Clear(); // Resetting global state

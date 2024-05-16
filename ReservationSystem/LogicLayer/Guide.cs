@@ -56,7 +56,6 @@ public class Guide
         }
     }
 
-
     public void CheckInVisitor(Visitor visitor)
     {
         //to be implemented
@@ -92,6 +91,7 @@ public class Guide
         }
 
         Program.World.Write("Enter the number of the guide to assign: ");
+  
         int guideIndex = Convert.ToInt32(Console.ReadLine()) - 1;
 
         if (guideIndex < 0 || guideIndex >= Guide.AllGuides.Count)
