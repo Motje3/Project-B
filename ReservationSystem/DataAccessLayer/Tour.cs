@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using ReservationSystem;
 
 public class Tour
 {
@@ -13,7 +14,7 @@ public class Tour
     public bool Deleted { get; set; }
     public Guide AssignedGuide { get; set; }
 
-    public static string JsonFilePath => $"./JSON-Files/Tours-{DateTime.Today:yyyyMMdd}.json";
+    public static string JsonFilePath => $"./JSON-Files/Tours-{Program.World.Now:yyyyMMdd}.json";
     public static string JsonTourSettingsPath => $"./JSON-Files/TourSettings.json";
     public static string JsonGuideAssignmentsPath => $"./JSON-Files/GuideAssignments.json";
 
@@ -35,11 +36,11 @@ public class Tour
 
     public static void InitializeTours()
     {
-        if (File.Exists(JsonFilePath))
+        try
         {
             LoadTours();
         }
-        else
+        catch (Exception DirectoryNotFoundException)
         {
             CreateToursForToday();
         }
@@ -100,12 +101,12 @@ public class Tour
             for (int i = 0; i < availableTours.Count; i++)
             {
                 string formattedStartTime = availableTours[i].StartTime.ToString("h:mm tt");
-                Console.WriteLine($"{i + 1} | Start Time: {formattedStartTime} | Duration: {availableTours[i].Duration} minutes | Remaining Spots: {availableTours[i].MaxCapacity - availableTours[i].ExpectedVisitors.Count}");
+                Program.World.WriteLine($"{i + 1} | Start Time: {formattedStartTime} | Duration: {availableTours[i].Duration} minutes | Remaining Spots: {availableTours[i].MaxCapacity - availableTours[i].ExpectedVisitors.Count}");
             }
         }
         else
         {
-            Console.WriteLine("No available tours at the moment.");
+            Program.World.WriteLine("No available tours at the moment.");
         }
     }
 
@@ -162,12 +163,12 @@ public class Tour
 
     public static void SaveTours()
     {
-        File.WriteAllText(JsonFilePath, JsonConvert.SerializeObject(TodaysTours, Formatting.Indented));
+        Program.World.WriteAllText(JsonFilePath, JsonConvert.SerializeObject(TodaysTours, Formatting.Indented));
     }
 
     private static void LoadTours()
     {
-        TodaysTours = JsonConvert.DeserializeObject<List<Tour>>(File.ReadAllText(JsonFilePath));
+        TodaysTours = JsonConvert.DeserializeObject<List<Tour>>(Program.World.ReadAllText(JsonFilePath));
     }
 
 }

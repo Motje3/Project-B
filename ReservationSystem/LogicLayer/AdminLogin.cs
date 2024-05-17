@@ -6,7 +6,7 @@ public class AdminLoginMenu : View
     {
 
         AdminLogin.Show();
-        string password = AdminBackEnd.ReadPassword();
+        string password = AdminBackEnd.ReadPassword().ToLower();
 
         if (Authenticator.AuthenticateUser(password))
         {
@@ -56,6 +56,6 @@ public class AdminLoginMenu : View
         }
     }
 
-    
+
 
 }

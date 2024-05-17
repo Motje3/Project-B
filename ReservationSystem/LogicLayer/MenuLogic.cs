@@ -68,8 +68,8 @@ public class MenuLogic
     {
         // Show current reservation details
         string reservationDetails = Visitor.GetCurrentReservation(visitor);
-        Console.WriteLine(reservationDetails);
-
+        Program.World.WriteLine(reservationDetails);
+        
         // Display available tours and allow user to choose
         Tour.ShowAvailableTours();
 

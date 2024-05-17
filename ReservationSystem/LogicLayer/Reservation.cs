@@ -1,6 +1,6 @@
 using ReservationSystem;
 
-public class ReservationPresentation : View 
+public class ReservationPresentation : View
 {
     public static void ValidateCodeAndShowMenu()
 
@@ -11,6 +11,10 @@ public class ReservationPresentation : View
         while (true)
         {
             string userCode = TicketInputRL.Show();
+            if (userCode == "GETMEOUT")
+            {
+                return;
+            }
             if (userCode == "123")
             {
                 AdminLoginMenu.ProcessLoginForm();

@@ -1,8 +1,5 @@
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using ReservationSystem;
 
 public class Guide
 {
@@ -104,54 +101,42 @@ public class Guide
                 Console.WriteLine($"Tour {tourNumber} | Start Time: {formattedTime} |");
                 tourNumber++;
             }
-            
+
         }
     }
 
 
     public static void ReassignGuideToTour()
     {
-        Console.WriteLine("Select a tour to reassign a guide:");
+        Program.World.WriteLine("Select a tour to reassign a guide:");
         for (int i = 0; i < Tour.TodaysTours.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. Tour at {Tour.TodaysTours[i].StartTime} currently assigned to {Tour.TodaysTours[i].AssignedGuide?.Name ?? "No Guide"}");
+            Program.World.WriteLine($"{i + 1}. Tour at {Tour.TodaysTours[i].StartTime} currently assigned to {Tour.TodaysTours[i].AssignedGuide?.Name ?? "No Guide"}");
         }
 
-        Console.Write("Enter the number of the tour to reassign: ");
-        int tourIndex;
-        while (true)
+        Program.World.Write("Enter the number of the tour to reassign: ");
+        int tourIndex = Convert.ToInt32(Console.ReadLine()) - 1;
+
+        if (tourIndex < 0 || tourIndex >= Tour.TodaysTours.Count)
         {
-            string input = Console.ReadLine();
-            if (int.TryParse(input, out tourIndex))
-            {
-                tourIndex--; // Decrement input to get correct index
-                if (tourIndex >= 0 && tourIndex < Tour.TodaysTours.Count)
-                {
-                    break; // Valid input, break loop
-                }
-                else
-                {
-                    Console.WriteLine("Invalid tour selection. Please enter a valid tour number.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Invalid input. Please enter a number.");
-            }
+            Program.World.WriteLine("Invalid tour selection.");
+            return;
         }
 
-        Console.WriteLine("Select a guide to assign:");
+        // Display guides for selection from the static list in Guide class
+        Program.World.WriteLine("Select a guide to assign:");
         for (int i = 0; i < Guide.AllGuides.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. {Guide.AllGuides[i].Name}");
+            Program.World.WriteLine($"{i + 1}. {Guide.AllGuides[i].Name}");
         }
 
-        Console.Write("Enter the number of the guide to assign: ");
+        Program.World.Write("Enter the number of the guide to assign: ");
+
         int guideIndex = Convert.ToInt32(Console.ReadLine()) - 1;
 
         if (guideIndex < 0 || guideIndex >= Guide.AllGuides.Count)
         {
-            Console.WriteLine("Invalid guide selection.");
+            Program.World.WriteLine("Invalid guide selection.");
             return;
         }
 
@@ -159,7 +144,7 @@ public class Guide
         Tour.SaveTours();
 
         try { Console.Clear(); } catch { }
-        Console.WriteLine($"Guide {Guide.AllGuides[guideIndex].Name} has been successfully assigned to the tour at {Tour.TodaysTours[tourIndex].StartTime:hh:mm tt} o'clock.");
+        Program.World.WriteLine($"Guide {Guide.AllGuides[guideIndex].Name} has been successfully assigned to the tour at {Tour.TodaysTours[tourIndex].StartTime:hh:mm tt} o'clock.");
         Thread.Sleep(2000);
         try { Console.Clear(); } catch { }
     }
