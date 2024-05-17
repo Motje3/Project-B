@@ -14,7 +14,7 @@ public class Tour
     public bool Deleted { get; set; }
     public Guide AssignedGuide { get; set; }
 
-    public static string JsonFilePath => $"./JSON-Files/Tours-{Program.World.Now:yyyyMMdd}.json";
+    public static string JsonFilePath => $"./JSON-Files/Tours-{Program.World.Today:yyyyMMdd}.json";
     public static string JsonTourSettingsPath => $"./JSON-Files/TourSettings.json";
     public static string JsonGuideAssignmentsPath => $"./JSON-Files/GuideAssignments.json";
 
@@ -51,8 +51,8 @@ public class Tour
         dynamic settings = JsonConvert.DeserializeObject<dynamic>(Program.World.ReadAllText(Tour.JsonTourSettingsPath));
         List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(Program.World.ReadAllText(Tour.JsonGuideAssignmentsPath));
 
-        DateTime startTime = Program.World.Now.Add(TimeSpan.Parse((string)settings.StartTime));
-        DateTime endTime = Program.World.Now.Add(TimeSpan.Parse((string)settings.EndTime));
+        DateTime startTime = Program.World.Today.Add(TimeSpan.Parse((string)settings.StartTime));
+        DateTime endTime = Program.World.Today.Add(TimeSpan.Parse((string)settings.EndTime));
         int duration = (int)settings.Duration;
         int maxCapacity = (int)settings.MaxCapacity;
         int tourInterval = 20; // Interval between tour start times
@@ -107,7 +107,7 @@ public class Tour
         {
             for (int i = 0; i < availableTours.Count; i++)
             {
-                string formattedStartTime = availableTours[i].StartTime.ToString("h:mm tt");
+                string formattedStartTime = availableTours[i].StartTime.ToShortTimeString();
                 Program.World.WriteLine($"{i + 1} | Start Time: {formattedStartTime} | Duration: {availableTours[i].Duration} minutes | Remaining Spots: {availableTours[i].MaxCapacity - availableTours[i].ExpectedVisitors.Count}");
             }
         }
