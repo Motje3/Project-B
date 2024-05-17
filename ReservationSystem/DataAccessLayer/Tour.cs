@@ -1,5 +1,5 @@
 using Newtonsoft.Json;
-
+using ReservationSystem;
 public class Tour
 {
     public Guid TourId { get; private set; }
