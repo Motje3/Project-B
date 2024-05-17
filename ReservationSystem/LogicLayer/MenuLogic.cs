@@ -50,8 +50,6 @@ public class MenuLogic
 
             JoinTourSuccesMessage.Show(chosenTour);
             Thread.Sleep(2000);
-            JoinTourSuccesMessage.Show2();
-
             try { Console.Clear(); } catch { }
 
             return true;
