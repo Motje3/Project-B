@@ -5,10 +5,8 @@ public class ReservationPresentation : View
     public static void ValidateCodeAndShowMenu()
 
     {
-        Guide.LoadGuides();
-        Tour.InitializeTours();
-        try { Console.Clear(); } catch { }
-        Program.World.WriteLine("Welcome to the Museum!\n");
+
+        Console.WriteLine("Welcome to the Museum!\n");
 
         while (true)
         {

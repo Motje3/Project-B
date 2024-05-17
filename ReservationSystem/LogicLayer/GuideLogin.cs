@@ -1,17 +1,21 @@
 using ReservationSystem;
+using System;
 
 public class GuideLoginMenu : View
 {
     public static void ProcessLoginForm(string userCode)
     {
+        Guide.LoadGuides(); // Ensure guides are loaded
+
         GuideLogin.Show();
         string password = AdminBackEnd.ReadPassword();
 
+        Guide authenticatedGuide = Guide.AuthenticateGuide(password);
 
-        if (GuideMenuBackEnd.AuthenticateGuide(password))
+        if (authenticatedGuide != null)
         {
             AccessPassed.Show();
-            ShowGuideMenu();
+            ShowGuideMenu(authenticatedGuide);
         }
         else
         {
@@ -19,22 +23,17 @@ public class GuideLoginMenu : View
         }
     }
 
-    public static void ShowGuideMenu()
+    public static void ShowGuideMenu(Guide guide)
     {
         bool continueRunning = true;
         while (continueRunning)
         {
-            // Console.WriteLine("\nGuide Menu:");
-            // Console.WriteLine("1. View personal tours(To Be Implemented)");
-            // Console.WriteLine("2. Exit");
-
-            // Write("\nEnter your choice: ");
             string choice = GuideMenuRL.Show();
 
             switch (choice)
             {
                 case "1":
-                    //To be implemented
+                    Guide.ViewPersonalTours(guide);
                     break;
                 case "2":
                     continueRunning = false;
@@ -47,5 +46,4 @@ public class GuideLoginMenu : View
         }
     }
 
-    
 }

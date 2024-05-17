@@ -79,8 +79,12 @@ public class Tour
             }
         }
 
+        // Save the created tours
         Tour.SaveTours();
     }
+
+
+
 
 
 
