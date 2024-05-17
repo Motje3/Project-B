@@ -48,46 +48,34 @@ public class Tour
 
     private static void CreateToursForToday()
     {
-        dynamic settings = JsonConvert.DeserializeObject<dynamic>(Program.World.ReadAllText(Tour.JsonTourSettingsPath));
         List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(Program.World.ReadAllText(Tour.JsonGuideAssignmentsPath));
 
-        DateTime startTime = Program.World.Today.Add(TimeSpan.Parse((string)settings.StartTime));
-        DateTime endTime = Program.World.Today.Add(TimeSpan.Parse((string)settings.EndTime));
-        int duration = (int)settings.Duration;
-        int maxCapacity = (int)settings.MaxCapacity;
-        int tourInterval = 20; // Interval between tour start times
-
-        while (startTime < endTime)
+        // Loop through each guide assignment
+        foreach (var guideEntry in guideAssignments)
         {
-            // Iterate through each guide assignment entry
-            foreach (var guideEntry in guideAssignments)
+            string guideName = (string)guideEntry.GuideName;
+            var guide = Guide.AllGuides.FirstOrDefault(g => g.Name == guideName);
+
+            if (guide != null)
             {
-                var guideName = (string)guideEntry.GuideName;
-                var guide = Guide.AllGuides.FirstOrDefault(g => g.Name == guideName);
-                if (guide != null)
+                // Loop through each scheduled tour time for the guide
+                foreach (var tourEntry in guideEntry.Tours)
                 {
-                    // Assign a tour to this guide at the current start time
+                    // Parse the start time from the tour entry
+                    DateTime startTime = Program.World.Today.Add(DateTime.ParseExact((string)tourEntry.StartTime, "hh:mm tt", null).TimeOfDay);
+                    int duration = 40;  // Assuming a fixed duration of 40 minutes for all tours
+                    int maxCapacity = 13;  // Assuming a fixed max capacity of 13 for all tours
+
+                    // Create and assign a new tour to the guide
                     var tourId = Guid.NewGuid();
-                    guide.AssignTour(tourId);  // Assign tour to guide
+                    guide.AssignTour(tourId);
 
                     Tour newTour = new Tour(tourId, startTime, duration, maxCapacity, false, false, guide);
                     Tour.TodaysTours.Add(newTour);
 
-                    // Increment the start time for the next tour
-                    startTime = startTime.AddMinutes(tourInterval);
-
-                    // Check if the next start time is within the end time
-                    if (startTime >= endTime)
-                    {
-                        break;
-                    }
+                    // Output for debugging
+                    Program.World.WriteLine($"Created tour {tourId} for guide {guideName} at {startTime}");
                 }
-            }
-
-            // Reset start time if it exceeds end time in the inner loop
-            if (startTime >= endTime)
-            {
-                break;
             }
         }
 
