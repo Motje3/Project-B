@@ -6,12 +6,6 @@ namespace MuseumTesting
     [TestClass]
     public class SysTestTourJoinen
     {
-        [TestInitialize]
-        public void SetUp()
-        {
-
-        }
-
         [TestMethod]
         public void TestVisitorJoinTourMenuSucceful()
         {
@@ -20,7 +14,7 @@ namespace MuseumTesting
             string visitorTicketCode = "1234567890";
             FakeWorld world = new()
             {
-                Now = new DateTime(2024, 6, 1),
+                Today = new DateTime(2024, 6, 1),
                 Files =
                 {
                     {"./JSON-Files/OnlineTickets.json", "[\"1234567890\"]"},
@@ -43,7 +37,5 @@ namespace MuseumTesting
 
             Assert.IsTrue(Visitor.FindVisitorByTicketCode(visitorTicketCode) != null);
         }
-
-
     }
 }

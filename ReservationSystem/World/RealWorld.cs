@@ -2,9 +2,9 @@
 
 public class RealWorld : IWorld
 {
-    public DateTime Now
+    public DateTime Today
     {
-        get => DateTime.Now;
+        get => DateTime.Today;
     }
 
     public void WriteLine(string line)

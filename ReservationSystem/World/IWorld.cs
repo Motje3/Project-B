@@ -2,7 +2,7 @@
 
 public interface IWorld
 {
-    DateTime Now { get; }
+    DateTime Today { get; }
 
     void WriteLine(string line);
 

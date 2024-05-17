@@ -13,7 +13,7 @@ public class Tour
     public bool Deleted { get; set; }
     public Guide AssignedGuide { get; set; }
 
-    public static string JsonFilePath => $"./JSON-Files/Tours-{DateTime.Today:yyyyMMdd}.json";
+    public static string JsonFilePath => $"./JSON-Files/Tours-{Program.World.Today:yyyyMMdd}.json";
     public static string JsonTourSettingsPath => $"./JSON-Files/TourSettings.json";
     public static string JsonGuideAssignmentsPath => $"./JSON-Files/GuideAssignments.json";
 
@@ -106,8 +106,8 @@ public class Tour
         {
             for (int i = 0; i < availableTours.Count; i++)
             {
-                string formattedStartTime = availableTours[i].StartTime.ToString("h:mm tt");
-                Console.WriteLine($"{i + 1} | Start Time: {formattedStartTime} | Duration: {availableTours[i].Duration} minutes | Remaining Spots: {availableTours[i].MaxCapacity - availableTours[i].ExpectedVisitors.Count}");
+                string formattedStartTime = availableTours[i].StartTime.ToShortTimeString();
+                Program.World.WriteLine($"{i + 1} | Start Time: {formattedStartTime} | Duration: {availableTours[i].Duration} minutes | Remaining Spots: {availableTours[i].MaxCapacity - availableTours[i].ExpectedVisitors.Count}");
             }
         }
         else

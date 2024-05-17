@@ -111,7 +111,7 @@ public class Guide
         Program.World.WriteLine("Select a tour to reassign a guide:");
         for (int i = 0; i < Tour.TodaysTours.Count; i++)
         {
-            Program.World.WriteLine($"{i + 1}. Tour at {Tour.TodaysTours[i].StartTime} currently assigned to {Tour.TodaysTours[i].AssignedGuide?.Name ?? "No Guide"}");
+            Program.World.WriteLine($"{i + 1} | {Tour.TodaysTours[i].StartTime.ToShortDateString()} | Start Time: {Tour.TodaysTours[i].StartTime.ToShortTimeString()} | currently assigned to {Tour.TodaysTours[i].AssignedGuide?.Name ?? "No Guide"}");
         }
 
         Program.World.Write("Enter the number of the tour to reassign: ");

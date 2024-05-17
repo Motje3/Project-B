@@ -5,7 +5,7 @@ public class FakeWorld : IWorld
 {
     private DateTime? _now = null;
 
-    public DateTime Now
+    public DateTime Today
     {
         get => _now ?? throw new NullReferenceException();
         set => _now = value;
@@ -47,7 +47,7 @@ public class FakeWorld : IWorld
     public ConsoleKeyInfo ReadKey(bool intercept)
     {
 
-        if (!LinesToRead.Last().Contains(","))
+        if (!LinesToRead[0].Contains(","))
         {
             throw new FormatException("Input is not comma seperated");
         }
@@ -63,11 +63,18 @@ public class FakeWorld : IWorld
             LinesToRead.RemoveAt(0);
 
         ConsoleKey pressed;
+        ConsoleKeyInfo info;
         if (nextInput.Length == 1)
+        { 
             pressed = (ConsoleKey)Enum.Parse(typeof(ConsoleKey), nextInput.ToUpper());
+            info = new(nextInput[0], pressed, false, false, false); 
+        }
         else
-            pressed = (ConsoleKey)Enum.Parse(typeof(ConsoleKey), nextInput);
-        ConsoleKeyInfo info = new('0', pressed, false, false, false);
+        {
+            pressed = (ConsoleKey)Enum.Parse(typeof(ConsoleKey), nextInput); 
+            info = new('0', pressed, false, false, false);
+        }
+        
         return info;
     }
 }
