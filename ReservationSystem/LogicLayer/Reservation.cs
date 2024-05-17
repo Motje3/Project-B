@@ -1,17 +1,22 @@
 using ReservationSystem;
 
-public class ReservationPresentation : View 
+public class ReservationPresentation : View
 {
     public static void ValidateCodeAndShowMenu()
 
     {
-
+        Guide.LoadGuides();
+        Tour.InitializeTours();
         try { Console.Clear(); } catch { }
-        Console.WriteLine("Welcome to the Museum!\n");
+        Program.World.WriteLine("Welcome to the Museum!\n");
 
         while (true)
         {
             string userCode = TicketInputRL.Show();
+            if (userCode == "GETMEOUT")
+            {
+                return;
+            }
             if (userCode == "123")
             {
                 AdminLoginMenu.ProcessLoginForm();

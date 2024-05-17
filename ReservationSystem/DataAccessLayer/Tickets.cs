@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using ReservationSystem;
 
 public static class Ticket
 {
@@ -15,7 +16,7 @@ public static class Ticket
         try
         {
             // Read the JSON content from the file
-            string jsonContent = File.ReadAllText(OnlineTicketsFilePath);
+            string jsonContent = Program.World.ReadAllText(OnlineTicketsFilePath);
 
             // Deserialize the JSON content into the Tickets list
             Tickets = JsonConvert.DeserializeObject<List<string>>(jsonContent);

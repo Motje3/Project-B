@@ -31,4 +31,9 @@ public class RealWorld : IWorld
     {
         File.WriteAllText(path, contents);
     }
+
+    public ConsoleKeyInfo ReadKey(bool intercept)
+    {
+        return Console.ReadKey(true);
+    }
 }
