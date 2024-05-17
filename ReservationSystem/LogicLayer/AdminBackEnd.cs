@@ -16,20 +16,25 @@ public static class AdminBackEnd
     {
 
         string password = "";
-        ConsoleKey info = Program.World.ReadKey(true).Key;
-        while (info != ConsoleKey.Enter)
+        ConsoleKeyInfo info = Program.World.ReadKey(true);
+        ConsoleKey pressed = info.Key;
+        char chosen = info.KeyChar;
+        
+        while (pressed != ConsoleKey.Enter)
         {
-            if (info != ConsoleKey.Backspace)
+            if (pressed != ConsoleKey.Backspace)
             {
                 PasswordChar.Show();
-                password += info.ToString();
+                password += chosen;
             }
-            else if (info == ConsoleKey.Backspace && password.Length > 0)
+            else if (pressed == ConsoleKey.Backspace && password.Length > 0)
             {
                 Program.World.Write("\b \b"); // Moves the cursor back, writes a space to erase the star, and moves back again.
                 password = password[..^1]; // Removes the last character from the password string
             }
-            info = Program.World.ReadKey(true).Key;
+            info = Program.World.ReadKey(true);
+            pressed = info.Key;
+            chosen = info.KeyChar;
         }
         Space.Show(); // Console.WriteLine(); // Ensure the cursor moves to the next line after Enter is pressed
         return password;
