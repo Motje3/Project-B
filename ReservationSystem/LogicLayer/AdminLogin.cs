@@ -10,7 +10,7 @@ public class AdminLoginMenu : View
 
         if (Authenticator.AuthenticateUser(password))
         {
-            AccessPassed.Show();
+            AccessPassed.WelcomeAdmin();
             ShowAdminMenu();
         }
         else

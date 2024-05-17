@@ -5,6 +5,8 @@ public class ReservationPresentation : View
     public static void ValidateCodeAndShowMenu()
 
     {
+        try { Console.Clear(); } catch { }
+
 
         Console.WriteLine("Welcome to the Museum!\n");
 

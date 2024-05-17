@@ -14,7 +14,7 @@ public class GuideLoginMenu : View
 
         if (authenticatedGuide != null)
         {
-            AccessPassed.Show();
+            AccessPassed.Show(authenticatedGuide);
             ShowGuideMenu(authenticatedGuide);
         }
         else
