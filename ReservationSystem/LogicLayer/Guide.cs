@@ -1,42 +1,32 @@
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 public class Guide
 {
     public Guid GuideId { get; private set; }
     public string Name { get; set; }
+    public string Password { get; set; }
     [JsonIgnore]
     public List<Guid> AssignedTourIds { get; set; } = new List<Guid>();
     public static List<Guide> AllGuides = new List<Guide>();
 
-    public Guide(string name, Guid guideId)
+    public Guide(string name, Guid guideId, string password)
     {
         GuideId = guideId;
         Name = name;
+        Password = password;
         AllGuides.Add(this);
     }
-
-    public Guide(string name)
-    {
-        GuideId = Guid.NewGuid();
-        Name = name;
-        AllGuides.Add(this);
-    }
-
-    public void AssignTour(Guid tourId)
-    {
-        if (!AssignedTourIds.Contains(tourId))
-        {
-            AssignedTourIds.Add(tourId);
-        }
-    }
-
-
 
     [JsonConstructor]
-    public Guide(Guid guideId, string name, List<Guid> assignedTourIds)
+    public Guide(Guid guideId, string name, string password, List<Guid> assignedTourIds)
     {
         GuideId = guideId;
         Name = name;
+        Password = password;
         AssignedTourIds = assignedTourIds ?? new List<Guid>();
         AllGuides.Add(this);
     }
@@ -44,6 +34,11 @@ public class Guide
     public static void LoadGuides()
     {
         string jsonGuideAssignmentsPath = Tour.JsonGuideAssignmentsPath;
+        if (!File.Exists(jsonGuideAssignmentsPath))
+        {
+            throw new FileNotFoundException("The guide assignments file does not exist.");
+        }
+
         string jsonContent = File.ReadAllText(jsonGuideAssignmentsPath);
         List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(jsonContent);
 
@@ -51,9 +46,9 @@ public class Guide
         {
             string guideName = guideEntry.GuideName;
             string guideIdStr = guideEntry.GuideId;
+            string password = guideEntry.Password;
             Guid guideId;
 
-            // Generate a new GUID if GuideId is empty or whitespace
             if (string.IsNullOrWhiteSpace(guideIdStr))
             {
                 guideId = Guid.NewGuid();
@@ -64,33 +59,55 @@ public class Guide
                 guideId = Guid.Parse(guideIdStr);
             }
 
-            // Check if the guide already exists in the AllGuides list
             if (!Guide.AllGuides.Any(g => g.Name == guideName))
             {
-                new Guide(guideName, guideId);
+                new Guide(guideName, guideId, password);
             }
             else
             {
                 var existingGuide = Guide.AllGuides.First(g => g.Name == guideName);
                 existingGuide.GuideId = guideId;
+                existingGuide.Password = password;
             }
         }
 
-        // Serialize the updated guide assignments back to the JSON file
         string updatedJsonContent = JsonConvert.SerializeObject(guideAssignments, Formatting.Indented);
         File.WriteAllText(jsonGuideAssignmentsPath, updatedJsonContent);
     }
 
-
-    public void CheckInVisitor(Visitor visitor)
+    public static Guide AuthenticateGuide(string password)
     {
-        //to be implemented
+        return AllGuides.FirstOrDefault(g => g.Password == password);
     }
 
-    public void CompleteTour()
+    public void AssignTour(Guid tourId)
     {
-        //to be implemented
+        if (!AssignedTourIds.Contains(tourId))
+        {
+            AssignedTourIds.Add(tourId);
+
+        }
     }
+
+
+    public static void ViewPersonalTours(Guide guide)
+    {
+        Console.WriteLine($"Tours for {guide.Name}:\n");
+
+        int tourNumber = 1;
+        foreach (var tourId in guide.AssignedTourIds)
+        {
+            var tour = Tour.TodaysTours.FirstOrDefault(t => t.TourId == tourId);
+            if (tour != null)
+            {
+                string formattedTime = tour.StartTime.ToString("hh:mm tt");
+                Console.WriteLine($"Tour {tourNumber} | Start Time: {formattedTime} |");
+                tourNumber++;
+            }
+            
+        }
+    }
+
 
     public static void ReassignGuideToTour()
     {
@@ -107,10 +124,10 @@ public class Guide
             string input = Console.ReadLine();
             if (int.TryParse(input, out tourIndex))
             {
-                tourIndex--; // Verminder de invoer met 1 om de juiste index te krijgen
+                tourIndex--; // Decrement input to get correct index
                 if (tourIndex >= 0 && tourIndex < Tour.TodaysTours.Count)
                 {
-                    break; // Geldige invoer, breek de lus
+                    break; // Valid input, break loop
                 }
                 else
                 {
@@ -123,7 +140,6 @@ public class Guide
             }
         }
 
-        // Display guides for selection from the static list in Guide class
         Console.WriteLine("Select a guide to assign:");
         for (int i = 0; i < Guide.AllGuides.Count; i++)
         {
@@ -139,10 +155,7 @@ public class Guide
             return;
         }
 
-        // Assign the selected guide from the existing list
         Tour.TodaysTours[tourIndex].AssignedGuide = Guide.AllGuides[guideIndex];
-
-        // Save changes
         Tour.SaveTours();
 
         try { Console.Clear(); } catch { }

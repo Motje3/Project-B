@@ -6,7 +6,6 @@ public class ReservationPresentation : View
 
     {
 
-        try { Console.Clear(); } catch { }
         Console.WriteLine("Welcome to the Museum!\n");
 
         while (true)
