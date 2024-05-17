@@ -91,13 +91,6 @@ public class Guide
     {
         Console.WriteLine($"Tours for {guide.Name}:\n");
 
-        // Debugging: Print all assigned tour IDs
-        Console.WriteLine("Assigned Tour IDs:");
-        foreach (var tourId in guide.AssignedTourIds)
-        {
-            Console.WriteLine(tourId);
-        }
-
         int tourNumber = 1;
         foreach (var tourId in guide.AssignedTourIds)
         {
@@ -108,14 +101,9 @@ public class Guide
                 Console.WriteLine($"Tour {tourNumber} | Start Time: {formattedTime} |");
                 tourNumber++;
             }
-            else
-            {
-                // Debugging: Indicate if a tour was not found in TodaysTours
-                Console.WriteLine($"Tour with ID {tourId} not found in today's tours.");
-            }
+
         }
     }
-
 
 
     public static void ReassignGuideToTour()
