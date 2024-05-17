@@ -55,10 +55,8 @@
       },
       {
         "StartTime": "03:20 PM"
-      },
-      {
-        "StartTime": "04:20 PM"
       }
+      
     ]
   },
   {
@@ -86,10 +84,8 @@
       },
       {
         "StartTime": "03:40 PM"
-      },
-      {
-        "StartTime": "04:40 PM"
       }
+      
     ]
   }
 ]
