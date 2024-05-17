@@ -15,6 +15,7 @@ public class AdminLoginMenu : View
         }
         else
         {
+            Console.WriteLine(password);
             AccessFailed.Show();
         }
     }
