@@ -1,5 +1,5 @@
 using Newtonsoft.Json;
-using ReservationSystem;
+
 public class Tour
 {
     public Guid TourId { get; private set; }
@@ -13,7 +13,7 @@ public class Tour
     public bool Deleted { get; set; }
     public Guide AssignedGuide { get; set; }
 
-    public static string JsonFilePath => $"./JSON-Files/Tours-{Program.World.Today:yyyyMMdd}.json";
+    public static string JsonFilePath => $"./JSON-Files/Tours-{DateTime.Today:yyyyMMdd}.json";
     public static string JsonTourSettingsPath => $"./JSON-Files/TourSettings.json";
     public static string JsonGuideAssignmentsPath => $"./JSON-Files/GuideAssignments.json";
 
@@ -47,51 +47,44 @@ public class Tour
 
     private static void CreateToursForToday()
     {
-        dynamic settings = JsonConvert.DeserializeObject<dynamic>(File.ReadAllText(Tour.JsonTourSettingsPath));
+        // Read settings and guide assignments from JSON files
         List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(Tour.JsonGuideAssignmentsPath));
 
-        DateTime startTime = DateTime.Today.Add(TimeSpan.Parse((string)settings.StartTime));
-        DateTime endTime = DateTime.Today.Add(TimeSpan.Parse((string)settings.EndTime));
-        int duration = (int)settings.Duration; // This remains 40 minutes
-        int maxCapacity = (int)settings.MaxCapacity;
-        int tourInterval = 20; // Interval between tour start times
-
-        while (startTime < endTime)
+        // Loop through each guide assignment
+        foreach (var guideEntry in guideAssignments)
         {
-            // Iterate through each guide assignment entry
-            foreach (var guideEntry in guideAssignments)
+            string guideName = (string)guideEntry.GuideName;
+            var guide = Guide.AllGuides.FirstOrDefault(g => g.Name == guideName);
+
+            if (guide != null)
             {
-                var guideName = (string)guideEntry.GuideName;
-                var guide = Guide.AllGuides.FirstOrDefault(g => g.Name == guideName);
-                if (guide != null)
+                // Loop through each scheduled tour time for the guide
+                foreach (var tourEntry in guideEntry.Tours)
                 {
-                    // Assign a tour to this guide at the current start time
+                    // Parse the start time from the tour entry
+                    DateTime startTime = DateTime.Today.Add(DateTime.ParseExact((string)tourEntry.StartTime, "hh:mm tt", null).TimeOfDay);
+                    int duration = 40;  // Assuming a fixed duration of 40 minutes for all tours
+                    int maxCapacity = 13;  // Assuming a fixed max capacity of 13 for all tours
+
+                    // Create and assign a new tour to the guide
                     var tourId = Guid.NewGuid();
-                    guide.AssignTour(tourId);  // Assign tour to guide
+                    guide.AssignTour(tourId);
 
                     Tour newTour = new Tour(tourId, startTime, duration, maxCapacity, false, false, guide);
                     Tour.TodaysTours.Add(newTour);
 
-                    // Increment the start time for the next tour
-                    startTime = startTime.AddMinutes(tourInterval);
-
-                    // Check if the next start time is within the end time
-                    if (startTime >= endTime)
-                    {
-                        break;
-                    }
+                    // Output for debugging
+                    Console.WriteLine($"Created tour {tourId} for guide {guideName} at {startTime}");
                 }
-            }
-
-            // Reset start time if it exceeds end time in the inner loop
-            if (startTime >= endTime)
-            {
-                break;
             }
         }
 
+        // Save the created tours
         Tour.SaveTours();
     }
+
+
+
 
 
 
@@ -106,8 +99,8 @@ public class Tour
         {
             for (int i = 0; i < availableTours.Count; i++)
             {
-                string formattedStartTime = availableTours[i].StartTime.ToShortTimeString();
-                Program.World.WriteLine($"{i + 1} | Start Time: {formattedStartTime} | Duration: {availableTours[i].Duration} minutes | Remaining Spots: {availableTours[i].MaxCapacity - availableTours[i].ExpectedVisitors.Count}");
+                string formattedStartTime = availableTours[i].StartTime.ToString("h:mm tt");
+                Console.WriteLine($"{i + 1} | Start Time: {formattedStartTime} | Duration: {availableTours[i].Duration} minutes | Remaining Spots: {availableTours[i].MaxCapacity - availableTours[i].ExpectedVisitors.Count}");
             }
         }
         else
