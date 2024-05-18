@@ -10,9 +10,11 @@ public class ReservationPresentation : View
 
         Console.WriteLine("Welcome to the Museum!\n");
 
+
         while (true)
         {
             string userCode = TicketInputRL.Show();
+
             if (userCode == "GETMEOUT")
             {
                 return;
@@ -83,5 +85,15 @@ public class ReservationPresentation : View
 
         }
     }
+
+    public static void PrintAllGuides()
+    {
+        Console.WriteLine("All Guides:");
+        foreach (var guide in Guide.AllGuides)
+        {
+            Console.WriteLine($"Name: {guide.Name}, GuideId: {guide.GuideId}");
+        }
+    }
+
 
 }

@@ -161,6 +161,20 @@ public class Tour
     private static void LoadTours()
     {
         TodaysTours = JsonConvert.DeserializeObject<List<Tour>>(File.ReadAllText(JsonFilePath));
+
+        foreach (var tour in TodaysTours)
+        {
+            if (tour.AssignedGuide != null)
+            {
+                var guide = Guide.AllGuides.FirstOrDefault(g => g.GuideId == tour.AssignedGuide.GuideId);
+                if (guide != null)
+                {
+                    guide.AssignTour(tour.TourId);
+                    tour.AssignedGuide = guide; // Ensure the reference is updated correctly
+                }
+            }
+        }
     }
+
 
 }
