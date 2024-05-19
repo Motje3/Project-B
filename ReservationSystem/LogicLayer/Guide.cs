@@ -89,7 +89,7 @@ public class Guide
 
     public static void ViewPersonalTours(Guide guide)
     {
-        Console.WriteLine($"Tours for {guide.Name}:\n");
+        Program.World.WriteLine($"Tours for {guide.Name}:\n");
 
         int tourNumber = 1;
         foreach (var tourId in guide.AssignedTourIds)
@@ -98,7 +98,7 @@ public class Guide
             if (tour != null)
             {
                 string formattedTime = tour.StartTime.ToString("hh:mm tt");
-                Console.WriteLine($"Tour {tourNumber} | Start Time: {formattedTime} |");
+                Program.World.WriteLine($"Tour {tourNumber} | Start Time: {formattedTime} |");
                 tourNumber++;
             }
 
