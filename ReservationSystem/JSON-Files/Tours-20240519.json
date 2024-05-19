@@ -85,7 +85,12 @@
     "EndTime": "2024-05-19T14:40:00+02:00",
     "Duration": 40,
     "MaxCapacity": 13,
-    "ExpectedVisitors": [],
+    "ExpectedVisitors": [
+      {
+        "VisitorId": "066f6f15-dbd7-448a-9a4a-285874ad8686",
+        "TicketCode": "111"
+      }
+    ],
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,

@@ -7,6 +7,6 @@ public class Program
     {
         Guide.LoadGuides();
         Tour.InitializeTours();
-        ReservationPresentation.ValidateCodeAndShowMenu();
+        Reservation.ValidateCodeAndShowMenu();
     }
 }

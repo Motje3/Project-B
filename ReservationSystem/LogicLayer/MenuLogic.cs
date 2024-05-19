@@ -9,7 +9,7 @@ public class MenuLogic
         {
             case "1":
                 ChangeTour(visitor);
-                return true;
+                return false;
             case "2":
                 return CancelTour(visitor); // Use the return value to determine whether to exit.
             case "3":
@@ -50,7 +50,23 @@ public class MenuLogic
 
             JoinTourSuccesMessage.Show(chosenTour);
             Thread.Sleep(2000);
-            try { Console.Clear(); } catch { }
+            JoinTourSuccesMessage.Show2();
+            var key = Console.ReadKey(true).Key;
+
+            while (key != ConsoleKey.Enter && key != ConsoleKey.Spacebar)
+            {
+                key = Console.ReadKey(true).Key;
+            }
+
+            if (key == ConsoleKey.Spacebar)
+            {
+                Console.Clear();
+                Reservation.ShowFullMenu(visitor);
+            }
+            else
+            {
+                try { Console.Clear(); } catch { }
+            }
 
             return true;
         }
@@ -67,7 +83,7 @@ public class MenuLogic
         // Show current reservation details
         string reservationDetails = Visitor.GetCurrentReservation(visitor);
         Program.World.WriteLine(reservationDetails);
-        
+
         // Display available tours and allow user to choose
         Tour.ShowAvailableTours();
 
@@ -92,7 +108,24 @@ public class MenuLogic
                 try { Console.Clear(); } catch { }
                 ChangeTourSucces.Show(chosenTour);
                 Thread.Sleep(2000);
-                try { Console.Clear(); } catch { }
+                JoinTourSuccesMessage.Show2();
+
+                var key = Console.ReadKey(true).Key;
+
+                while (key != ConsoleKey.Enter && key != ConsoleKey.Spacebar)
+                {
+                    key = Console.ReadKey(true).Key;
+                }
+
+                if (key == ConsoleKey.Spacebar)
+                {
+                    Console.Clear();
+                    Reservation.ShowFullMenu(visitor);
+                }
+                else
+                {
+                    try { Console.Clear(); } catch { }
+                }
             }
             else
             {
@@ -121,8 +154,19 @@ public class MenuLogic
         try { Console.Clear(); } catch { }
         ReservationCancelSucces.Show();
         Thread.Sleep(2000);
-        try { Console.Clear(); } catch { }
 
+        JoinTourSuccesMessage.Show3();
+        var key = Console.ReadKey(true).Key;
+
+        while (key != ConsoleKey.Enter)
+        {
+            key = Console.ReadKey(true).Key;
+        }
+
+        if (key == ConsoleKey.Enter)
+        {
+            try { Console.Clear(); } catch { }
+        }
         return false;
-    }
+    } 
 }

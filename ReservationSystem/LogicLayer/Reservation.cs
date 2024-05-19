@@ -1,6 +1,6 @@
 using ReservationSystem;
 
-public class ReservationPresentation : View
+public class Reservation : View
 {
     public static void ValidateCodeAndShowMenu()
 
@@ -8,7 +8,7 @@ public class ReservationPresentation : View
         try { Console.Clear(); } catch { }
 
 
-        Console.WriteLine("Welcome to the Museum!\n");
+        WelcomeMessage.WelcomeToTheMuseum();
 
 
         while (true)
@@ -60,40 +60,22 @@ public class ReservationPresentation : View
     // "Bora" moved it here because he thought it was more suited here.
     // And yes i speak from 3th-Person
 
-    private static void ShowRestrictedMenu(Visitor visitor)
+    public static void ShowRestrictedMenu(Visitor visitor)
     {
         MenuLogic.JoinTour(visitor);
     }
 
-    private static void ShowFullMenu(Visitor visitor)
+    public static void ShowFullMenu(Visitor visitor)
     {
         MenuLogic logic = new MenuLogic();
         bool choosingOption = true;
         while (choosingOption)
         {
             string reservationDetails = Visitor.GetCurrentReservation(visitor);
-            // Console.WriteLine(reservationDetails);
-            // Console.WriteLine("\nPlease choose an option:");
-            // Console.WriteLine("1. Change my reservation time");
-            // Console.WriteLine("2. Cancel my tour reservation");
-            // Console.WriteLine("3. Return to main menu");
-            // Console.Write("\nEnter your choice: ");
-            // string choice = Console.ReadLine();
             string choice = EditCurrTourMenuRL.Show(reservationDetails);
-
             choosingOption = logic.HandleFullMenuChoice(choice, visitor);
 
         }
     }
-
-    public static void PrintAllGuides()
-    {
-        Console.WriteLine("All Guides:");
-        foreach (var guide in Guide.AllGuides)
-        {
-            Console.WriteLine($"Name: {guide.Name}, GuideId: {guide.GuideId}");
-        }
-    }
-
 
 }
