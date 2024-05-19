@@ -25,7 +25,10 @@ public class MenuLogic
     public static bool JoinTour(Visitor visitor)
     {
         // Display available tours
-        Tour.ShowAvailableTours();
+        if (!Tour.ShowAvailableTours())
+        {
+            return false;
+        }
 
 
         // Prompt the user to choose a tour

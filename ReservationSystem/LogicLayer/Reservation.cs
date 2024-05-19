@@ -37,7 +37,7 @@ public class Reservation : View
                     currentVisitor = new Visitor(userCode);
                 }
 
-                WelcomeMessage.Show();
+                WelcomeMessage.WelcomeYourTicketConfirmed();
                 if (currentVisitor.HasReservation(currentVisitor))
                 {
                     ShowFullMenu(currentVisitor);

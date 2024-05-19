@@ -81,7 +81,7 @@ public class Tour
 
 
 
-    public static void ShowAvailableTours()
+    public static bool ShowAvailableTours()
     {
         var availableTours = TodaysTours
             .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > DateTime.Now)
@@ -92,13 +92,20 @@ public class Tour
         {
             for (int i = 0; i < availableTours.Count; i++)
             {
-                string formattedStartTime = availableTours[i].StartTime.ToShortTimeString();
+                string formattedStartTime = availableTours[i].StartTime.ToString("HH:mm");
+
                 Program.World.WriteLine($"{i + 1} | Start Time: {formattedStartTime} | Duration: {availableTours[i].Duration} minutes | Remaining Spots: {availableTours[i].MaxCapacity - availableTours[i].ExpectedVisitors.Count}");
+                
             }
+            return true;
         }
         else
         {
-            Console.WriteLine("No available tours at the moment.");
+            try { Console.Clear(); } catch { }
+
+            Program.World.WriteLine("No available tours left today. Please try again tomorrow!");
+            Thread.Sleep(2000);
+            return false;
         }
     }
 

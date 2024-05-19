@@ -4,6 +4,6 @@ public class ChangeTourSucces : View
 {
     public static void Show(Tour chosenTour)
     {
-        WriteLine($"\nYou have successfully transferred to the new tour: {chosenTour.StartTime.ToString("h:mm tt")}.\n");
+        ColourText.WriteColoredLine("\nYou have successfully transferred to the new tour at ", chosenTour.StartTime.ToString("HH:mm"), ConsoleColor.Cyan, "\n");
     }
 }

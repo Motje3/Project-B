@@ -4,16 +4,17 @@ public class JoinTourSuccesMessage : View
 {
     public static void Show(Tour chosenTour)
     {
-        WriteLine($"Tour at {chosenTour.StartTime.ToString("h:mm tt")} joined successfully!");
+        ColourText.WriteColored("Tour at ", chosenTour.StartTime.ToString("HH:mm"), ConsoleColor.Cyan, " joined successfully!");
+
     }
     public static void Show2()
     {
-        ColourText.WriteColoredLine("\n| Press ", "Enter", ConsoleColor.Green, " to return to the Main Menu ");
-        ColourText.WriteColoredLine("| Press", "Space", ConsoleColor.Green, " to change your reservation details");
+        ColourText.WriteColoredLine("\n| Press ", "Enter", ConsoleColor.Cyan, " to return to the Main Menu ");
+        ColourText.WriteColoredLine("\n| Press ", "Space", ConsoleColor.Cyan, " to change your reservation details");
 
     }
     public static void Show3()
     {
-        ColourText.WriteColoredLine("\nPress ", "Enter", ConsoleColor.Green, " to return to the Main Menu");
+        ColourText.WriteColoredLine("\nPress ", "Enter", ConsoleColor.Cyan, " to return to the Main Menu");
     }
 }

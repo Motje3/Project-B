@@ -25,14 +25,18 @@ public class Visitor
     public static string GetCurrentReservation(Visitor visitor)
     {
         // Find the tour that this visitor is part of by searching for the ticket code
-        var assignedTour = Tour.TodaysTours
-                               .FirstOrDefault(tour => tour.ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode));
+        var assignedTour = Tour.TodaysTours.FirstOrDefault(tour => tour.ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode));
 
         if (assignedTour != null)
         {
             // If the tour is found, return formatted reservation details
-            string formattedStartTime = assignedTour.StartTime.ToString("h:mm tt");
-            return $"\nYour current reservation is at {formattedStartTime}.\n";
+            string formattedStartTime = assignedTour.StartTime.ToString("HH:mm");
+
+
+            // return $"\nYour current reservation is at {formattedStartTime}.\n";
+            string reservationMessage = "\nYour current reservation is at ";
+            string coloredFormattedStartTime = ColourText.GetColoredString("", formattedStartTime, ConsoleColor.Cyan, "");
+            return reservationMessage + coloredFormattedStartTime + "\n";
         }
         else
         {

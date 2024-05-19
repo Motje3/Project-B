@@ -6,9 +6,26 @@ public class EditCurrTourMenuRL : View
     {
         WriteLine(reservationDetails);
         WriteLine("\nPlease choose an option:");
-        WriteLine("1. Change my reservation time");
-        WriteLine("2. Cancel my tour reservation");
-        WriteLine("3. Return to main menu");
+
+        // Save the current console color
+        ConsoleColor originalColor = Console.ForegroundColor;
+
+        // Change the color to cyan for the numbers
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.Write("1. ");
+        Console.ForegroundColor = originalColor; // Reset to the original color
+        Console.WriteLine("Change my reservation time");
+
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.Write("2. ");
+        Console.ForegroundColor = originalColor; // Reset to the original color
+        Console.WriteLine("Cancel my tour reservation");
+
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.Write("3. ");
+        Console.ForegroundColor = originalColor; // Reset to the original color
+        Console.WriteLine("Return to main menu");
+
         Write("\nEnter your choice: ");
         return ReadLine();  // choice
     }

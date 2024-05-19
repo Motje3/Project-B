@@ -97,8 +97,9 @@ public class Guide
             var tour = Tour.TodaysTours.FirstOrDefault(t => t.TourId == tourId);
             if (tour != null)
             {
-                string formattedTime = tour.StartTime.ToString("hh:mm tt");
-                Program.World.WriteLine($"Tour {tourNumber} | Start Time: {formattedTime} |");
+                string formattedTime = tour.StartTime.ToString("HH:mm");
+                Program.World.WriteLine($"Tour {tourNumber} | Start Time: {formattedTime} ");
+
                 tourNumber++;
             }
 
