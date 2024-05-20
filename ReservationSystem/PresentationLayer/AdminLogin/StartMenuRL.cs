@@ -4,11 +4,19 @@ public class StartMenuRL : View
 {
     public static string Show()
     {
-        WriteLine("\nAdmin Menu:");
-        WriteLine("1. Assign a Different Guide to today's tours");
-        WriteLine("2. Change the default guide's roaster (To be implemented)");
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine("\nAdmin Menu:\n");
+        Console.ResetColor();
 
-        WriteLine("4. Exit");
+        ColourText.WriteColored("1", " | ", ConsoleColor.Cyan);
+        Console.WriteLine(" Assign a Different Guide to today's tours");
+
+        ColourText.WriteColored("2", " | ", ConsoleColor.Cyan);
+        Console.WriteLine(" Change the default guide's roaster (To be implemented)");
+
+        ColourText.WriteColored("4", " | ", ConsoleColor.Cyan);
+        WriteLine(" Exit");
 
         Write("\nEnter your choice: ");
         return ReadLine();

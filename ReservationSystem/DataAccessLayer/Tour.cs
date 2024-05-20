@@ -93,9 +93,17 @@ public class Tour
             for (int i = 0; i < availableTours.Count; i++)
             {
                 string formattedStartTime = availableTours[i].StartTime.ToString("HH:mm");
+                string tourNumber = (i + 1).ToString();
 
-                Program.World.WriteLine($"{i + 1} | Start Time: {formattedStartTime} | Duration: {availableTours[i].Duration} minutes | Remaining Spots: {availableTours[i].MaxCapacity - availableTours[i].ExpectedVisitors.Count}");
-                
+                // Print the number and the mark in cyan
+                ColourText.WriteColored("", tourNumber + " | ", ConsoleColor.Cyan);
+
+                // Print the start time in cyan
+                ColourText.WriteColored("Start Time: ", formattedStartTime, ConsoleColor.Cyan);
+
+                // Print the rest of the text in default color
+                Console.WriteLine($" | Duration: {availableTours[i].Duration} minutes | Remaining Spots: {availableTours[i].MaxCapacity - availableTours[i].ExpectedVisitors.Count}");
+
             }
             return true;
         }

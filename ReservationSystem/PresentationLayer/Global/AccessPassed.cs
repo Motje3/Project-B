@@ -4,10 +4,14 @@ public class AccessPassed : View
 {
     public static void Show(Guide g)
     {
-        WriteLine($"\nWelcome {g.Name}\n");
+        try {Console.Clear();} catch{};
+        Console.Write("\nWelcome ");
+        ColourText.WriteColored("", g.Name, ConsoleColor.Cyan, "!\n");
+        Console.WriteLine();
     }
     public static void WelcomeAdmin()
     {
+        
         WriteLine($"\nWelcome Admin\n");
     }
 }

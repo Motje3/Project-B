@@ -109,13 +109,23 @@ public class Guide
 
     public static void ReassignGuideToTour()
     {
-        Program.World.WriteLine("Select a tour to reassign a guide:");
-        for (int i = 0; i < Tour.TodaysTours.Count; i++)
+        var sortedTours = Tour.TodaysTours
+        .Where(tour => !tour.Completed && !tour.Deleted)
+        .OrderBy(tour => tour.StartTime)
+        .ToList();
+        Console.Clear();
+        Program.World.WriteLine("Select the tour you want to reassign the guide for: \n");
+        for (int i = 0; i < sortedTours.Count; i++)
         {
-            Program.World.WriteLine($"{i + 1} | {Tour.TodaysTours[i].StartTime.ToShortDateString()} | Start Time: {Tour.TodaysTours[i].StartTime.ToShortTimeString()} | currently assigned to {Tour.TodaysTours[i].AssignedGuide?.Name ?? "No Guide"}");
+            string formattedStartTime = Tour.TodaysTours[i].StartTime.ToString("HH:mm");
+            ColourText.WriteColored($"{i + 1}", " | ", ConsoleColor.Cyan);
+            Console.Write($"{Tour.TodaysTours[i].StartTime.ToShortDateString()} | Start Time: ");
+            ColourText.WriteColored("", formattedStartTime, ConsoleColor.Cyan);
+            Console.WriteLine($" | currently assigned to {Tour.TodaysTours[i].AssignedGuide?.Name ?? "No Guide"}");
         }
 
-        Program.World.Write("Enter the number of the tour to reassign: ");
+        ColourText.WriteColored("\nEnter the ", "number", ConsoleColor.Cyan, " left of the tour to reassign: ");
+
         int tourIndex = Convert.ToInt32(Console.ReadLine()) - 1;
 
         if (tourIndex < 0 || tourIndex >= Tour.TodaysTours.Count)
@@ -126,12 +136,19 @@ public class Guide
 
         // Display guides for selection from the static list in Guide class
         Program.World.WriteLine("Select a guide to assign:");
-        for (int i = 0; i < Guide.AllGuides.Count; i++)
+        var distinctGuides = Guide.AllGuides
+        .GroupBy(guide => guide.Name)
+        .Select(group => group.First())
+        .ToList();
+
+        for (int i = 0; i < distinctGuides.Count; i++)
         {
-            Program.World.WriteLine($"{i + 1}. {Guide.AllGuides[i].Name}");
+            ColourText.WriteColored($"{i + 1}", " | ", ConsoleColor.Cyan);
+            Console.WriteLine($"{distinctGuides[i].Name}");
         }
 
-        Program.World.Write("Enter the number of the guide to assign: ");
+
+        ColourText.WriteColored("Enter the ", "number", ConsoleColor.Cyan, " of the guide to assign: ");
 
         int guideIndex = Convert.ToInt32(Console.ReadLine()) - 1;
 
@@ -145,8 +162,25 @@ public class Guide
         Tour.SaveTours();
 
         try { Console.Clear(); } catch { }
-        Program.World.WriteLine($"Guide {Guide.AllGuides[guideIndex].Name} has been successfully assigned to the tour at {Tour.TodaysTours[tourIndex].StartTime:hh:mm tt} o'clock.");
-        Thread.Sleep(2000);
-        try { Console.Clear(); } catch { }
+        Program.World.Write("Guide ");
+        ColourText.WriteColored("", Guide.AllGuides[guideIndex].Name, ConsoleColor.Blue);
+        Program.World.Write(" has been successfully assigned to the tour at ");
+        ColourText.WriteColored("", Tour.TodaysTours[tourIndex].StartTime.ToString("HH:mm"), ConsoleColor.Cyan);
+        Program.World.WriteLine(" o'clock.");
+
+        Program.World.WriteLine("Press Enter to return to Admin Menu or Space to close the it");
+
+        ConsoleKey key;
+        do
+        {
+            key = Console.ReadKey(true).Key;
+        } while (key != ConsoleKey.Enter && key != ConsoleKey.Spacebar);
+
+        if (key == ConsoleKey.Spacebar)
+        {
+            try { Console.Clear(); } catch { }
+            // ShowAdminMenu(); // Replace this with the method that shows the Admin Menu
+        }
+
     }
 }

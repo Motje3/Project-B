@@ -4,7 +4,9 @@ public class ChangeTourRL : View
 {
     public static string Show()
     {
-        WriteLine("\nPlease choose a number next to the new tour you wish to join");
+        Console.Write("\nPlease choose the ");
+        ColourText.WriteColored("", "number", ConsoleColor.Cyan, " left of the new tour you wish to join\n");
+
         return ReadLine();
     }
 }

@@ -10,9 +10,9 @@
     "Completed": false,
     "Deleted": false,
     "AssignedGuide": {
-      "GuideId": "de7715e2-fe98-4bf0-b413-09ff2f556d50",
-      "Name": "John Doe",
-      "Password": "11"
+      "GuideId": "8d49d335-5ac2-47ce-9d1d-a8e147d0e0e7",
+      "Name": "Alice Johnson",
+      "Password": "22"
     }
   },
   {
@@ -245,12 +245,7 @@
     "EndTime": "2024-05-20T10:20:00+02:00",
     "Duration": 40,
     "MaxCapacity": 13,
-    "ExpectedVisitors": [
-      {
-        "VisitorId": "38e667b8-a5ca-426a-870a-4b18712bd263",
-        "TicketCode": "111"
-      }
-    ],
+    "ExpectedVisitors": [],
     "PresentVisitors": [],
     "Completed": false,
     "Deleted": false,
