@@ -168,7 +168,11 @@ public class Guide
         ColourText.WriteColored("", Tour.TodaysTours[tourIndex].StartTime.ToString("HH:mm"), ConsoleColor.Cyan);
         Program.World.WriteLine(" o'clock.");
 
-        Program.World.WriteLine("Press Enter to return to Admin Menu or Space to close the it");
+        Program.World.Write("Press ");
+        ColourText.WriteColored("", "Enter", ConsoleColor.Cyan, " to return to Admin Menu or ");
+        ColourText.WriteColored("", "Space", ConsoleColor.Cyan, " to close it.");
+        Console.WriteLine();
+
 
         ConsoleKey key;
         do
