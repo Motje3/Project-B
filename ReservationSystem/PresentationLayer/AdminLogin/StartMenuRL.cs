@@ -6,7 +6,13 @@ public class StartMenuRL : View
     {
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine("\nAdmin Menu:\n");
+        Console.WriteLine();
+        Console.WriteLine(" ------------------");
+        Console.WriteLine("|    Admin Menu    |");
+        Console.WriteLine(" ------------------");
+        Console.ResetColor();
+        Console.WriteLine();
+
         Console.ResetColor();
 
         ColourText.WriteColored("1", " | ", ConsoleColor.Cyan);

@@ -14,7 +14,7 @@ public class WelcomeMessage : View
         Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine("********************************************");
         Console.WriteLine("*                                          *");
-        ColourText.WriteColored("*          ", "Welcome to the Museum!", ConsoleColor.Red);
+        ColourText.WriteColored("*          ", "Welcome to the Museum!", ConsoleColor.White);
         Console.ForegroundColor = ConsoleColor.Cyan; // Reset to cyan for the ending star
         Console.WriteLine("          *");
         Console.WriteLine("*                                          *");

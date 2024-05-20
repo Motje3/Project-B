@@ -25,14 +25,7 @@ public class AdminLoginMenu : View
         bool continueRunning = true;
         while (continueRunning)
         {
-            // Console.WriteLine("\nAdmin Menu:");
-            // Console.WriteLine("1. Assign a Different Guide to today's tours");
-            // Console.WriteLine("2. Change the default guide's roaster (To be implemented)");
-            // Console.WriteLine("4. Exit");
-
-            // WriteLine("5. Exit");
-
-            // Write("\nEnter your choice: ");
+            
             string choice = StartMenuRL.Show();
 
             switch (choice)

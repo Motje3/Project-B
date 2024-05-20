@@ -4,7 +4,7 @@ public class JoinTourSuccesMessage : View
 {
     public static void Show(Tour chosenTour)
     {
-        ColourText.WriteColored("Tour at ", chosenTour.StartTime.ToString("HH:mm"), ConsoleColor.Cyan, " joined successfully!");
+        ColourText.WriteColored("Tour at ", chosenTour.StartTime.ToString("HH:mm"), ConsoleColor.Cyan, " joined successfully!\n");
 
     }
     public static void Show2()

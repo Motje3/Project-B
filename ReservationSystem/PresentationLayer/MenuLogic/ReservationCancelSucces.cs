@@ -4,6 +4,6 @@ public class ReservationCancelSucces : View
 {
     public static void Show()
     {
-        WriteLine("\nReservation has been canceled successfully.");
+        ColourText.WriteColored("Your reservation has been ", "cancelled  ", ConsoleColor.Cyan, "successfully\n");
     }
 }

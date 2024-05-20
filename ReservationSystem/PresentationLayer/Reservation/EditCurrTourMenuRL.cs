@@ -7,6 +7,7 @@ public class EditCurrTourMenuRL : View
         WriteLine(reservationDetails);
         Console.Write("\nPlease choose an option by entering the ");
         ColourText.WriteColored("", "number ", ConsoleColor.Cyan, "left of the desired action\n");
+        Program.World.WriteLine("");
 
 
         // Save the current console color
