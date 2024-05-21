@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
 namespace MuseumTesting
@@ -69,6 +70,16 @@ namespace MuseumTesting
             if (File.Exists(GuideAssignmentsFilePath))
             {
                 File.Delete(GuideAssignmentsFilePath);
+            }
+        }
+
+        [TestMethod]
+        public void AddVisitorLastMinuteNoMoreTours()
+        {
+            List<Tour> BackUp = new();
+            foreach (Tour tour in Tour.TodaysTours)
+            {
+                BackUp.Add(tour);
             }
         }
     }
