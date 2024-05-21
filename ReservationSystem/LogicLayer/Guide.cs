@@ -187,4 +187,9 @@ public class Guide
         }
 
     }
+
+    public static void AddVisitorLastMinute(Visitor visitor)
+    {
+        var toursByAlice = Tour.FilterByLambda(t => t.AssignedGuide.Name == "Alice Johnson");
+    }
 }
