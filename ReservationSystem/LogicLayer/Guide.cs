@@ -1,3 +1,4 @@
+using System.Runtime;
 using Newtonsoft.Json;
 using ReservationSystem;
 
@@ -188,13 +189,49 @@ public class Guide
 
     }
 
-    public void AddVisitorLastMinute()
+    public void AddVisitorLastMinute(Visitor visitor)
     {
-        var toursByAlice = Tour.FilterByLambda(t => t.AssignedGuide.Name == "Alice Johnson" && );
-        Console.WriteLine(toursByAlice);
-        foreach (var tour in toursByAlice)
+        // ussing method to filter specific conditions
+        var toursByThisGuide = Tour.FilterByLambda(tour => tour.AssignedGuide.Name == "Alice Johnson" 
+            && !tour.Completed && !tour.Deleted 
+            && tour.ExpectedVisitors.Count < tour.MaxCapacity 
+            && tour.StartTime > DateTime.Now);
+        
+        // order by starttime
+        var availableGuideTours = toursByThisGuide
+            .OrderBy(tour => tour.StartTime)
+            .ToList();
+        
+        if (availableGuideTours.Count == 0)  // there are no more availble tours for visitor
         {
-            Console.WriteLine(tour.AssignedGuide.Name);
+            Console.WriteLine("No availble tours for today to add visitor");
+            return;  // break out of void to prefent program crash
+        }
+        
+        Tour target = availableGuideTours.First();  // the target will chase down the closest next tour to overwrite
+        Tour AddVisitor = target;  // Data with visitor added to PresentVisitor will overwrite the target
+        AddVisitor.PresentVisitors.Add(visitor);
+
+        // loop trought todays tours and overwite 
+        int index = 0;
+        foreach (var tour in availableGuideTours)
+        {
+            if (index >= Tour.TodaysTours.Count)
+            {
+                // this failsave message, this should not happen unless there is a bug.
+                Console.WriteLine("Error: Argument out of range");  
+                Console.WriteLine("Failed to add visitor");
+                return;
+            }
+            if (tour == target)  
+            {
+                Tour.TodaysTours[index] = AddVisitor;  // update the Tour with visitor added to Pressent Visitor
+                return;  // break out the void method 
+            }
+            else 
+            { 
+                index++;  // if not the match move to next index
+            }
         }
     }
 }

@@ -199,6 +199,4 @@ public class Tour
         var FilterdTours = TodaysTours.Where(filter).ToList();
         return FilterdTours;
     }
-
-
 }
