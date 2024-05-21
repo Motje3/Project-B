@@ -188,8 +188,13 @@ public class Guide
 
     }
 
-    public static void AddVisitorLastMinute(Visitor visitor)
+    public void AddVisitorLastMinute()
     {
-        var toursByAlice = Tour.FilterByLambda(t => t.AssignedGuide.Name == "Alice Johnson");
+        var toursByAlice = Tour.FilterByLambda(t => t.AssignedGuide.Name == "Alice Johnson" && );
+        Console.WriteLine(toursByAlice);
+        foreach (var tour in toursByAlice)
+        {
+            Console.WriteLine(tour.AssignedGuide.Name);
+        }
     }
 }
