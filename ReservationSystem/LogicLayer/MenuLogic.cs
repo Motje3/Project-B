@@ -36,7 +36,7 @@ public class MenuLogic
 
         // Get the list of available tours, ordered by StartTime
         List<Tour> availableTours = Tour.TodaysTours
-            .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > DateTime.Now)
+            .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > Program.World.Now)
             .OrderBy(tour => tour.StartTime)
             .ToList();
 
@@ -54,11 +54,11 @@ public class MenuLogic
             JoinTourSuccesMessage.Show(chosenTour);
             Thread.Sleep(2000);
             JoinTourSuccesMessage.Show2();
-            var key = Console.ReadKey(true).Key;
+            var key = Program.World.ReadKey(true).Key;
 
             while (key != ConsoleKey.Enter && key != ConsoleKey.Spacebar)
             {
-                key = Console.ReadKey(true).Key;
+                key = Program.World.ReadKey(true).Key;
             }
 
             if (key == ConsoleKey.Spacebar)
@@ -171,5 +171,5 @@ public class MenuLogic
             try { Console.Clear(); } catch { }
         }
         return false;
-    } 
+    }
 }

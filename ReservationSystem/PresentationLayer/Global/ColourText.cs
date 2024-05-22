@@ -1,3 +1,4 @@
+using ReservationSystem;
 public static class ColourText
 {
     public static void WriteColoredLine(string beforeColor, string colorWord, ConsoleColor color, string afterColor = "")
@@ -20,13 +21,13 @@ public static class ColourText
 
     public static void WriteColored(string beforeColor, string colorWord, ConsoleColor color, string afterColor = "")
     {
-        Console.Write(beforeColor);
+        Program.World.Write(beforeColor);
         Console.ForegroundColor = color;
-        Console.Write(colorWord);
+        Program.World.Write(colorWord);
         Console.ResetColor();
-        Console.Write(afterColor);
+        Program.World.Write(afterColor);
     }
-    
+
     public static string GetColoredString(string beforeColor, string colorWord, ConsoleColor color, string afterColor = "")
     {
         return beforeColor + GetColorCode(color) + colorWord + GetResetCode() + afterColor;

@@ -7,6 +7,11 @@ public class RealWorld : IWorld
         get => DateTime.Today;
     }
 
+    public DateTime Now
+    {
+        get => DateTime.Now;
+    }
+
     public void WriteLine(string line)
     {
         Console.WriteLine(line);

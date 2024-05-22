@@ -6,22 +6,22 @@ public class WelcomeMessage : View
 {
     public static void WelcomeYourTicketConfirmed()
     {
-        Console.Clear();
+        try { Console.Clear(); } catch { }
         ColourText.WriteColoredLine("", "Welcome! ", ConsoleColor.Cyan, "Your Ticket is confirmed!\n");
     }
     public static void WelcomeToTheMuseum()
     {
         Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine("********************************************");
-        Console.WriteLine("*                                          *");
+        Program.World.WriteLine("********************************************");
+        Program.World.WriteLine("*                                          *");
         ColourText.WriteColored("*          ", "Welcome to the Museum!", ConsoleColor.White);
         Console.ForegroundColor = ConsoleColor.Cyan; // Reset to cyan for the ending star
-        Console.WriteLine("          *");
-        Console.WriteLine("*                                          *");
-        Console.WriteLine("*                                          *");
-        Console.WriteLine("********************************************");
+        Program.World.WriteLine("          *");
+        Program.World.WriteLine("*                                          *");
+        Program.World.WriteLine("*                                          *");
+        Program.World.WriteLine("********************************************");
         Console.ResetColor();
-        Console.WriteLine();
+        Program.World.WriteLine("");
     }
 
 
