@@ -103,7 +103,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [
       {
-        "VisitorId": "1db6ba6e-9c42-4186-8566-7ab8369d6648",
+        "VisitorId": "1a1501f7-9034-44be-a0ab-8c92ca99db00",
         "TicketCode": "222"
       }
     ],
@@ -332,11 +332,7 @@
     "MaxCapacity": 13,
     "ExpectedVisitors": [
       {
-        "VisitorId": "623cb13d-a402-4be1-8ba2-064f809c72d3",
-        "TicketCode": "111"
-      },
-      {
-        "VisitorId": "a5be6dfe-dc93-435f-9190-3a35dafd150c",
+        "VisitorId": "1a37cabc-73d5-4583-bee1-b4e8fe0ea9af",
         "TicketCode": "333"
       }
     ],
