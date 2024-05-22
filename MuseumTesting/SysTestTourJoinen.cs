@@ -10,11 +10,13 @@ namespace MuseumTesting
         public void TestVisitorJoinTourMenuSucceful()
         {
             // Arrange
+            string pathToursToday = "./JSON-Files/Tours-20240601.json";
             string tourChoice = "1";
             string visitorTicketCode = "1234567890";
             FakeWorld world = new()
             {
                 Today = new DateTime(2024, 6, 1),
+                Now = new DateTime(2024, 6, 1),
                 Files =
                 {
                     {"./JSON-Files/OnlineTickets.json", "[\"1234567890\"]"},
@@ -23,7 +25,7 @@ namespace MuseumTesting
                 },
                 LinesToRead = new()
                 {
-                    visitorTicketCode,tourChoice,"GETMEOUT"
+                    visitorTicketCode,tourChoice,"Enter,","GETMEOUT"
                 }
             };
             Program.World = world;
@@ -32,10 +34,16 @@ namespace MuseumTesting
             Program.Main();
 
             // Assert
-            Assert.IsTrue(world.LinesWritten.Contains("Tour joined successfully!"));
-            List<Tour> actualTours = JsonConvert.DeserializeObject<List<Tour>>(world.Files[Tour.JsonFilePath]);
+            Assert.IsTrue(world.LinesWritten.Contains(" joined successfully!\n"));
+            using (StreamReader reader = new(Tour.JsonFilePath))
+            {
+                string content = reader.ReadToEnd();
+                List<Tour> actualTours = JsonConvert.DeserializeObject<List<Tour>>(content);
+            }
 
             Assert.IsTrue(Visitor.FindVisitorByTicketCode(visitorTicketCode) != null);
+            File.Delete(Tour.JsonFilePath);
+            // clean up for this specific test method
         }
     }
 }

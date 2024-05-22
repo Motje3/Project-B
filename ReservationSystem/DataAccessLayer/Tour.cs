@@ -50,8 +50,8 @@ public class Tour
         dynamic settings = JsonConvert.DeserializeObject<dynamic>(File.ReadAllText(Tour.JsonTourSettingsPath));
         List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(Tour.JsonGuideAssignmentsPath));
 
-        DateTime startTime = DateTime.Today.Add(TimeSpan.Parse((string)settings.StartTime));
-        DateTime endTime = DateTime.Today.Add(TimeSpan.Parse((string)settings.EndTime));
+        DateTime startTime = Program.World.Today.Add(TimeSpan.Parse((string)settings.StartTime));
+        DateTime endTime = Program.World.Today.Add(TimeSpan.Parse((string)settings.EndTime));
         int duration = (int)settings.Duration; // This remains 40 minutes
         int maxCapacity = (int)settings.MaxCapacity;
 
@@ -63,7 +63,7 @@ public class Tour
             {
                 foreach (var tourEntry in guideEntry.Tours)
                 {
-                    var tourStartTime = DateTime.Today.Add(DateTime.Parse((string)tourEntry.StartTime).TimeOfDay);
+                    var tourStartTime = Program.World.Today.Add(DateTime.Parse((string)tourEntry.StartTime).TimeOfDay);
                     if (tourStartTime >= startTime && tourStartTime < endTime)
                     {
                         var tourId = Guid.NewGuid();
@@ -84,7 +84,7 @@ public class Tour
     public static bool ShowAvailableTours()
     {
         var availableTours = TodaysTours
-            .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > DateTime.Now)
+            .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > Program.World.Now)
             .OrderBy(tour => tour.StartTime)
             .ToList();
 
