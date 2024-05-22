@@ -23,8 +23,11 @@ namespace MuseumTesting
         public void JoinTour_ValidTourChoice_SuccessfullyJoinsTour()
         {
             // Arrange
+            Guid tourId = Guid.NewGuid();
+
+
             var visitor = new Visitor("ABC123");
-            Tour.TodaysTours.Add(new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"))); // Ensure there is at least one tour to join
+            Tour.TodaysTours.Add(new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide(tourId, "John", "111"))); // Ensure there is at least one tour to join
 
             var input = new StringReader("1\n"); // Simulate choosing the first tour
             Console.SetIn(input);
@@ -48,13 +51,15 @@ namespace MuseumTesting
         public void JoinTour_InvalidTourChoice_FailsToJoinTour()
         {
             // Arrange
+            Guid tourId = Guid.NewGuid();
+
             var visitor = new Visitor("ABC123");
             var input = new StringReader("invalid\n");
             Console.SetIn(input);
             var output = new StringWriter();
             Console.SetOut(output);
 
-            Tour.TodaysTours.Add(new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"))); // Adding a sample tour
+            Tour.TodaysTours.Add(new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide(tourId, "John", "111"))); // Adding a sample tour
 
             // Act
             bool result = MenuLogic.JoinTour(visitor);
@@ -74,9 +79,11 @@ namespace MuseumTesting
         public void ChangeTour_ValidTourChoice_SuccessfullyChangesTour()
         {
             // Arrange
+            Guid tourId = Guid.NewGuid();
+
             var visitor = new Visitor("ABC123");
-            var initialTour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"));
-            var newTour = new Tour(Guid.NewGuid(), DateTime.Now.AddHours(2), 60, 30, false, false, new Guide("Jane"));
+            var initialTour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide(tourId, "John", "111"));
+            var newTour = new Tour(Guid.NewGuid(), DateTime.Now.AddHours(2), 60, 30, false, false, new Guide(tourId, "John", "111"));
             initialTour.AddVisitor(visitor);
             Tour.TodaysTours.AddRange(new List<Tour> { initialTour, newTour });
 
@@ -102,8 +109,10 @@ namespace MuseumTesting
         public void CancelTour_WithExistingReservation_SuccessfullyCancelsTour()
         {
             // Arrange
+            Guid tourId = Guid.NewGuid();
+
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide(tourId, "John", "111"));
             tour.AddVisitor(visitor);
             Tour.TodaysTours.Add(tour);
 

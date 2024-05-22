@@ -11,7 +11,7 @@ public class Guide
     public List<Guid> AssignedTourIds { get; set; } = new List<Guid>();
     public static List<Guide> AllGuides = new List<Guide>();
 
-    public Guide(string name, Guid guideId, string password)
+    public Guide(Guid guideId, string name, string password)
     {
         GuideId = guideId;
         Name = name;
@@ -59,7 +59,7 @@ public class Guide
 
             if (!Guide.AllGuides.Any(g => g.Name == guideName))
             {
-                new Guide(guideName, guideId, password);
+                new Guide(guideId, guideName, password);
             }
             else
             {
@@ -191,16 +191,13 @@ public class Guide
 
     public void AddVisitorLastMinute(Visitor visitor)
     {
-        // ussing method to filter specific conditions
-        var toursByThisGuide = Tour.FilterByLambda(tour => tour.AssignedGuide.Name == "Alice Johnson" 
+        // ussing method to filter specific conditions.
+        // orderd by starttime.
+        var availableGuideTours = Tour.FilterByLambda(tour => tour.AssignedGuide.Name == this.Name
             && !tour.Completed && !tour.Deleted 
             && tour.ExpectedVisitors.Count < tour.MaxCapacity 
-            && tour.StartTime > DateTime.Now);
-        
-        // order by starttime
-        var availableGuideTours = toursByThisGuide
-            .OrderBy(tour => tour.StartTime)
-            .ToList();
+            && tour.StartTime > DateTime.Now)
+            .OrderBy(tour => tour.StartTime).ToList(); 
         
         if (availableGuideTours.Count == 0)  // there are no more availble tours for visitor
         {

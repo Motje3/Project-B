@@ -1,4 +1,4 @@
-using System.Runtime.CompilerServices;
+using System.Globalization;
 using Newtonsoft.Json;
 
 namespace MuseumTesting
@@ -15,7 +15,7 @@ namespace MuseumTesting
             Guid tourId = Guid.NewGuid();
 
             // Act
-            var guide = new Guide("John", tourId);
+            var guide = new Guide(tourId, "John", "111");
 
             // Assert
             Assert.IsTrue(guide.AssignedTourIds.Contains(tourId));
@@ -25,8 +25,10 @@ namespace MuseumTesting
         public void AssignTour_WithNewTour_AddsTourToAssignedTourIds()
         {
             // Arrange
-            var guide = new Guide("John");
             Guid tourId = Guid.NewGuid();
+
+            var guide = new Guide(tourId, "John", "111");
+            
 
             // Act
             guide.AssignTour(tourId);
@@ -76,11 +78,42 @@ namespace MuseumTesting
         [TestMethod]
         public void AddVisitorLastMinuteNoMoreTours()
         {
-            List<Tour> BackUp = new();
-            foreach (Tour tour in Tour.TodaysTours)
-            {
-                BackUp.Add(tour);
-            }
+            // Arrange
+            Guid tourId1 = Guid.NewGuid();
+            Guid tourId2 = Guid.NewGuid();
+
+            Guide John = new Guide(tourId1, "Jonh Doe", "111");
+            Guide Alice = new Guide(tourId2, "Alica Jackson", "444");
+
+            Visitor Bob = new Visitor("222");
+            Visitor Mark = new Visitor("333");
+
+            // Create tours
+            List<Tour> CopyAllTours = new List<Tour>(Tour.TodaysTours);
+            Guide.AllGuides.Clear();
+
+            // public Guid TourId { get; private set; }
+            // public DateTime StartTime { get; private set; }
+            // public DateTime EndTime { get; private set; }
+            // public int Duration { get; private set; }
+            // public int MaxCapacity { get; private set; }
+            // public List<Visitor> ExpectedVisitors { get; set; } = new List<Visitor>();
+            // public List<Visitor> PresentVisitors { get; set; } = new List<Visitor>();
+            // public bool Completed { get; set; }
+            // public bool Deleted { get; set; }
+            // public Guide AssignedGuide { get; set; }
+            
+            
+            // Create tours
+            DateTime date = DateTime.Now;  // used to simulate todays tours
+            
+            var tour1 = new Tour(Guid.NewGuid(), new DateTime(date.Year, date.Month, date.Day, 22, 0, 0), 40, 13, false, false, John);
+            var tour2 = new Tour(Guid.NewGuid(), new DateTime(date.Year, date.Month, date.Day, 23, 0, 0), 40, 13, false, false, Alice);
+            Tour.TodaysTours.Add(tour1);
+            Tour.TodaysTours.Add(tour2);
+           
+            John.AddVisitorLastMinute(Bob);
+            John.AddVisitorLastMinute(Mark);
         }
     }
 }
