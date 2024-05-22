@@ -32,7 +32,7 @@ public class Visitor
             // If the tour is found, return formatted reservation details
             string formattedStartTime = assignedTour.StartTime.ToString("HH:mm");
 
-            Console.Clear();
+            try { Console.Clear(); } catch { }
             // return $"\nYour current reservation is at {formattedStartTime}.\n";
             string reservationMessage = "\nYour current reservation is at ";
             string coloredFormattedStartTime = ColourText.GetColoredString("", formattedStartTime, ConsoleColor.Cyan, "");

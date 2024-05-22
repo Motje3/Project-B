@@ -3,7 +3,7 @@
 public interface IWorld
 {
     DateTime Today { get; }
-
+    DateTime Now { get; }
     void WriteLine(string line);
 
     void Write(string line);

@@ -3,9 +3,16 @@ namespace ReservationSystem;
 
 public class FakeWorld : IWorld
 {
-    private DateTime? _now = null;
+    private DateTime? _today = null;
 
     public DateTime Today
+    {
+        get => _today ?? throw new NullReferenceException();
+        set => _today = value;
+    }
+
+    private DateTime? _now = null;
+    public DateTime Now
     {
         get => _now ?? throw new NullReferenceException();
         set => _now = value;
