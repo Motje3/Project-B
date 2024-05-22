@@ -99,7 +99,7 @@ public class Tour
                 ColourText.WriteColored("", tourNumber + " | ", ConsoleColor.Cyan);
 
                 // Print the start time in cyan
-                ColourText.WriteColored("Start Time: ", formattedStartTime, ConsoleColor.Cyan);
+                ColourText.WriteColored("Start Time: ", formattedStartTime, ConsoleColor.Yellow);
 
                 // Print the rest of the text in default color
                 Console.WriteLine($" | Duration: {availableTours[i].Duration} minutes | Remaining Spots: {availableTours[i].MaxCapacity - availableTours[i].ExpectedVisitors.Count}");
