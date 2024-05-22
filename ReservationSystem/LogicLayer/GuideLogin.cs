@@ -39,6 +39,8 @@ public class GuideLoginMenu : View
                     continueRunning = false;
                     try { Console.Clear(); } catch { }
                     break;
+                case "3":
+                
                 default:
                     InvalidRL.Show();
                     break;

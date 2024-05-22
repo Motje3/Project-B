@@ -187,4 +187,9 @@ public class Guide
         }
 
     }
+
+    public bool StartUpcomingTour()
+    {
+        return true;
+    }
 }
