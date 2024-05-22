@@ -24,95 +24,37 @@ public class MenuLogic
 
     public static bool JoinTour(Visitor visitor)
     {
-        // Display available tours
-        if (!Tour.ShowAvailableTours())
+        bool tourJoined = false;
+
+        while (!tourJoined)
         {
-            return false;
-        }
-
-
-        // Prompt the user to choose a tour
-        string chosenTourNumber = PickTourRL.Show();
-
-        // Get the list of available tours, ordered by StartTime
-        List<Tour> availableTours = Tour.TodaysTours
-            .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > DateTime.Now)
-            .OrderBy(tour => tour.StartTime)
-            .ToList();
-
-
-        // Validate user input and attempt to join the selected tour
-        if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= availableTours.Count)
-        {
-
-            Tour chosenTour = availableTours[tourNumber - 1];
-            chosenTour.AddVisitor(visitor);
-            Tour.SaveTours();
-
-            try { Console.Clear(); } catch { }
-
-            JoinTourSuccesMessage.Show(chosenTour);
-            Thread.Sleep(2000);
-            JoinTourSuccesMessage.Show2();
-            var key = Console.ReadKey(true).Key;
-
-            while (key != ConsoleKey.Enter && key != ConsoleKey.Spacebar)
+            // Display available tours
+            if (!Tour.ShowAvailableTours())
             {
-                key = Console.ReadKey(true).Key;
+                return false;
             }
 
-            if (key == ConsoleKey.Spacebar)
+            // Prompt the user to choose a tour
+            string chosenTourNumber = PickTourRL.Show();
+
+            // Get the list of available tours, ordered by StartTime
+            List<Tour> availableTours = Tour.TodaysTours
+                .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > DateTime.Now)
+                .OrderBy(tour => tour.StartTime)
+                .ToList();
+
+            // Validate user input and attempt to join the selected tour
+            if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= availableTours.Count)
             {
-                Console.Clear();
-                Reservation.ShowFullMenu(visitor);
-            }
-            else
-            {
+                Tour chosenTour = availableTours[tourNumber - 1];
+                chosenTour.AddVisitor(visitor);
+                Tour.SaveTours();
+
                 try { Console.Clear(); } catch { }
-            }
 
-            return true;
-        }
-        else
-        {
-            InvalidRL.Show("Please choose a valid tour number.\n"); // "Invalid choice." + subMessage
-            return false; // Return false to indicate failure to join a tour
-        }
-    }
-
-
-    public static void ChangeTour(Visitor visitor)
-    {
-        // Show current reservation details
-        string reservationDetails = Visitor.GetCurrentReservation(visitor);
-        Program.World.WriteLine(reservationDetails);
-
-        // Display available tours and allow user to choose
-        Tour.ShowAvailableTours();
-
-        // Prompt the user to choose a tour
-        string chosenTourNumber = ChangeTourRL.Show();
-
-        // Get the list of available tours, ordered by StartTime and only future tours
-        List<Tour> availableTours = Tour.TodaysTours
-            .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > DateTime.Now)
-            .OrderBy(tour => tour.StartTime)
-            .ToList();
-
-        // Validate user input and attempt to change to the selected tour
-        if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= availableTours.Count)
-        {
-            Tour chosenTour = availableTours[tourNumber - 1];
-            Tour visitorsTour = Tour.FindTourByVisitorTicketCode(visitor.TicketCode);
-
-            if (visitorsTour != null)
-            {
-                visitorsTour.TransferVisitor(visitor, chosenTour);
-                try { Console.Clear(); } catch { }
-                ChangeTourSucces.Show(chosenTour);
+                JoinTourSuccesMessage.Show(chosenTour);
                 Thread.Sleep(2000);
                 JoinTourSuccesMessage.Show2();
-
                 var key = Console.ReadKey(true).Key;
 
                 while (key != ConsoleKey.Enter && key != ConsoleKey.Spacebar)
@@ -129,17 +71,91 @@ public class MenuLogic
                 {
                     try { Console.Clear(); } catch { }
                 }
+
+                tourJoined = true; // Mark tour as joined successfully
             }
             else
             {
-                NoTourRegistrationMessage.Show();
+                try { Console.Clear(); } catch { }
+                InvalidRL.Show("Please choose a valid tour number. The tour number is located left of the tour and coloured in blue. \n"); // "Invalid choice." + subMessage
             }
         }
-        else
+
+        return true;
+    }
+
+
+
+    public static void ChangeTour(Visitor visitor)
+    {
+        // Show current reservation details
+        string reservationDetails = Visitor.GetCurrentReservation(visitor);
+        Program.World.WriteLine(reservationDetails);
+
+        bool tourChanged = false;
+
+        while (!tourChanged)
         {
-            InvalidRL.Show("Please choose a number next to the tour you wish to join."); // "Invalid choice." + subMessage
+            // Display available tours and allow user to choose
+            Tour.ShowAvailableTours();
+
+            // Prompt the user to choose a tour
+            string chosenTourNumber = ChangeTourRL.Show();
+
+            // Get the list of available tours, ordered by StartTime and only future tours
+            List<Tour> availableTours = Tour.TodaysTours
+                .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > DateTime.Now)
+                .OrderBy(tour => tour.StartTime)
+                .ToList();
+
+            // Validate user input and attempt to change to the selected tour
+            if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= availableTours.Count)
+            {
+                Tour chosenTour = availableTours[tourNumber - 1];
+                Tour visitorsTour = Tour.FindTourByVisitorTicketCode(visitor.TicketCode);
+
+                if (visitorsTour != null)
+                {
+                    visitorsTour.TransferVisitor(visitor, chosenTour);
+                    try { Console.Clear(); } catch { }
+                    ChangeTourSucces.Show(chosenTour);
+                    Thread.Sleep(2000);
+                    JoinTourSuccesMessage.Show2();
+
+                    var key = Console.ReadKey(true).Key;
+
+                    while (key != ConsoleKey.Enter && key != ConsoleKey.Spacebar)
+                    {
+                        key = Console.ReadKey(true).Key;
+                    }
+
+                    if (key == ConsoleKey.Spacebar)
+                    {
+                        Console.Clear();
+                        Reservation.ShowFullMenu(visitor);
+                    }
+                    else
+                    {
+                        try { Console.Clear(); } catch { }
+                    }
+
+                    tourChanged = true; // Mark tour as changed successfully
+                }
+                else
+                {
+                    NoTourRegistrationMessage.Show();
+                    break; // Exit the loop if no current tour registration is found
+                }
+            }
+            else
+            {
+                try { Console.Clear(); } catch { }
+
+                InvalidRL.Show("Please choose a valid tour number. The tour number is located left of the tour and coloured in blue. \n"); // "Invalid choice." + subMessage
+            }
         }
     }
+
 
 
 
@@ -171,5 +187,5 @@ public class MenuLogic
             try { Console.Clear(); } catch { }
         }
         return false;
-    } 
+    }
 }
