@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using ReservationSystem;
+namespace ReservationSystem;
 
 public class Guide
 {
@@ -9,6 +10,7 @@ public class Guide
     [JsonIgnore]
     public List<Guid> AssignedTourIds { get; set; } = new List<Guid>();
     public static List<Guide> AllGuides = new List<Guide>();
+    public static List<Visitor> PresentVisitors = new List<Visitor>();
 
     public Guide(string name, Guid guideId, string password)
     {
@@ -190,6 +192,47 @@ public class Guide
 
     public bool StartUpcomingTour()
     {
+        var currentTime = Program.World.Now;
+
+        var upcomingTour = Tour.TodaysTours
+            .Where(t => !t.Completed && !t.Deleted && t.AssignedGuide == this && t.StartTime > currentTime)
+            .OrderBy(t => t.StartTime)
+            .FirstOrDefault();
+
+        if (upcomingTour == null)
+        {
+            Program.World.WriteLine("No upcoming tours available to start.");
+            return false;
+        }
+
+        Program.World.WriteLine($"Starting the Tour at {upcomingTour.StartTime}, before that, please scan the tickets for all the present visitors and once done, write 'Start' to start the tour.");
+
+        string input;
+        while ((input = Console.ReadLine().ToLower()) != "start")
+        {
+            if (input.StartsWith("scan "))
+            {
+                string ticketId = input.Substring(5);
+                var visitor = Visitor.FindVisitorByTicketCode(ticketId);
+
+                if (visitor != null)
+                {
+                    PresentVisitors.Add(visitor);
+                    Program.World.WriteLine($"Visitor {visitor.VisitorId} added to the present visitors list.");
+                }
+                else
+                {
+                    Program.World.WriteLine("Invalid ticket. Please try again.");
+                }
+            }
+            else
+            {
+                Program.World.WriteLine("Invalid input. Please scan tickets or write 'Start' to begin the tour.");
+            }
+        }
+
+        Tour.SaveTours();
+        Program.World.WriteLine("Tour has been started successfully.");
         return true;
     }
 }
