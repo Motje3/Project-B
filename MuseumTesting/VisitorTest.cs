@@ -2,7 +2,7 @@ namespace MuseumTesting
 {
     [TestClass]
     public class VisitorTests
-    {/*
+    {
 
         [TestInitialize]
         public void TestInitialize()
@@ -117,7 +117,7 @@ namespace MuseumTesting
 
             // Assert
             Assert.IsTrue(reservationDetails.Contains("You currently have no reservation"));
-        }*/
+        }
     }
 }
 

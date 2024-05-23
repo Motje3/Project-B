@@ -4,7 +4,7 @@ namespace MuseumTesting
 {
     [TestClass]
     public class TourTests
-    {/*
+    {
         private static string tourSettingsPath = "./JSON-Files/TourSettings.json";
         private static string guideAssignmentsPath = "./JSON-Files/GuideAssignments.json";
         private static string toursPath;
@@ -122,7 +122,7 @@ namespace MuseumTesting
 
             // Assert
             Assert.AreEqual(tour, foundTour);
-        }*/
+        }
     }
 }
 
