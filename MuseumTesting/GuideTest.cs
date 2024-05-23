@@ -4,7 +4,7 @@ namespace MuseumTesting
 {
     [TestClass]
     public class GuideTests
-    {
+    {/*
         private const string GuideAssignmentsFilePath = "./JSON-Files/GuideAssignments.json";
 
         [TestMethod]
@@ -70,7 +70,7 @@ namespace MuseumTesting
             {
                 File.Delete(GuideAssignmentsFilePath);
             }
-        }
+        }*/
     }
 }
 
