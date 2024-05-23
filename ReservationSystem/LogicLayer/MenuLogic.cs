@@ -68,7 +68,7 @@ public class MenuLogic
 
                 if (key == ConsoleKey.Spacebar)
                 {
-                    Console.Clear();
+                    try { Console.Clear(); } catch { }
                     Reservation.ShowFullMenu(visitor);
                 }
                 else
