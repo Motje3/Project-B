@@ -37,6 +37,10 @@ public class MenuLogic
             // Prompt the user to choose a tour
             string chosenTourNumber = PickTourRL.Show();
 
+            // Early return for testing
+            if (chosenTourNumber == "GETMEOUT")
+                return false;
+
             // Get the list of available tours, ordered by StartTime
             List<Tour> availableTours = Tour.TodaysTours
                 .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > Program.World.Now)
