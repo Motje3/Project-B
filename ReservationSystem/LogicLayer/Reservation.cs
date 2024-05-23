@@ -8,7 +8,8 @@ public class Reservation : View
         try { Console.Clear(); } catch { }
 
 
-        WelcomeMessage.WelcomeToTheMuseum();
+        //WelcomeMessage.WelcomeToTheMuseum();
+        ASCI.Art();
 
 
         while (true)
