@@ -188,7 +188,7 @@ public class Guide
 
     }
 
-    public void AddVisitorLastMinute(Visitor visitor)
+    public Tour AddVisitorLastMinute(Visitor visitor)
     {
         // ussing method to filter specific conditions.
         // orderd by starttime.
@@ -200,7 +200,7 @@ public class Guide
         if (availableGuideTours.Count == 0)  // there are no more availble tours for visitor
         {
             NoAvailbleTour.Show();
-            return;  // break out of void to prefent program crash
+            return null;  // break out of void to prefent program crash
         }
         
         Tour target = availableGuideTours.First();  // the target will chase down the closest next tour to overwrite // Data with visitor added to PresentVisitor will overwrite the target
@@ -214,21 +214,22 @@ public class Guide
         {
             if (index > Tour.TodaysTours.Count)
             {
-                // this failsave message, this should not happen unless there is a bug.
-                // program should continue without visitor being added to list
+                // this failsave message, this should not happen unless there is a bug,
+                // program should continue without visitor being added to tour.
                 ForEachError.Show();
-                return;
+                return null;
             }
-            if (tour.TourId == target.TourId && tour.AssignedGuide.Name == this.Name)  
+            else if (tour.TourId == target.TourId && tour.AssignedGuide.Name == this.Name)  
             {
                 Tour.TodaysTours[index] = overwite;  // update the Tour with visitor added to Pressent Visitor
-                Tour.SaveTours();  // overwrite JSON with the Tour replaced
-                return;  // break out the void method 
+                Tour.SaveTours();  // overwrite JSON with the visitor added to Tour 
+                return tour;  // break out the method and send tourDetail to display aditional info for guide.
             }
             else 
             { 
                 index++;  // if not the match move to next index    
             }
         }
+        return null;
     }
 }
