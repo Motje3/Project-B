@@ -199,7 +199,7 @@ public class Guide
         
         if (availableGuideTours.Count == 0)  // there are no more availble tours for visitor
         {
-            Console.WriteLine("No availble tours for today to add visitor");
+            NoAvailbleTour.Show();
             return;  // break out of void to prefent program crash
         }
         
@@ -216,8 +216,7 @@ public class Guide
             {
                 // this failsave message, this should not happen unless there is a bug.
                 // program should continue without visitor being added to list
-                Console.WriteLine("Error: Argument out of range");  
-                Console.WriteLine("Failed to add visitor to the guided tour");
+                ForEachError.Show();
                 return;
             }
             if (tour.TourId == target.TourId && tour.AssignedGuide.Name == this.Name)  
