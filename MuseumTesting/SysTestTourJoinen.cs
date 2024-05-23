@@ -72,7 +72,7 @@ namespace MuseumTesting
             Program.Main();
 
             // Assert
-            Assert.IsTrue();
+            Assert.IsTrue(((FakeWorld)Program.World).LinesWritten.Contains("No available tours left today. Please try again tomorrow!"));
         }
     }
 }
