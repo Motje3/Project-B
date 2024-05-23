@@ -6,8 +6,20 @@ namespace MuseumTesting
     [TestClass]
     public class SysTestTourJoinen
     {
-        [TestMethod]
+        [TestCleanup]
+        public void CleanUp()
+        {
+            try
+            {
+                File.Delete(Tour.JsonFilePath);
+            }
+            catch (DirectoryNotFoundException )
+            {
 
+            }
+        }
+        
+        [TestMethod]
         public void TestVisitorJoinTourMenuSucceful()
         {
             // Arrange
@@ -44,9 +56,6 @@ namespace MuseumTesting
             }
             Tour chosenTour = actualTours[int.Parse(tourChoice) - 1];
             Assert.IsTrue(chosenTour.ExpectedVisitors[0].TicketCode == visitorTicketCode);
-
-            File.Delete(Tour.JsonFilePath);
-            // clean up for this specific test method
         }
 
         [TestMethod]
@@ -82,7 +91,7 @@ namespace MuseumTesting
         public void TestVisitorJoinTourMenuFailedOptionDoesNotExit()
         {
             // Arrange
-            string tourChoice = "25";
+            string tourChoice = "1000";
             string visitorTicketCode = "1234567890";
             FakeWorld world = new()
             {
