@@ -30,6 +30,7 @@ public class Tour
         Completed = completed;
         Deleted = deleted;
         AssignedGuide = assignedGuide;
+        assignedGuide.AssignedTourIds.Add(tourId);
     }
 
 
@@ -173,7 +174,7 @@ public class Tour
         File.WriteAllText(JsonFilePath, JsonConvert.SerializeObject(TodaysTours, Formatting.Indented));
     }
 
-    private static void LoadTours()
+    public static void LoadTours()
     {
         TodaysTours = JsonConvert.DeserializeObject<List<Tour>>(File.ReadAllText(JsonFilePath));
 

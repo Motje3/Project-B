@@ -83,7 +83,6 @@ public class Guide
         if (!AssignedTourIds.Contains(tourId))
         {
             AssignedTourIds.Add(tourId);
-
         }
     }
 
@@ -195,8 +194,7 @@ public class Guide
         // orderd by starttime.
         var availableGuideTours = Tour.FilterByLambda(tour => tour.AssignedGuide.Name == this.Name
             && !tour.Completed && !tour.Deleted 
-            && tour.ExpectedVisitors.Count < tour.MaxCapacity 
-            && tour.StartTime > DateTime.Now)
+            && tour.ExpectedVisitors.Count < tour.MaxCapacity)
             .OrderBy(tour => tour.StartTime).ToList(); 
         
         if (availableGuideTours.Count == 0)  // there are no more availble tours for visitor
@@ -205,29 +203,32 @@ public class Guide
             return;  // break out of void to prefent program crash
         }
         
-        Tour target = availableGuideTours.First();  // the target will chase down the closest next tour to overwrite
-        Tour AddVisitor = target;  // Data with visitor added to PresentVisitor will overwrite the target
-        AddVisitor.PresentVisitors.Add(visitor);
+        Tour target = availableGuideTours.First();  // the target will chase down the closest next tour to overwrite // Data with visitor added to PresentVisitor will overwrite the target
+        target.PresentVisitors.Add(visitor);
+        Tour overwite = target;
 
         // loop trought todays tours and overwite 
         int index = 0;
-        foreach (var tour in availableGuideTours)
+        Tour.LoadTours();  // refresh TodaysTours data
+        foreach (var tour in Tour.TodaysTours)
         {
-            if (index >= Tour.TodaysTours.Count)
+            if (index > Tour.TodaysTours.Count)
             {
                 // this failsave message, this should not happen unless there is a bug.
+                // program should continue without visitor being added to list
                 Console.WriteLine("Error: Argument out of range");  
-                Console.WriteLine("Failed to add visitor");
+                Console.WriteLine("Failed to add visitor to the guided tour");
                 return;
             }
-            if (tour == target)  
+            if (tour.TourId == target.TourId && tour.AssignedGuide.Name == this.Name)  
             {
-                Tour.TodaysTours[index] = AddVisitor;  // update the Tour with visitor added to Pressent Visitor
+                Tour.TodaysTours[index] = overwite;  // update the Tour with visitor added to Pressent Visitor
+                Tour.SaveTours();  // overwrite JSON with the Tour replaced
                 return;  // break out the void method 
             }
             else 
             { 
-                index++;  // if not the match move to next index
+                index++;  // if not the match move to next index    
             }
         }
     }
