@@ -25,7 +25,7 @@ public class AdminLoginMenu : View
         bool continueRunning = true;
         while (continueRunning)
         {
-            
+
             string choice = StartMenuRL.Show();
 
             switch (choice)
@@ -37,7 +37,7 @@ public class AdminLoginMenu : View
                     AdminBackEnd.ChangeTourTime();
                     break;
                 case "3":
-                    //Tour.PrintToursOpenToday();
+                    AdminBackEnd.AddNewGuidedTour();
                     break;
                 case "4":
                     continueRunning = false;

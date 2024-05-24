@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using ReservationSystem;
 
 public static class AdminBackEnd
@@ -14,12 +15,11 @@ public static class AdminBackEnd
 
     public static string ReadPassword()
     {
-
         string password = "";
         ConsoleKeyInfo info = Program.World.ReadKey(true);
         ConsoleKey pressed = info.Key;
         char chosen = info.KeyChar;
-        
+
         while (pressed != ConsoleKey.Enter)
         {
             if (pressed != ConsoleKey.Backspace)
@@ -40,4 +40,91 @@ public static class AdminBackEnd
         return password;
     }
 
+    public static void AddNewGuidedTour()
+    {
+        Console.Clear();
+        Console.WriteLine("Add New Guided Tour:");
+        Console.WriteLine("1. Add a new guided tour for today");
+        Console.WriteLine("2. Add a new guided tour to the standard schedule");
+        Console.Write("Choose an option: ");
+
+        string choice = Console.ReadLine();
+
+        switch (choice)
+        {
+            case "1":
+                AddTourForToday();
+                break;
+            case "2":
+                AddTourToStandardSchedule();
+                break;
+            default:
+                Console.WriteLine("Invalid option. Please try again.");
+                break;
+        }
+    }
+
+    private static void AddTourForToday()
+    {
+        Console.Write("Enter time for the tour (hh:mm): ");
+        string time = Console.ReadLine();
+
+        List<Guide> guides = Guide.AllGuides;
+        Console.WriteLine("Choose a guide:");
+        for (int i = 0; i < guides.Count; i++)
+        {
+            Console.WriteLine($"{i + 1}. {guides[i].Name}");
+        }
+        int guideChoice = int.Parse(Console.ReadLine());
+        Guide selectedGuide = guides[guideChoice - 1];
+
+        DateTime tourStartTime = DateTime.Parse(time);
+        Tour newTour = new Tour(Guid.NewGuid(), tourStartTime, 40, 20, false, false, selectedGuide);
+        Tour.TodaysTours.Add(newTour);
+        Tour.SaveTours();
+
+        Console.WriteLine("Tour added successfully for today.");
+    }
+
+    private static void AddTourToStandardSchedule()
+    {
+        Console.Write("Enter time for the tour (hh:mm): ");
+        string time = Console.ReadLine();
+
+        List<Guide> guides = Guide.AllGuides;
+        Console.WriteLine("Choose a guide:");
+        for (int i = 0; i < guides.Count; i++)
+        {
+            Console.WriteLine($"{i + 1}. {guides[i].Name}");
+        }
+        int guideChoice = int.Parse(Console.ReadLine());
+        Guide selectedGuide = guides[guideChoice - 1];
+
+        DateTime tourStartTime = DateTime.Parse(time);
+        var guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(Tour.JsonGuideAssignmentsPath));
+
+        dynamic guideEntry = null;
+        foreach (var guide in guideAssignments)
+        {
+            if (guide.GuideName == selectedGuide.Name)
+            {
+                guideEntry = guide;
+                break;
+            }
+        }
+
+        if (guideEntry != null)
+        {
+            guideEntry.Tours.Add(new { StartTime = time });
+        }
+        else
+        {
+            guideAssignments.Add(new { GuideName = selectedGuide.Name, Tours = new List<dynamic> { new { StartTime = time } } });
+        }
+
+        File.WriteAllText(Tour.JsonGuideAssignmentsPath, JsonConvert.SerializeObject(guideAssignments, Formatting.Indented));
+        Tour.CreateToursForToday();
+
+        Console.WriteLine("Tour added successfully to the standard schedule.");
+    }
 }
