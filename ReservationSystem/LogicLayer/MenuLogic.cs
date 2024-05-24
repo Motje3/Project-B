@@ -105,6 +105,13 @@ public class MenuLogic
 
             // Prompt the user to choose a tour
             string chosenTourNumber = ChangeTourRL.Show();
+            // Early return for testing
+            if (chosenTourNumber == "GETMEOUT")
+            { 
+                Reservation.ShowFullMenu(visitor);
+                return; 
+            }
+                
 
             // Get the list of available tours, ordered by StartTime and only future tours
             List<Tour> availableTours = Tour.TodaysTours
@@ -126,16 +133,16 @@ public class MenuLogic
                     Thread.Sleep(2000);
                     JoinTourSuccesMessage.Show2();
 
-                    var key = Console.ReadKey(true).Key;
+                    var key = Program.World.ReadKey(true).Key;
 
                     while (key != ConsoleKey.Enter && key != ConsoleKey.Spacebar)
                     {
-                        key = Console.ReadKey(true).Key;
+                        key = Program.World.ReadKey(true).Key;
                     }
 
                     if (key == ConsoleKey.Spacebar)
                     {
-                        Console.Clear();
+                        try { Console.Clear(); } catch { }
                         Reservation.ShowFullMenu(visitor);
                     }
                     else
