@@ -4,7 +4,7 @@ namespace MuseumTesting
 {
     [TestClass]
     public class TourTests
-    {/*
+    {
         private static string tourSettingsPath = "./JSON-Files/TourSettings.json";
         private static string guideAssignmentsPath = "./JSON-Files/GuideAssignments.json";
         private static string toursPath;
@@ -84,7 +84,7 @@ namespace MuseumTesting
         {
             // Setup
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("John"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("John", Guid.NewGuid(), "1234"));
 
             // Act
             tour.AddVisitor(visitor);
@@ -98,7 +98,7 @@ namespace MuseumTesting
         {
             // Setup
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("John"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("ali", Guid.NewGuid(), "1234"));
             tour.AddVisitor(visitor);
 
             // Act
@@ -113,7 +113,7 @@ namespace MuseumTesting
         {
             // Setup
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("John"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("mo", Guid.NewGuid(), "1234"));
             tour.AddVisitor(visitor);
             Tour.TodaysTours.Add(tour);
 
@@ -122,7 +122,54 @@ namespace MuseumTesting
 
             // Assert
             Assert.AreEqual(tour, foundTour);
-        }*/
+        }
+
+        [TestMethod]
+        public void SaveTours_SavesToursToFile()
+        {
+            // Arrange
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("John", Guid.NewGuid(), "1234"));
+            Tour.TodaysTours.Add(tour);
+
+            // Act
+            Tour.SaveTours();
+
+            // Assert
+            Assert.IsTrue(File.Exists(Tour.JsonFilePath));
+            var savedTours = JsonConvert.DeserializeObject<List<Tour>>(File.ReadAllText(Tour.JsonFilePath));
+            Assert.AreEqual(Tour.TodaysTours.Count, savedTours.Count);
+
+            // Cleanup
+            if (File.Exists(Tour.JsonFilePath))
+            {
+                File.Delete(Tour.JsonFilePath);
+            }
+        }
+
+        [TestMethod]
+        public void LoadTours_LoadsToursFromFile()
+        {
+            // Arrange
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("John", Guid.NewGuid(), "1234"));
+            Tour.TodaysTours.Add(tour);
+            Tour.SaveTours();
+
+            // Act
+            Tour.LoadTours();
+
+            // Assert
+            Assert.AreEqual(1, Tour.TodaysTours.Count);
+            Assert.AreEqual(tour.TourId, Tour.TodaysTours[0].TourId);
+
+            // Cleanup
+            if (File.Exists(Tour.JsonFilePath))
+            {
+                File.Delete(Tour.JsonFilePath);
+            }
+        }
+
     }
+
+
 }
 

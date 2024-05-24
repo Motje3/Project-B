@@ -47,7 +47,7 @@ namespace MuseumTesting
         public void IsCodeValid_ValidCode_ReturnsTrue()
         {
             // Act
-            var isValid = Ticket.IsCodeValid("TICKET001");
+            bool isValid = Ticket.IsCodeValid("TICKET001");
 
             // Assert
             Assert.IsTrue(isValid);
