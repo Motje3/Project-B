@@ -19,9 +19,9 @@ public class StartMenuRL : View
         Console.WriteLine(" Assign a Different Guide to today's tours");
 
         ColourText.WriteColored("2", " | ", ConsoleColor.Cyan);
-        Console.WriteLine(" Change the default guide's roaster (To be implemented)");
+        Console.WriteLine(" Edit the guided tours schedule");
 
-        ColourText.WriteColored("4", " | ", ConsoleColor.Cyan);
+        ColourText.WriteColored("3", " | ", ConsoleColor.Cyan);
         WriteLine(" Exit");
 
         Write("\nEnter your choice: ");

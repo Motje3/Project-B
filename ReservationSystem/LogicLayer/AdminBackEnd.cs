@@ -64,7 +64,7 @@ public static class AdminBackEnd
         }
     }
 
-    private static void AddTourForToday()
+    public static void AddTourForToday()
     {
         Console.Write("Enter time for the tour (hh:mm): ");
         string time = Console.ReadLine();
@@ -86,7 +86,7 @@ public static class AdminBackEnd
         Console.WriteLine("Tour added successfully for today.");
     }
 
-    private static void AddTourToStandardSchedule()
+    public static void AddTourToStandardSchedule()
     {
         Console.Write("Enter time for the tour (hh:mm): ");
         string time = Console.ReadLine();

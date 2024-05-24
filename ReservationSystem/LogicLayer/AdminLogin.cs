@@ -34,12 +34,9 @@ public class AdminLoginMenu : View
                     Guide.ReassignGuideToTour();
                     break;
                 case "2":
-                    AdminBackEnd.ChangeTourTime();
-                    break;
-                case "3":
                     AdminBackEnd.AddNewGuidedTour();
                     break;
-                case "4":
+                case "3":
                     continueRunning = false;
                     try { Console.Clear(); } catch { }
                     break;
