@@ -3,20 +3,20 @@ public static class ColourText
 {
     public static void WriteColoredLine(string beforeColor, string colorWord, ConsoleColor color, string afterColor = "")
     {
-        Console.Write(beforeColor);
+        Program.World.Write(beforeColor);
         Console.ForegroundColor = color;
-        Console.Write(colorWord);
+        Program.World.Write(colorWord);
         Console.ResetColor();
-        Console.WriteLine(afterColor);
+        Program.World.WriteLine(afterColor);
     }
 
     public static void WriteColoredLine(string beforeColor, ConsoleColor color, string colorWord, string afterColor = "")
     {
-        Console.Write(beforeColor);
+        Program.World.Write(beforeColor);
         Console.ForegroundColor = color;
-        Console.Write(colorWord);
+        Program.World.Write(colorWord);
         Console.ResetColor();
-        Console.WriteLine(afterColor);
+        Program.World.WriteLine(afterColor);
     }
 
     public static void WriteColored(string beforeColor, string colorWord, ConsoleColor color, string afterColor = "")
