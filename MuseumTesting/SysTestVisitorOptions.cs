@@ -8,6 +8,7 @@ namespace MuseumTesting
         [TestCleanup]
         public void CleanUp()
         {
+            Tour.TodaysTours.Clear();
             try
             {
                 File.Delete(Tour.JsonFilePath);
@@ -76,7 +77,7 @@ namespace MuseumTesting
             Assert.IsTrue(!((FakeWorld)Program.World).LinesWritten.Contains("Cancel my tour reservation"));
         }
         
-        /*[TestMethod]
+        [TestMethod]
         public void TestSeeOptionChangeTourTrue()
         {
             // Arrange
@@ -132,6 +133,6 @@ namespace MuseumTesting
 
             // Assert
             Assert.IsTrue(((FakeWorld)Program.World).LinesWritten.Contains("Cancel my tour reservation"));
-        }*/
+        }
     }
 }
