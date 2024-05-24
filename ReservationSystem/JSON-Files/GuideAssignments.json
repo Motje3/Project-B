@@ -1,8 +1,6 @@
 [
   {
     "GuideName": "John Doe",
-    "GuideId": "de7715e2-fe98-4bf0-b413-09ff2f556d50",
-    "Password": "11",
     "Tours": [
       {
         "StartTime": "09:00 AM"
@@ -27,13 +25,14 @@
       },
       {
         "StartTime": "04:00 PM"
+      },
+      {
+        "StartTime": "15:15"
       }
     ]
   },
   {
     "GuideName": "Alice Johnson",
-    "GuideId": "8d49d335-5ac2-47ce-9d1d-a8e147d0e0e7",
-    "Password": "22",
     "Tours": [
       {
         "StartTime": "09:20 AM"
@@ -60,8 +59,6 @@
   },
   {
     "GuideName": "Steve Brown",
-    "GuideId": "327b1a7b-7a08-4369-a3e9-3e93a4ff7e18",
-    "Password": "33",
     "Tours": [
       {
         "StartTime": "09:40 AM"

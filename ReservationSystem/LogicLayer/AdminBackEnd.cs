@@ -64,7 +64,7 @@ public static class AdminBackEnd
         }
     }
 
-    public static void AddTourForToday()
+    private static void AddTourForToday()
     {
         Console.Write("Enter time for the tour (hh:mm): ");
         string time = Console.ReadLine();
@@ -86,7 +86,7 @@ public static class AdminBackEnd
         Console.WriteLine("Tour added successfully for today.");
     }
 
-    public static void AddTourToStandardSchedule()
+    private static void AddTourToStandardSchedule()
     {
         Console.Write("Enter time for the tour (hh:mm): ");
         string time = Console.ReadLine();
@@ -101,25 +101,22 @@ public static class AdminBackEnd
         Guide selectedGuide = guides[guideChoice - 1];
 
         DateTime tourStartTime = DateTime.Parse(time);
-        var guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(Tour.JsonGuideAssignmentsPath));
 
-        dynamic guideEntry = null;
-        foreach (var guide in guideAssignments)
-        {
-            if (guide.GuideName == selectedGuide.Name)
-            {
-                guideEntry = guide;
-                break;
-            }
-        }
+        var guideAssignments = JsonConvert.DeserializeObject<List<GuideAssignment>>(File.ReadAllText(Tour.JsonGuideAssignmentsPath));
+
+        var guideEntry = guideAssignments.FirstOrDefault(ga => ga.GuideName == selectedGuide.Name);
 
         if (guideEntry != null)
         {
-            guideEntry.Tours.Add(new { StartTime = time });
+            guideEntry.Tours.Add(new TourAssignment { StartTime = time });
         }
         else
         {
-            guideAssignments.Add(new { GuideName = selectedGuide.Name, Tours = new List<dynamic> { new { StartTime = time } } });
+            guideAssignments.Add(new GuideAssignment
+            {
+                GuideName = selectedGuide.Name,
+                Tours = new List<TourAssignment> { new TourAssignment { StartTime = time } }
+            });
         }
 
         File.WriteAllText(Tour.JsonGuideAssignmentsPath, JsonConvert.SerializeObject(guideAssignments, Formatting.Indented));
@@ -127,4 +124,17 @@ public static class AdminBackEnd
 
         Console.WriteLine("Tour added successfully to the standard schedule.");
     }
+
+    public class GuideAssignment
+    {
+        public string GuideName { get; set; }
+        public List<TourAssignment> Tours { get; set; } = new List<TourAssignment>();
+    }
+
+    public class TourAssignment
+    {
+        public string StartTime { get; set; }
+    }
+
+
 }
