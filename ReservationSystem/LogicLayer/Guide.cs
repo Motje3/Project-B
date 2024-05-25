@@ -195,7 +195,8 @@ public class Guide
         // orderd by starttime.
         var availableGuideTours = Tour.FilterByLambda(tour => tour.AssignedGuide.Name == this.Name
             && !tour.Completed && !tour.Deleted 
-            && tour.ExpectedVisitors.Count < tour.MaxCapacity)
+            && tour.ExpectedVisitors.Count < tour.MaxCapacity
+            && tour.StartTime > DateTime.Now)
             .OrderBy(tour => tour.StartTime).ToList(); 
         
         if (availableGuideTours.Count == 0)  // there are no more availble tours for visitor
@@ -205,7 +206,7 @@ public class Guide
         }
         
         Tour target = availableGuideTours.First();  // the target will chase down the closest next tour to overwrite // Data with visitor added to PresentVisitor will overwrite the target
-        target.PresentVisitors.Add(visitor);
+        target.ExpectedVisitors.Add(visitor);
         Tour overwite = target;
 
         // loop trought todays tours and overwite. 

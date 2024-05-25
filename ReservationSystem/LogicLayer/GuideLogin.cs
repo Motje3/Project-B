@@ -57,7 +57,7 @@ public class GuideLoginMenu : View
         if (Ticket.Tickets.Contains(ticketCode))
         {
             Visitor visitor = new Visitor(ticketCode);
-            if (visitor.HasReservation(visitor))  // check if visitor already has reservation
+            if (HasReservation(visitor))  // check if visitor already has reservation
             {
                 TransferChoiceRL.ShowMessage();
                 while (true)
@@ -73,12 +73,12 @@ public class GuideLoginMenu : View
                             TransferSucces.Show(tourDetail);
                             return;
                         }
-                        break;  // breaking out of while loop 
+                        return;  // breaking out of while loop 
                     }
                     if (choice == "N" || choice == "No" || choice == "2")
                     {
                         TransferCanceled.Show();
-                        break;  // breaking out of while loop 
+                        return;  // breaking out of while loop 
                     }
                     else
                     {
@@ -102,5 +102,11 @@ public class GuideLoginMenu : View
         // Console.WriteLine($"The code ['{ticketCode}'] is invalid");
         // Console.WriteLine("please provide a valid visitor ticketCode");
     }
+
+    private static bool HasReservation(Visitor visitor)
+    {
+        return Tour.TodaysTours.Any(tour => tour.ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode));  // checks TicketCode without the VisitorID object
+    }
 }
+
         
