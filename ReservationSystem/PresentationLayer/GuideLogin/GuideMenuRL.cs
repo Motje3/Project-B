@@ -10,6 +10,6 @@ public class GuideMenuRL : View
         WriteLine("3 | Exit");
 
         Write("\nEnter your choice: ");
-        return ReadLine();
+        return ReadLine(); // choice.
     }
 }

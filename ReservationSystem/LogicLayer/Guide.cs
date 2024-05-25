@@ -190,6 +190,7 @@ public class Guide
 
     public Tour AddVisitorLastMinute(Visitor visitor)
     {
+        Tour.LoadTours();  // refresh TodaysTours data.
         // ussing method to filter specific conditions.
         // orderd by starttime.
         var availableGuideTours = Tour.FilterByLambda(tour => tour.AssignedGuide.Name == this.Name
@@ -207,29 +208,21 @@ public class Guide
         target.PresentVisitors.Add(visitor);
         Tour overwite = target;
 
-        // loop trought todays tours and overwite 
-        int index = 0;
-        Tour.LoadTours();  // refresh TodaysTours data
-        foreach (var tour in Tour.TodaysTours)
+        // loop trought todays tours and overwite. 
+        for (int index = 0; index < Tour.TodaysTours.Count; index++)
         {
-            if (index > Tour.TodaysTours.Count)
-            {
-                // this failsave message, this should not happen unless there is a bug,
-                // program should continue without visitor being added to tour.
-                ForEachError.Show();
-                return null;
-            }
-            else if (tour.TourId == target.TourId && tour.AssignedGuide.Name == this.Name)  
+            var tour = Tour.TodaysTours[index];
+            if (tour.TourId == target.TourId && tour.AssignedGuide.Name == this.Name)  
             {
                 Tour.TodaysTours[index] = overwite;  // update the Tour with visitor added to Pressent Visitor
                 Tour.SaveTours();  // overwrite JSON with the visitor added to Tour 
+                Tour.LoadTours();  // refresh TodaysTours data afther changes.
                 return tour;  // break out the method and send tourDetail to display aditional info for guide.
             }
-            else 
-            { 
-                index++;  // if not the match move to next index    
-            }
         }
+        ForEachError.Show();
+        // this is a failsave message, this should not happen unless there is a bug,
+        // program should continue without visitor being added to tour.
         return null;
     }
 }

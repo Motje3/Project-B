@@ -76,7 +76,7 @@ namespace MuseumTesting
         }
 
         [TestMethod]
-        public void AddVisitorLastMinuteNoMoreTours()
+        public void AddVisitorLastMinuteTest()
         {
             // Arrange
             Tour.SaveTours();
@@ -99,7 +99,9 @@ namespace MuseumTesting
 
             // Create tours
             DateTime date = DateTime.Now;  // used to simulate today's tours
-
+            
+            // Note that test might fail between 22:00 (10:00 PM) - 00:00 (12:00 AM),
+            // avoid this test between these time periods.
             var tour1 = new Tour(Guid.NewGuid(), new DateTime(date.Year, date.Month, date.Day, 22, 0, 0), 40, 13, false, false, John);
             var tour2 = new Tour(Guid.NewGuid(), new DateTime(date.Year, date.Month, date.Day, 23, 0, 0), 40, 13, false, false, Alice);
 
