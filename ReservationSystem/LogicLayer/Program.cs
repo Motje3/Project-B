@@ -9,8 +9,7 @@ public class Program
         Tour.InitializeTours();
         Reservation.ValidateCodeAndShowMenu();
 
-        // Guide Alica = new Guide("Alice Johnson", Guid.NewGuid(), "222");
-        // Visitor Jonh = new Visitor("444");
-        // Alica.AddVisitorLastMinute(Jonh);
+        // Guide guide = new (Guid.NewGuid(),"John Doe", "11");
+        // GuideLoginMenu.ShowGuideMenu(guide);
     }
 }

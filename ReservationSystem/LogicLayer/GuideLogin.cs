@@ -56,44 +56,46 @@ public class GuideLoginMenu : View
         Ticket.LoadTickets();
         if (Ticket.Tickets.Contains(ticketCode))
         {
-            Visitor visitor = Visitor.FindVisitorByTicketCode(ticketCode);
-            if (visitor != null)
+            Visitor visitor = new Visitor(ticketCode);
+            if (visitor.HasReservation(visitor))  // check if visitor already has reservation
             {
-                if (visitor.HasReservation(visitor))  // check if visitor already has reservation
+                TransferChoiceRL.ShowMessage();
+                while (true)
                 {
-                    TransferChoiceRL.ShowMessage();
-                    while (true)
+                    string choice = TransferChoiceRL.ShowChoice();
+                    if (choice == "Y" || choice == "Yes" || choice == "1")
                     {
-                        string choice = TransferChoiceRL.ShowChoice();
-                        if (choice == "Y" || choice == "Yes" || choice == "1")
+                        Tour tour = Tour.FindTourByVisitorTicketCode(visitor.TicketCode);
+                        tour.RemoveVisitor(visitor);  // Visitor removed from Expected Visitor
+                        Tour tourDetail = guide.AddVisitorLastMinute(visitor);
+                        if (tourDetail != null)
                         {
-                            Tour tour = Tour.FindTourByVisitorTicketCode(visitor.TicketCode);
-                            tour.RemoveVisitor(visitor);  // Visitor removed from Expected Visitor
-                            Tour tourDetail = guide.AddVisitorLastMinute(visitor);
-                            TransferSucces.Show(tourDetail);  // Show succes-messsage and detail of wich tour (time) visitor is added.
-                            break;  // breaking out of while loop 
+                            TransferSucces.Show(tourDetail);
+                            return;
                         }
-                        if (choice == "N" || choice == "No" || choice == "2")
-                        {
-                            TransferCanceled.Show();
-                            break;  // breaking out of while loop 
-                        }
-                        else
-                        {
-                            InvalidRL.Show();
-                            // continue while loop until valid choice
-                        }
+                        break;  // breaking out of while loop 
+                    }
+                    if (choice == "N" || choice == "No" || choice == "2")
+                    {
+                        TransferCanceled.Show();
+                        break;  // breaking out of while loop 
+                    }
+                    else
+                    {
+                        InvalidRL.Show();
+                        // continue while loop until valid choice
                     }
                 }
-                else
+            }
+            else  // Add visitor automaticly if it has no reservation
+            {
+                Tour tourDetail = guide.AddVisitorLastMinute(visitor);  // futher message provided in AddVisitorLastMinute method if null.
+                if (tourDetail != null)
                 {
-                    Tour tourDetail = guide.AddVisitorLastMinute(visitor);  // futher message provided in method if null
-                    if (tourDetail != null)
-                    {
-                        TransferSucces.Show(tourDetail);
-                    }
-                    
+                    TransferSucces.Show(tourDetail);
+                    return;
                 }
+                return;
             }
         }
         InvalidTicketCode.Show(ticketCode);
@@ -101,3 +103,4 @@ public class GuideLoginMenu : View
         // Console.WriteLine("please provide a valid visitor ticketCode");
     }
 }
+        
