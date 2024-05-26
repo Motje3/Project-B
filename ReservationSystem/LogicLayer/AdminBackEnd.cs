@@ -100,7 +100,7 @@ public static class AdminBackEnd
         Guide selectedGuide = guides[guideChoice - 1];
 
         DateTime tourStartTime = DateTime.Parse(time);
-
+        
         var guideAssignments = JsonConvert.DeserializeObject<List<GuideAssignment>>(File.ReadAllText(Tour.JsonGuideAssignmentsPath));
 
         var guideEntry = guideAssignments.FirstOrDefault(ga => ga.GuideName == selectedGuide.Name);
@@ -135,5 +135,5 @@ public static class AdminBackEnd
         public string StartTime { get; set; }
     }
 
-    
+
 }
