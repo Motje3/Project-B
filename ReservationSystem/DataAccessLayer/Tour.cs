@@ -30,6 +30,7 @@ public class Tour
         Completed = completed;
         Deleted = deleted;
         AssignedGuide = assignedGuide;
+        assignedGuide.AssignedTourIds.Add(tourId);
     }
 
 
@@ -117,10 +118,6 @@ public class Tour
         }
     }
 
-
-
-
-
     public void AddVisitor(Visitor visitor)
     {
         if (!Deleted && !Completed && ExpectedVisitors.Count < MaxCapacity && !ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode))
@@ -191,5 +188,12 @@ public class Tour
         }
     }
 
-
+    // FilterByLamda is used filter on specific requirement, 
+    // example ussage: var toursByAlice = TourFilter.FilterByLambda(t => t.AssignedGuide.Name == "Alice Johnson");
+    public static List<Tour> FilterByLambda(Func <Tour, bool> filter)  // this can be used for multiple purpeses where you need to sort it for specific required data
+    {
+        TodaysTours = JsonConvert.DeserializeObject<List<Tour>>(File.ReadAllText(JsonFilePath));
+        var FilterdTours = TodaysTours.Where(filter).ToList();
+        return FilterdTours;
+    }
 }

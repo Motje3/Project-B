@@ -84,8 +84,10 @@ namespace MuseumTesting
         public void AddVisitor_WithValidConditions_AddsVisitor()
         {
             // Setup
+            Guid tourId = Guid.NewGuid();
+
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("John", Guid.NewGuid(), "1234"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(tourId, "John", "111"));
 
             // Act
             tour.AddVisitor(visitor);
@@ -98,8 +100,10 @@ namespace MuseumTesting
         public void RemoveVisitor_RemovesExpectedVisitor()
         {
             // Setup
+            Guid tourId = Guid.NewGuid();
+
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("ali", Guid.NewGuid(), "1234"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(tourId, "John", "111"));
             tour.AddVisitor(visitor);
 
             // Act
@@ -113,8 +117,10 @@ namespace MuseumTesting
         public void FindTourByVisitorTicketCode_FindsCorrectTour()
         {
             // Setup
+            Guid tourId = Guid.NewGuid();
+
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("mo", Guid.NewGuid(), "1234"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(tourId, "John", "111"));
             tour.AddVisitor(visitor);
             Tour.TodaysTours.Add(tour);
 
@@ -129,7 +135,7 @@ namespace MuseumTesting
         public void SaveTours_SavesToursToFile()
         {
             // Arrange
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("John", Guid.NewGuid(), "1234"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(tourId, "John", "111"));
             Tour.TodaysTours.Add(tour);
 
             // Act
@@ -151,7 +157,7 @@ namespace MuseumTesting
         public void LoadTours_LoadsToursFromFile()
         {
             // Arrange
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide("John", Guid.NewGuid(), "1234"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(tourId, "John", "111"));
             Tour.TodaysTours.Add(tour);
             Tour.SaveTours();
 

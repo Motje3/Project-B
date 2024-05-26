@@ -33,8 +33,10 @@ namespace MuseumTesting
         public void HasReservation_WithReservation_ReturnsTrue()
         {
             // Arrange
+            Guid tourId = Guid.NewGuid();
+
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide(tourId, "John", "111"));
             tour.ExpectedVisitors.Add(visitor);
             Tour.TodaysTours.Add(tour);
 
@@ -62,8 +64,10 @@ namespace MuseumTesting
         public void FindVisitorByTicketCode_WithExistingVisitor_ReturnsVisitor()
         {
             // Arrange
+            Guid tourId = Guid.NewGuid();
+
             var visitor = new Visitor("DEF456");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide("John"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide(tourId, "John", "111"));
             tour.ExpectedVisitors.Add(visitor);
             Tour.TodaysTours.Add(tour);
 
@@ -93,8 +97,10 @@ namespace MuseumTesting
         public void GetCurrentReservation_WithExistingReservation_ReturnsReservationDetails()
         {
             // Arrange
+            Guid tourId = Guid.NewGuid();
+
             var visitor = new Visitor("JKL012");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now.AddHours(1), 60, 30, false, false, new Guide("John"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now.AddHours(1), 60, 30, false, false, new Guide(tourId, "John", "111"));
             tour.ExpectedVisitors.Add(visitor);
             Tour.TodaysTours.Add(tour);
 

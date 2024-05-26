@@ -8,5 +8,8 @@ public class Program
         Guide.LoadGuides();
         Tour.InitializeTours();
         Reservation.ValidateCodeAndShowMenu();
+
+        // Guide guide = new (Guid.NewGuid(),"John Doe", "11");
+        // GuideLoginMenu.ShowGuideMenu(guide);
     }
 }
