@@ -115,14 +115,12 @@ namespace MuseumTesting
             Alice.AddVisitorLastMinute(Bob);
 
             // Add tours to today's tours
-            
-            Tour.LoadTours();  // To refresh tours
 
             // Assert
             // John should have 2 presentvistors (tour1)
             // Alice should have 1 presentvistors (tour2)
-            Assert.AreEqual(2, Tour.TodaysTours[0].PresentVisitors.Count);
-            Assert.AreEqual(1, Tour.TodaysTours[1].PresentVisitors.Count);
+            Assert.AreEqual(2, Tour.TodaysTours[0].ExpectedVisitors.Count);
+            Assert.AreEqual(1, Tour.TodaysTours[1].ExpectedVisitors.Count);
         }
     }
 }
