@@ -4,7 +4,7 @@ using ReservationSystem;
 namespace MuseumTesting
 {
     [TestClass]
-    public class SysTestTourJoinen
+    public class SysTestMakeReservation
     {
         [TestCleanup]
         public void CleanUp()
@@ -20,7 +20,7 @@ namespace MuseumTesting
         }
         
         [TestMethod]
-        public void TestVisitorJoinTourMenuSucceful()
+        public void TestVisitorMakeReservationMenuSucceful()
         {
             // Arrange
             string tourChoice = "1";
@@ -59,7 +59,7 @@ namespace MuseumTesting
         }
 
         [TestMethod]
-        public void TestVisitorJoinTourMenuFailedNoToursAvaliable()
+        public void TestVisitorMakeReservationMenuFailedNoToursAvaliable()
         {
             // Arrange
             string visitorTicketCode = "1234567890";
@@ -88,7 +88,7 @@ namespace MuseumTesting
         }
 
         [TestMethod]
-        public void TestVisitorJoinTourMenuFailedOptionDoesNotExit()
+        public void TestVisitorMakeReservationMenuFailedOptionDoesNotExit()
         {
             // Arrange
             string tourChoice = "XXX";
