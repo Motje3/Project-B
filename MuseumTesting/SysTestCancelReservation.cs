@@ -51,6 +51,11 @@ namespace MuseumTesting
             Program.Main();
 
             // Assert
+              // position of the string where the cancel message starts
+            int positionCancelMessage = world.LinesWritten.FindIndex(s => s == "Your reservation has been ");
+            string actualCancelMessage = world.LinesWritten[positionCancelMessage] + world.LinesWritten[positionCancelMessage + 1] + world.LinesWritten[positionCancelMessage + 2];
+
+            Assert.AreEqual("Your reservation has been cancelled  successfully\n", actualCancelMessage);
         }
     }
 }
