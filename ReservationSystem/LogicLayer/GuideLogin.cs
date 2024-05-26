@@ -36,11 +36,11 @@ public class GuideLoginMenu : View
                     Guide.ViewPersonalTours(guide);
                     break;
                 case "2":
-                    continueRunning = false;
-                    try { Console.Clear(); } catch { }
+                guide.StartUpcomingTour();
                     break;
                 case "3":
-                    guide.StartUpcomingTour();
+                    continueRunning = false;
+                    try { Console.Clear(); } catch { }
                     break;
                 
                 default:
