@@ -8,6 +8,7 @@ namespace MuseumTesting
         [TestCleanup]
         public void CleanUp()
         {
+            Tour.TodaysTours.Clear();
             try
             {
                 File.Delete(Tour.JsonFilePath);
