@@ -88,6 +88,7 @@ namespace MuseumTesting
 
             Visitor Bob = new Visitor("222");
             Visitor Mark = new Visitor("333");
+            Visitor Carl = new Visitor("333");
 
             // Clear existing data
             Tour.TodaysTours.Clear();
@@ -112,7 +113,7 @@ namespace MuseumTesting
             // Act
             John.AddVisitorLastMinute(Bob);
             John.AddVisitorLastMinute(Mark);
-            Alice.AddVisitorLastMinute(Bob);
+            Alice.AddVisitorLastMinute(Carl);
 
             // Add tours to today's tours
 
