@@ -10,7 +10,6 @@ public class Guide
     [JsonIgnore]
     public List<Guid> AssignedTourIds { get; set; } = new List<Guid>();
     public static List<Guide> AllGuides = new List<Guide>();
-    public static List<Visitor> PresentVisitors = new List<Visitor>();
 
     public Guide(string name, Guid guideId, string password)
     {
@@ -192,7 +191,7 @@ public class Guide
 
     public bool StartUpcomingTour()
     {
-        var currentTime = Program.World.Now;
+        var currentTime = DateTime.Now;
 
         var upcomingTour = Tour.TodaysTours
             .Where(t => !t.Completed && !t.Deleted && t.AssignedGuide == this && t.StartTime > currentTime)
@@ -210,24 +209,23 @@ public class Guide
         string input;
         while ((input = Console.ReadLine().ToLower()) != "start")
         {
-            if (input.StartsWith("scan "))
-            {
-                string ticketId = input.Substring(5);
-                var visitor = Visitor.FindVisitorByTicketCode(ticketId);
+            var visitor = Visitor.FindVisitorByTicketCode(input);
 
-                if (visitor != null)
+            if (visitor != null)
+            {
+                if (!upcomingTour.PresentVisitors.Any(v => v.TicketCode == visitor.TicketCode))
                 {
-                    PresentVisitors.Add(visitor);
-                    Program.World.WriteLine($"Visitor {visitor.VisitorId} added to the present visitors list.");
+                    upcomingTour.PresentVisitors.Add(visitor);
+                    Program.World.WriteLine($"Visitor added to the present visitors list.");
                 }
                 else
                 {
-                    Program.World.WriteLine("Invalid ticket. Please try again.");
+                    Program.World.WriteLine("Visitor has already been added.");
                 }
             }
             else
             {
-                Program.World.WriteLine("Invalid input. Please scan tickets or write 'Start' to begin the tour.");
+                Program.World.WriteLine("Invalid ticket. Please try again or write 'Start' to begin the tour.");
             }
         }
 
