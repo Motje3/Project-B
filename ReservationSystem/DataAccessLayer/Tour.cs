@@ -118,10 +118,6 @@ public class Tour
         }
     }
 
-
-
-
-
     public void AddVisitor(Visitor visitor)
     {
         if (!Deleted && !Completed && ExpectedVisitors.Count < MaxCapacity && !ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode))

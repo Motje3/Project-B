@@ -66,19 +66,20 @@ public class GuideLoginMenu : View
                     if (choice == "Y" || choice == "Yes" || choice == "1")
                     {
                         Tour tour = Tour.FindTourByVisitorTicketCode(visitor.TicketCode);
-                        tour.RemoveVisitor(visitor);  // Visitor removed from Expected Visitor
+                        Visitor oldVisitor = tour.ExpectedVisitors.Where(v => v.TicketCode == ticketCode).ToList()[0];  // to grap old Visitor-Data for removal.
+                        tour.RemoveVisitor(oldVisitor);  // Visitor removed from Expected Visitor
                         Tour tourDetail = guide.AddVisitorLastMinute(visitor);
                         if (tourDetail != null)
                         {
                             TransferSucces.Show(tourDetail);
                             return;
                         }
-                        return;  // breaking out of while loop 
+                        return;
                     }
                     if (choice == "N" || choice == "No" || choice == "2")
                     {
                         TransferCanceled.Show();
-                        return;  // breaking out of while loop 
+                        return; 
                     }
                     else
                     {
@@ -106,6 +107,12 @@ public class GuideLoginMenu : View
     private static bool HasReservation(Visitor visitor)
     {
         return Tour.TodaysTours.Any(tour => tour.ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode));  // checks TicketCode without the VisitorID object
+    }
+
+    private void RemoveVisitor(Visitor visitor)
+    {
+        Tour.LoadTours();
+        var visitorToRemove = Tour.TodaysTours.Any(tour => tour.ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode));
     }
 }
 
