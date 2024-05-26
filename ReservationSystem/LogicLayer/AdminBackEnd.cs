@@ -67,17 +67,34 @@ public static class AdminBackEnd
     {
         Console.Write("Enter time for the tour (hh:mm): ");
         string time = Console.ReadLine();
+        DateTime tourStartTime;
+
+        if (!DateTime.TryParse(time, out tourStartTime))
+        {
+            Console.WriteLine("Invalid time format. Please enter the time in hh:mm format.");
+            return;
+        }
 
         List<Guide> guides = Guide.AllGuides;
+        if (guides == null || guides.Count == 0)
+        {
+            Console.WriteLine("No guides available.");
+            return;
+        }
+
         Console.WriteLine("Choose a guide:");
         for (int i = 0; i < guides.Count; i++)
         {
             Console.WriteLine($"{i + 1}. {guides[i].Name}");
         }
-        int guideChoice = int.Parse(Console.ReadLine());
-        Guide selectedGuide = guides[guideChoice - 1];
 
-        DateTime tourStartTime = DateTime.Parse(time);
+        if (!int.TryParse(Console.ReadLine(), out int guideChoice) || guideChoice < 1 || guideChoice > guides.Count)
+        {
+            Console.WriteLine("Invalid guide choice. Please select a valid guide number.");
+            return;
+        }
+
+        Guide selectedGuide = guides[guideChoice - 1];
         Tour newTour = new Tour(Guid.NewGuid(), tourStartTime, 40, 20, false, false, selectedGuide);
         Tour.TodaysTours.Add(newTour);
         Tour.SaveTours();
@@ -89,20 +106,36 @@ public static class AdminBackEnd
     {
         Console.Write("Enter time for the tour (hh:mm): ");
         string time = Console.ReadLine();
+        DateTime tourStartTime;
+
+        if (!DateTime.TryParse(time, out tourStartTime))
+        {
+            Console.WriteLine("Invalid time format. Please enter the time in hh:mm format.");
+            return;
+        }
 
         List<Guide> guides = Guide.AllGuides;
+        if (guides == null || guides.Count == 0)
+        {
+            Console.WriteLine("No guides available.");
+            return;
+        }
+
         Console.WriteLine("Choose a guide:");
         for (int i = 0; i < guides.Count; i++)
         {
             Console.WriteLine($"{i + 1}. {guides[i].Name}");
         }
-        int guideChoice = int.Parse(Console.ReadLine());
+
+        if (!int.TryParse(Console.ReadLine(), out int guideChoice) || guideChoice < 1 || guideChoice > guides.Count)
+        {
+            Console.WriteLine("Invalid guide choice. Please select a valid guide number.");
+            return;
+        }
+
         Guide selectedGuide = guides[guideChoice - 1];
 
-        DateTime tourStartTime = DateTime.Parse(time);
-        
-        var guideAssignments = JsonConvert.DeserializeObject<List<GuideAssignment>>(File.ReadAllText(Tour.JsonGuideAssignmentsPath));
-
+        var guideAssignments = JsonConvert.DeserializeObject<List<GuideAssignment>>(File.ReadAllText(Tour.JsonGuideAssignmentsPath)) ?? new List<GuideAssignment>();
         var guideEntry = guideAssignments.FirstOrDefault(ga => ga.GuideName == selectedGuide.Name);
 
         if (guideEntry != null)
