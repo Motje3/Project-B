@@ -190,7 +190,7 @@ public class Guide
 
     public Tour AddVisitorLastMinute(Visitor visitor)
     {
-        Tour.LoadTours();  // refresh TodaysTours data.
+        // refresh TodaysTours data.
         // ussing method to filter specific conditions.
         // orderd by starttime.
         var availableGuideTours = Tour.FilterByLambda(tour => tour.AssignedGuide.Name == this.Name
@@ -217,7 +217,6 @@ public class Guide
             {
                 Tour.TodaysTours[index] = overwite;  // update the Tour with visitor added to Pressent Visitor
                 Tour.SaveTours();  // overwrite JSON with the visitor added to Tour 
-                Tour.LoadTours();  // refresh TodaysTours data afther changes.
                 return tour;  // break out the method and send tourDetail to display aditional info for guide.
             }
         }
