@@ -39,6 +39,10 @@ public class GuideLoginMenu : View
                     continueRunning = false;
                     try { Console.Clear(); } catch { }
                     break;
+                case "3":
+                    guide.StartUpcomingTour();
+                    break;
+                
                 default:
                     InvalidRL.Show();
                     break;

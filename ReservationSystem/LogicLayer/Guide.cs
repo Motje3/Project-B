@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using ReservationSystem;
+namespace ReservationSystem;
 
 public class Guide
 {
@@ -186,5 +187,50 @@ public class Guide
             // ShowAdminMenu(); // Replace this with the method that shows the Admin Menu
         }
 
+    }
+
+    public bool StartUpcomingTour()
+    {
+        var currentTime = DateTime.Now;
+
+        var upcomingTour = Tour.TodaysTours
+            .Where(t => !t.Completed && !t.Deleted && t.AssignedGuide == this && t.StartTime > currentTime)
+            .OrderBy(t => t.StartTime)
+            .FirstOrDefault();
+
+        if (upcomingTour == null)
+        {
+            Program.World.WriteLine("No upcoming tours available to start.");
+            return false;
+        }
+
+        Program.World.WriteLine($"Starting the Tour at {upcomingTour.StartTime}, before that, please scan the tickets for all the present visitors and once done, write 'Start' to start the tour.");
+
+        string input;
+        while ((input = Console.ReadLine().ToLower()) != "start")
+        {
+            var visitor = Visitor.FindVisitorByTicketCode(input);
+
+            if (visitor != null)
+            {
+                if (!upcomingTour.PresentVisitors.Any(v => v.TicketCode == visitor.TicketCode))
+                {
+                    upcomingTour.PresentVisitors.Add(visitor);
+                    Program.World.WriteLine($"Visitor added to the present visitors list.");
+                }
+                else
+                {
+                    Program.World.WriteLine("Visitor has already been added.");
+                }
+            }
+            else
+            {
+                Program.World.WriteLine("Invalid ticket. Please try again or write 'Start' to begin the tour.");
+            }
+        }
+
+        Tour.SaveTours();
+        Program.World.WriteLine("Tour has been started successfully.");
+        return true;
     }
 }
