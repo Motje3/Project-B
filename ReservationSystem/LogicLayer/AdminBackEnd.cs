@@ -136,7 +136,7 @@ public static class AdminBackEnd
         Guide selectedGuide = guides[guideChoice - 1];
 
         var guideAssignments = JsonConvert.DeserializeObject<List<GuideAssignment>>(File.ReadAllText(Tour.JsonGuideAssignmentsPath)) ?? new List<GuideAssignment>();
-        var guideEntry = guideAssignments.FirstOrDefault(ga => ga.GuideName == selectedGuide.Name);
+        var guideEntry = guideAssignments.FirstOrDefault(ga => ga.GuideId == selectedGuide.GuideId);
 
         if (guideEntry != null)
         {
@@ -146,7 +146,9 @@ public static class AdminBackEnd
         {
             guideAssignments.Add(new GuideAssignment
             {
+                GuideId = selectedGuide.GuideId,  // Set GuideId property
                 GuideName = selectedGuide.Name,
+                Password = selectedGuide.Password,  // Set Password property
                 Tours = new List<TourAssignment> { new TourAssignment { StartTime = time } }
             });
         }
@@ -157,16 +159,19 @@ public static class AdminBackEnd
         Console.WriteLine("Tour added successfully to the standard schedule.");
     }
 
+
     public class GuideAssignment
     {
+        public Guid GuideId { get; set; }  // Change this to Guid to match GuideId in Guide class
         public string GuideName { get; set; }
+        public string Password { get; set; }
         public List<TourAssignment> Tours { get; set; } = new List<TourAssignment>();
     }
+
 
     public class TourAssignment
     {
         public string StartTime { get; set; }
     }
-
 
 }
