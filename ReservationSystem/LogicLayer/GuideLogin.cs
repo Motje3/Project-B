@@ -68,7 +68,7 @@ public class GuideLoginMenu : View
                         Tour tour = Tour.FindTourByVisitorTicketCode(visitor.TicketCode);
                         Visitor oldVisitor = tour.ExpectedVisitors.Where(v => v.TicketCode == ticketCode).ToList()[0];  // to grap old Visitor-Data for removal.
                         tour.RemoveVisitor(oldVisitor);  // Visitor removed from Expected Visitor
-                        Tour tourDetail = guide.AddVisitorLastMinute(visitor);
+                        Tour tourDetail = guide.AddVisitorLastMinute(oldVisitor);  // tranfer visitor to next tour
                         if (tourDetail != null)
                         {
                             TransferSucces.Show(tourDetail);

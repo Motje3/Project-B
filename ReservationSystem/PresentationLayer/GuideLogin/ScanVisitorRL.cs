@@ -4,7 +4,7 @@ public class ScanVisitor : View
 {
     public static string Show()
     {
-        Write("Scan visitor code: ");
+        Write("\nScan visitor code: ");
         return ReadLine();  // ticketCode
     }
 }
