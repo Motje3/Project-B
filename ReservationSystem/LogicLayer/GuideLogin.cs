@@ -36,9 +36,11 @@ public class GuideLoginMenu : View
                     Guide.ViewPersonalTours(guide);
                     break;
                 case "2":
+                    
+                case "3":
                     AddVisitorLastMinuteValidation(guide);
                     break;
-                case "3":
+                case "4":
                     continueRunning = false;
                     try { Console.Clear(); } catch { }
                     break;
