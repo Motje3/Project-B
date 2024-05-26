@@ -66,8 +66,21 @@ public static class AdminBackEnd
 
     private static void AddTourForToday()
     {
-        Console.Write("Enter time for the tour (hh:mm): ");
-        string time = Console.ReadLine();
+        DateTime tourStartTime;
+        while (true)
+        {
+            Console.Write("Enter time for the tour (hh:mm): ");
+            string time = Console.ReadLine();
+
+            if (DateTime.TryParse(time, out tourStartTime))
+            {
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Invalid time format. Please enter the time in hh:mm format.");
+            }
+        }
 
         List<Guide> guides = Guide.AllGuides;
         Console.WriteLine("Choose a guide:");
@@ -75,10 +88,23 @@ public static class AdminBackEnd
         {
             Console.WriteLine($"{i + 1}. {guides[i].Name}");
         }
-        int guideChoice = int.Parse(Console.ReadLine());
-        Guide selectedGuide = guides[guideChoice - 1];
 
-        DateTime tourStartTime = DateTime.Parse(time);
+        int guideChoice;
+        Guide selectedGuide = null;
+        while (true)
+        {
+            Console.Write("Enter the number of your choice: ");
+            if (int.TryParse(Console.ReadLine(), out guideChoice) && guideChoice > 0 && guideChoice <= guides.Count)
+            {
+                selectedGuide = guides[guideChoice - 1];
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Invalid choice. Please enter a valid guide number.");
+            }
+        }
+
         Tour newTour = new Tour(Guid.NewGuid(), tourStartTime, 40, 20, false, false, selectedGuide);
         Tour.TodaysTours.Add(newTour);
         Tour.SaveTours();
@@ -88,8 +114,21 @@ public static class AdminBackEnd
 
     private static void AddTourToStandardSchedule()
     {
-        Console.Write("Enter time for the tour (hh:mm): ");
-        string time = Console.ReadLine();
+        DateTime tourStartTime;
+        while (true)
+        {
+            Console.Write("Enter time for the tour (hh:mm): ");
+            string time = Console.ReadLine();
+
+            if (DateTime.TryParse(time, out tourStartTime))
+            {
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Invalid time format. Please enter the time in hh:mm format.");
+            }
+        }
 
         List<Guide> guides = Guide.AllGuides;
         Console.WriteLine("Choose a guide:");
@@ -97,10 +136,22 @@ public static class AdminBackEnd
         {
             Console.WriteLine($"{i + 1}. {guides[i].Name}");
         }
-        int guideChoice = int.Parse(Console.ReadLine());
-        Guide selectedGuide = guides[guideChoice - 1];
 
-        DateTime tourStartTime = DateTime.Parse(time);
+        int guideChoice;
+        Guide selectedGuide = null;
+        while (true)
+        {
+            Console.Write("Enter the number of your choice: ");
+            if (int.TryParse(Console.ReadLine(), out guideChoice) && guideChoice > 0 && guideChoice <= guides.Count)
+            {
+                selectedGuide = guides[guideChoice - 1];
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Invalid choice. Please enter a valid guide number.");
+            }
+        }
 
         var guideAssignments = JsonConvert.DeserializeObject<List<GuideAssignment>>(File.ReadAllText(Tour.JsonGuideAssignmentsPath));
 
@@ -108,14 +159,14 @@ public static class AdminBackEnd
 
         if (guideEntry != null)
         {
-            guideEntry.Tours.Add(new TourAssignment { StartTime = time });
+            guideEntry.Tours.Add(new TourAssignment { StartTime = tourStartTime.ToString("HH:mm") });
         }
         else
         {
             guideAssignments.Add(new GuideAssignment
             {
                 GuideName = selectedGuide.Name,
-                Tours = new List<TourAssignment> { new TourAssignment { StartTime = time } }
+                Tours = new List<TourAssignment> { new TourAssignment { StartTime = tourStartTime.ToString("HH:mm") } }
             });
         }
 
@@ -136,5 +187,5 @@ public static class AdminBackEnd
         public string StartTime { get; set; }
     }
 
-
+    
 }
