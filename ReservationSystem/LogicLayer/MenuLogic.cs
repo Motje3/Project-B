@@ -186,11 +186,11 @@ public class MenuLogic
         Thread.Sleep(2000);
 
         JoinTourSuccesMessage.Show3();
-        var key = Console.ReadKey(true).Key;
+        var key = Program.World.ReadKey(true).Key;
 
         while (key != ConsoleKey.Enter)
         {
-            key = Console.ReadKey(true).Key;
+            key = Program.World.ReadKey(true).Key;
         }
 
         if (key == ConsoleKey.Enter)
