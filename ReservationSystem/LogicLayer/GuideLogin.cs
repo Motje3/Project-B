@@ -108,12 +108,6 @@ public class GuideLoginMenu : View
     {
         return Tour.TodaysTours.Any(tour => tour.ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode));  // checks TicketCode without the VisitorID object
     }
-
-    private void RemoveVisitor(Visitor visitor)
-    {
-        Tour.LoadTours();
-        var visitorToRemove = Tour.TodaysTours.Any(tour => tour.ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode));
-    }
 }
 
         
