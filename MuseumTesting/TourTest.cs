@@ -135,7 +135,7 @@ namespace MuseumTesting
         public void SaveTours_SavesToursToFile()
         {
             // Arrange
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(tourId, "John", "111"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(Guid.NewGuid(), "John", "111"));
             Tour.TodaysTours.Add(tour);
 
             // Act
@@ -157,7 +157,7 @@ namespace MuseumTesting
         public void LoadTours_LoadsToursFromFile()
         {
             // Arrange
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(tourId, "John", "111"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(Guid.NewGuid(), "John", "111"));
             Tour.TodaysTours.Add(tour);
             Tour.SaveTours();
 

@@ -195,17 +195,17 @@ public class Guide
         // ussing method to filter specific conditions.
         // orderd by starttime.
         var availableGuideTours = Tour.FilterByLambda(tour => tour.AssignedGuide.Name == this.Name
-            && !tour.Completed && !tour.Deleted 
+            && !tour.Completed && !tour.Deleted
             && tour.ExpectedVisitors.Count < tour.MaxCapacity
             && tour.StartTime > DateTime.Now)
-            .OrderBy(tour => tour.StartTime).ToList(); 
-        
+            .OrderBy(tour => tour.StartTime).ToList();
+
         if (availableGuideTours.Count == 0)  // there are no more availble tours for visitor
         {
             NoAvailbleTour.Show();
             return null;  // break out of void to prefent program crash
         }
-        
+
         Tour target = availableGuideTours.First();  // the target will chase down the closest next tour to overwrite // Data with visitor added to PresentVisitor will overwrite the target
         target.ExpectedVisitors.Add(visitor);
         Tour overwite = target;
@@ -214,7 +214,7 @@ public class Guide
         for (int index = 0; index < Tour.TodaysTours.Count; index++)
         {
             var tour = Tour.TodaysTours[index];
-            if (tour.TourId == target.TourId && tour.AssignedGuide.Name == this.Name)  
+            if (tour.TourId == target.TourId && tour.AssignedGuide.Name == this.Name)
             {
                 Tour.TodaysTours[index] = overwite;  // update the Tour with visitor added to Pressent Visitor
                 Tour.SaveTours();  // overwrite JSON with the visitor added to Tour 
@@ -225,5 +225,50 @@ public class Guide
         // this is a failsave message, this should not happen unless there is a bug,
         // program should continue without visitor being added to tour.
         return null;
+    }
+
+    public bool StartUpcomingTour()
+    {
+        var currentTime = DateTime.Now;
+
+        var upcomingTour = Tour.TodaysTours
+            .Where(t => !t.Completed && !t.Deleted && t.AssignedGuide == this && t.StartTime > currentTime)
+            .OrderBy(t => t.StartTime)
+            .FirstOrDefault();
+
+        if (upcomingTour == null)
+        {
+            Program.World.WriteLine("No upcoming tours available to start.");
+            return false;
+        }
+
+        Program.World.WriteLine($"Starting the Tour at {upcomingTour.StartTime}, before that, please scan the tickets for all the present visitors and once done, write 'Start' to start the tour.");
+
+        string input;
+        while ((input = Console.ReadLine().ToLower()) != "start")
+        {
+            var visitor = Visitor.FindVisitorByTicketCode(input);
+
+            if (visitor != null)
+            {
+                if (!upcomingTour.PresentVisitors.Any(v => v.TicketCode == visitor.TicketCode))
+                {
+                    upcomingTour.PresentVisitors.Add(visitor);
+                    Program.World.WriteLine($"Visitor added to the present visitors list.");
+                }
+                else
+                {
+                    Program.World.WriteLine("Visitor has already been added.");
+                }
+            }
+            else
+            {
+                Program.World.WriteLine("Invalid ticket. Please try again or write 'Start' to begin the tour.");
+            }
+        }
+
+        Tour.SaveTours();
+        Program.World.WriteLine("Tour has been started successfully.");
+        return true;
     }
 }
