@@ -8,17 +8,17 @@ public class View
 {
     public static void WriteLine(string line)
     {
-        Console.WriteLine(line);
+        Program.World.WriteLine(line);
     }
 
     public static void Write(string line)
     {
-        Console.Write(line);
+        Program.World.Write(line);
     }
 
     public static string ReadLine()
     {
-        return Console.ReadLine();
+        return Program.World.ReadLine();
     }
 }
 
