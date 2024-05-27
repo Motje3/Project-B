@@ -59,6 +59,7 @@ public static class AdminBackEnd
                 break;
             default:
                 Console.WriteLine("Invalid option. Please try again.");
+                Thread.Sleep(2000);
                 break;
         }
     }
@@ -71,14 +72,16 @@ public static class AdminBackEnd
 
         if (!DateTime.TryParse(time, out tourStartTime))
         {
-            Console.WriteLine("Invalid time format. Please enter the time in hh:mm format.");
+            Console.WriteLine("Invalid time format. Please enter the time in hh:mm format.\n");
+            WaitForUser();
             return;
         }
 
         List<Guide> guides = Guide.AllGuides;
         if (guides == null || guides.Count == 0)
         {
-            Console.WriteLine("No guides available.");
+            Console.WriteLine("No guides available.\n");
+            WaitForUser();
             return;
         }
 
@@ -90,7 +93,8 @@ public static class AdminBackEnd
 
         if (!int.TryParse(Console.ReadLine(), out int guideChoice) || guideChoice < 1 || guideChoice > guides.Count)
         {
-            Console.WriteLine("Invalid guide choice. Please select a valid guide number.");
+            Console.WriteLine("Invalid guide choice. Please select a valid guide number.\n");
+            WaitForUser();
             return;
         }
 
@@ -99,7 +103,8 @@ public static class AdminBackEnd
         Tour.TodaysTours.Add(newTour);
         Tour.SaveTours();
 
-        Console.WriteLine("Tour added successfully for today.");
+        Console.WriteLine("Tour added successfully for today.\n");
+        WaitForUser();
     }
 
     private static void AddTourToStandardSchedule()
@@ -110,14 +115,16 @@ public static class AdminBackEnd
 
         if (!DateTime.TryParse(time, out tourStartTime))
         {
-            Console.WriteLine("Invalid time format. Please enter the time in hh:mm format.");
+            Console.WriteLine("Invalid time format. Please enter the time in hh:mm format.\n");
+            WaitForUser();
             return;
         }
 
         List<Guide> guides = Guide.AllGuides;
         if (guides == null || guides.Count == 0)
         {
-            Console.WriteLine("No guides available.");
+            Console.WriteLine("No guides available.\n");
+            WaitForUser();
             return;
         }
 
@@ -129,7 +136,8 @@ public static class AdminBackEnd
 
         if (!int.TryParse(Console.ReadLine(), out int guideChoice) || guideChoice < 1 || guideChoice > guides.Count)
         {
-            Console.WriteLine("Invalid guide choice. Please select a valid guide number.");
+            Console.WriteLine("Invalid guide choice. Please select a valid guide number.\n");
+            WaitForUser();
             return;
         }
 
@@ -156,9 +164,36 @@ public static class AdminBackEnd
         File.WriteAllText(Tour.JsonGuideAssignmentsPath, JsonConvert.SerializeObject(guideAssignments, Formatting.Indented));
         Tour.CreateToursForToday();
 
-        Console.WriteLine("Tour added successfully to the standard schedule.");
+        Console.WriteLine("Tour added successfully to the standard schedule.\n");
+        WaitForUser();
     }
 
+    private static void WaitForUser()
+    {
+        Thread.Sleep(2000); // Pause for 2 seconds
+
+        Console.WriteLine("| Press Enter to return to the barcode scanner");
+        Console.WriteLine("| Press Space to go back to the Menu");
+
+        ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+        while (keyInfo.Key != ConsoleKey.Enter && keyInfo.Key != ConsoleKey.Spacebar)
+        {
+            keyInfo = Console.ReadKey(true);
+        }
+
+        if (keyInfo.Key == ConsoleKey.Enter)
+        {
+            // Logic to return to the main menu
+            Console.WriteLine("Returning to the menu...");
+            // Call the main menu method here if available
+        }
+        else if (keyInfo.Key == ConsoleKey.Spacebar)
+        {
+            // Logic to change reservation details
+            Console.WriteLine("Going back to the barcode scanner...");
+            // Call the method to change reservation details here
+        }
+    }
 
     public class GuideAssignment
     {
