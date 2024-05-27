@@ -77,6 +77,8 @@ public static class AdminBackEnd
             return;
         }
 
+        string amPmTime = tourStartTime.ToString("hh:mm tt"); // Convert to AM/PM format
+
         List<Guide> guides = Guide.AllGuides;
         if (guides == null || guides.Count == 0)
         {
@@ -120,6 +122,8 @@ public static class AdminBackEnd
             return;
         }
 
+        string amPmTime = tourStartTime.ToString("hh:mm tt"); // Convert to AM/PM format
+
         List<Guide> guides = Guide.AllGuides;
         if (guides == null || guides.Count == 0)
         {
@@ -148,7 +152,7 @@ public static class AdminBackEnd
 
         if (guideEntry != null)
         {
-            guideEntry.Tours.Add(new TourAssignment { StartTime = time });
+            guideEntry.Tours.Add(new TourAssignment { StartTime = amPmTime });
         }
         else
         {
@@ -157,7 +161,7 @@ public static class AdminBackEnd
                 GuideId = selectedGuide.GuideId,  // Set GuideId property
                 GuideName = selectedGuide.Name,
                 Password = selectedGuide.Password,  // Set Password property
-                Tours = new List<TourAssignment> { new TourAssignment { StartTime = time } }
+                Tours = new List<TourAssignment> { new TourAssignment { StartTime = amPmTime } }
             });
         }
 
@@ -172,8 +176,7 @@ public static class AdminBackEnd
     {
         Thread.Sleep(2000); // Pause for 2 seconds
 
-        Console.WriteLine("| Press Enter to return to the barcode scanner");
-        Console.WriteLine("| Press Space to go back to the Menu");
+        ColourText.WriteColoredLine("| Press ", "Space", ConsoleColor.Cyan, " to go back to the Menu");
 
         ConsoleKeyInfo keyInfo = Console.ReadKey(true);
         while (keyInfo.Key != ConsoleKey.Enter && keyInfo.Key != ConsoleKey.Spacebar)
@@ -183,15 +186,8 @@ public static class AdminBackEnd
 
         if (keyInfo.Key == ConsoleKey.Enter)
         {
-            // Logic to return to the main menu
             Console.WriteLine("Returning to the menu...");
-            // Call the main menu method here if available
-        }
-        else if (keyInfo.Key == ConsoleKey.Spacebar)
-        {
-            // Logic to change reservation details
-            Console.WriteLine("Going back to the barcode scanner...");
-            // Call the method to change reservation details here
+            Thread.Sleep(2000);
         }
     }
 
