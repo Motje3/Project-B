@@ -87,7 +87,7 @@ namespace MuseumTesting
             Guid tourId = Guid.NewGuid();
 
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(tourId, "John", "111"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(Guid.NewGuid(), "John", "111"));
 
             // Act
             tour.AddVisitor(visitor);
@@ -103,7 +103,7 @@ namespace MuseumTesting
             Guid tourId = Guid.NewGuid();
 
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(tourId, "John", "111"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(Guid.NewGuid(), "John", "111"));
             tour.AddVisitor(visitor);
 
             // Act
@@ -120,7 +120,7 @@ namespace MuseumTesting
             Guid tourId = Guid.NewGuid();
 
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(tourId, "John", "111"));
+            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(Guid.NewGuid(), "John", "111"));
             tour.AddVisitor(visitor);
             Tour.TodaysTours.Add(tour);
 
