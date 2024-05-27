@@ -77,8 +77,6 @@ public static class AdminBackEnd
             return;
         }
 
-        string amPmTime = tourStartTime.ToString("hh:mm tt"); // Convert to AM/PM format
-
         List<Guide> guides = Guide.AllGuides;
         if (guides == null || guides.Count == 0)
         {
@@ -87,20 +85,22 @@ public static class AdminBackEnd
             return;
         }
 
+        var uniqueGuides = guides.GroupBy(g => g.GuideId).Select(g => g.First()).ToList();
+
         Console.WriteLine("Choose a guide:");
-        for (int i = 0; i < guides.Count; i++)
+        for (int i = 0; i < uniqueGuides.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. {guides[i].Name}");
+            Console.WriteLine($"{i + 1}. {uniqueGuides[i].Name}");
         }
 
-        if (!int.TryParse(Console.ReadLine(), out int guideChoice) || guideChoice < 1 || guideChoice > guides.Count)
+        if (!int.TryParse(Console.ReadLine(), out int guideChoice) || guideChoice < 1 || guideChoice > uniqueGuides.Count)
         {
             Console.WriteLine("Invalid guide choice. Please select a valid guide number.\n");
             WaitForUser();
             return;
         }
 
-        Guide selectedGuide = guides[guideChoice - 1];
+        Guide selectedGuide = uniqueGuides[guideChoice - 1];
         Tour newTour = new Tour(Guid.NewGuid(), tourStartTime, 40, 20, false, false, selectedGuide);
         Tour.TodaysTours.Add(newTour);
         Tour.SaveTours();
