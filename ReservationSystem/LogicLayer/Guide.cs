@@ -5,7 +5,7 @@ namespace ReservationSystem;
 
 public class Guide
 {
-    public Guid GuideId { get; private set; }
+    public Guid GuideId { get; set; }
     public string Name { get; set; }
     public string Password { get; set; }
     [JsonIgnore]

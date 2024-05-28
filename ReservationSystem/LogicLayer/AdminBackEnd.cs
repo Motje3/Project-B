@@ -61,7 +61,7 @@ public static class AdminBackEnd
         }
     }
 
-    private static void AddTourForToday()
+    public static void AddTourForToday()
     {
         AdminMessages.ShowEnterTimePrompt();
         string time = Console.ReadLine();
@@ -101,7 +101,7 @@ public static class AdminBackEnd
         WaitForUser();
     }
 
-    private static void AddTourToStandardSchedule()
+    public static void AddTourToStandardSchedule()
     {
         AdminMessages.ShowEnterTimePrompt();
         string time = Console.ReadLine();
@@ -180,7 +180,7 @@ public static class AdminBackEnd
 
     public class GuideAssignment
     {
-        public Guid GuideId { get; set; }  // Change this to Guid to match GuideId in Guide class
+        public Guid GuideId { get; set; } 
         public string GuideName { get; set; }
         public string Password { get; set; }
         public List<TourAssignment> Tours { get; set; } = new List<TourAssignment>();
