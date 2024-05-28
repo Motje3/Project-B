@@ -46,7 +46,7 @@ public class Tour
         }
     }
 
-    private static void CreateToursForToday()
+    public static void CreateToursForToday()
     {
         dynamic settings = JsonConvert.DeserializeObject<dynamic>(File.ReadAllText(Tour.JsonTourSettingsPath));
         List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(Tour.JsonGuideAssignmentsPath));
