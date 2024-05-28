@@ -93,7 +93,7 @@ public static class AdminBackEnd
         }
 
         Guide selectedGuide = uniqueGuides[guideChoice - 1];
-        Tour newTour = new Tour(Guid.NewGuid(), tourStartTime, 40, 20, false, false, selectedGuide);
+        Tour newTour = new Tour(Guid.NewGuid(), tourStartTime, 40, 13, false, false, selectedGuide);
         TourTools.TodaysTours.Add(newTour);
         TourDataManager.SaveTours();
 
