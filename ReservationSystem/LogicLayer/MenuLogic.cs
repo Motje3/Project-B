@@ -29,7 +29,7 @@ public class MenuLogic
         while (!tourJoined)
         {
             // Display available tours
-            if (!Tour.ShowAvailableTours())
+            if (!TourTools.ShowAvailableTours())
             {
                 return false;
             }
@@ -42,7 +42,7 @@ public class MenuLogic
                 return false;
 
             // Get the list of available tours, ordered by StartTime
-            List<Tour> availableTours = Tour.TodaysTours
+            List<Tour> availableTours = TourTools.TodaysTours
                 .Where(tour => !tour.Started && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > Program.World.Now)
                 .OrderBy(tour => tour.StartTime)
                 .ToList();
@@ -52,7 +52,7 @@ public class MenuLogic
             {
                 Tour chosenTour = availableTours[tourNumber - 1];
                 chosenTour.AddVisitor(visitor);
-                Tour.SaveTours();
+                TourDataManager.SaveTours();
 
                 try { Console.Clear(); } catch { }
 
@@ -101,7 +101,7 @@ public class MenuLogic
         while (!tourChanged)
         {
             // Display available tours and allow user to choose
-            Tour.ShowAvailableTours();
+            TourTools.ShowAvailableTours();
 
             // Prompt the user to choose a tour
             string chosenTourNumber = ChangeTourRL.Show();
@@ -114,7 +114,7 @@ public class MenuLogic
 
 
             // Get the list of available tours, ordered by StartTime and only future tours
-            List<Tour> availableTours = Tour.TodaysTours
+            List<Tour> availableTours = TourTools.TodaysTours
                 .Where(tour => !tour.Started && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > DateTime.Now)
                 .OrderBy(tour => tour.StartTime)
                 .ToList();
@@ -123,7 +123,7 @@ public class MenuLogic
             if (int.TryParse(chosenTourNumber, out int tourNumber) && tourNumber > 0 && tourNumber <= availableTours.Count)
             {
                 Tour chosenTour = availableTours[tourNumber - 1];
-                Tour visitorsTour = Tour.FindTourByVisitorTicketCode(visitor.TicketCode);
+                Tour visitorsTour = TourTools.FindTourByVisitorTicketCode(visitor.TicketCode);
 
                 if (visitorsTour != null)
                 {
@@ -172,7 +172,7 @@ public class MenuLogic
 
     public static bool CancelTour(Visitor visitor)
     {
-        Tour visitorsTour = Tour.FindTourByVisitorTicketCode(visitor.TicketCode);
+        Tour visitorsTour = TourTools.FindTourByVisitorTicketCode(visitor.TicketCode);
 
         if (visitorsTour == null)
         {

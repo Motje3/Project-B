@@ -32,7 +32,7 @@ public class Guide
 
     public static void LoadGuides()
     {
-        string jsonGuideAssignmentsPath = Tour.JsonGuideAssignmentsPath;
+        string jsonGuideAssignmentsPath = TourTools.JsonGuideAssignmentsPath;
         if (!File.Exists(jsonGuideAssignmentsPath))
         {
             throw new FileNotFoundException("The guide assignments file does not exist.");
@@ -90,7 +90,7 @@ public class Guide
 
     public static void ViewPersonalTours(Guide guide)
     {
-        var upcomingTour = Tour.TodaysTours
+        var upcomingTour = TourTools.TodaysTours
             .Where(t => !t.Started && !t.Deleted && t.AssignedGuide.Name == guide.Name && t.StartTime > Program.World.Now)
             .OrderBy(t => t.StartTime)
             .FirstOrDefault();
@@ -106,7 +106,7 @@ public class Guide
         int tourNumber = 1;
         foreach (var tourId in guide.AssignedTourIds)
         {
-            var tour = Tour.TodaysTours.FirstOrDefault(t => t.TourId == tourId);
+            var tour = TourTools.TodaysTours.FirstOrDefault(t => t.TourId == tourId);
             bool tourInFuture = DateTime.Compare(tour.StartTime, Program.World.Now) == 1;
             if (tour != null && tourInFuture && tour.Started == false)
             {
@@ -123,7 +123,7 @@ public class Guide
 
     public static void ReassignGuideToTour()
     {
-        var sortedTours = Tour.TodaysTours
+        var sortedTours = TourTools.TodaysTours
         .Where(tour => !tour.Started && !tour.Deleted)
         .OrderBy(tour => tour.StartTime)
         .ToList();
@@ -131,18 +131,18 @@ public class Guide
         Program.World.WriteLine("Select the tour you want to reassign the guide for: \n");
         for (int i = 0; i < sortedTours.Count; i++)
         {
-            string formattedStartTime = Tour.TodaysTours[i].StartTime.ToString("HH:mm");
+            string formattedStartTime = TourTools.TodaysTours[i].StartTime.ToString("HH:mm");
             ColourText.WriteColored($"{i + 1}", " | ", ConsoleColor.Cyan);
-            Console.Write($"{Tour.TodaysTours[i].StartTime.ToShortDateString()} | Start Time: ");
+            Console.Write($"{TourTools.TodaysTours[i].StartTime.ToShortDateString()} | Start Time: ");
             ColourText.WriteColored("", formattedStartTime, ConsoleColor.Cyan);
-            Console.WriteLine($" | currently assigned to {Tour.TodaysTours[i].AssignedGuide?.Name ?? "No Guide"}");
+            Console.WriteLine($" | currently assigned to {TourTools.TodaysTours[i].AssignedGuide?.Name ?? "No Guide"}");
         }
 
         ColourText.WriteColored("\nEnter the ", "number", ConsoleColor.Cyan, " left of the tour to reassign: ");
 
         int tourIndex = Convert.ToInt32(Console.ReadLine()) - 1;
 
-        if (tourIndex < 0 || tourIndex >= Tour.TodaysTours.Count)
+        if (tourIndex < 0 || tourIndex >= TourTools.TodaysTours.Count)
         {
             Program.World.WriteLine("Invalid tour selection.");
             return;
@@ -172,14 +172,14 @@ public class Guide
             return;
         }
 
-        Tour.TodaysTours[tourIndex].AssignedGuide = Guide.AllGuides[guideIndex];
-        Tour.SaveTours();
+        TourTools.TodaysTours[tourIndex].AssignedGuide = Guide.AllGuides[guideIndex];
+        TourDataManager.SaveTours();
 
         try { Console.Clear(); } catch { }
         Program.World.Write("Guide ");
         ColourText.WriteColored("", Guide.AllGuides[guideIndex].Name, ConsoleColor.Blue);
         Program.World.Write(" has been successfully assigned to the tour at ");
-        ColourText.WriteColored("", Tour.TodaysTours[tourIndex].StartTime.ToString("HH:mm"), ConsoleColor.Cyan);
+        ColourText.WriteColored("", TourTools.TodaysTours[tourIndex].StartTime.ToString("HH:mm"), ConsoleColor.Cyan);
         Program.World.WriteLine(" o'clock.");
 
         Program.World.Write("Press ");
@@ -207,7 +207,7 @@ public class Guide
         // refresh TodaysTours data.
         // ussing method to filter specific conditions.
         // orderd by starttime.
-        var availableGuideTours = Tour.FilterByLambda(tour => tour.AssignedGuide.Name == this.Name
+        var availableGuideTours = TourDataManager.FilterByLambda(tour => tour.AssignedGuide.Name == this.Name
             && !tour.Started && !tour.Deleted
             && tour.ExpectedVisitors.Count < tour.MaxCapacity
             && tour.StartTime > DateTime.Now)
@@ -224,13 +224,13 @@ public class Guide
         Tour overwite = target;
 
         // loop trought todays tours and overwite. 
-        for (int index = 0; index < Tour.TodaysTours.Count; index++)
+        for (int index = 0; index < TourTools.TodaysTours.Count; index++)
         {
-            var tour = Tour.TodaysTours[index];
+            var tour = TourTools.TodaysTours[index];
             if (tour.TourId == target.TourId && tour.AssignedGuide.Name == this.Name)
             {
-                Tour.TodaysTours[index] = overwite;  // update the Tour with visitor added to Pressent Visitor
-                Tour.SaveTours();  // overwrite JSON with the visitor added to Tour 
+                TourTools.TodaysTours[index] = overwite;  // update the Tour with visitor added to Pressent Visitor
+                TourDataManager.SaveTours();  // overwrite JSON with the visitor added to Tour 
                 return tour;  // break out the method and send tourDetail to display aditional info for guide.
             }
         }
@@ -244,7 +244,7 @@ public class Guide
     {
         var currentTime = Program.World.Now;
 
-        var upcomingTour = Tour.TodaysTours
+        var upcomingTour = TourTools.TodaysTours
             .Where(t => !t.Started && !t.Deleted && t.AssignedGuide.Name == this.Name && t.StartTime > Program.World.Now)
             .OrderBy(t => t.StartTime)
             .FirstOrDefault();
@@ -280,7 +280,7 @@ public class Guide
             }
         }
         upcomingTour.Started = true;
-        Tour.SaveTours();
+        TourDataManager.SaveTours();
         try { Console.Clear(); } catch { }
         Program.World.WriteLine("Tour has been started successfully.");
         return true;

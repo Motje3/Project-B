@@ -81,7 +81,7 @@ namespace MuseumTesting
         public void AddVisitorLastMinuteTest()
         {
             // Arrange
-            Tour.SaveTours();
+            TourDataManager.SaveTours();
             Guid tourId1 = Guid.NewGuid();
             Guid tourId2 = Guid.NewGuid();
 
@@ -93,7 +93,7 @@ namespace MuseumTesting
             Visitor Carl = new Visitor("333");
 
             // Clear existing data
-            Tour.TodaysTours.Clear();
+            TourTools.TodaysTours.Clear();
             Guide.AllGuides.Clear();
 
             // Add guides to the list
@@ -108,9 +108,9 @@ namespace MuseumTesting
             var tour1 = new Tour(Guid.NewGuid(), new DateTime(date.Year, date.Month, date.Day, 22, 0, 0), 40, 13, false, false, John);
             var tour2 = new Tour(Guid.NewGuid(), new DateTime(date.Year, date.Month, date.Day, 23, 0, 0), 40, 13, false, false, Alice);
 
-            Tour.TodaysTours.Add(tour1);
-            Tour.TodaysTours.Add(tour2);
-            Tour.SaveTours();
+            TourTools.TodaysTours.Add(tour1);
+            TourTools.TodaysTours.Add(tour2);
+            TourDataManager.SaveTours();
 
             // Act
             John.AddVisitorLastMinute(Bob);
@@ -122,8 +122,8 @@ namespace MuseumTesting
             // Assert
             // John should have 2 presentvistors (tour1)
             // Alice should have 1 presentvistors (tour2)
-            Assert.AreEqual(2, Tour.TodaysTours[0].ExpectedVisitors.Count);
-            Assert.AreEqual(1, Tour.TodaysTours[1].ExpectedVisitors.Count);
+            Assert.AreEqual(2, TourTools.TodaysTours[0].ExpectedVisitors.Count);
+            Assert.AreEqual(1, TourTools.TodaysTours[1].ExpectedVisitors.Count);
         }
 
         [TestMethod]
@@ -131,7 +131,7 @@ namespace MuseumTesting
         {
             // Arrange
             var guide = new Guide(Guid.NewGuid(), "John", "111");
-            Tour.TodaysTours.Clear();
+            TourTools.TodaysTours.Clear();
 
             // Act
             var result = guide.StartUpcomingTour();
@@ -151,8 +151,8 @@ namespace MuseumTesting
             var visitor = new Visitor("444");
             var tour = new Tour(Guid.NewGuid(), DateTime.Now.AddMinutes(30), 40, 10, false, false, guide);
             tour.ExpectedVisitors.Add(visitor);
-            Tour.TodaysTours.Clear();
-            Tour.TodaysTours.Add(tour);
+            TourTools.TodaysTours.Clear();
+            TourTools.TodaysTours.Add(tour);
 
             using (var stringWriter = new StringWriter())
             {

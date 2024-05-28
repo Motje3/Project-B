@@ -27,7 +27,7 @@ namespace MuseumTesting
 
 
             var visitor = new Visitor("ABC123");
-            Tour.TodaysTours.Add(new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide(Guid.NewGuid(), "John", "111"))); // Ensure there is at least one tour to join
+            TourTools.TodaysTours.Add(new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide(Guid.NewGuid(), "John", "111"))); // Ensure there is at least one tour to join
 
             var input = new StringReader("1\n"); // Simulate choosing the first tour
             Console.SetIn(input);
@@ -39,10 +39,10 @@ namespace MuseumTesting
 
             // Assert
             Assert.IsTrue(result);
-            Assert.AreEqual(1, Tour.TodaysTours[0].ExpectedVisitors.Count); // Check if visitor was added
+            Assert.AreEqual(1, TourTools.TodaysTours[0].ExpectedVisitors.Count); // Check if visitor was added
 
             // Cleanup
-            Tour.TodaysTours.Clear();
+            TourTools.TodaysTours.Clear();
             Console.SetIn(Console.In);
             Console.SetOut(Console.Out);
         }
@@ -59,7 +59,7 @@ namespace MuseumTesting
             var output = new StringWriter();
             Console.SetOut(output);
 
-            Tour.TodaysTours.Add(new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide(Guid.NewGuid(), "John", "111"))); // Adding a sample tour
+            TourTools.TodaysTours.Add(new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide(Guid.NewGuid(), "John", "111"))); // Adding a sample tour
 
             // Act
             bool result = MenuLogic.JoinTour(visitor);
@@ -69,7 +69,7 @@ namespace MuseumTesting
             Assert.IsTrue(output.ToString().Contains("Invalid choice. please choose a valid tour number"));
 
             // Cleanup
-            Tour.TodaysTours.Clear(); // Resetting global state
+            TourTools.TodaysTours.Clear(); // Resetting global state
             Console.SetIn(Console.In); // Reset Console In
             Console.SetOut(Console.Out); // Reset Console Out
         }
@@ -85,7 +85,7 @@ namespace MuseumTesting
             var initialTour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide(Guid.NewGuid(), "John", "111"));
             var newTour = new Tour(Guid.NewGuid(), DateTime.Now.AddHours(2), 60, 30, false, false, new Guide(Guid.NewGuid(), "John", "111"));
             initialTour.AddVisitor(visitor);
-            Tour.TodaysTours.AddRange(new List<Tour> { initialTour, newTour });
+            TourTools.TodaysTours.AddRange(new List<Tour> { initialTour, newTour });
 
             var input = new StringReader("2\n"); // Simulate choosing the second tour to change to
             Console.SetIn(input);
@@ -100,7 +100,7 @@ namespace MuseumTesting
             Assert.IsFalse(initialTour.ExpectedVisitors.Contains(visitor));
 
             // Cleanup
-            Tour.TodaysTours.Clear();
+            TourTools.TodaysTours.Clear();
             Console.SetIn(Console.In);
             Console.SetOut(Console.Out);
         }
@@ -114,7 +114,7 @@ namespace MuseumTesting
             var visitor = new Visitor("ABC123");
             var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide(Guid.NewGuid(), "John", "111"));
             tour.AddVisitor(visitor);
-            Tour.TodaysTours.Add(tour);
+            TourTools.TodaysTours.Add(tour);
 
             var input = new StringReader(""); // No input needed for cancellation
             Console.SetIn(input);
@@ -129,7 +129,7 @@ namespace MuseumTesting
             Assert.IsFalse(tour.ExpectedVisitors.Contains(visitor)); // Ensure visitor was removed
 
             // Cleanup
-            Tour.TodaysTours.Clear();
+            TourTools.TodaysTours.Clear();
             Console.SetIn(Console.In);
             Console.SetOut(Console.Out);
         }

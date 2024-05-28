@@ -11,7 +11,7 @@ namespace MuseumTesting
         {
             try
             {
-                File.Delete(Tour.JsonFilePath);
+                File.Delete(TourTools.JsonFilePath);
             }
             catch (DirectoryNotFoundException )
             {
@@ -49,7 +49,7 @@ namespace MuseumTesting
             Assert.IsTrue(world.LinesWritten.Contains(" joined successfully!\n"));
 
             List<Tour> actualTours;
-            using (StreamReader reader = new(Tour.JsonFilePath))
+            using (StreamReader reader = new(TourTools.JsonFilePath))
             {
                 string content = reader.ReadToEnd();
                 actualTours = JsonConvert.DeserializeObject<List<Tour>>(content);
@@ -144,7 +144,7 @@ namespace MuseumTesting
             Program.Main();
 
             // Assert
-            List<Tour> availableTours = Tour.TodaysTours
+            List<Tour> availableTours = TourTools.TodaysTours
                 .Where(tour => !tour.Started && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > Program.World.Now)
                 .OrderBy(tour => tour.StartTime)
                 .ToList();

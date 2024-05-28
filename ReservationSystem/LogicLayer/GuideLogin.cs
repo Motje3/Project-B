@@ -76,7 +76,7 @@ public class GuideLoginMenu : View
                     string choice = TransferChoiceRL.ShowChoice();
                     if (choice == "Y" || choice == "Yes" || choice == "1")
                     {
-                        Tour tour = Tour.FindTourByVisitorTicketCode(visitor.TicketCode);
+                        Tour tour = TourTools.FindTourByVisitorTicketCode(visitor.TicketCode);
                         Visitor oldVisitor = tour.ExpectedVisitors.Where(v => v.TicketCode == ticketCode).ToList()[0];  // to grap old Visitor-Data for removal.
                         tour.RemoveVisitor(oldVisitor);  // Visitor removed from Expected Visitor
                         Tour tourDetail = guide.AddVisitorLastMinute(oldVisitor);  // tranfer visitor to next tour
@@ -119,7 +119,7 @@ public class GuideLoginMenu : View
 
     private static bool HasReservation(Visitor visitor)
     {
-        return Tour.TodaysTours.Any(tour => tour.ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode));  // checks TicketCode without the VisitorID object
+        return TourTools.TodaysTours.Any(tour => tour.ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode));  // checks TicketCode without the VisitorID object
     }
 }
 

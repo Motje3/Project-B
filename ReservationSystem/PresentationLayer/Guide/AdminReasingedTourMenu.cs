@@ -12,6 +12,6 @@ public class ReasingedTourMenu : View
     }
     public static void ShowAvailbleTour(int i, Tour tour)
     {
-        WriteLine($"{i + 1}. Tour at {Tour.TodaysTours[i].StartTime} currently assigned to {Tour.TodaysTours[i].AssignedGuide?.Name ?? "No Guide"}");
+        WriteLine($"{i + 1}. Tour at {TourTools.TodaysTours[i].StartTime} currently assigned to {TourTools.TodaysTours[i].AssignedGuide?.Name ?? "No Guide"}");
     }
 }
