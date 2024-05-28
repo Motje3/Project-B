@@ -43,7 +43,7 @@ public class MenuLogic
 
             // Get the list of available tours, ordered by StartTime
             List<Tour> availableTours = Tour.TodaysTours
-                .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > Program.World.Now)
+                .Where(tour => !tour.Started && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > Program.World.Now)
                 .OrderBy(tour => tour.StartTime)
                 .ToList();
 
@@ -107,15 +107,15 @@ public class MenuLogic
             string chosenTourNumber = ChangeTourRL.Show();
             // Early return for testing
             if (chosenTourNumber == "GETMEOUT")
-            { 
+            {
                 Reservation.ShowFullMenu(visitor);
-                return; 
+                return;
             }
-                
+
 
             // Get the list of available tours, ordered by StartTime and only future tours
             List<Tour> availableTours = Tour.TodaysTours
-                .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > DateTime.Now)
+                .Where(tour => !tour.Started && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > DateTime.Now)
                 .OrderBy(tour => tour.StartTime)
                 .ToList();
 

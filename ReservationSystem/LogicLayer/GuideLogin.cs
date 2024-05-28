@@ -25,20 +25,25 @@ public class GuideLoginMenu : View
 
     public static void ShowGuideMenu(Guide guide)
     {
+        try { Console.Clear(); } catch { }
         bool continueRunning = true;
         while (continueRunning)
         {
+            AccessPassed.WelcomeGuide(guide);
             string choice = GuideMenuRL.Show();
 
             switch (choice)
             {
                 case "1":
+                    try { Console.Clear(); } catch { }
                     Guide.ViewPersonalTours(guide);
                     break;
                 case "2":
+                    try { Console.Clear(); } catch { }
                     guide.StartUpcomingTour();
                     break;
                 case "3":
+                    try { Console.Clear(); } catch { }
                     AddVisitorLastMinuteValidation(guide);
                     break;
                 case "4":
@@ -47,8 +52,10 @@ public class GuideLoginMenu : View
                     break;
                 
                 default:
+                {
                     InvalidRL.Show();
                     break;
+                }
             }
         }
     }
@@ -75,6 +82,7 @@ public class GuideLoginMenu : View
                         Tour tourDetail = guide.AddVisitorLastMinute(oldVisitor);  // tranfer visitor to next tour
                         if (tourDetail != null)
                         {
+                            try { Console.Clear(); } catch { }
                             TransferSucces.Show(tourDetail);
                             return;
                         }
@@ -82,6 +90,7 @@ public class GuideLoginMenu : View
                     }
                     if (choice == "N" || choice == "No" || choice == "2")
                     {
+                        try { Console.Clear(); } catch { }
                         TransferCanceled.Show();
                         return; 
                     }

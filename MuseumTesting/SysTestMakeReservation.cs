@@ -145,7 +145,7 @@ namespace MuseumTesting
 
             // Assert
             List<Tour> availableTours = Tour.TodaysTours
-                .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > Program.World.Now)
+                .Where(tour => !tour.Started && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > Program.World.Now)
                 .OrderBy(tour => tour.StartTime)
                 .ToList();
             

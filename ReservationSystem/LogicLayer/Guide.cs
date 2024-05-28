@@ -90,16 +90,29 @@ public class Guide
 
     public static void ViewPersonalTours(Guide guide)
     {
+        var upcomingTour = Tour.TodaysTours
+            .Where(t => !t.Started && !t.Deleted && t.AssignedGuide.Name == guide.Name && t.StartTime > Program.World.Now)
+            .OrderBy(t => t.StartTime)
+            .FirstOrDefault();
+
+        if (guide.AssignedTourIds.Count == 0 || upcomingTour == null)
+        {
+            GuideHasNoMoreTours.Show();
+            return;
+        }
+
         Program.World.WriteLine($"Tours for {guide.Name}:\n");
 
         int tourNumber = 1;
         foreach (var tourId in guide.AssignedTourIds)
         {
             var tour = Tour.TodaysTours.FirstOrDefault(t => t.TourId == tourId);
-            if (tour != null)
+            bool tourInFuture = DateTime.Compare(tour.StartTime, Program.World.Now) == 1;
+            if (tour != null && tourInFuture && tour.Started == false)
             {
                 string formattedTime = tour.StartTime.ToString("HH:mm");
-                Program.World.WriteLine($"Tour {tourNumber} | Start Time: {formattedTime} ");
+                string date = DateOnly.FromDateTime(tour.StartTime).ToString();
+                Program.World.WriteLine($"Tour {tourNumber} | Date: {date} | Start Time: {formattedTime} | {tour.ExpectedVisitors.Count} reservations");
 
                 tourNumber++;
             }
@@ -111,7 +124,7 @@ public class Guide
     public static void ReassignGuideToTour()
     {
         var sortedTours = Tour.TodaysTours
-        .Where(tour => !tour.Completed && !tour.Deleted)
+        .Where(tour => !tour.Started && !tour.Deleted)
         .OrderBy(tour => tour.StartTime)
         .ToList();
         Console.Clear();
@@ -195,7 +208,7 @@ public class Guide
         // ussing method to filter specific conditions.
         // orderd by starttime.
         var availableGuideTours = Tour.FilterByLambda(tour => tour.AssignedGuide.Name == this.Name
-            && !tour.Completed && !tour.Deleted
+            && !tour.Started && !tour.Deleted
             && tour.ExpectedVisitors.Count < tour.MaxCapacity
             && tour.StartTime > DateTime.Now)
             .OrderBy(tour => tour.StartTime).ToList();
@@ -229,10 +242,10 @@ public class Guide
 
     public bool StartUpcomingTour()
     {
-        var currentTime = DateTime.Now;
+        var currentTime = Program.World.Now;
 
         var upcomingTour = Tour.TodaysTours
-            .Where(t => !t.Completed && !t.Deleted && t.AssignedGuide == this && t.StartTime > currentTime)
+            .Where(t => !t.Started && !t.Deleted && t.AssignedGuide.Name == this.Name && t.StartTime > Program.World.Now)
             .OrderBy(t => t.StartTime)
             .FirstOrDefault();
 
@@ -266,8 +279,9 @@ public class Guide
                 Program.World.WriteLine("Invalid ticket. Please try again or write 'Start' to begin the tour.");
             }
         }
-
+        upcomingTour.Started = true;
         Tour.SaveTours();
+        try { Console.Clear(); } catch { }
         Program.World.WriteLine("Tour has been started successfully.");
         return true;
     }

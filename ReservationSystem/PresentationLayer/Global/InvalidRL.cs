@@ -5,6 +5,7 @@ public class InvalidRL : View
 {
     public static void Show(string subMessage = "Please enter a valid option.")
     {
+        try { Console.Clear(); } catch { }
         Console.ForegroundColor = ConsoleColor.Red;
         Program.World.WriteLine("************************");
         Program.World.WriteLine("*    Invalid choice    *");

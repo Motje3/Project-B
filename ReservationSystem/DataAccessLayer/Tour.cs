@@ -9,7 +9,7 @@ public class Tour
     public int MaxCapacity { get; private set; }
     public List<Visitor> ExpectedVisitors { get; set; } = new List<Visitor>();
     public List<Visitor> PresentVisitors { get; set; } = new List<Visitor>();
-    public bool Completed { get; set; }
+    public bool Started { get; set; }
     public bool Deleted { get; set; }
     public Guide AssignedGuide { get; set; }
 
@@ -27,7 +27,7 @@ public class Tour
         EndTime = startTime.AddMinutes(duration);
         Duration = duration;
         MaxCapacity = maxCapacity;
-        Completed = completed;
+        Started = completed;
         Deleted = deleted;
         AssignedGuide = assignedGuide;
         assignedGuide.AssignedTourIds.Add(tourId);
@@ -85,7 +85,7 @@ public class Tour
     public static bool ShowAvailableTours()
     {
         var availableTours = TodaysTours
-            .Where(tour => !tour.Completed && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > Program.World.Now)
+            .Where(tour => !tour.Started && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > Program.World.Now)
             .OrderBy(tour => tour.StartTime)
             .ToList();
 
@@ -120,7 +120,7 @@ public class Tour
 
     public void AddVisitor(Visitor visitor)
     {
-        if (!Deleted && !Completed && ExpectedVisitors.Count < MaxCapacity && !ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode))
+        if (!Deleted && !Started && ExpectedVisitors.Count < MaxCapacity && !ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode))
         {
             ExpectedVisitors.Add(visitor);
             SaveTours();
@@ -137,7 +137,7 @@ public class Tour
 
     public void TransferVisitor(Visitor visitor, Tour targetTour)
     {
-        if (visitor != null && !Deleted && !Completed && targetTour != null && !targetTour.Deleted && !targetTour.Completed)
+        if (visitor != null && !Deleted && !Started && targetTour != null && !targetTour.Deleted && !targetTour.Started)
         {
             RemoveVisitor(visitor);
             targetTour.AddVisitor(visitor);
@@ -190,7 +190,7 @@ public class Tour
 
     // FilterByLamda is used filter on specific requirement, 
     // example ussage: var toursByAlice = TourFilter.FilterByLambda(t => t.AssignedGuide.Name == "Alice Johnson");
-    public static List<Tour> FilterByLambda(Func <Tour, bool> filter)  // this can be used for multiple purpeses where you need to sort it for specific required data
+    public static List<Tour> FilterByLambda(Func<Tour, bool> filter)  // this can be used for multiple purpeses where you need to sort it for specific required data
     {
         TodaysTours = JsonConvert.DeserializeObject<List<Tour>>(File.ReadAllText(JsonFilePath));
         var FilterdTours = TodaysTours.Where(filter).ToList();
