@@ -9,14 +9,7 @@ namespace MuseumTesting
         [TestCleanup]
         public void CleanUp()
         {
-            try
-            {
-                File.Delete(TourTools.JsonFilePath);
-            }
-            catch (DirectoryNotFoundException)
-            {
-
-            }
+            TourTools.TodaysTours.Clear();
         }
 
         [TestMethod]
