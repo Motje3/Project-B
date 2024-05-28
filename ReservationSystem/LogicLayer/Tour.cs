@@ -22,7 +22,7 @@ public class Tour
         Started = completed;
         Deleted = deleted;
         AssignedGuide = assignedGuide;
-        assignedGuide.AssignedTourIds.Add(tourId);
+        assignedGuide.AssignTour(tourId);
     }
 
     public void AddVisitor(Visitor visitor)
