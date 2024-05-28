@@ -27,7 +27,8 @@ public class Guide
         Name = name;
         Password = password;
         AssignedTourIds = assignedTourIds ?? new List<Guid>();
-        AllGuides.Add(this);
+        if (!AllGuides.Select(guide => guide.Name).Contains(name))
+            AllGuides.Add(this);
     }
 
     public static void LoadGuides()

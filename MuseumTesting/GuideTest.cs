@@ -9,9 +9,12 @@ namespace MuseumTesting
     {
         private const string GuideAssignmentsFilePath = "./JSON-Files/GuideAssignments.json";
 
+        // THIS TEST DOES NOT MAKE SENSE BECAUSE YOU DONT ADD A TOUR TO ANYTHING OR DO ANYTHING WITH tourId
+        /*
         [TestMethod]
         public void Constructor_WithTourId_AddsTourToAssignedTourIds()
         {
+            
             // Arrange
             var guidid = Guid.NewGuid();
             Guid tourId = Guid.NewGuid();
@@ -20,8 +23,9 @@ namespace MuseumTesting
             var guide = new Guide(guidid, "John", "111");
 
             // Assert
-            Assert.IsTrue(guide.AssignedTourIds.Contains(guidid));
+            Assert.IsTrue(guide.AssignedTourIds.Contains(tourId));
         }
+        */
 
         [TestMethod]
         public void AssignTour_WithNewTour_AddsTourToAssignedTourIds()
@@ -42,6 +46,8 @@ namespace MuseumTesting
         [TestMethod]
         public void LoadGuides_WithValidGuideAssignments_LoadsGuides()
         {
+            // Setup
+            Guide.AllGuides = new();
             // Arrange
             var guideAssignments = new List<dynamic>
             {

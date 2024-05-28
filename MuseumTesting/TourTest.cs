@@ -156,6 +156,7 @@ namespace MuseumTesting
         [TestMethod]
         public void LoadTours_LoadsToursFromFile()
         {
+            TourTools.TodaysTours = new();
             // Arrange
             var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(Guid.NewGuid(), "John", "111"));
             TourTools.TodaysTours.Add(tour);
