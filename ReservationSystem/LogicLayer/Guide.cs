@@ -101,6 +101,7 @@ public class Guide
             return;
         }
 
+        Console.WriteLine(guide.AssignedTourIds.Count);
         Program.World.WriteLine($"Tours for {guide.Name}:\n");
 
         int tourNumber = 1;
