@@ -1,9 +1,7 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+namespace MuseumTesting;
+
 using Newtonsoft.Json;
 using ReservationSystem;
-using System;
-using System.Collections.Generic;
-using System.IO;
 
 [TestClass]
 public class AdminBackEndTests
