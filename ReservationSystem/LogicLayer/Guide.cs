@@ -262,7 +262,7 @@ public class Guide
         Program.World.WriteLine($"Starting the Tour at {upcomingTour.StartTime}, before that, please scan the tickets for all the present visitors and once done, write 'Start' to start the tour.");
 
         string input;
-        while ((input = Console.ReadLine().ToLower()) != "start")
+        while ((input = Program.World.ReadLine().ToLower()) != "start")
         {
             var visitor = Visitor.FindVisitorByTicketCode(input);
 

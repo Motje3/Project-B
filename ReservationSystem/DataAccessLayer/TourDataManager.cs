@@ -5,7 +5,7 @@ public class TourDataManager
 {
     public static void SaveTours()
     {
-        File.WriteAllText(TourTools.JsonFilePath, JsonConvert.SerializeObject(TourTools.TodaysTours, Formatting.Indented));
+        Program.World.WriteAllText(TourTools.JsonFilePath, JsonConvert.SerializeObject(TourTools.TodaysTours, Formatting.Indented));
     }
 
     public static void LoadTours()
