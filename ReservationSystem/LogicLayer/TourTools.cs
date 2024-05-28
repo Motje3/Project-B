@@ -17,6 +17,11 @@ public class TourTools
         {
             TourDataManager.CreateToursForToday();
         }
+        // For system testing
+        catch(KeyNotFoundException)
+        {
+            TourDataManager.CreateToursForToday();
+        }
     }
 
     public static bool ShowAvailableTours()

@@ -16,6 +16,9 @@ public class Program
 
     public static string DeserialeTours() 
     {
-        return JsonConvert.SerializeObject(TourTools.TodaysTours);
+        string jsonGuideAssignmentsPath = TourTools.JsonGuideAssignmentsPath;
+        string jsonContent = Program.World.ReadAllText(jsonGuideAssignmentsPath);
+        List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(jsonContent);
+        return JsonConvert.SerializeObject(guideAssignments);
     }
 }
