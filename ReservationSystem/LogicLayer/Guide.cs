@@ -33,46 +33,49 @@ public class Guide
 
     public static void LoadGuides()
     {
-        string jsonGuideAssignmentsPath = TourTools.JsonGuideAssignmentsPath;
-        if (!File.Exists(jsonGuideAssignmentsPath))
+        try 
+        {
+            string jsonGuideAssignmentsPath = TourTools.JsonGuideAssignmentsPath;
+            string jsonContent = Program.World.ReadAllText(jsonGuideAssignmentsPath);
+            List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(jsonContent);
+
+            foreach (var guideEntry in guideAssignments)
+            {
+                string guideName = guideEntry.GuideName;
+                string guideIdStr = guideEntry.GuideId;
+                string password = guideEntry.Password;
+                Guid guideId;
+
+                if (string.IsNullOrWhiteSpace(guideIdStr))
+                {
+                    guideId = Guid.NewGuid();
+                    guideEntry.GuideId = guideId.ToString();
+                }
+                else
+                {
+                    guideId = Guid.Parse(guideIdStr);
+                }
+
+                if (!Guide.AllGuides.Any(g => g.Name == guideName))
+                {
+                    new Guide(guideId, guideName, password);
+                }
+                else
+                {
+                    var existingGuide = Guide.AllGuides.First(g => g.Name == guideName);
+                    existingGuide.GuideId = guideId;
+                    existingGuide.Password = password;
+                }
+            }
+
+            string updatedJsonContent = JsonConvert.SerializeObject(guideAssignments, Formatting.Indented);
+            Program.World.WriteAllText(jsonGuideAssignmentsPath, updatedJsonContent);
+        }
+        catch(FileNotFoundException)
         {
             throw new FileNotFoundException("The guide assignments file does not exist.");
         }
-
-        string jsonContent = File.ReadAllText(jsonGuideAssignmentsPath);
-        List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(jsonContent);
-
-        foreach (var guideEntry in guideAssignments)
-        {
-            string guideName = guideEntry.GuideName;
-            string guideIdStr = guideEntry.GuideId;
-            string password = guideEntry.Password;
-            Guid guideId;
-
-            if (string.IsNullOrWhiteSpace(guideIdStr))
-            {
-                guideId = Guid.NewGuid();
-                guideEntry.GuideId = guideId.ToString();
-            }
-            else
-            {
-                guideId = Guid.Parse(guideIdStr);
-            }
-
-            if (!Guide.AllGuides.Any(g => g.Name == guideName))
-            {
-                new Guide(guideId, guideName, password);
-            }
-            else
-            {
-                var existingGuide = Guide.AllGuides.First(g => g.Name == guideName);
-                existingGuide.GuideId = guideId;
-                existingGuide.Password = password;
-            }
-        }
-
-        string updatedJsonContent = JsonConvert.SerializeObject(guideAssignments, Formatting.Indented);
-        File.WriteAllText(jsonGuideAssignmentsPath, updatedJsonContent);
+        
     }
 
     public static Guide AuthenticateGuide(string password)

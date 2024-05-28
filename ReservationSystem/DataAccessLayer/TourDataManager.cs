@@ -10,7 +10,7 @@ public class TourDataManager
 
     public static void LoadTours()
     {
-        TourTools.TodaysTours = JsonConvert.DeserializeObject<List<Tour>>(File.ReadAllText(TourTools.JsonFilePath));
+        TourTools.TodaysTours = JsonConvert.DeserializeObject<List<Tour>>(Program.World.ReadAllText(TourTools.JsonFilePath));
 
         foreach (var tour in TourTools.TodaysTours)
         {

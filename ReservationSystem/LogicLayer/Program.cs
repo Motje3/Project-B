@@ -1,4 +1,5 @@
 ﻿namespace ReservationSystem;
+using Newtonsoft.Json;
 
 public class Program
 {
@@ -11,5 +12,10 @@ public class Program
 
         // Guide guide = new (Guid.NewGuid(),"John Doe", "11");
         // GuideLoginMenu.ShowGuideMenu(guide);
+    }
+
+    public static string DeserialeTours() 
+    {
+        return JsonConvert.SerializeObject(TourTools.TodaysTours);
     }
 }
