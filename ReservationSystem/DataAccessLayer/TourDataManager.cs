@@ -56,6 +56,7 @@ public class TourDataManager
                 }
             }
         }
+        TourTools.TodaysTours.Sort((x, y) => DateTime.Compare(x.StartTime, y.StartTime));
 
         SaveTours();
     }

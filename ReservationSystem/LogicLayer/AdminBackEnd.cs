@@ -43,9 +43,9 @@ public static class AdminBackEnd
     public static void AddNewGuidedTour()
     {
         Console.Clear();
-        Console.WriteLine("Add New Guided Tour:");
-        Console.WriteLine("1. Add a new guided tour for today");
-        Console.WriteLine("2. Add a new guided tour to the standard schedule");
+        Console.WriteLine("Add New Guided Tour:\n");
+        ColourText.WriteColoredLine("", "1 |", ConsoleColor.Cyan, " Add a new tour for today");
+        ColourText.WriteColoredLine("", "2 |", ConsoleColor.Cyan, " Add a new tour to the standard schedule");
 
         string choice = Console.ReadLine();
 
@@ -66,7 +66,7 @@ public static class AdminBackEnd
 
     private static void AddTourForToday()
     {
-        Console.Write("Enter time for the tour (hh:mm): ");
+        Console.Write("\nEnter time for the tour (hh:mm): ");
         string time = Console.ReadLine();
         DateTime tourStartTime;
 
@@ -90,7 +90,7 @@ public static class AdminBackEnd
         Console.WriteLine("Choose a guide:");
         for (int i = 0; i < uniqueGuides.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. {uniqueGuides[i].Name}");
+            Console.WriteLine($"{i + 1} | {uniqueGuides[i].Name}");
         }
 
         if (!int.TryParse(Console.ReadLine(), out int guideChoice) || guideChoice < 1 || guideChoice > uniqueGuides.Count)
@@ -101,11 +101,11 @@ public static class AdminBackEnd
         }
 
         Guide selectedGuide = uniqueGuides[guideChoice - 1];
-        Tour newTour = new Tour(Guid.NewGuid(), tourStartTime, 40, 20, false, false, selectedGuide);
+        Tour newTour = new Tour(Guid.NewGuid(), tourStartTime, 40, 13, false, false, selectedGuide);
         TourTools.TodaysTours.Add(newTour);
         TourDataManager.SaveTours();
 
-        Console.WriteLine("Tour added successfully for today.\n");
+        Console.WriteLine($"Tour added successfully at {newTour.StartTime} oclock for today!\n");
         WaitForUser();
     }
 
@@ -132,10 +132,10 @@ public static class AdminBackEnd
             return;
         }
 
-        Console.WriteLine("Choose a guide:");
+        Console.WriteLine("Choose a guide:\n");
         for (int i = 0; i < guides.Count; i++)
         {
-            Console.WriteLine($"{i + 1}. {guides[i].Name}");
+            Console.WriteLine($"{i + 1} | {guides[i].Name}");
         }
 
         if (!int.TryParse(Console.ReadLine(), out int guideChoice) || guideChoice < 1 || guideChoice > guides.Count)
@@ -168,7 +168,7 @@ public static class AdminBackEnd
         File.WriteAllText(TourTools.JsonGuideAssignmentsPath, JsonConvert.SerializeObject(guideAssignments, Formatting.Indented));
         TourDataManager.CreateToursForToday();
 
-        Console.WriteLine("Tour added successfully to the standard schedule.\n");
+        Console.WriteLine($"Tour at {time} oclock added successfully to the standard schedule.\n");
         WaitForUser();
     }
 
