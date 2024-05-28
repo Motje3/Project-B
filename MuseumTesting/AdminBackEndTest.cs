@@ -1,5 +1,9 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using ReservationSystem;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 [TestClass]
 public class AdminBackEndTests
@@ -53,7 +57,7 @@ public class AdminBackEndTests
 
         // Assert
         Assert.AreEqual(1, TourTools.TodaysTours.Count);
-        Assert.AreEqual("Guide 1", TourTools.TodaysTours[0].Guide.Name);
+        Assert.AreEqual("Guide 1", TourTools.TodaysTours[0].AssignedGuide.Name);
         Assert.AreEqual(new TimeSpan(10, 0, 0), TourTools.TodaysTours[0].StartTime.TimeOfDay);
     }
 
