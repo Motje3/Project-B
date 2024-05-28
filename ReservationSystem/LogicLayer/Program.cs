@@ -13,12 +13,4 @@ public class Program
         // Guide guide = new (Guid.NewGuid(),"John Doe", "11");
         // GuideLoginMenu.ShowGuideMenu(guide);
     }
-
-    public static string DeserialeTours() 
-    {
-        string jsonGuideAssignmentsPath = TourTools.JsonGuideAssignmentsPath;
-        string jsonContent = Program.World.ReadAllText(jsonGuideAssignmentsPath);
-        List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(jsonContent);
-        return JsonConvert.SerializeObject(guideAssignments);
-    }
 }
