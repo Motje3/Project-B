@@ -8,10 +8,10 @@ namespace MuseumTesting
         [TestCleanup]
         public void CleanUp()
         {
-            Tour.TodaysTours.Clear();
+            TourTools.TodaysTours.Clear();
             try
             {
-                File.Delete(Tour.JsonFilePath);
+                File.Delete(TourTools.JsonFilePath);
             }
             catch (DirectoryNotFoundException)
             {

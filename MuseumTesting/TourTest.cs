@@ -41,7 +41,7 @@ namespace MuseumTesting
             File.WriteAllText(guideAssignmentsPath, assignmentsJson);
 
             // Set the path for today's tours
-            toursPath = Tour.JsonFilePath;
+            toursPath = TourTools.JsonFilePath;
         }
 
         [ClassCleanup]
@@ -56,7 +56,7 @@ namespace MuseumTesting
         public void InitializeTours_WithExistingFile_LoadsTours()
         {
             // Arrange
-            string filePath = Tour.JsonFilePath;
+            string filePath = TourTools.JsonFilePath;
             // Prepare test data that matches the expected format
             string testData = "[{\"TourId\":\"" + Guid.NewGuid().ToString() + "\",\"StartTime\":\"" + DateTime.Now.ToString("s") + "\",\"Duration\":60,\"MaxCapacity\":30,\"Completed\":false,\"Deleted\":false,\"AssignedGuide\":{\"Name\":\"John Doe\"}}]";
             File.WriteAllText(filePath, testData);
@@ -64,11 +64,11 @@ namespace MuseumTesting
             try
             {
                 // Act
-                Tour.InitializeTours();
+                TourTools.InitializeTours();
 
                 // Assert
-                Assert.IsTrue(Tour.TodaysTours.Count > 0);
-                Assert.AreEqual(30, Tour.TodaysTours[0].MaxCapacity);
+                Assert.IsTrue(TourTools.TodaysTours.Count > 0);
+                Assert.AreEqual(30, TourTools.TodaysTours[0].MaxCapacity);
             }
             finally
             {
@@ -122,10 +122,10 @@ namespace MuseumTesting
             var visitor = new Visitor("ABC123");
             var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(Guid.NewGuid(), "John", "111"));
             tour.AddVisitor(visitor);
-            Tour.TodaysTours.Add(tour);
+            TourTools.TodaysTours.Add(tour);
 
             // Act
-            var foundTour = Tour.FindTourByVisitorTicketCode("ABC123");
+            var foundTour = TourTools.FindTourByVisitorTicketCode("ABC123");
 
             // Assert
             Assert.AreEqual(tour, foundTour);
@@ -136,20 +136,20 @@ namespace MuseumTesting
         {
             // Arrange
             var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(Guid.NewGuid(), "John", "111"));
-            Tour.TodaysTours.Add(tour);
+            TourTools.TodaysTours.Add(tour);
 
             // Act
-            Tour.SaveTours();
+            TourDataManager.SaveTours();
 
             // Assert
-            Assert.IsTrue(File.Exists(Tour.JsonFilePath));
-            var savedTours = JsonConvert.DeserializeObject<List<Tour>>(File.ReadAllText(Tour.JsonFilePath));
-            Assert.AreEqual(Tour.TodaysTours.Count, savedTours.Count);
+            Assert.IsTrue(File.Exists(TourTools.JsonFilePath));
+            var savedTours = JsonConvert.DeserializeObject<List<Tour>>(File.ReadAllText(TourTools.JsonFilePath));
+            Assert.AreEqual(TourTools.TodaysTours.Count, savedTours.Count);
 
             // Cleanup
-            if (File.Exists(Tour.JsonFilePath))
+            if (File.Exists(TourTools.JsonFilePath))
             {
-                File.Delete(Tour.JsonFilePath);
+                File.Delete(TourTools.JsonFilePath);
             }
         }
 
@@ -158,20 +158,20 @@ namespace MuseumTesting
         {
             // Arrange
             var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(Guid.NewGuid(), "John", "111"));
-            Tour.TodaysTours.Add(tour);
-            Tour.SaveTours();
+            TourTools.TodaysTours.Add(tour);
+            TourDataManager.SaveTours();
 
             // Act
-            Tour.LoadTours();
+            TourDataManager.LoadTours();
 
             // Assert
-            Assert.AreEqual(1, Tour.TodaysTours.Count);
-            Assert.AreEqual(tour.TourId, Tour.TodaysTours[0].TourId);
+            Assert.AreEqual(1, TourTools.TodaysTours.Count);
+            Assert.AreEqual(tour.TourId, TourTools.TodaysTours[0].TourId);
 
             // Cleanup
-            if (File.Exists(Tour.JsonFilePath))
+            if (File.Exists(TourTools.JsonFilePath))
             {
-                File.Delete(Tour.JsonFilePath);
+                File.Delete(TourTools.JsonFilePath);
             }
         }
 

@@ -8,10 +8,10 @@ namespace MuseumTesting
         [TestCleanup]
         public void CleanUp()
         {
-            Tour.TodaysTours.Clear();
+            TourTools.TodaysTours.Clear();
             try
             {
-                File.Delete(Tour.JsonFilePath);
+                File.Delete(TourTools.JsonFilePath);
             }
             catch (DirectoryNotFoundException)
             {
@@ -47,7 +47,7 @@ namespace MuseumTesting
             Program.World = world;
                 /* Making a resevertion that will have to be changed and logging out */
             Program.Main();
-            Tour tourBeforeTransfer = Tour.FindTourByVisitorTicketCode(visitorTicketCode);
+            Tour tourBeforeTransfer = TourTools.FindTourByVisitorTicketCode(visitorTicketCode);
 
             // Act
             Program.Main();
@@ -55,7 +55,7 @@ namespace MuseumTesting
             // Assert
             Assert.IsTrue(((FakeWorld)Program.World).LinesWritten.Contains("\nYou have successfully transferred to the new tour at "));
 
-            Tour tourAfterTransfer = Tour.FindTourByVisitorTicketCode(visitorTicketCode);
+            Tour tourAfterTransfer = TourTools.FindTourByVisitorTicketCode(visitorTicketCode);
             Assert.IsTrue(tourAfterTransfer.StartTime != tourBeforeTransfer.StartTime);
         }
 
@@ -87,7 +87,7 @@ namespace MuseumTesting
             Program.World = world;
                 /* Making a resevertion that will have to be changed and logging out */
             Program.Main();
-            Tour tourBeforeTransfer = Tour.FindTourByVisitorTicketCode(visitorTicketCode);
+            Tour tourBeforeTransfer = TourTools.FindTourByVisitorTicketCode(visitorTicketCode);
 
             // Act
             Program.Main();
@@ -95,7 +95,7 @@ namespace MuseumTesting
             // Assert
             Assert.IsTrue(((FakeWorld)Program.World).LinesWritten.Contains("*    Invalid choice    *"));
 
-            Tour tourAfterTransfer = Tour.FindTourByVisitorTicketCode(visitorTicketCode);
+            Tour tourAfterTransfer = TourTools.FindTourByVisitorTicketCode(visitorTicketCode);
             Assert.IsTrue(tourBeforeTransfer.StartTime == tourAfterTransfer.StartTime);
         }
     }
