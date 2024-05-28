@@ -102,8 +102,8 @@ public static class AdminBackEnd
 
         Guide selectedGuide = uniqueGuides[guideChoice - 1];
         Tour newTour = new Tour(Guid.NewGuid(), tourStartTime, 40, 20, false, false, selectedGuide);
-        Tour.TodaysTours.Add(newTour);
-        Tour.SaveTours();
+        TourTools.TodaysTours.Add(newTour);
+        TourDataManager.SaveTours();
 
         Console.WriteLine("Tour added successfully for today.\n");
         WaitForUser();
@@ -147,7 +147,7 @@ public static class AdminBackEnd
 
         Guide selectedGuide = guides[guideChoice - 1];
 
-        var guideAssignments = JsonConvert.DeserializeObject<List<GuideAssignment>>(File.ReadAllText(Tour.JsonGuideAssignmentsPath)) ?? new List<GuideAssignment>();
+        var guideAssignments = JsonConvert.DeserializeObject<List<GuideAssignment>>(File.ReadAllText(TourTools.JsonGuideAssignmentsPath)) ?? new List<GuideAssignment>();
         var guideEntry = guideAssignments.FirstOrDefault(ga => ga.GuideId == selectedGuide.GuideId);
 
         if (guideEntry != null)
@@ -165,8 +165,8 @@ public static class AdminBackEnd
             });
         }
 
-        File.WriteAllText(Tour.JsonGuideAssignmentsPath, JsonConvert.SerializeObject(guideAssignments, Formatting.Indented));
-        Tour.CreateToursForToday();
+        File.WriteAllText(TourTools.JsonGuideAssignmentsPath, JsonConvert.SerializeObject(guideAssignments, Formatting.Indented));
+        TourDataManager.CreateToursForToday();
 
         Console.WriteLine("Tour added successfully to the standard schedule.\n");
         WaitForUser();

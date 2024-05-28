@@ -13,19 +13,19 @@ public class Visitor
     // Checks if the visitor has a reservation in any of the current tours
     public bool HasReservation(Visitor visitor)
     {
-        return Tour.TodaysTours.Any(tour => tour.ExpectedVisitors.Contains(this));
+        return TourTools.TodaysTours.Any(tour => tour.ExpectedVisitors.Contains(this));
     }
 
     // Static method to find a visitor by ticket code in the list of current tours
     public static Visitor FindVisitorByTicketCode(string ticketCode)
     {
-        return Tour.TodaysTours.SelectMany(tour => tour.ExpectedVisitors).FirstOrDefault(visitor => visitor?.TicketCode == ticketCode);
+        return TourTools.TodaysTours.SelectMany(tour => tour.ExpectedVisitors).FirstOrDefault(visitor => visitor?.TicketCode == ticketCode);
     }
 
     public static string GetCurrentReservation(Visitor visitor)
     {
         // Find the tour that this visitor is part of by searching for the ticket code
-        var assignedTour = Tour.TodaysTours.FirstOrDefault(tour => tour.ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode));
+        var assignedTour = TourTools.TodaysTours.FirstOrDefault(tour => tour.ExpectedVisitors.Any(v => v.TicketCode == visitor.TicketCode));
 
         if (assignedTour != null)
         {

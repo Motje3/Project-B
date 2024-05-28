@@ -6,7 +6,7 @@ public class Program
     public static void Main()
     {
         Guide.LoadGuides();
-        Tour.InitializeTours();
+        TourTools.InitializeTours();
         Reservation.ValidateCodeAndShowMenu();
 
         // Guide guide = new (Guid.NewGuid(),"John Doe", "11");
