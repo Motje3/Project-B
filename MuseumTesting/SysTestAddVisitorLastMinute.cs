@@ -110,6 +110,8 @@ namespace MuseumTesting
                 }
             };
             Program.World = world;
+            List<Tour> toursBeforeTest = JsonConvert.DeserializeObject<List<Tour>>(world.Files[TourTools.JsonFilePath]);
+            Tour tourWithVisitorBefore = toursBeforeTest.Where(t => t.ExpectedVisitors.Select(v => v.TicketCode).Contains(visitorTicketCode)).FirstOrDefault();
 
             // Act
             Program.Main();
@@ -117,6 +119,10 @@ namespace MuseumTesting
             // Assert
             List<Tour> toursAfterTest = JsonConvert.DeserializeObject<List<Tour>>(world.Files[TourTools.JsonFilePath]);
             Tour tourWithGuide = toursAfterTest.Where(t => t.AssignedGuide.Password == guidePassword).FirstOrDefault();
+            Tour tourBeforeTransferAfter = toursAfterTest.Where(t => t.StartTime == tourWithVisitorBefore.StartTime).FirstOrDefault();
+
+            Assert.IsTrue(tourWithVisitorBefore.ExpectedVisitors.Count == 1);
+            Assert.IsTrue(tourBeforeTransferAfter.ExpectedVisitors.Count == 0);
 
             Assert.IsTrue(world.LinesWritten.Contains("\nVistor is already registerd for a tour,"));
 
@@ -148,17 +154,21 @@ namespace MuseumTesting
                 }
             };
             Program.World = world;
+            List<Tour> toursBeforeTest = JsonConvert.DeserializeObject<List<Tour>>(world.Files[TourTools.JsonFilePath]);
+            Tour tourWithVisitorBefore = toursBeforeTest.Where(t => t.ExpectedVisitors.Select(v => v.TicketCode).Contains(visitorTicketCode)).FirstOrDefault();
 
             // Act
             Program.Main();
 
             // Assert
             List<Tour> toursAfterTest = JsonConvert.DeserializeObject<List<Tour>>(world.Files[TourTools.JsonFilePath]);
-            Tour tourWithGuide = toursAfterTest.Where(t => t.AssignedGuide.Password == guidePassword).FirstOrDefault();
+            Tour tourWithGuideAfter = toursAfterTest.Where(t => t.AssignedGuide.Password == guidePassword).FirstOrDefault();
+            Tour tourBeforeTransferAfter = toursAfterTest.Where(t => t.StartTime == tourWithVisitorBefore.StartTime).FirstOrDefault();
 
-            //Assert.IsTrue(world.LinesWritten.Contains("\nVistor is already registerd for a tour,"));
+            Assert.IsTrue(tourWithVisitorBefore.ExpectedVisitors.Count == 1);
+            Assert.IsTrue(tourBeforeTransferAfter.ExpectedVisitors.Count == 1);
 
-            Assert.IsTrue(tourWithGuide.ExpectedVisitors.Count == 0);
+            Assert.IsTrue(tourWithGuideAfter.ExpectedVisitors.Count == 0);
 
             Assert.IsTrue(world.LinesWritten.Contains("\nVisitor tranfer is canceld"));
         }
