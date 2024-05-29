@@ -65,7 +65,20 @@ public class GuideLoginMenu : View
     private static void AddVisitorLastMinuteValidation(Guide guide)
     {
         string ticketCode = ScanVisitor.Show();
+
+        if (ticketCode == "Q")
+            return;
         Ticket.LoadTickets();
+        while(!Ticket.Tickets.Contains(ticketCode))
+        {
+            if (ticketCode == "Q")
+                return;
+            InvalidTicketCode.Show(ticketCode);
+            // Console.WriteLine($"The code ['{ticketCode}'] is invalid");
+            // Console.WriteLine("please provide a valid visitor ticketCode");
+            ticketCode = Program.World.ReadLine();
+        }
+
         if (Ticket.Tickets.Contains(ticketCode))
         {
             Visitor visitor = new Visitor(ticketCode);
@@ -113,9 +126,6 @@ public class GuideLoginMenu : View
                 return;
             }
         }
-        InvalidTicketCode.Show(ticketCode);
-        // Console.WriteLine($"The code ['{ticketCode}'] is invalid");
-        // Console.WriteLine("please provide a valid visitor ticketCode");
     }
 
     private static bool HasReservation(Visitor visitor)
