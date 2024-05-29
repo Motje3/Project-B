@@ -136,7 +136,7 @@ public class Guide
         for (int i = 0; i < sortedTours.Count; i++)
         {
             string formattedStartTime = TourTools.TodaysTours[i].StartTime.ToString("HH:mm");
-            ColourText.WriteColored($"{i + 1}", " | ", ConsoleColor.Cyan);
+            ColourText.WriteColored($"", $"{i + 1} | ", ConsoleColor.Cyan);
             Console.Write($"{TourTools.TodaysTours[i].StartTime.ToShortDateString()} | Start Time: ");
             ColourText.WriteColored("", formattedStartTime, ConsoleColor.Cyan);
             Console.WriteLine($" | currently assigned to {TourTools.TodaysTours[i].AssignedGuide?.Name ?? "No Guide"}");
@@ -161,7 +161,7 @@ public class Guide
 
         for (int i = 0; i < distinctGuides.Count; i++)
         {
-            ColourText.WriteColored($"{i + 1}", " | ", ConsoleColor.Cyan);
+            ColourText.WriteColored($"", $"{i + 1} | ", ConsoleColor.Cyan);
             Console.WriteLine($"{distinctGuides[i].Name}");
         }
 
@@ -186,7 +186,7 @@ public class Guide
         ColourText.WriteColored("", TourTools.TodaysTours[tourIndex].StartTime.ToString("HH:mm"), ConsoleColor.Cyan);
         Program.World.WriteLine(" o'clock.");
 
-        Program.World.Write("Press ");
+        Program.World.Write("\nPress ");
         ColourText.WriteColored("", "Enter", ConsoleColor.Cyan, " to return to Admin Menu or ");
         ColourText.WriteColored("", "Space", ConsoleColor.Cyan, " to return to Scanning Zone.");
         Console.WriteLine();
