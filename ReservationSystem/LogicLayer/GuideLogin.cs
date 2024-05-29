@@ -29,6 +29,7 @@ public class GuideLoginMenu : View
         bool continueRunning = true;
         while (continueRunning)
         {
+            
             AccessPassed.WelcomeGuide(guide);
             string choice = GuideMenuRL.Show();
 

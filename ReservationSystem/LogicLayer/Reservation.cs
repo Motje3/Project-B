@@ -20,13 +20,14 @@ public class Reservation : View
             {
                 return;
             }
-            if (userCode == "123")
+            if (userCode == "5544332211")
             {
                 AdminLoginMenu.ProcessLoginForm();
                 continue;
             }
-            else if (userCode == "456")
+            else if (userCode == "1122334455")
             {
+                try { Console.Clear(); } catch { }
                 GuideLoginMenu.ProcessLoginForm(userCode);
                 continue;
             }
