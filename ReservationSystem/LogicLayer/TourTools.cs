@@ -19,15 +19,17 @@ public class TourTools
         }
     }
 
-    public static bool ShowAvailableTours()
+    public static bool ShowAvailableTours(Visitor visitor)
     {
         var availableTours = TodaysTours
-            .Where(tour => !tour.Started && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > Program.World.Now)
+            .Where(tour => !tour.Started && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > Program.World.Now && !tour.ExpectedVisitors.Any(v => v.VisitorId == visitor.VisitorId))
             .OrderBy(tour => tour.StartTime)
             .ToList();
 
         if (availableTours.Any())
         {
+            ColourText.WriteColored("", "" + "  | Start Time | Duration (Minutes)| Remaining Spots \n", ConsoleColor.DarkCyan);
+            // Console.WriteLine("  | Start Time | Duration (Minutes)| Remaining Spots");
             for (int i = 0; i < availableTours.Count; i++)
             {
                 string formattedStartTime = availableTours[i].StartTime.ToString("HH:mm");
@@ -37,10 +39,10 @@ public class TourTools
                 ColourText.WriteColored("", tourNumber + " | ", ConsoleColor.Cyan);
 
                 // Print the start time in cyan
-                ColourText.WriteColored("Start Time: ", formattedStartTime, ConsoleColor.Yellow);
+                ColourText.WriteColored("", formattedStartTime, ConsoleColor.White);
 
                 // Print the rest of the text in default color
-                Console.WriteLine($" | Duration: {availableTours[i].Duration} minutes | Remaining Spots: {availableTours[i].MaxCapacity - availableTours[i].ExpectedVisitors.Count}");
+                Console.WriteLine($"      | {availableTours[i].Duration}                | {availableTours[i].MaxCapacity - availableTours[i].ExpectedVisitors.Count}");
 
             }
             return true;
