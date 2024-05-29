@@ -33,7 +33,7 @@ namespace MuseumTesting
                 },
                 LinesToRead = new()
                 {
-                    "456",guidePasswordInput,"Enter,","2",visitorTicketCode,"Start","4","GETMEOUT"
+                    "1122334455",guidePasswordInput,"Enter,","2",visitorTicketCode,"Start","4","GETMEOUT"
                 }
             };
             Program.World = world;
@@ -74,7 +74,7 @@ namespace MuseumTesting
                 },
                 LinesToRead = new()
                 {
-                    "456",guidePasswordInput,"Enter,","2",visitorTicketCode,visitorTicketCode,"Start","4","GETMEOUT"
+                    "1122334455",guidePasswordInput,"Enter,","2",visitorTicketCode,visitorTicketCode,"Start","4","GETMEOUT"
                 }
             };
             Program.World = world;
@@ -110,7 +110,7 @@ namespace MuseumTesting
                 },
                 LinesToRead = new()
                 {
-                    "456",guidePasswordInput,"Enter,","2",wrongCode,"Start","4","GETMEOUT"
+                    "1122334455",guidePasswordInput,"Enter,","2",wrongCode,"Start","4","GETMEOUT"
                 }
             };
             Program.World = world;
