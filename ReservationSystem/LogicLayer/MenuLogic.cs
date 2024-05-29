@@ -29,7 +29,7 @@ public class MenuLogic
         while (!tourJoined)
         {
             // Display available tours
-            if (!TourTools.ShowAvailableTours())
+            if (!TourTools.ShowAvailableTours(visitor))
             {
                 return false;
             }
@@ -101,7 +101,7 @@ public class MenuLogic
         while (!tourChanged)
         {
             // Display available tours and allow user to choose
-            TourTools.ShowAvailableTours();
+            TourTools.ShowAvailableTours(visitor);
 
             // Prompt the user to choose a tour
             string chosenTourNumber = ChangeTourRL.Show();
@@ -115,7 +115,7 @@ public class MenuLogic
 
             // Get the list of available tours, ordered by StartTime and only future tours
             List<Tour> availableTours = TourTools.TodaysTours
-                .Where(tour => !tour.Started && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > DateTime.Now)
+                .Where(tour => !tour.Started && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > DateTime.Now && !tour.ExpectedVisitors.Any(v => v.VisitorId == visitor.VisitorId))
                 .OrderBy(tour => tour.StartTime)
                 .ToList();
 

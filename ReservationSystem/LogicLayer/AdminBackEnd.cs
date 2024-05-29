@@ -104,6 +104,7 @@ public static class AdminBackEnd
         Tour newTour = new Tour(Guid.NewGuid(), tourStartTime, 40, 13, false, false, selectedGuide);
         TourTools.TodaysTours.Add(newTour);
         TourDataManager.SaveTours();
+        try { Console.Clear(); } catch { }
 
         Console.WriteLine($"Tour added successfully at {newTour.StartTime} oclock for today!\n");
         WaitForUser();
@@ -111,7 +112,7 @@ public static class AdminBackEnd
 
     private static void AddTourToStandardSchedule()
     {
-        Console.Write("Enter time for the tour (hh:mm): ");
+        Console.Write("Enter time for the new tour (hh:mm): ");
         string time = Console.ReadLine();
         DateTime tourStartTime;
 
@@ -167,6 +168,7 @@ public static class AdminBackEnd
 
         File.WriteAllText(TourTools.JsonGuideAssignmentsPath, JsonConvert.SerializeObject(guideAssignments, Formatting.Indented));
         TourDataManager.CreateToursForToday();
+        try { Console.Clear(); } catch { }
 
         Console.WriteLine($"Tour at {time} oclock added successfully to the standard schedule.\n");
         WaitForUser();
@@ -188,6 +190,8 @@ public static class AdminBackEnd
         {
             Console.WriteLine("Returning to the menu...");
             Thread.Sleep(2000);
+            try { Console.Clear(); } catch { }
+
         }
     }
 
