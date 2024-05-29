@@ -55,7 +55,7 @@ namespace MuseumTesting
             Assert.AreEqual("Your reservation has been cancelled  successfully\n", actualCancelMessage);
 
             Tour tourAfterCancel = TourTools.FindTourByVisitorTicketCode(visitorTicketCode);
-            Assert.IsTrue(tourAfterCancel.ExpectedVisitors.Count == 0);
+            Assert.IsTrue(tourAfterCancel == null);
         }
     }
 }
