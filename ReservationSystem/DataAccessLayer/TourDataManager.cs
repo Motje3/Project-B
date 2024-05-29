@@ -65,7 +65,7 @@ public class TourDataManager
     // example ussage: var toursByAlice = TourFilter.FilterByLambda(t => t.AssignedGuide.Name == "Alice Johnson");
     public static List<Tour> FilterByLambda(Func<Tour, bool> filter)  // this can be used for multiple purpeses where you need to sort it for specific required data
     {
-        TourTools.TodaysTours = JsonConvert.DeserializeObject<List<Tour>>(File.ReadAllText(TourTools.JsonFilePath));
+        TourTools.TodaysTours = JsonConvert.DeserializeObject<List<Tour>>(Program.World.ReadAllText(TourTools.JsonFilePath));
         var FilterdTours = TourTools.TodaysTours.Where(filter).ToList();
         return FilterdTours;
     }
