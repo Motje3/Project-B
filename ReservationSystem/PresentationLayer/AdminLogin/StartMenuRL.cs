@@ -15,16 +15,17 @@ public class StartMenuRL : View
 
         Console.ResetColor();
 
-        ColourText.WriteColored("1", " | ", ConsoleColor.Cyan);
+        ColourText.WriteColored("", "1 | ", ConsoleColor.Cyan);
         Console.WriteLine(" Assign a Different Guide to today's tours");
 
-        ColourText.WriteColored("2", " | ", ConsoleColor.Cyan);
+        ColourText.WriteColored("", "2 | ", ConsoleColor.Cyan);
         Console.WriteLine(" Edit the guided tours schedule");
 
-        ColourText.WriteColored("3", " | ", ConsoleColor.Cyan);
-        WriteLine(" Exit");
+        ColourText.WriteColored("", "3 | ", ConsoleColor.Cyan);
+        WriteLine(" Return to Scanning Zone");
 
-        Write("\nEnter your choice: ");
+        ColourText.WriteColored("\nEnter your ", "choice: ", ConsoleColor.Cyan);
+
         return ReadLine();
     }
 }

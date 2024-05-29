@@ -33,7 +33,7 @@ public class Guide
 
     public static void LoadGuides()
     {
-        try 
+        try
         {
             string jsonGuideAssignmentsPath = TourTools.JsonGuideAssignmentsPath;
             string jsonContent = Program.World.ReadAllText(jsonGuideAssignmentsPath);
@@ -71,11 +71,11 @@ public class Guide
             string updatedJsonContent = JsonConvert.SerializeObject(guideAssignments, Formatting.Indented);
             Program.World.WriteAllText(jsonGuideAssignmentsPath, updatedJsonContent);
         }
-        catch(FileNotFoundException)
+        catch (FileNotFoundException)
         {
             throw new FileNotFoundException("The guide assignments file does not exist.");
         }
-        
+
     }
 
     public static Guide AuthenticateGuide(string password)
@@ -128,18 +128,18 @@ public class Guide
     public static void ReassignGuideToTour()
     {
         var sortedTours = TourTools.TodaysTours
-        .Where(tour => !tour.Started && !tour.Deleted)
+        .Where(tour => !tour.Started && !tour.Deleted && tour.StartTime > Program.World.Now)
         .OrderBy(tour => tour.StartTime)
         .ToList();
-        Console.Clear();
+        try{Console.Clear();}catch{};
         Program.World.WriteLine("Select the tour you want to reassign the guide for: \n");
         for (int i = 0; i < sortedTours.Count; i++)
         {
-            string formattedStartTime = TourTools.TodaysTours[i].StartTime.ToString("HH:mm");
-            ColourText.WriteColored($"{i + 1}", " | ", ConsoleColor.Cyan);
-            Console.Write($"{TourTools.TodaysTours[i].StartTime.ToShortDateString()} | Start Time: ");
+            string formattedStartTime = sortedTours[i].StartTime.ToString("HH:mm");
+            ColourText.WriteColored($"", $"{i + 1} | ", ConsoleColor.Cyan);
+            Program.World.Write($"{sortedTours[i].StartTime.ToShortDateString()} | Start Time: ");
             ColourText.WriteColored("", formattedStartTime, ConsoleColor.Cyan);
-            Console.WriteLine($" | currently assigned to {TourTools.TodaysTours[i].AssignedGuide?.Name ?? "No Guide"}");
+            Program.World.WriteLine($" | currently assigned to {sortedTours[i].AssignedGuide?.Name ?? "No Guide"}");
         }
 
         ColourText.WriteColored("\nEnter the ", "number", ConsoleColor.Cyan, " left of the tour to reassign: ");
@@ -161,7 +161,7 @@ public class Guide
 
         for (int i = 0; i < distinctGuides.Count; i++)
         {
-            ColourText.WriteColored($"{i + 1}", " | ", ConsoleColor.Cyan);
+            ColourText.WriteColored($"", $"{i + 1} | ", ConsoleColor.Cyan);
             Console.WriteLine($"{distinctGuides[i].Name}");
         }
 
@@ -176,19 +176,19 @@ public class Guide
             return;
         }
 
-        TourTools.TodaysTours[tourIndex].AssignedGuide = Guide.AllGuides[guideIndex];
+        sortedTours[tourIndex].AssignedGuide = Guide.AllGuides[guideIndex];
         TourDataManager.SaveTours();
 
         try { Console.Clear(); } catch { }
         Program.World.Write("Guide ");
         ColourText.WriteColored("", Guide.AllGuides[guideIndex].Name, ConsoleColor.Blue);
         Program.World.Write(" has been successfully assigned to the tour at ");
-        ColourText.WriteColored("", TourTools.TodaysTours[tourIndex].StartTime.ToString("HH:mm"), ConsoleColor.Cyan);
+        ColourText.WriteColored("", sortedTours[tourIndex].StartTime.ToString("HH:mm"), ConsoleColor.Cyan);
         Program.World.WriteLine(" o'clock.");
 
-        Program.World.Write("Press ");
+        Program.World.Write("\nPress ");
         ColourText.WriteColored("", "Enter", ConsoleColor.Cyan, " to return to Admin Menu or ");
-        ColourText.WriteColored("", "Space", ConsoleColor.Cyan, " to close it.");
+        ColourText.WriteColored("", "Space", ConsoleColor.Cyan, " to return to Scanning Zone.");
         Console.WriteLine();
 
 
@@ -259,7 +259,7 @@ public class Guide
             return false;
         }
 
-        Program.World.WriteLine($"Starting the Tour at {upcomingTour.StartTime}, before that, please scan the tickets for all the present visitors and once done, write 'Start' to start the tour.");
+        Program.World.WriteLine($"Starting the Tour at {upcomingTour.StartTime.ToString("HH:mm")}.\nBefore that, please scan the tickets for all the present visitors and once done, write 'Start' to start the tour.");
 
         string input;
         while ((input = Program.World.ReadLine().ToLower()) != "start")

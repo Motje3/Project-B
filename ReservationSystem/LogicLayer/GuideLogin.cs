@@ -29,7 +29,7 @@ public class GuideLoginMenu : View
         bool continueRunning = true;
         while (continueRunning)
         {
-            
+
             AccessPassed.WelcomeGuide(guide);
             string choice = GuideMenuRL.Show();
 
@@ -51,12 +51,12 @@ public class GuideLoginMenu : View
                     continueRunning = false;
                     try { Console.Clear(); } catch { }
                     break;
-                
+
                 default:
-                {
-                    InvalidRL.Show();
-                    break;
-                }
+                    {
+                        InvalidRL.Show();
+                        break;
+                    }
             }
         }
     }
@@ -64,12 +64,18 @@ public class GuideLoginMenu : View
     // failed trasnfer messages is provided in guide.AddVisitorLastMinute(visitor)
     private static void AddVisitorLastMinuteValidation(Guide guide)
     {
+        List<Tour> tours = TourTools.TodaysTours.Where(t => t.AssignedGuide.Name == guide.Name && t.Started == false && t.StartTime > Program.World.Now).ToList();
+        if (tours.Count == 0)
+        {
+            Program.World.WriteLine("You have no more tours today!");
+            return;
+        }
         string ticketCode = ScanVisitor.Show();
 
         if (ticketCode == "Q")
             return;
         Ticket.LoadTickets();
-        while(!Ticket.Tickets.Contains(ticketCode))
+        while (!Ticket.Tickets.Contains(ticketCode))
         {
             if (ticketCode == "Q")
                 return;
@@ -106,7 +112,7 @@ public class GuideLoginMenu : View
                     {
                         try { Console.Clear(); } catch { }
                         TransferCanceled.Show();
-                        return; 
+                        return;
                     }
                     else
                     {
@@ -134,4 +140,4 @@ public class GuideLoginMenu : View
     }
 }
 
-        
+

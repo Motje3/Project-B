@@ -27,7 +27,7 @@ public class EditCurrTourMenuRL : View
         Console.ForegroundColor = ConsoleColor.Cyan;
         Write("3 | ");
         Console.ForegroundColor = originalColor; // Reset to the original color
-        WriteLine("Return to Main Menu");
+        WriteLine("Return to Scanning Zone");
 
         Write("\nEnter your choice: ");
         return ReadLine();  // choice

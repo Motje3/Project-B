@@ -4,6 +4,6 @@ public class AccessFailed : View
 {
     public static void Show()
     {
-        WriteLine("\nAccess Denied. Invalid username or password.\n");
+        ColourText.WriteColoredLine("\n", "Access Denied. ", ConsoleColor.DarkRed, "Invalid username or password.\n");
     }
 }
