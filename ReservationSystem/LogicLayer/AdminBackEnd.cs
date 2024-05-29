@@ -178,7 +178,7 @@ public static class AdminBackEnd
     {
         Thread.Sleep(2000); // Pause for 2 seconds
 
-        ColourText.WriteColoredLine("| Press ", "Space", ConsoleColor.Cyan, " to go back to the Menu");
+        ColourText.WriteColoredLine("| Press ", "Space", ConsoleColor.Cyan, " to go back to Scanning Zone\n");
 
         ConsoleKeyInfo keyInfo = Console.ReadKey(true);
         while (keyInfo.Key != ConsoleKey.Enter && keyInfo.Key != ConsoleKey.Spacebar)
@@ -188,10 +188,7 @@ public static class AdminBackEnd
 
         if (keyInfo.Key == ConsoleKey.Enter)
         {
-            Console.WriteLine("Returning to the menu...");
-            Thread.Sleep(2000);
             try { Console.Clear(); } catch { }
-
         }
     }
 

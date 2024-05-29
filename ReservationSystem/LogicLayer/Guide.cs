@@ -188,7 +188,7 @@ public class Guide
 
         Program.World.Write("Press ");
         ColourText.WriteColored("", "Enter", ConsoleColor.Cyan, " to return to Admin Menu or ");
-        ColourText.WriteColored("", "Space", ConsoleColor.Cyan, " to close it.");
+        ColourText.WriteColored("", "Space", ConsoleColor.Cyan, " to return to Scanning Zone.");
         Console.WriteLine();
 
 
@@ -259,7 +259,7 @@ public class Guide
             return false;
         }
 
-        Program.World.WriteLine($"Starting the Tour at {upcomingTour.StartTime}, before that, please scan the tickets for all the present visitors and once done, write 'Start' to start the tour.");
+        Program.World.WriteLine($"Starting the Tour at {upcomingTour.StartTime.ToString("HH:mm")}.\nBefore that, please scan the tickets for all the present visitors and once done, write 'Start' to start the tour.");
 
         string input;
         while ((input = Program.World.ReadLine().ToLower()) != "start")
