@@ -9,11 +9,16 @@ public class TourTools
 
     public static void InitializeTours()
     {
-        if (File.Exists(JsonFilePath))
+        try
         {
             TourDataManager.LoadTours();
         }
-        else
+        catch(FileNotFoundException)
+        {
+            TourDataManager.CreateToursForToday();
+        }
+        // For system testing
+        catch(KeyNotFoundException)
         {
             TourDataManager.CreateToursForToday();
         }

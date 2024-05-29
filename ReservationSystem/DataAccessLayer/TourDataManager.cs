@@ -5,12 +5,12 @@ public class TourDataManager
 {
     public static void SaveTours()
     {
-        File.WriteAllText(TourTools.JsonFilePath, JsonConvert.SerializeObject(TourTools.TodaysTours, Formatting.Indented));
+        Program.World.WriteAllText(TourTools.JsonFilePath, JsonConvert.SerializeObject(TourTools.TodaysTours, Formatting.Indented));
     }
 
     public static void LoadTours()
     {
-        TourTools.TodaysTours = JsonConvert.DeserializeObject<List<Tour>>(File.ReadAllText(TourTools.JsonFilePath));
+        TourTools.TodaysTours = JsonConvert.DeserializeObject<List<Tour>>(Program.World.ReadAllText(TourTools.JsonFilePath));
 
         foreach (var tour in TourTools.TodaysTours)
         {
@@ -28,8 +28,8 @@ public class TourDataManager
 
     public static void CreateToursForToday()
     {
-        dynamic settings = JsonConvert.DeserializeObject<dynamic>(File.ReadAllText(TourTools.JsonTourSettingsPath));
-        List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(File.ReadAllText(TourTools.JsonGuideAssignmentsPath));
+        dynamic settings = JsonConvert.DeserializeObject<dynamic>(Program.World.ReadAllText(TourTools.JsonTourSettingsPath));
+        List<dynamic> guideAssignments = JsonConvert.DeserializeObject<List<dynamic>>(Program.World.ReadAllText(TourTools.JsonGuideAssignmentsPath));
 
         DateTime startTime = Program.World.Today.Add(TimeSpan.Parse((string)settings.StartTime));
         DateTime endTime = Program.World.Today.Add(TimeSpan.Parse((string)settings.EndTime));

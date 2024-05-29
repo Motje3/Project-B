@@ -13,12 +13,12 @@ namespace MuseumTesting
             {
                 File.Delete(TourTools.JsonFilePath);
             }
-            catch (DirectoryNotFoundException )
+            catch (DirectoryNotFoundException)
             {
 
             }
         }
-        
+
         [TestMethod]
         public void TestVisitorMakeReservationMenuSucceful()
         {
@@ -48,12 +48,8 @@ namespace MuseumTesting
             // Assert
             Assert.IsTrue(world.LinesWritten.Contains(" joined successfully!\n"));
 
-            List<Tour> actualTours;
-            using (StreamReader reader = new(TourTools.JsonFilePath))
-            {
-                string content = reader.ReadToEnd();
-                actualTours = JsonConvert.DeserializeObject<List<Tour>>(content);
-            }
+            List<Tour> actualTours = JsonConvert.DeserializeObject<List<Tour>>(world.Files["./JSON-Files/Tours-20240601.json"]);
+
             Tour chosenTour = actualTours[int.Parse(tourChoice) - 1];
             Assert.IsTrue(chosenTour.ExpectedVisitors[0].TicketCode == visitorTicketCode);
         }
@@ -148,7 +144,7 @@ namespace MuseumTesting
                 .Where(tour => !tour.Started && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > Program.World.Now)
                 .OrderBy(tour => tour.StartTime)
                 .ToList();
-            
+
             int amountToursRightNow = availableTours.Count;
             int expectedToursPrinted = amountToursRightNow * linesPrintedPerTour;
 
