@@ -44,10 +44,6 @@ public class GuideLoginMenu : View
                     StartUpcomingTour(guide);
                     break;
                 case "3":
-                    try { Console.Clear(); } catch { }
-                    AddVisitorLastMinuteValidation(guide);
-                    break;
-                case "4":
                     continueRunning = false;
                     try { Console.Clear(); } catch { }
                     break;
@@ -89,82 +85,90 @@ public class GuideLoginMenu : View
             
             try { Console.Clear(); }catch{}
 
-            var ticket = Visitor.FindVisitorByTicketCode(input);
+            var ticket = upcomingTour.ExpectedVisitors.Select(v => v.TicketCode).Where(t => t == input).FirstOrDefault();
 
             if (ticket != null)
             {
-                if (!upcomingTour.PresentVisitors.Any(v => v.TicketCode == ticket.TicketCode))
+                if (!upcomingTour.PresentVisitors.Any(v => v.TicketCode == ticket))
                 {
-                    upcomingTour.PresentVisitors.Add(ticket);
+                    Visitor visitorWithTicket = upcomingTour.ExpectedVisitors.Where(v => v.TicketCode == ticket).FirstOrDefault();
+                    upcomingTour.PresentVisitors.Add(visitorWithTicket);
                     SoundsPlayer.PlaySound(SoundsPlayer.SoundFile.ChceckIn);
                     TourDataManager.SaveTours();
                 }
                 else
-                    GuideHasAlreadyCheckedInVisitor.Show();
+                    GuideHasAlreadyCheckedInVisitor.Show(ticket);
             }
             else if (input != "start")
                 GuideScannedInvalidTicket.Show();
         }
 
+        try { Console.Clear(); } catch { }
+        AddVisitorLastMinuteValidation(guide, upcomingTour);
+
         upcomingTour.Started = true;
         TourDataManager.SaveTours();
+
         try { Console.Clear(); } catch { }
-        Program.World.WriteLine("Tour has been started successfully.");
+        GuideHasSuccesfullyStartedTour.Show(upcomingTour);
         return true;
     }
 
     // failed trasnfer messages is provided in guide.AddVisitorLastMinute(visitor)
-    private static void AddVisitorLastMinuteValidation(Guide guide)
+    private static void AddVisitorLastMinuteValidation(Guide guide, Tour upcomingTour)
     {
-        List<Tour> tours = TourTools.TodaysTours.Where(t => t.AssignedGuide.Name == guide.Name && t.Started == false && t.StartTime > Program.World.Now).ToList();
-        if (tours.Count == 0)
-        {
-            Program.World.WriteLine("You have no more tours today!");
-            return;
-        }
-        string ticketCode = ScanVisitor.Show();
-
-        if (ticketCode == "Q")
-            return;
         Ticket.LoadTickets();
-        while (!Ticket.Tickets.Contains(ticketCode))
-        {
-            if (ticketCode == "Q")
-                return;
-            InvalidTicketCode.Show(ticketCode);
-            // Console.WriteLine($"The code ['{ticketCode}'] is invalid");
-            // Console.WriteLine("please provide a valid visitor ticketCode");
-            ticketCode = Program.World.ReadLine();
-        }
 
-        if (Ticket.Tickets.Contains(ticketCode))
+        string ticketCode = "";
+        while (ticketCode != "start")
         {
+            GuideAddingVisitorLastMinute.Show();
+            ticketCode = Program.World.ReadLine().ToLower();
+
+            if (ticketCode == "start")
+                return;
+
+            if (!Ticket.Tickets.Contains(ticketCode))
+            { 
+                InvalidTicketCode.Show(ticketCode);
+                continue; 
+            }
+            
+            if (upcomingTour.PresentVisitors.Select(v => v.TicketCode).Any(t => t == ticketCode))
+            {
+                try { Console.Clear(); }catch{}
+                GuideHasAlreadyCheckedInVisitor.Show(ticketCode);
+                continue;
+            }
+
             Visitor visitor = new Visitor(ticketCode);
+
             if (HasReservation(visitor))  // check if visitor already has reservation
             {
-                TransferChoiceRL.ShowMessage();
+                string choice = "";
                 while (true)
                 {
-                    string choice = TransferChoiceRL.ShowChoice();
+                    TransferChoiceRL.ShowMessage();
+                    TransferChoiceRL.ShowChoice();
+                    
+                    choice = Program.World.ReadLine();
                     if (choice == "Y" || choice == "Yes" || choice == "1")
-                    {
+                    {  
                         Tour tour = TourTools.FindTourByVisitorTicketCode(visitor.TicketCode);
                         Visitor oldVisitor = tour.ExpectedVisitors.Where(v => v.TicketCode == ticketCode).ToList()[0];  // to grap old Visitor-Data for removal.
                         tour.RemoveVisitor(oldVisitor);  // Visitor removed from Expected Visitor
-                        Tour tourDetail = guide.AddVisitorLastMinute(oldVisitor);  // tranfer visitor to next tour
-                        if (tourDetail != null)
-                        {
-                            try { Console.Clear(); } catch { }
-                            TransferSucces.Show(tourDetail);
-                            return;
-                        }
-                        return;
+                        upcomingTour.PresentVisitors.Add(oldVisitor);  // tranfer visitor to next tour
+                        TourDataManager.SaveTours();
+                        
+                        try { Console.Clear(); } catch { }
+                        TransferSucces.Show(oldVisitor, upcomingTour);
+                        break;
                     }
                     if (choice == "N" || choice == "No" || choice == "2")
                     {
                         try { Console.Clear(); } catch { }
                         TransferCanceled.Show();
-                        return;
+                        break;
                     }
                     else
                     {
@@ -175,13 +179,11 @@ public class GuideLoginMenu : View
             }
             else  // Add visitor automaticly if it has no reservation
             {
-                Tour tourDetail = guide.AddVisitorLastMinute(visitor);  // futher message provided in AddVisitorLastMinute method if null.
-                if (tourDetail != null)
-                {
-                    TransferSucces.Show(tourDetail);
-                    return;
-                }
-                return;
+                upcomingTour.PresentVisitors.Add(visitor);  // futher message provided in AddVisitorLastMinute method if null.
+                TourDataManager.SaveTours();
+
+                try { Console.Clear(); } catch { }
+                TransferSucces.Show(visitor, upcomingTour);
             }
         }
     }
