@@ -285,7 +285,7 @@ public class Guide
                 else
                     GuideHasAlreadyCheckedInVisitor.Show();
             }
-            else
+            else if (input != "start")
                 GuideScannedInvalidTicket.Show();
         }
 

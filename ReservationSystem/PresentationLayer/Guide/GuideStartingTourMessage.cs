@@ -32,7 +32,7 @@ public class GuideStartingTourMessage : View
 
         Write("Currently the following tickets have been scanned: ");
         Console.ForegroundColor = ConsoleColor.Cyan;
-        Write($"[ {String.Join(", ",upcomingTour.PresentVisitors.Select(v => v.TicketCode))} ]");
+        Write($"[ {string.Join(", ",upcomingTour.PresentVisitors.Select(v => v.TicketCode))} ]");
         Console.ResetColor();
         WriteLine("");
     }
