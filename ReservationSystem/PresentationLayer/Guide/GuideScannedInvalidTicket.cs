@@ -5,12 +5,12 @@ public class GuideScannedInvalidTicket : View
     public static void Show()
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Write("Invalid ticket.");
-        Write($"Please, write '");
+        Write("Invalid ticket. ");
+        Write($"Please write '");
         Console.ForegroundColor = ConsoleColor.Cyan;
         Write($"Start");
         Console.ForegroundColor = ConsoleColor.Red;
-        Write("' to start the tour. Or '");
+        Write("' to start the tour, or '");
         Console.ForegroundColor = ConsoleColor.Cyan;
         Write("Q");
         Console.ForegroundColor = ConsoleColor.Red;

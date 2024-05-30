@@ -4,17 +4,16 @@ public class TransferChoiceRL : View
 {
     public static void ShowMessage()
     {
-        WriteLine("\nVistor is already registerd for a tour,");
-        WriteLine("Would you like to transfer the tour? ");
+        WriteLine("\nVistor already has a reservation,");
+        WriteLine("Would you like to transfer their reservation? ");
     }
 
-    public static string ShowChoice()
+    public static void ShowChoice()
     {
         WriteLine("\n1 | Yes");
         WriteLine("2 | No");
 
         Write("\nEnter your choice: ");
-        return ReadLine();
     }
 }
 

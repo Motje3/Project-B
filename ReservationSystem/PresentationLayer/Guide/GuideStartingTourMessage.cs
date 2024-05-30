@@ -16,21 +16,18 @@ public class GuideStartingTourMessage : View
         WriteLine("");
 
 
-        Write($"Before that, please scan the tickets for all the present visitors and once done, write ");
+        Write($"\nBefore that, please scan the tickets for all the present visitors\nAnd once done, write '");
         Console.ForegroundColor = ConsoleColor.Cyan;
-        Write($"'Start'");
+        Write($"Start");
         Console.ResetColor();
-        Write(" to start the tour.");
+        Write("' to continue to next menu, or '");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Write("Q");
+        Console.ResetColor();
+        Write("' to go back to previous menu");
         WriteLine("");
 
-        Write("Or ");
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Write("'Q'");
-        Console.ResetColor();
-        Write(" to go back to previous menu");
-        WriteLine("");
-
-        Write("Currently the following tickets have been scanned: ");
+        Write("\nCurrently the following tickets have been scanned: ");
         Console.ForegroundColor = ConsoleColor.Cyan;
         Write($"[ {string.Join(", ",upcomingTour.PresentVisitors.Select(v => v.TicketCode))} ]");
         Console.ResetColor();
