@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Windows.Extensions" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <Content Include="*.*" 
     CopyToOutputDirectory="PreserveNewest" />
@@ -18,6 +19,7 @@
     <Content Include= "PresentationLayer/*.*" CopyToOutputDirectory="PreserveNewest" />
     <Content Include= "LogicLayer/*.*" CopyToOutputDirectory="PreserveNewest" />
     <Content Include= "JSON-Files/*.*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include= "Sounds/*.*" CopyToOutputDirectory="PreserveNewest" />
     <Content Include= "PresentationLayer/Reservation/*.*" CopyToOutputDirectory="PreserveNewest" />
     <Content Include= "PresentationLayer/AdminLogin/*.*" CopyToOutputDirectory="PreserveNewest" />
     <Content Include= "PresentationLayer/Global/*.*" CopyToOutputDirectory="PreserveNewest" />
