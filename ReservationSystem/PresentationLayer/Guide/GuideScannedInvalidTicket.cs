@@ -16,6 +16,7 @@ public class GuideScannedInvalidTicket : View
         Console.ForegroundColor = ConsoleColor.Red;
         Write("' to go back to previous menu");
         WriteLine("");
+        WriteLine("");
         Console.ResetColor();
         SoundsPlayer.PlaySound(SoundsPlayer.SoundFile.WrongInput);
     }
