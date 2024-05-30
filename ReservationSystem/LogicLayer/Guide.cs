@@ -1,6 +1,6 @@
-using System.Runtime;
 using Newtonsoft.Json;
-using ReservationSystem;
+using System.Media;
+
 namespace ReservationSystem;
 
 public class Guide
@@ -246,9 +246,7 @@ public class Guide
 
     public bool StartUpcomingTour()
     {
-        var currentTime = Program.World.Now;
-
-        var upcomingTour = TourTools.TodaysTours
+        Tour? upcomingTour = TourTools.TodaysTours
             .Where(t => !t.Started && !t.Deleted && t.AssignedGuide.Name == this.Name && t.StartTime > Program.World.Now)
             .OrderBy(t => t.StartTime)
             .FirstOrDefault();
@@ -259,30 +257,38 @@ public class Guide
             return false;
         }
 
-        Program.World.WriteLine($"Starting the Tour at {upcomingTour.StartTime.ToString("HH:mm")}.\nBefore that, please scan the tickets for all the present visitors and once done, write 'Start' to start the tour.");
-
-        string input;
-        while ((input = Program.World.ReadLine().ToLower()) != "start")
+        string input = "";
+        while (input != "start")
         {
-            var visitor = Visitor.FindVisitorByTicketCode(input);
+            GuideStartingTourMessage.Show(upcomingTour);
+            input = Program.World.ReadLine().ToLower();
+            
+            // Early return for going back
+            if (input == "q")
+            { 
+                try { Console.Clear(); }catch{}
+                return false;
+            }
+            
+            try { Console.Clear(); }catch{}
 
-            if (visitor != null)
+            var ticket = Visitor.FindVisitorByTicketCode(input);
+
+            if (ticket != null)
             {
-                if (!upcomingTour.PresentVisitors.Any(v => v.TicketCode == visitor.TicketCode))
+                if (!upcomingTour.PresentVisitors.Any(v => v.TicketCode == ticket.TicketCode))
                 {
-                    upcomingTour.PresentVisitors.Add(visitor);
-                    Program.World.WriteLine($"Visitor added to the present visitors list.");
+                    upcomingTour.PresentVisitors.Add(ticket);
+                    SoundsPlayer.PlaySound(SoundsPlayer.SoundFile.ChceckIn);
+                    TourDataManager.SaveTours();
                 }
                 else
-                {
-                    Program.World.WriteLine("Visitor has already been added.");
-                }
+                    GuideHasAlreadyCheckedInVisitor.Show();
             }
             else
-            {
-                Program.World.WriteLine("Invalid ticket. Please try again or write 'Start' to begin the tour.");
-            }
+                GuideScannedInvalidTicket.Show();
         }
+
         upcomingTour.Started = true;
         TourDataManager.SaveTours();
         try { Console.Clear(); } catch { }
