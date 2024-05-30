@@ -37,11 +37,11 @@ public class GuideLoginMenu : View
             {
                 case "1":
                     try { Console.Clear(); } catch { }
-                    Guide.ViewPersonalTours(guide);
+                    guide.ViewPersonalTours();
                     break;
                 case "2":
                     try { Console.Clear(); } catch { }
-                    guide.StartUpcomingTour();
+                    StartUpcomingTour(guide);
                     break;
                 case "3":
                     try { Console.Clear(); } catch { }
@@ -59,6 +59,58 @@ public class GuideLoginMenu : View
                     }
             }
         }
+    }
+
+    public static bool  StartUpcomingTour(Guide guide)
+    {
+        Tour? upcomingTour = TourTools.TodaysTours
+            .Where(t => !t.Started && !t.Deleted && t.AssignedGuide.Name == guide.Name && t.StartTime > Program.World.Now)
+            .OrderBy(t => t.StartTime)
+            .FirstOrDefault();
+
+        if (upcomingTour == null)
+        {
+            Program.World.WriteLine("No upcoming tours available to start.");
+            return false;
+        }
+
+        string input = "";
+        while (input != "start")
+        {
+            GuideStartingTourMessage.Show(upcomingTour);
+            input = Program.World.ReadLine().ToLower();
+            
+            // Early return for going back
+            if (input == "q")
+            { 
+                try { Console.Clear(); }catch{}
+                return false;
+            }
+            
+            try { Console.Clear(); }catch{}
+
+            var ticket = Visitor.FindVisitorByTicketCode(input);
+
+            if (ticket != null)
+            {
+                if (!upcomingTour.PresentVisitors.Any(v => v.TicketCode == ticket.TicketCode))
+                {
+                    upcomingTour.PresentVisitors.Add(ticket);
+                    SoundsPlayer.PlaySound(SoundsPlayer.SoundFile.ChceckIn);
+                    TourDataManager.SaveTours();
+                }
+                else
+                    GuideHasAlreadyCheckedInVisitor.Show();
+            }
+            else if (input != "start")
+                GuideScannedInvalidTicket.Show();
+        }
+
+        upcomingTour.Started = true;
+        TourDataManager.SaveTours();
+        try { Console.Clear(); } catch { }
+        Program.World.WriteLine("Tour has been started successfully.");
+        return true;
     }
 
     // failed trasnfer messages is provided in guide.AddVisitorLastMinute(visitor)

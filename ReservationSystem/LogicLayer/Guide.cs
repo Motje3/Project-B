@@ -92,23 +92,23 @@ public class Guide
     }
 
 
-    public static void ViewPersonalTours(Guide guide)
+    public void ViewPersonalTours()
     {
         var upcomingTour = TourTools.TodaysTours
-            .Where(t => !t.Started && !t.Deleted && t.AssignedGuide.Name == guide.Name && t.StartTime > Program.World.Now)
+            .Where(t => !t.Started && !t.Deleted && t.AssignedGuide.Name == Name && t.StartTime > Program.World.Now)
             .OrderBy(t => t.StartTime)
             .FirstOrDefault();
 
-        if (guide.AssignedTourIds.Count == 0 || upcomingTour == null)
+        if (AssignedTourIds.Count == 0 || upcomingTour == null)
         {
             GuideHasNoMoreTours.Show();
             return;
         }
 
-        Program.World.WriteLine($"Tours for {guide.Name}:\n");
+        Program.World.WriteLine($"Tours for {Name}:\n");
 
         int tourNumber = 1;
-        foreach (var tourId in guide.AssignedTourIds)
+        foreach (var tourId in AssignedTourIds)
         {
             var tour = TourTools.TodaysTours.FirstOrDefault(t => t.TourId == tourId);
             bool tourInFuture = DateTime.Compare(tour.StartTime, Program.World.Now) == 1;
@@ -242,57 +242,5 @@ public class Guide
         // this is a failsave message, this should not happen unless there is a bug,
         // program should continue without visitor being added to tour.
         return null;
-    }
-
-    public bool StartUpcomingTour()
-    {
-        Tour? upcomingTour = TourTools.TodaysTours
-            .Where(t => !t.Started && !t.Deleted && t.AssignedGuide.Name == this.Name && t.StartTime > Program.World.Now)
-            .OrderBy(t => t.StartTime)
-            .FirstOrDefault();
-
-        if (upcomingTour == null)
-        {
-            Program.World.WriteLine("No upcoming tours available to start.");
-            return false;
-        }
-
-        string input = "";
-        while (input != "start")
-        {
-            GuideStartingTourMessage.Show(upcomingTour);
-            input = Program.World.ReadLine().ToLower();
-            
-            // Early return for going back
-            if (input == "q")
-            { 
-                try { Console.Clear(); }catch{}
-                return false;
-            }
-            
-            try { Console.Clear(); }catch{}
-
-            var ticket = Visitor.FindVisitorByTicketCode(input);
-
-            if (ticket != null)
-            {
-                if (!upcomingTour.PresentVisitors.Any(v => v.TicketCode == ticket.TicketCode))
-                {
-                    upcomingTour.PresentVisitors.Add(ticket);
-                    SoundsPlayer.PlaySound(SoundsPlayer.SoundFile.ChceckIn);
-                    TourDataManager.SaveTours();
-                }
-                else
-                    GuideHasAlreadyCheckedInVisitor.Show();
-            }
-            else if (input != "start")
-                GuideScannedInvalidTicket.Show();
-        }
-
-        upcomingTour.Started = true;
-        TourDataManager.SaveTours();
-        try { Console.Clear(); } catch { }
-        Program.World.WriteLine("Tour has been started successfully.");
-        return true;
     }
 }
