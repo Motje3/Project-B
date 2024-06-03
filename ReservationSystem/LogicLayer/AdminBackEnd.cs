@@ -42,10 +42,7 @@ public static class AdminBackEnd
 
     public static void AddNewGuidedTour()
     {
-        Console.Clear();
-        Console.WriteLine("Add New Guided Tour:\n");
-        ColourText.WriteColoredLine("", "1 |", ConsoleColor.Cyan, " Add a new tour for today");
-        ColourText.WriteColoredLine("", "2 |", ConsoleColor.Cyan, " Add a new tour to the standard schedule");
+        AdminMessages.ShowAddNewGuidedTourOptions();
 
         string choice = Console.ReadLine();
 
@@ -58,21 +55,21 @@ public static class AdminBackEnd
                 AddTourToStandardSchedule();
                 break;
             default:
-                Console.WriteLine("Invalid option. Please try again.");
-                Thread.Sleep(2000);
+                AdminMessages.ShowInvalidOption();
+                WaitForUser();
                 break;
         }
     }
 
-    private static void AddTourForToday()
+    public static void AddTourForToday()
     {
-        Console.Write("\nEnter time for the tour (hh:mm): ");
+        AdminMessages.ShowEnterTimePrompt();
         string time = Console.ReadLine();
         DateTime tourStartTime;
 
         if (!DateTime.TryParse(time, out tourStartTime))
         {
-            Console.WriteLine("Invalid time format. Please enter the time in hh:mm format.\n");
+            AdminMessages.ShowInvalidTimeFormat();
             WaitForUser();
             return;
         }
@@ -80,22 +77,17 @@ public static class AdminBackEnd
         List<Guide> guides = Guide.AllGuides;
         if (guides == null || guides.Count == 0)
         {
-            Console.WriteLine("No guides available.\n");
+            AdminMessages.ShowNoGuidesAvailable();
             WaitForUser();
             return;
         }
 
         var uniqueGuides = guides.GroupBy(g => g.GuideId).Select(g => g.First()).ToList();
-
-        Console.WriteLine("Choose a guide:");
-        for (int i = 0; i < uniqueGuides.Count; i++)
-        {
-            Console.WriteLine($"{i + 1} | {uniqueGuides[i].Name}");
-        }
+        AdminMessages.ShowChooseGuide(uniqueGuides);
 
         if (!int.TryParse(Console.ReadLine(), out int guideChoice) || guideChoice < 1 || guideChoice > uniqueGuides.Count)
         {
-            Console.WriteLine("Invalid guide choice. Please select a valid guide number.\n");
+            AdminMessages.ShowInvalidGuideChoice();
             WaitForUser();
             return;
         }
@@ -106,19 +98,19 @@ public static class AdminBackEnd
         TourDataManager.SaveTours();
         try { Console.Clear(); } catch { }
 
-        Console.WriteLine($"Tour added successfully at {newTour.StartTime} oclock for today!\n");
+        AdminMessages.ShowTourAddedSuccessfully();
         WaitForUser();
     }
 
-    private static void AddTourToStandardSchedule()
+    public static void AddTourToStandardSchedule()
     {
-        Console.Write("Enter time for the new tour (hh:mm): ");
+        AdminMessages.ShowEnterTimePrompt();
         string time = Console.ReadLine();
         DateTime tourStartTime;
 
         if (!DateTime.TryParse(time, out tourStartTime))
         {
-            Console.WriteLine("Invalid time format. Please enter the time in hh:mm format.\n");
+            AdminMessages.ShowInvalidTimeFormat();
             WaitForUser();
             return;
         }
@@ -128,20 +120,16 @@ public static class AdminBackEnd
         List<Guide> guides = Guide.AllGuides;
         if (guides == null || guides.Count == 0)
         {
-            Console.WriteLine("No guides available.\n");
+            AdminMessages.ShowNoGuidesAvailable();
             WaitForUser();
             return;
         }
 
-        Console.WriteLine("Choose a guide:\n");
-        for (int i = 0; i < guides.Count; i++)
-        {
-            Console.WriteLine($"{i + 1} | {guides[i].Name}");
-        }
+        AdminMessages.ShowChooseGuide(guides);
 
         if (!int.TryParse(Console.ReadLine(), out int guideChoice) || guideChoice < 1 || guideChoice > guides.Count)
         {
-            Console.WriteLine("Invalid guide choice. Please select a valid guide number.\n");
+            AdminMessages.ShowInvalidGuideChoice();
             WaitForUser();
             return;
         }
@@ -159,9 +147,9 @@ public static class AdminBackEnd
         {
             guideAssignments.Add(new GuideAssignment
             {
-                GuideId = selectedGuide.GuideId,  // Set GuideId property
+                GuideId = selectedGuide.GuideId,
                 GuideName = selectedGuide.Name,
-                Password = selectedGuide.Password,  // Set Password property
+                Password = selectedGuide.Password,
                 Tours = new List<TourAssignment> { new TourAssignment { StartTime = amPmTime } }
             });
         }
@@ -170,15 +158,14 @@ public static class AdminBackEnd
         TourDataManager.CreateToursForToday();
         try { Console.Clear(); } catch { }
 
-        Console.WriteLine($"Tour at {time} oclock added successfully to the standard schedule.\n");
+        AdminMessages.ShowTourAddedSuccessfully();
         WaitForUser();
     }
 
     private static void WaitForUser()
     {
         Thread.Sleep(2000); // Pause for 2 seconds
-
-        ColourText.WriteColoredLine("| Press ", "Space", ConsoleColor.Cyan, " to go back to the admin menu.\n");
+        AdminMessages.ShowWaitForUser();
 
         ConsoleKeyInfo keyInfo = Console.ReadKey(true);
         while (keyInfo.Key != ConsoleKey.Enter && keyInfo.Key != ConsoleKey.Spacebar)
@@ -194,16 +181,14 @@ public static class AdminBackEnd
 
     public class GuideAssignment
     {
-        public Guid GuideId { get; set; }  // Change this to Guid to match GuideId in Guide class
+        public Guid GuideId { get; set; } 
         public string GuideName { get; set; }
         public string Password { get; set; }
         public List<TourAssignment> Tours { get; set; } = new List<TourAssignment>();
     }
 
-
     public class TourAssignment
     {
         public string StartTime { get; set; }
     }
-
 }
