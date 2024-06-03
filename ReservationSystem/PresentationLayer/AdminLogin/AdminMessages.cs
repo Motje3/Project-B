@@ -12,7 +12,7 @@ public class AdminMessages : View
 
     public static void ShowEnterTimePrompt()
     {
-        Write("Enter time for the tour (hh:mm): ");
+        Write("Enter time for the new tour (hh:mm): ");
     }
 
     public static void ShowInvalidTimeFormat()
