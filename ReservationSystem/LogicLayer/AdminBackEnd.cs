@@ -175,6 +175,7 @@ public static class AdminBackEnd
         {
             AdminMessages.ShowReturningToMenu();
             Thread.Sleep(2000);
+            try { Console.Clear(); } catch { }
         }
     }
 
