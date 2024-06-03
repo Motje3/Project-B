@@ -1,6 +1,6 @@
-using System.Runtime;
 using Newtonsoft.Json;
-using ReservationSystem;
+using System.Media;
+
 namespace ReservationSystem;
 
 public class Guide
@@ -92,23 +92,23 @@ public class Guide
     }
 
 
-    public static void ViewPersonalTours(Guide guide)
+    public void ViewPersonalTours()
     {
         var upcomingTour = TourTools.TodaysTours
-            .Where(t => !t.Started && !t.Deleted && t.AssignedGuide.Name == guide.Name && t.StartTime > Program.World.Now)
+            .Where(t => !t.Started && !t.Deleted && t.AssignedGuide.Name == Name && t.StartTime > Program.World.Now)
             .OrderBy(t => t.StartTime)
             .FirstOrDefault();
 
-        if (guide.AssignedTourIds.Count == 0 || upcomingTour == null)
+        if (AssignedTourIds.Count == 0 || upcomingTour == null)
         {
             GuideHasNoMoreTours.Show();
             return;
         }
 
-        Program.World.WriteLine($"Tours for {guide.Name}:\n");
+        Program.World.WriteLine($"Tours for {Name}:\n");
 
         int tourNumber = 1;
-        foreach (var tourId in guide.AssignedTourIds)
+        foreach (var tourId in AssignedTourIds)
         {
             var tour = TourTools.TodaysTours.FirstOrDefault(t => t.TourId == tourId);
             bool tourInFuture = DateTime.Compare(tour.StartTime, Program.World.Now) == 1;
@@ -213,7 +213,6 @@ public class Guide
         // orderd by starttime.
         var availableGuideTours = TourDataManager.FilterByLambda(tour => tour.AssignedGuide.Name == this.Name
             && !tour.Started && !tour.Deleted
-            && tour.ExpectedVisitors.Count < tour.MaxCapacity
             && tour.StartTime > DateTime.Now)
             .OrderBy(tour => tour.StartTime).ToList();
 
@@ -224,7 +223,7 @@ public class Guide
         }
 
         Tour target = availableGuideTours.First();  // the target will chase down the closest next tour to overwrite // Data with visitor added to PresentVisitor will overwrite the target
-        target.ExpectedVisitors.Add(visitor);
+        target.PresentVisitors.Add(visitor);
         Tour overwite = target;
 
         // loop trought todays tours and overwite. 
@@ -242,51 +241,5 @@ public class Guide
         // this is a failsave message, this should not happen unless there is a bug,
         // program should continue without visitor being added to tour.
         return null;
-    }
-
-    public bool StartUpcomingTour()
-    {
-        var currentTime = Program.World.Now;
-
-        var upcomingTour = TourTools.TodaysTours
-            .Where(t => !t.Started && !t.Deleted && t.AssignedGuide.Name == this.Name && t.StartTime > Program.World.Now)
-            .OrderBy(t => t.StartTime)
-            .FirstOrDefault();
-
-        if (upcomingTour == null)
-        {
-            Program.World.WriteLine("No upcoming tours available to start.");
-            return false;
-        }
-
-        Program.World.WriteLine($"Starting the Tour at {upcomingTour.StartTime.ToString("HH:mm")}.\nBefore that, please scan the tickets for all the present visitors and once done, write 'Start' to start the tour.");
-
-        string input;
-        while ((input = Program.World.ReadLine().ToLower()) != "start")
-        {
-            var visitor = Visitor.FindVisitorByTicketCode(input);
-
-            if (visitor != null)
-            {
-                if (!upcomingTour.PresentVisitors.Any(v => v.TicketCode == visitor.TicketCode))
-                {
-                    upcomingTour.PresentVisitors.Add(visitor);
-                    Program.World.WriteLine($"Visitor added to the present visitors list.");
-                }
-                else
-                {
-                    Program.World.WriteLine("Visitor has already been added.");
-                }
-            }
-            else
-            {
-                Program.World.WriteLine("Invalid ticket. Please try again or write 'Start' to begin the tour.");
-            }
-        }
-        upcomingTour.Started = true;
-        TourDataManager.SaveTours();
-        try { Console.Clear(); } catch { }
-        Program.World.WriteLine("Tour has been started successfully.");
-        return true;
     }
 }

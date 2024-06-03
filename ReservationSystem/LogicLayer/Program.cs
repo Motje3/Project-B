@@ -1,5 +1,6 @@
-﻿namespace ReservationSystem;
-using Newtonsoft.Json;
+﻿using System.Media;
+
+namespace ReservationSystem;
 
 public class Program
 {
@@ -9,8 +10,5 @@ public class Program
         Guide.LoadGuides();
         TourTools.InitializeTours();
         Reservation.ValidateCodeAndShowMenu();
-
-        // Guide guide = new (Guid.NewGuid(),"John Doe", "11");
-        // GuideLoginMenu.ShowGuideMenu(guide);
     }
 }
