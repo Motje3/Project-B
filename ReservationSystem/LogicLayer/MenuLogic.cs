@@ -115,7 +115,7 @@ public class MenuLogic
 
             // Get the list of available tours, ordered by StartTime and only future tours
             List<Tour> availableTours = TourTools.TodaysTours
-                .Where(tour => !tour.Started && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > DateTime.Now && !tour.ExpectedVisitors.Any(v => v.VisitorId == visitor.VisitorId))
+                .Where(tour => !tour.Started && !tour.Deleted && tour.ExpectedVisitors.Count < tour.MaxCapacity && tour.StartTime > Program.World.Now && !tour.ExpectedVisitors.Any(v => v.VisitorId == visitor.VisitorId))
                 .OrderBy(tour => tour.StartTime)
                 .ToList();
 
