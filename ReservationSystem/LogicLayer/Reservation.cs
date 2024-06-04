@@ -28,7 +28,7 @@ public class Reservation : View
             else if (userCode == "1122334455")
             {
                 try { Console.Clear(); } catch { }
-                GuideLoginMenu.ProcessLoginForm(userCode);
+                GuideLoginMenu.ProcessLoginForm();
                 continue;
             }
             else if (Ticket.IsCodeValid(userCode))
