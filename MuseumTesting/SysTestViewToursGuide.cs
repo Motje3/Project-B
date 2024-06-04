@@ -31,7 +31,7 @@ namespace MuseumTesting
                 },
                 LinesToRead = new()
                 {
-                    "1122334455",guidePasswordInput,"Enter,","1","4","GETMEOUT"
+                    "1122334455",guidePasswordInput,"Enter,","1","3","GETMEOUT"
                 }
             };
             Program.World = world;
@@ -76,7 +76,7 @@ namespace MuseumTesting
                 },
                 LinesToRead = new()
                 {
-                    "1122334455",guidePasswordInput,"Enter,","1","4","GETMEOUT"
+                    "1122334455",guidePasswordInput,"Enter,","1","3","GETMEOUT"
                 }
             };
             Program.World = world;

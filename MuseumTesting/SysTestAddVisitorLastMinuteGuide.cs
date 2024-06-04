@@ -4,7 +4,7 @@ using ReservationSystem;
 namespace MuseumTesting
 {
     [TestClass]
-    public class SysTestVisitorLastMinute
+    public class SysTestGuideLastMinute
     {
         [TestCleanup]
         public void CleanUp()
@@ -32,7 +32,7 @@ namespace MuseumTesting
                 },
                 LinesToRead = new()
                 {
-                    "1122334455",guidePasswordInput,"Enter,","3",visitorTicketCode,"4","GETMEOUT"
+                    "1122334455",guidePasswordInput,"Enter,","2","start",visitorTicketCode,"start","3","GETMEOUT"
                 }
             };
             Program.World = world;
@@ -44,9 +44,9 @@ namespace MuseumTesting
             List<Tour> toursAfterTest = JsonConvert.DeserializeObject<List<Tour>>(world.Files[TourTools.JsonFilePath]);
             Tour tourWithGuide = toursAfterTest.Where(t => t.AssignedGuide.Password == guidePassword).FirstOrDefault();
 
-            Assert.IsTrue(world.LinesWritten.Contains($"Visitor succesfully added to the next tour that starts at: {tourWithGuide.StartTime.ToString("yyyy-MM-dd HH:mm:ss")} "));
+            Assert.IsTrue(world.LinesWritten.Contains($" has been started successfully.\n"));
 
-            Assert.IsTrue(tourWithGuide.ExpectedVisitors.Select(v => v.TicketCode).Contains(visitorTicketCode));
+            Assert.IsTrue(tourWithGuide.PresentVisitors.Select(v => v.TicketCode).Contains(visitorTicketCode));
         }
 
         [TestMethod]
@@ -69,7 +69,7 @@ namespace MuseumTesting
                 },
                 LinesToRead = new()
                 {
-                    "1122334455",guidePasswordInput,"Enter,","3",wrongVisitorTicketCode,"Q","4","GETMEOUT"
+                    "1122334455",guidePasswordInput,"Enter,","2",wrongVisitorTicketCode,"Q","3","GETMEOUT"
                 }
             };
             Program.World = world;
@@ -81,7 +81,7 @@ namespace MuseumTesting
             List<Tour> toursAfterTest = JsonConvert.DeserializeObject<List<Tour>>(world.Files[TourTools.JsonFilePath]);
             Tour tourWithGuide = toursAfterTest.Where(t => t.AssignedGuide.Password == guidePassword).FirstOrDefault();
 
-            Assert.IsTrue(world.LinesWritten.Contains($"\nThe code ['{wrongVisitorTicketCode}'] is invalid"));
+            Assert.IsTrue(world.LinesWritten.Contains($"Invalid ticket. "));
 
             Assert.IsTrue(tourWithGuide.PresentVisitors.Count == 0);
         }
@@ -106,7 +106,7 @@ namespace MuseumTesting
                 },
                 LinesToRead = new()
                 {
-                    "1122334455",guidePasswordInput,"Enter,","3",visitorTicketCode,"Yes","4","GETMEOUT"
+                    "1122334455",guidePasswordInput,"Enter,","2","start",visitorTicketCode,"Yes","start","3","GETMEOUT"
                 }
             };
             Program.World = world;
@@ -124,7 +124,7 @@ namespace MuseumTesting
             Assert.IsTrue(tourWithVisitorBefore.ExpectedVisitors.Count == 1);
             Assert.IsTrue(tourBeforeTransferAfter.ExpectedVisitors.Count == 0);
 
-            Assert.IsTrue(world.LinesWritten.Contains("\nVistor is already registerd for a tour,"));
+            Assert.IsTrue(world.LinesWritten.Contains("\nVistor already has a reservation,"));
 
             Assert.IsTrue(tourWithGuide.ExpectedVisitors.Count == 1);
 
@@ -150,7 +150,7 @@ namespace MuseumTesting
                 },
                 LinesToRead = new()
                 {
-                    "1122334455",guidePasswordInput,"Enter,","3",visitorTicketCode,"No","4","GETMEOUT"
+                    "1122334455",guidePasswordInput,"Enter,","2","start",visitorTicketCode,"No","start","3","GETMEOUT"
                 }
             };
             Program.World = world;
@@ -170,7 +170,7 @@ namespace MuseumTesting
 
             Assert.IsTrue(tourWithGuideAfter.ExpectedVisitors.Count == 0);
 
-            Assert.IsTrue(world.LinesWritten.Contains("\nVisitor tranfer is canceld"));
+            Assert.IsTrue(world.LinesWritten.Contains("Visitor transfer has been cancelled\n"));
         }
 
     }
