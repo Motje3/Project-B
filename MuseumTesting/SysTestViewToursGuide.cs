@@ -4,7 +4,7 @@ using ReservationSystem;
 namespace MuseumTesting
 {
     [TestClass]
-    public class SysTestViewToursGuide
+    public class SysTestGuideViewTours
     {
         [TestCleanup]
         public void CleanUp()

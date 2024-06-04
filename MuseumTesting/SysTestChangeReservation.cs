@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace MuseumTesting
 {
     [TestClass]
-    public class SysTestChangeReservation
+    public class SysTestVisitorChangeReservation
     {
         [TestCleanup]
         public void CleanUp()
@@ -40,7 +40,7 @@ namespace MuseumTesting
                 },
                 LinesToRead = new()
                 {
-                    visitorTicketCode,"1",newTourChoice,"Enter,","GETMEOUT"
+                    visitorTicketCode,tourChoice,newTourChoice,"Enter,","GETMEOUT"
                 }
             };
             Program.World = world;

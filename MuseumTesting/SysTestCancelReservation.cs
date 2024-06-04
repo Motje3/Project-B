@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace MuseumTesting
 {
     [TestClass]
-    public class SysTestCancelReservation
+    public class SysTestVisitorCancelReservation
     {
         [TestCleanup]
         public void CleanUp()
