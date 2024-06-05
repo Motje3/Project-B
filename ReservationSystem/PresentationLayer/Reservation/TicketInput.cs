@@ -6,12 +6,12 @@ public class TicketInputRL : View
     {
         Console.ForegroundColor = ConsoleColor.Cyan;
         Program.World.WriteLine(" ---------------------------- ");
-        Console.Write("|  ");
+        Program.World.Write("|  ");
         Console.ResetColor();
-        Console.Write("Scan your unique ");
+        Program.World.Write("Scan your unique ");
         Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.Write("barcode");
-        Console.Write("  |");
+        Program.World.Write("barcode");
+        Program.World.Write("  |");
         Program.World.WriteLine("");
         Console.ForegroundColor = ConsoleColor.Cyan;
         Program.World.WriteLine(" ---------------------------- ");
