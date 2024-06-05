@@ -49,7 +49,7 @@ public class AdminBackEndTests
             using (var sr = new StringReader("10:00\n1\n"))
             {
                 Console.SetIn(sr);
-                AdminBackEnd.AddTourForToday();
+                AdminBackEnd.AddTourForTomorrow();
             }
         }
 
@@ -77,7 +77,7 @@ public class AdminBackEndTests
             using (var sr = new StringReader("invalid_time\n"))
             {
                 Console.SetIn(sr);
-                AdminBackEnd.AddTourForToday();
+                AdminBackEnd.AddTourForTomorrow();
             }
 
             // Assert
@@ -105,7 +105,7 @@ public class AdminBackEndTests
             using (var sr = new StringReader("10:00\n99\n"))
             {
                 Console.SetIn(sr);
-                AdminBackEnd.AddTourForToday();
+                AdminBackEnd.AddTourForTomorrow();
             }
 
             // Assert
@@ -133,7 +133,7 @@ public class AdminBackEndTests
             using (var sr = new StringReader("10:00\n99\n"))
             {
                 Console.SetIn(sr);
-                AdminBackEnd.AddTourForToday();
+                AdminBackEnd.AddTourForTomorrow();
             }
 
             // Assert
@@ -161,7 +161,7 @@ public class AdminBackEndTests
             using (var sr = new StringReader("invalid_time\n1\n"))
             {
                 Console.SetIn(sr);
-                AdminBackEnd.AddTourForToday();
+                AdminBackEnd.AddTourForTomorrow();
             }
 
             // Assert
