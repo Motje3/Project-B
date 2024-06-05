@@ -5,18 +5,18 @@ namespace MuseumTesting
     [TestClass]
     public class SysTestVisitorOptions
     {
+        [TestInitialize]
+        public void setUp()
+        {
+            TourTools.TodaysTours.Clear();
+            Guide.AllGuides.Clear();
+        }
+
         [TestCleanup]
         public void CleanUp()
         {
             TourTools.TodaysTours.Clear();
-            try
-            {
-                File.Delete(TourTools.JsonFilePath);
-            }
-            catch (DirectoryNotFoundException)
-            {
-
-            }
+            Guide.AllGuides.Clear();
         }
 
         [TestMethod]
@@ -76,7 +76,7 @@ namespace MuseumTesting
             // Assert
             Assert.IsTrue(!((FakeWorld)Program.World).LinesWritten.Contains("Cancel my tour reservation"));
         }
-        
+
         [TestMethod]
         public void TestSeeOptionChangeTourTrue()
         {

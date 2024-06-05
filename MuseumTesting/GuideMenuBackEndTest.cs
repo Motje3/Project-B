@@ -7,6 +7,11 @@ namespace MuseumTesting
     public class GuideMenuBackEndTests
     {
         private const string CredentialsFilePath = "./JSON-Files/GidsCredentials.json";
+        [TestInitialize]
+        public void setUp()
+        {
+            Guide.AllGuides.Clear();
+        }
 
         [TestMethod]
         public void AuthenticateGuide_CorrectPassword_ReturnsTrue()
@@ -50,7 +55,7 @@ namespace MuseumTesting
             bool isNotAuthenticated = Guide.AuthenticateGuide(invalidPassword) == null;
 
             // Assert
-            Assert.IsFalse(isNotAuthenticated);
+            Assert.IsTrue(isNotAuthenticated);
 
         }
     }

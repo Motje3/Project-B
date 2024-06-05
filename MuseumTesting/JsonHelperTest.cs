@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using ReservationSystem;
 
 namespace MuseumTesting
 {
@@ -32,6 +33,7 @@ namespace MuseumTesting
         [TestMethod]
         public void LoadFromJson_ValidFile_ReturnsCorrectData()
         {
+            Program.World = new RealWorld();
             // Act
             var data = JsonHelper.LoadFromJson<List<string>>(filePath);
 

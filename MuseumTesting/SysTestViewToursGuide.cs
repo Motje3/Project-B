@@ -6,10 +6,18 @@ namespace MuseumTesting
     [TestClass]
     public class SysTestGuideViewTours
     {
+        [TestInitialize]
+        public void setUp()
+        {
+            TourTools.TodaysTours.Clear();
+            Guide.AllGuides.Clear();
+        }
+
         [TestCleanup]
         public void CleanUp()
         {
             TourTools.TodaysTours.Clear();
+            Guide.AllGuides.Clear();
         }
 
         [TestMethod]
