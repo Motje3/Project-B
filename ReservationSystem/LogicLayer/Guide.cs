@@ -213,7 +213,7 @@ public class Guide
         // orderd by starttime.
         var availableGuideTours = TourDataManager.FilterByLambda(tour => tour.AssignedGuide.Name == this.Name
             && !tour.Started && !tour.Deleted
-            && tour.StartTime > DateTime.Now)
+            && tour.StartTime > Program.World.Now)
             .OrderBy(tour => tour.StartTime).ToList();
 
         if (availableGuideTours.Count == 0)  // there are no more availble tours for visitor
