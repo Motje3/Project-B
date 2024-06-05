@@ -153,8 +153,8 @@ public class Guide
         }
 
         // Display guides for selection from the static list in Guide class
-        Program.World.WriteLine("Select a guide to assign:");
-        var distinctGuides = Guide.AllGuides
+        Program.World.WriteLine("\nSelect a guide to assign:\n");
+        var distinctGuides = AllGuides
         .GroupBy(guide => guide.Name)
         .Select(group => group.First())
         .ToList();

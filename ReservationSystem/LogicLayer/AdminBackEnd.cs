@@ -49,7 +49,7 @@ public static class AdminBackEnd
         switch (choice)
         {
             case "1":
-                AddTourForToday();
+                AddTourForTomorrow();
                 break;
             case "2":
                 AddTourToStandardSchedule();
@@ -61,7 +61,7 @@ public static class AdminBackEnd
         }
     }
 
-    public static void AddTourForToday()
+    public static void AddTourForTomorrow()
     {
         AdminMessages.ShowEnterTimePrompt();
         string time = Console.ReadLine();
