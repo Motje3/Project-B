@@ -106,7 +106,7 @@ public class MenuLogic
             // Prompt the user to choose a tour
             string chosenTourNumber = ChangeTourRL.Show();
             // Early return for testing
-            if (chosenTourNumber == "GETMEOUT")
+            if (chosenTourNumber == "GETMEOUT" || chosenTourNumber.ToLower() == "q")
             {
                 Reservation.ShowFullMenu(visitor);
                 return;
