@@ -4,11 +4,12 @@ public class GuideAddingVisitorLastMinute : View
 {
     public static void Show()
     {
-        Write("Scan the ");
+        
+        Write("If there are any additional visitors please scan their ");
         Console.ForegroundColor = ConsoleColor.Cyan;
         Write("ticket");
         Console.ResetColor();
-        Write(" of the visitor you want to add or type '");
+        Write(" to add them to the tour or type '");
         Console.ForegroundColor = ConsoleColor.Cyan;
         Write("Start");
         Console.ResetColor();

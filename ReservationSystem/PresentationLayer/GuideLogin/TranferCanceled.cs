@@ -4,6 +4,6 @@ public class TransferCanceled: View
 {
     public static void Show()
     {
-        WriteLine("Visitor transfer is cancelled\n");
+        WriteLine("Visitor transfer has been cancelled\n");
     }
 }

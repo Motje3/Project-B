@@ -4,7 +4,7 @@ using ReservationSystem;
 namespace MuseumTesting
 {
     [TestClass]
-    public class SysTestStartingTour
+    public class SysTestGuideStartingTour
     {
         [TestCleanup]
         public void CleanUp()
@@ -33,7 +33,7 @@ namespace MuseumTesting
                 },
                 LinesToRead = new()
                 {
-                    "1122334455",guidePasswordInput,"Enter,","2",visitorTicketCode,"Start","4","GETMEOUT"
+                    "1122334455",guidePasswordInput,"Enter,","2",visitorTicketCode,"Start","start","3","GETMEOUT"
                 }
             };
             Program.World = world;
@@ -42,8 +42,8 @@ namespace MuseumTesting
             Program.Main();
 
             // Assert
-            Assert.IsTrue(((FakeWorld)Program.World).LinesWritten.Contains("Visitor added to the present visitors list."));
-            Assert.IsTrue(((FakeWorld)Program.World).LinesWritten.Contains("Tour has been started successfully."));
+            Assert.IsTrue(((FakeWorld)Program.World).LinesWritten.Contains("[ 1234567890 ]"));
+            Assert.IsTrue(((FakeWorld)Program.World).LinesWritten.Contains(" has been started successfully.\n"));
 
             List<Tour> tours = JsonConvert.DeserializeObject<List<Tour>>(((FakeWorld)Program.World).Files[TourTools.JsonFilePath]);
             Tour tourWithGuide = tours.Where(tour => tour.AssignedGuide.Password == guidePassword).FirstOrDefault();
@@ -74,7 +74,7 @@ namespace MuseumTesting
                 },
                 LinesToRead = new()
                 {
-                    "1122334455",guidePasswordInput,"Enter,","2",visitorTicketCode,visitorTicketCode,"Start","4","GETMEOUT"
+                    "1122334455",guidePasswordInput,"Enter,","2",visitorTicketCode,visitorTicketCode,"Start","start","3","GETMEOUT"
                 }
             };
             Program.World = world;
@@ -83,7 +83,7 @@ namespace MuseumTesting
             Program.Main();
 
             // Assert
-            Assert.IsTrue(((FakeWorld)Program.World).LinesWritten.Contains("Visitor has already been added."));
+            Assert.IsTrue(((FakeWorld)Program.World).LinesWritten.Contains(" ticket has already been added.\n"));
 
             List<Tour> tours = JsonConvert.DeserializeObject<List<Tour>>(((FakeWorld)Program.World).Files[TourTools.JsonFilePath]);
             Tour tourWithGuide = tours.Where(tour => tour.AssignedGuide.Password == guidePassword).FirstOrDefault();
@@ -110,7 +110,7 @@ namespace MuseumTesting
                 },
                 LinesToRead = new()
                 {
-                    "1122334455",guidePasswordInput,"Enter,","2",wrongCode,"Start","4","GETMEOUT"
+                    "1122334455",guidePasswordInput,"Enter,","2",wrongCode,"Start","start","3","GETMEOUT"
                 }
             };
             Program.World = world;
@@ -119,7 +119,7 @@ namespace MuseumTesting
             Program.Main();
 
             // Assert
-            Assert.IsTrue(((FakeWorld)Program.World).LinesWritten.Contains("Invalid ticket. Please try again or write 'Start' to begin the tour."));
+            Assert.IsTrue(((FakeWorld)Program.World).LinesWritten.Contains("Invalid ticket. "));
 
             List<Tour> tours = JsonConvert.DeserializeObject<List<Tour>>(((FakeWorld)Program.World).Files[TourTools.JsonFilePath]);
             Tour tourWithGuide = tours.Where(tour => tour.AssignedGuide.Password == guidePassword).FirstOrDefault();

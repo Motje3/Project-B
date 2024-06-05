@@ -23,7 +23,7 @@ public static class Ticket
         }
         catch (FileNotFoundException fnfe)
         {
-            Console.WriteLine("File not found: " + fnfe.Message);
+            Program.World.WriteLine("File not found: " + fnfe.Message);
         }
     }
 
@@ -36,7 +36,7 @@ public static class Ticket
         }
         catch (Exception ex)
         {
-            Console.WriteLine("An error occurred while checking the ticket code: " + ex.Message);
+            Program.World.WriteLine("An error occurred while checking the ticket code: " + ex.Message);
             return false;
         }
     }

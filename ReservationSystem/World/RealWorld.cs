@@ -41,4 +41,9 @@ public class RealWorld : IWorld
     {
         return Console.ReadKey(true);
     }
+
+    public bool Exists(string path)
+    {
+        return File.Exists(path);
+    }
 }

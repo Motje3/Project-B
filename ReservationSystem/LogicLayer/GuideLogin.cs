@@ -3,7 +3,7 @@ using System;
 
 public class GuideLoginMenu : View
 {
-    public static void ProcessLoginForm(string userCode)
+    public static void ProcessLoginForm()
     {
         Guide.LoadGuides(); // Ensure guides are loaded
 
@@ -31,7 +31,7 @@ public class GuideLoginMenu : View
         {
 
             AccessPassed.WelcomeGuide(guide);
-            string choice = GuideMenuRL.Show();
+            string choice = GuideMenuRL.Show(guide);
 
             switch (choice)
             {

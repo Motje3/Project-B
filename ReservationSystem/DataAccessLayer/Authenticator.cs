@@ -1,3 +1,4 @@
+using ReservationSystem;
 public static class Authenticator
 {
     public class Credential
@@ -15,13 +16,13 @@ public static class Authenticator
     public static List<Credential> LoadUserCredentials()
     {
         string filePath = "./JSON-Files/AdminCredentials.json";
-        if (File.Exists(filePath))
+        if (Program.World.Exists(filePath))
         {
             return JsonHelper.LoadFromJson<List<Credential>>(filePath);
         }
         else
         {
-            Console.WriteLine("Credential file not found.");
+            Program.World.WriteLine("Credential file not found.");
             return new List<Credential>();
         }
     }

@@ -13,12 +13,12 @@ public class TourTools
         {
             TourDataManager.LoadTours();
         }
-        catch(FileNotFoundException)
+        catch (FileNotFoundException)
         {
             TourDataManager.CreateToursForToday();
         }
         // For system testing
-        catch(KeyNotFoundException)
+        catch (KeyNotFoundException)
         {
             TourDataManager.CreateToursForToday();
         }
@@ -34,7 +34,7 @@ public class TourTools
         if (availableTours.Any())
         {
             ColourText.WriteColored("", "" + "  | Start Time | Duration (Minutes)| Remaining Spots \n", ConsoleColor.DarkCyan);
-            // Console.WriteLine("  | Start Time | Duration (Minutes)| Remaining Spots");
+            // Program.World.WriteLine("  | Start Time | Duration (Minutes)| Remaining Spots");
             for (int i = 0; i < availableTours.Count; i++)
             {
                 string formattedStartTime = availableTours[i].StartTime.ToString("HH:mm");
@@ -47,7 +47,7 @@ public class TourTools
                 ColourText.WriteColored("", formattedStartTime, ConsoleColor.White);
 
                 // Print the rest of the text in default color
-                Console.WriteLine($"      | {availableTours[i].Duration}                | {availableTours[i].MaxCapacity - availableTours[i].ExpectedVisitors.Count}");
+                Program.World.WriteLine($"      | {availableTours[i].Duration}                | {availableTours[i].MaxCapacity - availableTours[i].ExpectedVisitors.Count}");
 
             }
             return true;

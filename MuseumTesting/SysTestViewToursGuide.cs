@@ -4,12 +4,20 @@ using ReservationSystem;
 namespace MuseumTesting
 {
     [TestClass]
-    public class SysTestViewToursGuide
+    public class SysTestGuideViewTours
     {
+        [TestInitialize]
+        public void setUp()
+        {
+            TourTools.TodaysTours.Clear();
+            Guide.AllGuides.Clear();
+        }
+
         [TestCleanup]
         public void CleanUp()
         {
             TourTools.TodaysTours.Clear();
+            Guide.AllGuides.Clear();
         }
 
         [TestMethod]
@@ -31,7 +39,7 @@ namespace MuseumTesting
                 },
                 LinesToRead = new()
                 {
-                    "1122334455",guidePasswordInput,"Enter,","1","4","GETMEOUT"
+                    "1122334455",guidePasswordInput,"Enter,","1","3","GETMEOUT"
                 }
             };
             Program.World = world;
@@ -76,7 +84,7 @@ namespace MuseumTesting
                 },
                 LinesToRead = new()
                 {
-                    "1122334455",guidePasswordInput,"Enter,","1","4","GETMEOUT"
+                    "1122334455",guidePasswordInput,"Enter,","1","3","GETMEOUT"
                 }
             };
             Program.World = world;

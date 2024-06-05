@@ -1,53 +1,49 @@
 using Newtonsoft.Json;
+using ReservationSystem;
 
 namespace MuseumTesting
 {
     [TestClass]
     public class TicketTests
     {
-        private string filePath = "./JSON-Files/OnlineTickets.json";
-
-        [TestInitialize]
-        public void SetUp()
-        {
-            // Ensure the directory exists
-            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-
-            // Create a temporary data file with initial JSON content
-            var ticketCodes = new List<string> { "TICKET001", "TICKET002" };
-            string json = JsonConvert.SerializeObject(ticketCodes);
-            File.WriteAllText(filePath, json);
-
-            // Reload the Ticket class to refresh the static Tickets list
-            Ticket.LoadTickets();
-        }
-
-        [TestCleanup]
-        public void CleanUp()
-        {
-            // Delete the test file to clean up
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-        }
 
         [TestMethod]
         public void LoadTickets_FileExists_TicketsLoaded()
         {
+            // Arrange
+            FakeWorld world = new()
+            {
+                Files =
+                {
+                    {"./JSON-Files/OnlineTickets.json", $"[\"1111\",\"2222\",\"3333\"]"}
+                }
+            };
+            Program.World = world;
+
             // Act - reload tickets to simulate reading from file
             Ticket.LoadTickets();
 
             // Assert
-            Assert.AreEqual(2, Ticket.Tickets.Count);
-            Assert.AreEqual("TICKET001", Ticket.Tickets[0]);
+            Assert.AreEqual(3, Ticket.Tickets.Count);
+            Assert.AreEqual("1111", Ticket.Tickets[0]);
         }
 
         [TestMethod]
         public void IsCodeValid_ValidCode_ReturnsTrue()
         {
+            // Arrange
+            FakeWorld world = new()
+            {
+                Files =
+                {
+                    {"./JSON-Files/OnlineTickets.json", $"[\"1111\",\"2222\",\"3333\"]"}
+                }
+            };
+            Program.World = world;
+            Ticket.LoadTickets();
+
             // Act
-            bool isValid = Ticket.IsCodeValid("TICKET001");
+            bool isValid = Ticket.IsCodeValid("1111");
 
             // Assert
             Assert.IsTrue(isValid);
@@ -56,6 +52,17 @@ namespace MuseumTesting
         [TestMethod]
         public void IsCodeValid_InvalidCode_ReturnsFalse()
         {
+            // Arrange
+            FakeWorld world = new()
+            {
+                Files =
+                {
+                    {"./JSON-Files/OnlineTickets.json", $"[\"1111\",\"2222\",\"3333\"]"}
+                }
+            };
+            Program.World = world;
+            Ticket.LoadTickets();
+
             // Act
             var isValid = Ticket.IsCodeValid("INVALID001");
 

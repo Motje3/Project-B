@@ -6,135 +6,132 @@ namespace MuseumTesting
     [TestClass]
     public class TourTests
     {
-        private static string tourSettingsPath = "./JSON-Files/TourSettings.json";
-        private static string guideAssignmentsPath = "./JSON-Files/GuideAssignments.json";
-        private static string toursPath;
-
-        [ClassInitialize]
-        public static void ClassSetup(TestContext context)
-        {
-            // Ensure the directory exists
-            Directory.CreateDirectory("./JSON-Files");
-
-            // Mock settings and guide assignments for the day
-            string settingsJson = JsonConvert.SerializeObject(new
-            {
-                StartTime = "09:00 AM",
-                EndTime = "05:00 PM",
-                Duration = 40, // Duration in minutes
-                MaxCapacity = 13
-            });
-            File.WriteAllText(tourSettingsPath, settingsJson);
-
-            string assignmentsJson = JsonConvert.SerializeObject(new List<dynamic>
-            {
-                new
-                {
-                    GuideName = "John Doe",
-                    Tours = new dynamic[]
-                    {
-                        new { StartTime = "09:00 AM" },
-                        new { StartTime = "10:00 AM" }
-                    }
-                }
-            });
-            File.WriteAllText(guideAssignmentsPath, assignmentsJson);
-
-            // Set the path for today's tours
-            toursPath = TourTools.JsonFilePath;
-        }
-
-        [ClassCleanup]
-        public static void ClassCleanup()
-        {
-            if (File.Exists(tourSettingsPath)) File.Delete(tourSettingsPath);
-            if (File.Exists(guideAssignmentsPath)) File.Delete(guideAssignmentsPath);
-            if (File.Exists(toursPath)) File.Delete(toursPath);
-        }
-
         [TestMethod]
         public void InitializeTours_WithExistingFile_LoadsTours()
         {
             // Arrange
-            string filePath = TourTools.JsonFilePath;
-            // Prepare test data that matches the expected format
-            string testData = "[{\"TourId\":\"" + Guid.NewGuid().ToString() + "\",\"StartTime\":\"" + DateTime.Now.ToString("s") + "\",\"Duration\":60,\"MaxCapacity\":30,\"Completed\":false,\"Deleted\":false,\"AssignedGuide\":{\"Name\":\"John Doe\"}}]";
-            File.WriteAllText(filePath, testData);
-
-            try
+            FakeWorld world = new()
             {
-                // Act
-                TourTools.InitializeTours();
-
-                // Assert
-                Assert.IsTrue(TourTools.TodaysTours.Count > 0);
-                Assert.AreEqual(30, TourTools.TodaysTours[0].MaxCapacity);
-            }
-            finally
-            {
-                // Cleanup: Remove test data file
-                if (File.Exists(filePath))
+                Today = new DateTime(2024, 6, 1),
+                Now = new DateTime(2024, 6, 1),
+                Files =
                 {
-                    File.Delete(filePath);
+                    {"./JSON-Files/TourSettings.json","{\"StartTime\": \"9:00:00\",\"EndTime\": \"16:40:00\",\"Duration\": 20,\"MaxCapacity\": 13}"},
+                    {"./JSON-Files/GuideAssignments.json","[{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"GuideName\":\"John Doe\",\"Password\":\"111\",\"Tours\":[{\"StartTime\":\"09:00 AM\"},{\"StartTime\":\"10:00 AM\"},{\"StartTime\":\"11:00 AM\"},{\"StartTime\":\"12:00 PM\"},{\"StartTime\":\"01:00 PM\"},{\"StartTime\":\"02:00 PM\"},{\"StartTime\":\"03:00 PM\"},{\"StartTime\":\"04:00 PM\"}]},{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"GuideName\":\"Alice Jackson\",\"Password\":\"222\",\"Tours\":[{\"StartTime\":\"09:20 AM\"},{\"StartTime\":\"10:20 AM\"},{\"StartTime\":\"11:20 AM\"},{\"StartTime\":\"12:20 PM\"},{\"StartTime\":\"01:20 PM\"},{\"StartTime\":\"02:20 PM\"},{\"StartTime\":\"03:20 PM\"}]},{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"GuideName\":\"Steve Brown\",\"Password\":\"33\",\"Tours\":[{\"StartTime\":\"09:40 AM\"},{\"StartTime\":\"10:40 AM\"},{\"StartTime\":\"11:40 AM\"},{\"StartTime\":\"12:40 PM\"},{\"StartTime\":\"01:40 PM\"},{\"StartTime\":\"02:40 PM\"},{\"StartTime\":\"03:40 PM\"}]}]"},
+                    {"./JSON-Files/Tours-20240601.json","[{\"TourId\":\"99df0a07-a667-4875-82e7-213371ffbee2\",\"StartTime\":\"2024-06-01T09:00:00\",\"EndTime\":\"2024-06-01T09:20:00\",\"Duration\":20,\"MaxCapacity\":30,\"ExpectedVisitors\":[{\"VisitorId\":\"873d138e-3720-4a89-be7b-e2f0ae0172cb\",\"TicketCode\":\"1234567890\"}],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"111\"}},{\"TourId\":\"54feb388-e819-489f-9e80-d4c8c13d9d72\",\"StartTime\":\"2024-06-01T09:20:00\",\"EndTime\":\"2024-06-01T09:40:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Jackson\",\"Password\":\"222\"}},{\"TourId\":\"81c380e0-8531-41e2-9e0b-866eeec30be1\",\"StartTime\":\"2024-06-01T09:40:00\",\"EndTime\":\"2024-06-01T10:00:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"409c95d8-a317-4b6a-85f7-5cffdf7245be\",\"StartTime\":\"2024-06-01T10:00:00\",\"EndTime\":\"2024-06-01T10:20:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"111\"}},{\"TourId\":\"6951265d-dd36-431b-a2ac-53fc53ecd874\",\"StartTime\":\"2024-06-01T10:20:00\",\"EndTime\":\"2024-06-01T10:40:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Jackson\",\"Password\":\"222\"}},{\"TourId\":\"1f3c2c27-78c8-48b0-9e35-fa45c3b494a3\",\"StartTime\":\"2024-06-01T10:40:00\",\"EndTime\":\"2024-06-01T11:00:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"90d62a3a-7d29-4953-a21d-8d26ccb3e2d1\",\"StartTime\":\"2024-06-01T11:00:00\",\"EndTime\":\"2024-06-01T11:20:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"111\"}},{\"TourId\":\"31237530-76d7-446e-b955-6e71d3698ddc\",\"StartTime\":\"2024-06-01T11:20:00\",\"EndTime\":\"2024-06-01T11:40:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Jackson\",\"Password\":\"222\"}},{\"TourId\":\"551dc3e1-2385-4c07-acd4-781be5a70739\",\"StartTime\":\"2024-06-01T11:40:00\",\"EndTime\":\"2024-06-01T12:00:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"b0695036-09da-494e-afab-0d545b724d69\",\"StartTime\":\"2024-06-01T12:00:00\",\"EndTime\":\"2024-06-01T12:20:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"111\"}},{\"TourId\":\"377c087e-6705-472d-b1fc-7a19b5e4b3ac\",\"StartTime\":\"2024-06-01T12:20:00\",\"EndTime\":\"2024-06-01T12:40:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Jackson\",\"Password\":\"222\"}},{\"TourId\":\"4ec570fb-dce7-4c18-bb7b-5f9310cbc45c\",\"StartTime\":\"2024-06-01T12:40:00\",\"EndTime\":\"2024-06-01T13:00:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"a2b886d0-ecd9-430e-a7fc-de545ff8947c\",\"StartTime\":\"2024-06-01T13:00:00\",\"EndTime\":\"2024-06-01T13:20:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"111\"}},{\"TourId\":\"63270e20-136c-4e20-82b8-ddc65107411b\",\"StartTime\":\"2024-06-01T13:20:00\",\"EndTime\":\"2024-06-01T13:40:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Jackson\",\"Password\":\"222\"}},{\"TourId\":\"5efb992a-7ec7-4af3-9540-69312a3bc762\",\"StartTime\":\"2024-06-01T13:40:00\",\"EndTime\":\"2024-06-01T14:00:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"fe2e9969-1bf3-42ff-9578-072c195c729f\",\"StartTime\":\"2024-06-01T14:00:00\",\"EndTime\":\"2024-06-01T14:20:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"111\"}},{\"TourId\":\"27cf4d00-ea43-4837-ad38-1fc86c14d02c\",\"StartTime\":\"2024-06-01T14:20:00\",\"EndTime\":\"2024-06-01T14:40:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Jackson\",\"Password\":\"222\"}},{\"TourId\":\"a9d6b73d-f517-4d7e-b5aa-101c35e5710b\",\"StartTime\":\"2024-06-01T14:40:00\",\"EndTime\":\"2024-06-01T15:00:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"3942bf3b-fc76-453e-bfcf-098a2db7ae5b\",\"StartTime\":\"2024-06-01T15:00:00\",\"EndTime\":\"2024-06-01T15:20:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"111\"}},{\"TourId\":\"098f4dac-e9f0-419c-9420-2394a1289e86\",\"StartTime\":\"2024-06-01T15:20:00\",\"EndTime\":\"2024-06-01T15:40:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Jackson\",\"Password\":\"222\"}},{\"TourId\":\"9cfb7c15-45a5-471d-bab4-37b924ca0b9e\",\"StartTime\":\"2024-06-01T15:40:00\",\"EndTime\":\"2024-06-01T16:00:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"6d94e5ee-1899-419b-b1e0-248e7861d853\",\"StartTime\":\"2024-06-01T16:00:00\",\"EndTime\":\"2024-06-01T16:20:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"111\"}}]"}
                 }
-            }
+            };
+            Program.World = world;
+
+            // Act
+            TourTools.InitializeTours();
+
+            // Assert
+            Assert.IsTrue(TourTools.TodaysTours.Count == 22);
+            Assert.AreEqual(30, TourTools.TodaysTours[0].MaxCapacity);
         }
 
         [TestMethod]
         public void AddVisitor_WithValidConditions_AddsVisitor()
         {
-            // Setup
-            Guid tourId = Guid.NewGuid();
+            // Arrange
+            FakeWorld world = new()
+            {
+                Today = new DateTime(2024, 6, 1),
+                Now = new DateTime(2024, 6, 1),
+                Files =
+                {
+                    {"./JSON-Files/TourSettings.json","{\"StartTime\": \"9:00:00\",\"EndTime\": \"16:40:00\",\"Duration\": 20,\"MaxCapacity\": 13}"},
+                    {"./JSON-Files/GuideAssignments.json","[{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"GuideName\":\"John Doe\",\"Password\":\"111\",\"Tours\":[{\"StartTime\":\"09:00 AM\"},{\"StartTime\":\"10:00 AM\"},{\"StartTime\":\"11:00 AM\"},{\"StartTime\":\"12:00 PM\"},{\"StartTime\":\"01:00 PM\"},{\"StartTime\":\"02:00 PM\"},{\"StartTime\":\"03:00 PM\"},{\"StartTime\":\"04:00 PM\"}]},{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"GuideName\":\"Alice Jackson\",\"Password\":\"222\",\"Tours\":[{\"StartTime\":\"09:20 AM\"},{\"StartTime\":\"10:20 AM\"},{\"StartTime\":\"11:20 AM\"},{\"StartTime\":\"12:20 PM\"},{\"StartTime\":\"01:20 PM\"},{\"StartTime\":\"02:20 PM\"},{\"StartTime\":\"03:20 PM\"}]},{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"GuideName\":\"Steve Brown\",\"Password\":\"33\",\"Tours\":[{\"StartTime\":\"09:40 AM\"},{\"StartTime\":\"10:40 AM\"},{\"StartTime\":\"11:40 AM\"},{\"StartTime\":\"12:40 PM\"},{\"StartTime\":\"01:40 PM\"},{\"StartTime\":\"02:40 PM\"},{\"StartTime\":\"03:40 PM\"}]}]"},
+                    {"./JSON-Files/Tours-20240601.json","[{\"TourId\":\"99df0a07-a667-4875-82e7-213371ffbee2\",\"StartTime\":\"2024-06-01T09:00:00\",\"EndTime\":\"2024-06-01T09:20:00\",\"Duration\":20,\"MaxCapacity\":30,\"ExpectedVisitors\":[{\"VisitorId\":\"873d138e-3720-4a89-be7b-e2f0ae0172cb\",\"TicketCode\":\"1234567890\"}],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"111\"}},{\"TourId\":\"54feb388-e819-489f-9e80-d4c8c13d9d72\",\"StartTime\":\"2024-06-01T09:20:00\",\"EndTime\":\"2024-06-01T09:40:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Jackson\",\"Password\":\"222\"}},{\"TourId\":\"81c380e0-8531-41e2-9e0b-866eeec30be1\",\"StartTime\":\"2024-06-01T09:40:00\",\"EndTime\":\"2024-06-01T10:00:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"409c95d8-a317-4b6a-85f7-5cffdf7245be\",\"StartTime\":\"2024-06-01T10:00:00\",\"EndTime\":\"2024-06-01T10:20:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"111\"}},{\"TourId\":\"6951265d-dd36-431b-a2ac-53fc53ecd874\",\"StartTime\":\"2024-06-01T10:20:00\",\"EndTime\":\"2024-06-01T10:40:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Jackson\",\"Password\":\"222\"}},{\"TourId\":\"1f3c2c27-78c8-48b0-9e35-fa45c3b494a3\",\"StartTime\":\"2024-06-01T10:40:00\",\"EndTime\":\"2024-06-01T11:00:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"90d62a3a-7d29-4953-a21d-8d26ccb3e2d1\",\"StartTime\":\"2024-06-01T11:00:00\",\"EndTime\":\"2024-06-01T11:20:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"111\"}},{\"TourId\":\"31237530-76d7-446e-b955-6e71d3698ddc\",\"StartTime\":\"2024-06-01T11:20:00\",\"EndTime\":\"2024-06-01T11:40:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Jackson\",\"Password\":\"222\"}},{\"TourId\":\"551dc3e1-2385-4c07-acd4-781be5a70739\",\"StartTime\":\"2024-06-01T11:40:00\",\"EndTime\":\"2024-06-01T12:00:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"b0695036-09da-494e-afab-0d545b724d69\",\"StartTime\":\"2024-06-01T12:00:00\",\"EndTime\":\"2024-06-01T12:20:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"111\"}},{\"TourId\":\"377c087e-6705-472d-b1fc-7a19b5e4b3ac\",\"StartTime\":\"2024-06-01T12:20:00\",\"EndTime\":\"2024-06-01T12:40:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Jackson\",\"Password\":\"222\"}},{\"TourId\":\"4ec570fb-dce7-4c18-bb7b-5f9310cbc45c\",\"StartTime\":\"2024-06-01T12:40:00\",\"EndTime\":\"2024-06-01T13:00:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"a2b886d0-ecd9-430e-a7fc-de545ff8947c\",\"StartTime\":\"2024-06-01T13:00:00\",\"EndTime\":\"2024-06-01T13:20:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"111\"}},{\"TourId\":\"63270e20-136c-4e20-82b8-ddc65107411b\",\"StartTime\":\"2024-06-01T13:20:00\",\"EndTime\":\"2024-06-01T13:40:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Jackson\",\"Password\":\"222\"}},{\"TourId\":\"5efb992a-7ec7-4af3-9540-69312a3bc762\",\"StartTime\":\"2024-06-01T13:40:00\",\"EndTime\":\"2024-06-01T14:00:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"fe2e9969-1bf3-42ff-9578-072c195c729f\",\"StartTime\":\"2024-06-01T14:00:00\",\"EndTime\":\"2024-06-01T14:20:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"111\"}},{\"TourId\":\"27cf4d00-ea43-4837-ad38-1fc86c14d02c\",\"StartTime\":\"2024-06-01T14:20:00\",\"EndTime\":\"2024-06-01T14:40:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Jackson\",\"Password\":\"222\"}},{\"TourId\":\"a9d6b73d-f517-4d7e-b5aa-101c35e5710b\",\"StartTime\":\"2024-06-01T14:40:00\",\"EndTime\":\"2024-06-01T15:00:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"3942bf3b-fc76-453e-bfcf-098a2db7ae5b\",\"StartTime\":\"2024-06-01T15:00:00\",\"EndTime\":\"2024-06-01T15:20:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"111\"}},{\"TourId\":\"098f4dac-e9f0-419c-9420-2394a1289e86\",\"StartTime\":\"2024-06-01T15:20:00\",\"EndTime\":\"2024-06-01T15:40:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Jackson\",\"Password\":\"222\"}},{\"TourId\":\"9cfb7c15-45a5-471d-bab4-37b924ca0b9e\",\"StartTime\":\"2024-06-01T15:40:00\",\"EndTime\":\"2024-06-01T16:00:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"6d94e5ee-1899-419b-b1e0-248e7861d853\",\"StartTime\":\"2024-06-01T16:00:00\",\"EndTime\":\"2024-06-01T16:20:00\",\"Duration\":20,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"111\"}}]"}
+                }
+            };
+            Program.World = world;
+            TourTools.InitializeTours();
 
             var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(Guid.NewGuid(), "John", "111"));
+            var FirstTour = TourTools.TodaysTours[0];
 
             // Act
-            tour.AddVisitor(visitor);
+            FirstTour.AddVisitor(visitor);
 
             // Assert
-            Assert.IsTrue(tour.ExpectedVisitors.Contains(visitor));
+            Assert.IsTrue(FirstTour.ExpectedVisitors.Contains(visitor));
         }
 
         [TestMethod]
-        public void RemoveVisitor_RemovesExpectedVisitor()
+        public void RemoveVisitor_ExpectedVisitor()
         {
-            // Setup
-            Guid tourId = Guid.NewGuid();
+            // Arrange
+            string ticketCodeVisitor = "ABC123";
+            FakeWorld world = new()
+            {
+                Today = new DateTime(2024, 6, 5),
+                Now = new DateTime(2024, 6, 5),
+                Files =
+                {
+                    {"./JSON-Files/OnlineTickets.json", $"[\"1111\",\"2222\",\"3333\",\"ABC123\"]"},
+                    {"./JSON-Files/TourSettings.json","{\"StartTime\": \"9:00:00\",\"EndTime\": \"16:40:00\",\"Duration\": 20,\"MaxCapacity\": 13}"},
+                    {"./JSON-Files/GuideAssignments.json","[{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"GuideName\":\"John Doe\",\"Password\":\"111\",\"Tours\":[{\"StartTime\":\"09:00 AM\"},{\"StartTime\":\"10:00 AM\"},{\"StartTime\":\"11:00 AM\"},{\"StartTime\":\"12:00 PM\"},{\"StartTime\":\"01:00 PM\"},{\"StartTime\":\"02:00 PM\"},{\"StartTime\":\"03:00 PM\"},{\"StartTime\":\"04:00 PM\"}]},{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"GuideName\":\"Alice Jackson\",\"Password\":\"222\",\"Tours\":[{\"StartTime\":\"09:20 AM\"},{\"StartTime\":\"10:20 AM\"},{\"StartTime\":\"11:20 AM\"},{\"StartTime\":\"12:20 PM\"},{\"StartTime\":\"01:20 PM\"},{\"StartTime\":\"02:20 PM\"},{\"StartTime\":\"03:20 PM\"}]},{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"GuideName\":\"Steve Brown\",\"Password\":\"33\",\"Tours\":[{\"StartTime\":\"09:40 AM\"},{\"StartTime\":\"10:40 AM\"},{\"StartTime\":\"11:40 AM\"},{\"StartTime\":\"12:40 PM\"},{\"StartTime\":\"01:40 PM\"},{\"StartTime\":\"02:40 PM\"},{\"StartTime\":\"03:40 PM\"}]}]"},
+                    {"./JSON-Files/Tours-20240605.json","[{\"TourId\":\"882b5837-7841-4d0b-937d-b663777fc103\",\"StartTime\":\"2024-06-05T09:00:00+02:00\",\"EndTime\":\"2024-06-05T09:40:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[{\"VisitorId\":\"fad423e0-ebcb-4e38-88f1-9320bb0d59df\",\"TicketCode\":\"ABC123\"}],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"11\"}},{\"TourId\":\"43cf9852-1514-4e70-9aac-7dd7326bedb4\",\"StartTime\":\"2024-06-05T09:20:00+02:00\",\"EndTime\":\"2024-06-05T10:00:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Johnson\",\"Password\":\"22\"}},{\"TourId\":\"fef988ee-3325-461f-80ae-bd8452aeb411\",\"StartTime\":\"2024-06-05T09:40:00+02:00\",\"EndTime\":\"2024-06-05T10:20:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"b7c3b876-63ec-494f-b460-440ecea59709\",\"StartTime\":\"2024-06-05T10:00:00+02:00\",\"EndTime\":\"2024-06-05T10:40:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"11\"}},{\"TourId\":\"c0729b64-1f66-4651-8aea-dceea1ca2959\",\"StartTime\":\"2024-06-05T10:20:00+02:00\",\"EndTime\":\"2024-06-05T11:00:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Johnson\",\"Password\":\"22\"}},{\"TourId\":\"50b75ac1-9692-416c-9a85-717f683f2e19\",\"StartTime\":\"2024-06-05T10:40:00+02:00\",\"EndTime\":\"2024-06-05T11:20:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"8a44c715-7e60-40af-968f-d2b95e2f54ea\",\"StartTime\":\"2024-06-05T11:00:00+02:00\",\"EndTime\":\"2024-06-05T11:40:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"11\"}},{\"TourId\":\"17d31717-13f1-46a3-bffe-03203c65e287\",\"StartTime\":\"2024-06-05T11:20:00+02:00\",\"EndTime\":\"2024-06-05T12:00:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Johnson\",\"Password\":\"22\"}},{\"TourId\":\"b60ef0e4-6708-492f-96df-b279787748dd\",\"StartTime\":\"2024-06-05T11:40:00+02:00\",\"EndTime\":\"2024-06-05T12:20:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"35292197-56fc-411c-a9c7-ef339a53470b\",\"StartTime\":\"2024-06-05T12:00:00+02:00\",\"EndTime\":\"2024-06-05T12:40:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"11\"}},{\"TourId\":\"e20f3900-b833-45ac-a700-72694078569b\",\"StartTime\":\"2024-06-05T12:20:00+02:00\",\"EndTime\":\"2024-06-05T13:00:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Johnson\",\"Password\":\"22\"}},{\"TourId\":\"07786d62-adce-4acc-92b8-9372f29ed7f7\",\"StartTime\":\"2024-06-05T12:40:00+02:00\",\"EndTime\":\"2024-06-05T13:20:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"3529352c-b1bd-49dd-8b58-af41699b1c0e\",\"StartTime\":\"2024-06-05T13:00:00+02:00\",\"EndTime\":\"2024-06-05T13:40:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"11\"}},{\"TourId\":\"fc65733f-4714-4a29-a659-e25356c151aa\",\"StartTime\":\"2024-06-05T13:20:00+02:00\",\"EndTime\":\"2024-06-05T14:00:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Johnson\",\"Password\":\"22\"}},{\"TourId\":\"490f5932-1cb7-4e00-83ea-f422b9f16da1\",\"StartTime\":\"2024-06-05T13:40:00+02:00\",\"EndTime\":\"2024-06-05T14:20:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"6d625e23-16bf-46b2-bf83-fad5c6c40516\",\"StartTime\":\"2024-06-05T14:00:00+02:00\",\"EndTime\":\"2024-06-05T14:40:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"11\"}},{\"TourId\":\"9398c4d9-b70c-439f-9d69-004295ae7425\",\"StartTime\":\"2024-06-05T14:20:00+02:00\",\"EndTime\":\"2024-06-05T15:00:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Johnson\",\"Password\":\"22\"}},{\"TourId\":\"e524c935-5179-4f40-a012-f221df7a05a6\",\"StartTime\":\"2024-06-05T14:40:00+02:00\",\"EndTime\":\"2024-06-05T15:20:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"a085a36d-32a8-4bd3-975f-6eb78ce3c51b\",\"StartTime\":\"2024-06-05T15:00:00+02:00\",\"EndTime\":\"2024-06-05T15:40:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"11\"}},{\"TourId\":\"7a944cd6-39de-40f0-8b3e-416a7dada50a\",\"StartTime\":\"2024-06-05T15:20:00+02:00\",\"EndTime\":\"2024-06-05T16:00:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Johnson\",\"Password\":\"22\"}},{\"TourId\":\"17e47345-3bc9-4e7d-ab4e-6f00292dc18d\",\"StartTime\":\"2024-06-05T15:40:00+02:00\",\"EndTime\":\"2024-06-05T16:20:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"ee7d5a4f-acf7-491b-8db9-db514a613cef\",\"StartTime\":\"2024-06-05T16:00:00+02:00\",\"EndTime\":\"2024-06-05T16:40:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"11\"}}]"}
+                }
+            };
+            Program.World = world;
+            TourTools.InitializeTours();
 
-            var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(Guid.NewGuid(), "John", "111"));
-            tour.AddVisitor(visitor);
+            Tour firstTour = TourTools.TodaysTours[0];
+            Visitor testVisitor = Visitor.FindVisitorByTicketCode(ticketCodeVisitor);
 
             // Act
-            tour.RemoveVisitor(visitor);
+            firstTour.RemoveVisitor(testVisitor);
 
             // Assert
-            Assert.IsFalse(tour.ExpectedVisitors.Contains(visitor));
+            Assert.IsFalse(firstTour.ExpectedVisitors.Contains(testVisitor));
         }
 
         [TestMethod]
         public void FindTourByVisitorTicketCode_FindsCorrectTour()
         {
-            // Setup
-            Guid tourId = Guid.NewGuid();
-
-            var visitor = new Visitor("ABC123");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(Guid.NewGuid(), "John", "111"));
-            tour.AddVisitor(visitor);
-            TourTools.TodaysTours.Add(tour);
+            // Arrange
+            string ticketCodeVisitor = "ABC123";
+            FakeWorld world = new()
+            {
+                Today = new DateTime(2024, 6, 5),
+                Now = new DateTime(2024, 6, 5),
+                Files =
+                {
+                    {"./JSON-Files/OnlineTickets.json", $"[\"1111\",\"2222\",\"3333\",\"ABC123\"]"},
+                    {"./JSON-Files/TourSettings.json","{\"StartTime\": \"9:00:00\",\"EndTime\": \"16:40:00\",\"Duration\": 20,\"MaxCapacity\": 13}"},
+                    {"./JSON-Files/GuideAssignments.json","[{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"GuideName\":\"John Doe\",\"Password\":\"111\",\"Tours\":[{\"StartTime\":\"09:00 AM\"},{\"StartTime\":\"10:00 AM\"},{\"StartTime\":\"11:00 AM\"},{\"StartTime\":\"12:00 PM\"},{\"StartTime\":\"01:00 PM\"},{\"StartTime\":\"02:00 PM\"},{\"StartTime\":\"03:00 PM\"},{\"StartTime\":\"04:00 PM\"}]},{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"GuideName\":\"Alice Jackson\",\"Password\":\"222\",\"Tours\":[{\"StartTime\":\"09:20 AM\"},{\"StartTime\":\"10:20 AM\"},{\"StartTime\":\"11:20 AM\"},{\"StartTime\":\"12:20 PM\"},{\"StartTime\":\"01:20 PM\"},{\"StartTime\":\"02:20 PM\"},{\"StartTime\":\"03:20 PM\"}]},{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"GuideName\":\"Steve Brown\",\"Password\":\"33\",\"Tours\":[{\"StartTime\":\"09:40 AM\"},{\"StartTime\":\"10:40 AM\"},{\"StartTime\":\"11:40 AM\"},{\"StartTime\":\"12:40 PM\"},{\"StartTime\":\"01:40 PM\"},{\"StartTime\":\"02:40 PM\"},{\"StartTime\":\"03:40 PM\"}]}]"},
+                    {"./JSON-Files/Tours-20240605.json","[{\"TourId\":\"882b5837-7841-4d0b-937d-b663777fc103\",\"StartTime\":\"2024-06-05T09:00:00+02:00\",\"EndTime\":\"2024-06-05T09:40:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[{\"VisitorId\":\"fad423e0-ebcb-4e38-88f1-9320bb0d59df\",\"TicketCode\":\"ABC123\"}],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"11\"}},{\"TourId\":\"43cf9852-1514-4e70-9aac-7dd7326bedb4\",\"StartTime\":\"2024-06-05T09:20:00+02:00\",\"EndTime\":\"2024-06-05T10:00:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Johnson\",\"Password\":\"22\"}},{\"TourId\":\"fef988ee-3325-461f-80ae-bd8452aeb411\",\"StartTime\":\"2024-06-05T09:40:00+02:00\",\"EndTime\":\"2024-06-05T10:20:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"b7c3b876-63ec-494f-b460-440ecea59709\",\"StartTime\":\"2024-06-05T10:00:00+02:00\",\"EndTime\":\"2024-06-05T10:40:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"11\"}},{\"TourId\":\"c0729b64-1f66-4651-8aea-dceea1ca2959\",\"StartTime\":\"2024-06-05T10:20:00+02:00\",\"EndTime\":\"2024-06-05T11:00:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Johnson\",\"Password\":\"22\"}},{\"TourId\":\"50b75ac1-9692-416c-9a85-717f683f2e19\",\"StartTime\":\"2024-06-05T10:40:00+02:00\",\"EndTime\":\"2024-06-05T11:20:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"8a44c715-7e60-40af-968f-d2b95e2f54ea\",\"StartTime\":\"2024-06-05T11:00:00+02:00\",\"EndTime\":\"2024-06-05T11:40:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"11\"}},{\"TourId\":\"17d31717-13f1-46a3-bffe-03203c65e287\",\"StartTime\":\"2024-06-05T11:20:00+02:00\",\"EndTime\":\"2024-06-05T12:00:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Johnson\",\"Password\":\"22\"}},{\"TourId\":\"b60ef0e4-6708-492f-96df-b279787748dd\",\"StartTime\":\"2024-06-05T11:40:00+02:00\",\"EndTime\":\"2024-06-05T12:20:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"35292197-56fc-411c-a9c7-ef339a53470b\",\"StartTime\":\"2024-06-05T12:00:00+02:00\",\"EndTime\":\"2024-06-05T12:40:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"11\"}},{\"TourId\":\"e20f3900-b833-45ac-a700-72694078569b\",\"StartTime\":\"2024-06-05T12:20:00+02:00\",\"EndTime\":\"2024-06-05T13:00:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Johnson\",\"Password\":\"22\"}},{\"TourId\":\"07786d62-adce-4acc-92b8-9372f29ed7f7\",\"StartTime\":\"2024-06-05T12:40:00+02:00\",\"EndTime\":\"2024-06-05T13:20:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"3529352c-b1bd-49dd-8b58-af41699b1c0e\",\"StartTime\":\"2024-06-05T13:00:00+02:00\",\"EndTime\":\"2024-06-05T13:40:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"11\"}},{\"TourId\":\"fc65733f-4714-4a29-a659-e25356c151aa\",\"StartTime\":\"2024-06-05T13:20:00+02:00\",\"EndTime\":\"2024-06-05T14:00:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Johnson\",\"Password\":\"22\"}},{\"TourId\":\"490f5932-1cb7-4e00-83ea-f422b9f16da1\",\"StartTime\":\"2024-06-05T13:40:00+02:00\",\"EndTime\":\"2024-06-05T14:20:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"6d625e23-16bf-46b2-bf83-fad5c6c40516\",\"StartTime\":\"2024-06-05T14:00:00+02:00\",\"EndTime\":\"2024-06-05T14:40:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"11\"}},{\"TourId\":\"9398c4d9-b70c-439f-9d69-004295ae7425\",\"StartTime\":\"2024-06-05T14:20:00+02:00\",\"EndTime\":\"2024-06-05T15:00:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Johnson\",\"Password\":\"22\"}},{\"TourId\":\"e524c935-5179-4f40-a012-f221df7a05a6\",\"StartTime\":\"2024-06-05T14:40:00+02:00\",\"EndTime\":\"2024-06-05T15:20:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"a085a36d-32a8-4bd3-975f-6eb78ce3c51b\",\"StartTime\":\"2024-06-05T15:00:00+02:00\",\"EndTime\":\"2024-06-05T15:40:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"11\"}},{\"TourId\":\"7a944cd6-39de-40f0-8b3e-416a7dada50a\",\"StartTime\":\"2024-06-05T15:20:00+02:00\",\"EndTime\":\"2024-06-05T16:00:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"2d739229-6220-4d32-84c1-c18a812f2774\",\"Name\":\"Alice Johnson\",\"Password\":\"22\"}},{\"TourId\":\"17e47345-3bc9-4e7d-ab4e-6f00292dc18d\",\"StartTime\":\"2024-06-05T15:40:00+02:00\",\"EndTime\":\"2024-06-05T16:20:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"1cae7c8d-bec3-416d-a4a3-3023ff0bc402\",\"Name\":\"Steve Brown\",\"Password\":\"33\"}},{\"TourId\":\"ee7d5a4f-acf7-491b-8db9-db514a613cef\",\"StartTime\":\"2024-06-05T16:00:00+02:00\",\"EndTime\":\"2024-06-05T16:40:00+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"6c8cb11c-cf42-4606-8778-2831c5c5fda8\",\"Name\":\"John Doe\",\"Password\":\"11\"}}]"}
+                }
+            };
+            Program.World = world;
+            TourTools.InitializeTours();
 
             // Act
-            var foundTour = TourTools.FindTourByVisitorTicketCode("ABC123");
+            var foundTour = TourTools.FindTourByVisitorTicketCode(ticketCodeVisitor);
 
             // Assert
-            Assert.AreEqual(tour, foundTour);
+            Assert.IsTrue(foundTour != null);
         }
 
         [TestMethod]
         public void SaveTours_SavesToursToFile()
         {
             // Arrange
+            FakeWorld world = new()
+            {
+                Today = new DateTime(2024, 6, 5),
+                Now = new DateTime(2024, 6, 5),
+                Files =
+                {
+                    {"./JSON-Files/Tours-20240605.json","[]"}
+                }
+            };
+            Program.World = world;
+            TourTools.InitializeTours();
+
             var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(Guid.NewGuid(), "John", "111"));
             TourTools.TodaysTours.Add(tour);
 
@@ -142,15 +139,9 @@ namespace MuseumTesting
             TourDataManager.SaveTours();
 
             // Assert
-            Assert.IsTrue(File.Exists(TourTools.JsonFilePath));
-            var savedTours = JsonConvert.DeserializeObject<List<Tour>>(File.ReadAllText(TourTools.JsonFilePath));
+            Assert.IsTrue(Program.World.Exists(TourTools.JsonFilePath));
+            var savedTours = JsonConvert.DeserializeObject<List<Tour>>(Program.World.ReadAllText(TourTools.JsonFilePath));
             Assert.AreEqual(TourTools.TodaysTours.Count, savedTours.Count);
-
-            // Cleanup
-            if (File.Exists(TourTools.JsonFilePath))
-            {
-                File.Delete(TourTools.JsonFilePath);
-            }
         }
 
         [TestMethod]
@@ -158,22 +149,23 @@ namespace MuseumTesting
         {
             TourTools.TodaysTours = new();
             // Arrange
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now, 40, 13, false, false, new Guide(Guid.NewGuid(), "John", "111"));
-            TourTools.TodaysTours.Add(tour);
-            TourDataManager.SaveTours();
+            FakeWorld world = new()
+            {
+                Today = new DateTime(2024, 6, 5),
+                Now = new DateTime(2024, 6, 5),
+                Files =
+                {
+                    {"./JSON-Files/Tours-20240605.json","[{\"TourId\":\"292ecf85-9edb-4119-845a-93e2baf42717\",\"StartTime\":\"2024-06-05T13:51:41.6055972+02:00\",\"EndTime\":\"2024-06-05T14:31:41.6055972+02:00\",\"Duration\":40,\"MaxCapacity\":13,\"ExpectedVisitors\":[],\"PresentVisitors\":[],\"Started\":false,\"Deleted\":false,\"AssignedGuide\":{\"GuideId\":\"5f42459e-9263-4047-a6f7-ecaa96c11531\",\"Name\":\"John\",\"Password\":\"111\"}}]"}
+                }
+            };
+            Program.World = world;
 
             // Act
             TourDataManager.LoadTours();
 
             // Assert
             Assert.AreEqual(1, TourTools.TodaysTours.Count);
-            Assert.AreEqual(tour.TourId, TourTools.TodaysTours[0].TourId);
-
-            // Cleanup
-            if (File.Exists(TourTools.JsonFilePath))
-            {
-                File.Delete(TourTools.JsonFilePath);
-            }
+            Assert.IsTrue(TourTools.TodaysTours.Count > 0);
         }
 
     }

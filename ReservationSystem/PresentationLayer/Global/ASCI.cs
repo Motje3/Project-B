@@ -26,6 +26,6 @@ public static class ASCI
  *************     ********* /=======\ ******** | *********
 ___________________________________________________________
 ";
-        Console.WriteLine(asciiArt);
+        Program.World.WriteLine(asciiArt);
     }
 }

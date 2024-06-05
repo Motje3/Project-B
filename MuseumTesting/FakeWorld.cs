@@ -72,16 +72,21 @@ public class FakeWorld : IWorld
         ConsoleKey pressed;
         ConsoleKeyInfo info;
         if (nextInput.Length == 1)
-        { 
+        {
             pressed = (ConsoleKey)Enum.Parse(typeof(ConsoleKey), nextInput.ToUpper());
-            info = new(nextInput[0], pressed, false, false, false); 
+            info = new(nextInput[0], pressed, false, false, false);
         }
         else
         {
-            pressed = (ConsoleKey)Enum.Parse(typeof(ConsoleKey), nextInput); 
+            pressed = (ConsoleKey)Enum.Parse(typeof(ConsoleKey), nextInput);
             info = new('0', pressed, false, false, false);
         }
-        
+
         return info;
+    }
+
+    public bool Exists(string path)
+    {
+        return Files.Any(pair => pair.Key == path);
     }
 }

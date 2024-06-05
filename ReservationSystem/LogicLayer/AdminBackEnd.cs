@@ -36,7 +36,7 @@ public static class AdminBackEnd
             pressed = info.Key;
             chosen = info.KeyChar;
         }
-        Space.Show(); // Console.WriteLine(); // Ensure the cursor moves to the next line after Enter is pressed
+        Space.Show(); // Program.World.WriteLine(); // Ensure the cursor moves to the next line after Enter is pressed
         return password;
     }
 
