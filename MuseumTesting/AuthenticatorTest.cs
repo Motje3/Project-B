@@ -1,3 +1,4 @@
+using ReservationSystem;
 namespace MuseumTesting
 {
     [TestClass]
@@ -32,6 +33,16 @@ namespace MuseumTesting
         [TestMethod]
         public void AuthenticateUser_ValidPassword_ReturnsTrue()
         {
+            // Arrange
+            FakeWorld world = new()
+            {
+                Files =
+                {
+                    {"./JSON-Files/AdminCredentials.json", "[{\"Password\":\"pass1\"},{\"Password\":\"pass2\"},{\"Password\":\"12\"}]"},
+                }
+            };
+            Program.World = world;
+
             // Act
             var result = Authenticator.AuthenticateUser("pass1");
 
@@ -42,6 +53,16 @@ namespace MuseumTesting
         [TestMethod]
         public void AuthenticateUser_InvalidPassword_ReturnsFalse()
         {
+            // Arrange
+            FakeWorld world = new()
+            {
+                Files =
+                {
+                    {"./JSON-Files/AdminCredentials.json", "[{\"Password\":\"pass1\"},{\"Password\":\"pass2\"},{\"Password\":\"12\"}]"},
+                }
+            };
+            Program.World = world;
+
             // Act
             var result = Authenticator.AuthenticateUser("wrongpassword");
 

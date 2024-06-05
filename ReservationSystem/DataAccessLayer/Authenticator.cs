@@ -16,7 +16,7 @@ public static class Authenticator
     public static List<Credential> LoadUserCredentials()
     {
         string filePath = "./JSON-Files/AdminCredentials.json";
-        if (File.Exists(filePath))
+        if (Program.World.Exists(filePath))
         {
             return JsonHelper.LoadFromJson<List<Credential>>(filePath);
         }
