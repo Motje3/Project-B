@@ -7,13 +7,11 @@ public class Reservation : View
     {
         try { Console.Clear(); } catch { }
 
-
-        //WelcomeMessage.WelcomeToTheMuseum();
-        ASCI.Art();
-
+        // ASCI.Art();
 
         while (true)
         {
+            ASCI.Art();
             string userCode = TicketInputRL.Show();
 
             if (userCode == "GETMEOUT")
