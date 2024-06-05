@@ -22,7 +22,7 @@ public class StartMenuRL : View
         Console.WriteLine(" Edit the guided tours schedule");
 
         ColourText.WriteColored("", "3 | ", ConsoleColor.Cyan);
-        WriteLine(" Return to Scanning Zone");
+        WriteLine(" Return to Ticket Scanner");
 
         ColourText.WriteColored("\nEnter your ", "choice: ", ConsoleColor.Cyan);
 

@@ -188,7 +188,7 @@ public class Guide
 
         Program.World.Write("\nPress ");
         ColourText.WriteColored("", "Enter", ConsoleColor.Cyan, " to return to Admin Menu or ");
-        ColourText.WriteColored("", "Space", ConsoleColor.Cyan, " to return to Scanning Zone.");
+        ColourText.WriteColored("", "Space", ConsoleColor.Cyan, " to return to Ticket Scanner");
         Console.WriteLine();
 
 
