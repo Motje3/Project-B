@@ -12,6 +12,11 @@ public class Guide
     public List<Guid> AssignedTourIds { get; set; } = new List<Guid>();
     public static List<Guide> AllGuides = new List<Guide>();
 
+    static Guide()
+    {
+        LoadGuides();
+    }
+
     public Guide(Guid guideId, string name, string password)
     {
         GuideId = guideId;

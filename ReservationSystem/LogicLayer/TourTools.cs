@@ -7,6 +7,11 @@ public class TourTools
     public static string JsonTourSettingsPath => $"./JSON-Files/TourSettings.json";
     public static string JsonGuideAssignmentsPath => $"./JSON-Files/GuideAssignments.json";
 
+    static TourTools()
+    {
+        InitializeTours();
+    }
+
     public static void InitializeTours()
     {
         try
