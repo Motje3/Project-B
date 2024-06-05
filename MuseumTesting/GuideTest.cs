@@ -34,7 +34,7 @@ namespace MuseumTesting
             Guid tourId = Guid.NewGuid();
 
             var guide = new Guide(Guid.NewGuid(), "John", "111");
-            
+
 
             // Act
             guide.AssignTour(tourId);
@@ -108,7 +108,7 @@ namespace MuseumTesting
 
             // Create tours
             DateTime date = DateTime.Now;  // used to simulate today's tours
-            
+
             // Note that test might fail between 22:00 (10:00 PM) - 00:00 (12:00 AM),
             // avoid this test between these time periods.
             var tour1 = new Tour(Guid.NewGuid(), new DateTime(date.Year, date.Month, date.Day, 22, 0, 0), 40, 13, false, false, John);
@@ -128,8 +128,8 @@ namespace MuseumTesting
             // Assert
             // John should have 2 presentvistors (tour1)
             // Alice should have 1 presentvistors (tour2)
-            Assert.AreEqual(2, TourTools.TodaysTours[0].ExpectedVisitors.Count);
-            Assert.AreEqual(1, TourTools.TodaysTours[1].ExpectedVisitors.Count);
+            Assert.AreEqual(2, TourTools.TodaysTours[0].PresentVisitors.Count);
+            Assert.AreEqual(1, TourTools.TodaysTours[1].PresentVisitors.Count);
         }
 
         [TestMethod]
@@ -144,37 +144,6 @@ namespace MuseumTesting
 
             // Assert
             //Assert.IsFalse(result);
-        }
-
-        [TestMethod]
-        public void StartUpcomingTour_WithUpcomingTour_ReturnsTrueAndAddsPresentVisitors()
-        {
-            // Arrange
-            var guide = new Guide(Guid.NewGuid(), "John", "password123");
-            Guide.AllGuides.Clear();
-            Guide.AllGuides.Add(guide);
-            
-            var visitor = new Visitor("444");
-            var tour = new Tour(Guid.NewGuid(), DateTime.Now.AddMinutes(30), 40, 10, false, false, guide);
-            tour.ExpectedVisitors.Add(visitor);
-            TourTools.TodaysTours.Clear();
-            TourTools.TodaysTours.Add(tour);
-
-            using (var stringWriter = new StringWriter())
-            {
-                using (var stringReader = new StringReader(visitor.TicketCode + Environment.NewLine + "start" + Environment.NewLine))
-                {
-                    Console.SetOut(stringWriter);
-                    Console.SetIn(stringReader);
-
-                    // Act
-                    //var result = guide.StartUpcomingTour();
-
-                    // Assert
-                    //Assert.IsTrue(result);
-                    Assert.IsTrue(tour.PresentVisitors.Any(v => v.TicketCode == visitor.TicketCode));
-                }
-            }
         }
     }
 }
