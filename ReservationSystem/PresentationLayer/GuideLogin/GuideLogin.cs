@@ -5,12 +5,12 @@ public class GuideLogin : View
     public static void Show()
     {
         Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine();
-        Console.WriteLine(" ------------------");
-        Console.WriteLine("|    Guide Login   |");
-        Console.WriteLine(" ------------------");
+        Program.World.WriteLine("");
+        Program.World.WriteLine(" ------------------");
+        Program.World.WriteLine("|    Guide Login   |");
+        Program.World.WriteLine(" ------------------");
         Console.ResetColor();
-        Console.WriteLine();
+        Program.World.WriteLine("");
         Write("Enter password: ");
     }
 }

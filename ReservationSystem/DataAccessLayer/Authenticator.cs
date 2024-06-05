@@ -1,3 +1,4 @@
+using ReservationSystem;
 public static class Authenticator
 {
     public class Credential
@@ -21,7 +22,7 @@ public static class Authenticator
         }
         else
         {
-            Console.WriteLine("Credential file not found.");
+            Program.World.WriteLine("Credential file not found.");
             return new List<Credential>();
         }
     }

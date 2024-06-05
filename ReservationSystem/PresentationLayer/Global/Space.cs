@@ -1,8 +1,8 @@
 namespace ReservationSystem;
 
-// generic Console.WriteLine();
+// generic Program.World.WriteLine("");
 
-public class Space : View  
+public class Space : View
 {
     public static void Show()
     {
@@ -10,4 +10,4 @@ public class Space : View
     }
 }
 
-// generic Console.WriteLine();
+// generic Program.World.WriteLine("");

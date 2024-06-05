@@ -131,7 +131,7 @@ public class Guide
         .Where(tour => !tour.Started && !tour.Deleted && tour.StartTime > Program.World.Now)
         .OrderBy(tour => tour.StartTime)
         .ToList();
-        try{Console.Clear();}catch{};
+        try { Console.Clear(); } catch { };
         Program.World.WriteLine("Select the tour you want to reassign the guide for: \n");
         for (int i = 0; i < sortedTours.Count; i++)
         {
@@ -162,7 +162,7 @@ public class Guide
         for (int i = 0; i < distinctGuides.Count; i++)
         {
             ColourText.WriteColored($"", $"{i + 1} | ", ConsoleColor.Cyan);
-            Console.WriteLine($"{distinctGuides[i].Name}");
+            Program.World.WriteLine($"{distinctGuides[i].Name}");
         }
 
 
@@ -189,7 +189,7 @@ public class Guide
         Program.World.Write("\nPress ");
         ColourText.WriteColored("", "Enter", ConsoleColor.Cyan, " to return to Admin Menu or ");
         ColourText.WriteColored("", "Space", ConsoleColor.Cyan, " to return to Scanning Zone.");
-        Console.WriteLine();
+        Program.World.WriteLine("");
 
 
         ConsoleKey key;

@@ -6,20 +6,20 @@ public class StartMenuRL : View
     {
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine();
-        Console.WriteLine(" ------------------");
-        Console.WriteLine("|    Admin Menu    |");
-        Console.WriteLine(" ------------------");
+        Program.World.WriteLine("");
+        Program.World.WriteLine(" ------------------");
+        Program.World.WriteLine("|    Admin Menu    |");
+        Program.World.WriteLine(" ------------------");
         Console.ResetColor();
-        Console.WriteLine();
+        Program.World.WriteLine("");
 
         Console.ResetColor();
 
         ColourText.WriteColored("", "1 | ", ConsoleColor.Cyan);
-        Console.WriteLine(" Assign a Different Guide to today's tours");
+        Program.World.WriteLine(" Assign a Different Guide to today's tours");
 
         ColourText.WriteColored("", "2 | ", ConsoleColor.Cyan);
-        Console.WriteLine(" Edit the guided tours schedule");
+        Program.World.WriteLine(" Edit the guided tours schedule");
 
         ColourText.WriteColored("", "3 | ", ConsoleColor.Cyan);
         WriteLine(" Return to Scanning Zone");
