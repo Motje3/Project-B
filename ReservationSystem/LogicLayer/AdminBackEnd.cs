@@ -40,70 +40,10 @@ public static class AdminBackEnd
         return password;
     }
 
-    public static void AddNewGuidedTour()
-    {
-        AdminMessages.ShowAddNewGuidedTourOptions();
-
-        string choice = Console.ReadLine();
-
-        switch (choice)
-        {
-            case "1":
-                AddTourForTomorrow();
-                break;
-            case "2":
-                AddTourToStandardSchedule();
-                break;
-            default:
-                AdminMessages.ShowInvalidOption();
-                WaitForUser();
-                break;
-        }
-    }
-
-    public static void AddTourForTomorrow()
-    {
-        AdminMessages.ShowEnterTimePrompt();
-        string time = Console.ReadLine();
-        DateTime tourStartTime;
-
-        if (!DateTime.TryParse(time, out tourStartTime))
-        {
-            AdminMessages.ShowInvalidTimeFormat();
-            WaitForUser();
-            return;
-        }
-
-        List<Guide> guides = Guide.AllGuides;
-        if (guides == null || guides.Count == 0)
-        {
-            AdminMessages.ShowNoGuidesAvailable();
-            WaitForUser();
-            return;
-        }
-
-        var uniqueGuides = guides.GroupBy(g => g.GuideId).Select(g => g.First()).ToList();
-        AdminMessages.ShowChooseGuide(uniqueGuides);
-
-        if (!int.TryParse(Console.ReadLine(), out int guideChoice) || guideChoice < 1 || guideChoice > uniqueGuides.Count)
-        {
-            AdminMessages.ShowInvalidGuideChoice();
-            WaitForUser();
-            return;
-        }
-
-        Guide selectedGuide = uniqueGuides[guideChoice - 1];
-        Tour newTour = new Tour(Guid.NewGuid(), tourStartTime, 40, 13, false, false, selectedGuide);
-        TourTools.TodaysTours.Add(newTour);
-        TourDataManager.SaveTours();
-        try { Console.Clear(); } catch { }
-
-        AdminMessages.ShowTourAddedSuccessfully();
-        WaitForUser();
-    }
 
     public static void AddTourToStandardSchedule()
     {
+        AdminMessages.ShowEditStandardSchedule();
         AdminMessages.ShowEnterTimePrompt();
         string time = Console.ReadLine();
         DateTime tourStartTime;
