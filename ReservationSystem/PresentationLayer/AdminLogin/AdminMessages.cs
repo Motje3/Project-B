@@ -2,22 +2,20 @@ namespace ReservationSystem;
 
 public class AdminMessages : View
 {
-    public static void ShowAddNewGuidedTourOptions()
+    public static void ShowEditStandardSchedule()
     {
         Console.Clear();
-        WriteLine("Add New Guided Tour:");
-        WriteLine("1. Add a new guided tour for today");
-        WriteLine("2. Add a new guided tour to the standard schedule");
+        WriteLine("Add a new guided tour to the standard schedule\n");
     }
 
     public static void ShowEnterTimePrompt()
     {
-        Write("Enter time for the new tour (hh:mm): ");
+        ColourText.WriteColoredLine("Enter time for the new tour", " (hh:mm):", ConsoleColor.Cyan);
     }
 
     public static void ShowInvalidTimeFormat()
     {
-        WriteLine("Invalid time format. Please enter the time in hh:mm format.\n");
+        ColourText.WriteColoredLine("Invalid time format.", ConsoleColor.Red, " Please enter the time in hh:mm format.\n");
     }
 
     public static void ShowNoGuidesAvailable()
@@ -30,13 +28,13 @@ public class AdminMessages : View
         WriteLine("Choose a guide:");
         for (int i = 0; i < guides.Count; i++)
         {
-            WriteLine($"{i + 1}. {guides[i].Name}");
+            WriteLine($"{i + 1}. {guides[i].Name}\n");
         }
     }
 
     public static void ShowInvalidGuideChoice()
     {
-        WriteLine("Invalid guide choice. Please select a valid guide number.\n");
+        ColourText.WriteColoredLine("Invalid guide choice", ConsoleColor.Red, " Please try again.\n");
     }
 
     public static void ShowTourAddedSuccessfully()
@@ -46,7 +44,7 @@ public class AdminMessages : View
 
     public static void ShowInvalidOption()
     {
-        WriteLine("Invalid option. Please try again.");
+        ColourText.WriteColoredLine("Invalid choice", ConsoleColor.Red, " Please try again.\n");
     }
 
     public static void ShowWaitForUser()

@@ -33,7 +33,7 @@ public class AdminLoginMenu : View
                     Guide.ReassignGuideToTour();
                     break;
                 case "2":
-                    AdminBackEnd.AddNewGuidedTour();
+                    AdminBackEnd.AddTourToStandardSchedule();
                     break;
                 case "3":
                     continueRunning = false;
