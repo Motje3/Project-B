@@ -14,24 +14,6 @@ namespace MuseumTesting
             Guide.AllGuides.Clear();
         }
 
-        // THIS TEST DOES NOT MAKE SENSE BECAUSE YOU DONT ADD A TOUR TO ANYTHING OR DO ANYTHING WITH tourId
-        /*
-        [TestMethod]
-        public void Constructor_WithTourId_AddsTourToAssignedTourIds()
-        {
-            
-            // Arrange
-            var guidid = Guid.NewGuid();
-            Guid tourId = Guid.NewGuid();
-
-            // Act
-            var guide = new Guide(guidid, "John", "111");
-
-            // Assert
-            Assert.IsTrue(guide.AssignedTourIds.Contains(tourId));
-        }
-        */
-
         [TestMethod]
         public void AssignTour_WithNewTour_AddsTourToAssignedTourIds()
         {
