@@ -1,19 +1,20 @@
+using ReservationSystem;
 namespace MuseumTesting
 {
     [TestClass]
     public class VisitorTests
-    {/*
+    {
 
         [TestInitialize]
         public void TestInitialize()
         {
-            Tour.TodaysTours.Clear();  // Ensures a clean state before each test
+            TourTools.TodaysTours.Clear();  // Ensures a clean state before each test
         }
 
         [TestCleanup]
         public void TestCleanup()
         {
-            Tour.TodaysTours.Clear();  // Cleans up after each test
+            TourTools.TodaysTours.Clear();  // Cleans up after each test
         }
 
         [TestMethod]
@@ -38,7 +39,7 @@ namespace MuseumTesting
             var visitor = new Visitor("ABC123");
             var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide(tourId, "John", "111"));
             tour.ExpectedVisitors.Add(visitor);
-            Tour.TodaysTours.Add(tour);
+            TourTools.TodaysTours.Add(tour);
 
             // Act
             bool hasReservation = visitor.HasReservation(visitor);
@@ -69,7 +70,7 @@ namespace MuseumTesting
             var visitor = new Visitor("DEF456");
             var tour = new Tour(Guid.NewGuid(), DateTime.Now, 60, 30, false, false, new Guide(tourId, "John", "111"));
             tour.ExpectedVisitors.Add(visitor);
-            Tour.TodaysTours.Add(tour);
+            TourTools.TodaysTours.Add(tour);
 
             // Act
             var foundVisitor = Visitor.FindVisitorByTicketCode("DEF456");
@@ -102,7 +103,7 @@ namespace MuseumTesting
             var visitor = new Visitor("JKL012");
             var tour = new Tour(Guid.NewGuid(), DateTime.Now.AddHours(1), 60, 30, false, false, new Guide(tourId, "John", "111"));
             tour.ExpectedVisitors.Add(visitor);
-            Tour.TodaysTours.Add(tour);
+            TourTools.TodaysTours.Add(tour);
 
             // Act
             string reservationDetails = Visitor.GetCurrentReservation(visitor);
@@ -123,7 +124,7 @@ namespace MuseumTesting
 
             // Assert
             Assert.IsTrue(reservationDetails.Contains("You currently have no reservation"));
-        }*/
+        }
     }
 }
 
