@@ -10,12 +10,12 @@ public class AdminMessages : View
 
     public static void ShowEnterTimePrompt()
     {
-        ColourText.WriteColoredLine("Enter time for the new tour", " (hh:mm):", ConsoleColor.Cyan);
+        ColourText.WriteColoredLine("Enter time for the new tour", " (HH:MM format):", ConsoleColor.Cyan);
     }
 
     public static void ShowInvalidTimeFormat()
     {
-        ColourText.WriteColoredLine("Invalid time format.", ConsoleColor.Red, " Please enter the time in hh:mm format.\n");
+        ColourText.WriteColoredLine("Invalid time format.", ConsoleColor.Red, " Please enter the time in HH:MM format.\n,", "");
     }
 
     public static void ShowNoGuidesAvailable()
@@ -25,10 +25,10 @@ public class AdminMessages : View
 
     public static void ShowChooseGuide(List<Guide> guides)
     {
-        WriteLine("Choose a guide:");
+        WriteLine("Choose a guide: \n");
         for (int i = 0; i < guides.Count; i++)
         {
-            WriteLine($"{i + 1}. {guides[i].Name}\n");
+            ColourText.WriteColoredLine("", $"{i + 1} | ", ConsoleColor.Cyan, $"{guides[i].Name} \n");
         }
     }
 
@@ -37,9 +37,9 @@ public class AdminMessages : View
         ColourText.WriteColoredLine("Invalid guide choice", ConsoleColor.Red, " Please try again.\n");
     }
 
-    public static void ShowTourAddedSuccessfully()
+    public static void ShowTourAddedSuccessfully(Guide guideEntry, DateTime tourStartTime)
     {
-        WriteLine("Tour added successfully.\n");
+        ColourText.WriteColoredLine("Tour added ", "successfully", ConsoleColor.Green, $" at {tourStartTime} and assigned to {guideEntry.Name}.\n");
     }
 
     public static void ShowInvalidOption()

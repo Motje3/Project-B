@@ -98,7 +98,7 @@ public static class AdminBackEnd
         TourDataManager.CreateToursForToday();
         try { Console.Clear(); } catch { }
 
-        AdminMessages.ShowTourAddedSuccessfully();
+        AdminMessages.ShowTourAddedSuccessfully(selectedGuide, tourStartTime);
         WaitForUser();
     }
 

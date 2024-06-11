@@ -19,7 +19,7 @@ public class StartMenuRL : View
         Program.World.WriteLine(" Assign a Different Guide to today's tours");
 
         ColourText.WriteColored("", "2 | ", ConsoleColor.Cyan);
-        Program.World.WriteLine(" Edit the guided tours schedule");
+        Program.World.WriteLine(" Add a new tour to the schedule");
 
         ColourText.WriteColored("", "3 | ", ConsoleColor.Cyan);
         WriteLine(" Return to Ticket Scanner");
