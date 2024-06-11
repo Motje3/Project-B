@@ -25,7 +25,7 @@ public class AdminMessages : View
 
     public static void ShowChooseGuide(List<Guide> guides)
     {
-        WriteLine("Choose a guide: \n");
+        WriteLine("\nChoose a guide: \n");
         for (int i = 0; i < guides.Count; i++)
         {
             ColourText.WriteColoredLine("", $"{i + 1} | ", ConsoleColor.Cyan, $"{guides[i].Name} \n");
@@ -39,7 +39,8 @@ public class AdminMessages : View
 
     public static void ShowTourAddedSuccessfully(Guide guideEntry, DateTime tourStartTime)
     {
-        ColourText.WriteColoredLine("Tour added ", "successfully", ConsoleColor.Green, $" at {tourStartTime} and assigned to {guideEntry.Name}.\n");
+        string formattedtime = tourStartTime.ToString("HH:mm");
+        ColourText.WriteColoredLine("Tour added ", "successfully", ConsoleColor.Green, $" at {formattedtime} and assigned to {guideEntry.Name}.\n");
     }
 
     public static void ShowInvalidOption()
