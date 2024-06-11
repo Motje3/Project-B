@@ -95,6 +95,7 @@ public static class AdminBackEnd
         }
 
         File.WriteAllText(TourTools.JsonGuideAssignmentsPath, JsonConvert.SerializeObject(guideAssignments, Formatting.Indented));
+        TourTools.TodaysTours.Clear();
         TourDataManager.CreateToursForToday();
         try { Console.Clear(); } catch { }
 
